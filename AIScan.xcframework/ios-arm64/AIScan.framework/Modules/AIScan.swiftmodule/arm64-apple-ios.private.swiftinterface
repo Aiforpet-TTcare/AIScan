@@ -334,7 +334,7 @@ public struct TTFile : Swift.Equatable {
 public enum PartType {
   case eye
   case ear
-  case body
+  case belly
   case foot
   case etc
   case tooth
@@ -367,7 +367,7 @@ public enum TTFileType : Swift.String {
 }
 public enum DetailPartType : Swift.String, Swift.CaseIterable {
   case eyer, eyel, nose, tcenter, tleft, tright
-  case ear, body, foot, etc
+  case ear, belly, foot, etc
   case joint
   public var positionTitle: Swift.String {
     get
