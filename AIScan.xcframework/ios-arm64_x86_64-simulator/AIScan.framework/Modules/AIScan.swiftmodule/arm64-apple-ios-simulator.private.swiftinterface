@@ -308,7 +308,7 @@ public enum ModelLibType {
   public static func toast(_ text: Swift.String?)
   public static func alert(_ text: Swift.String?)
   public static func flashAlert()
-  public static func report(isSuccess: Swift.Bool? = nil, vendorId: Swift.String? = nil, reportData: Swift.String? = nil)
+  public static func report(isSuccess: Swift.Bool = false)
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
   @objc deinit
 }

@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		4gdi7g0hHDS+ZtAM4ckfAdIoWdI=
+		Aq0d0OpYx9wGEsPqLzOrUUROVdg=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/BNt-Va-ldg-view-Ehd-vn-RgT.nib</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/K46-eX-E2j-view-bqp-nX-IzZ.nib</key>
 		<data>
-		pz15Qlt2seJ9pTLsYDzA1YKzDAQ=
+		uTgUq+mkSID+1hzjsaUlP55KyZs=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Odz-r6-ju9-view-VIo-WM-1CP.nib</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>Base.lproj/TTEtc.storyboardc/Y6W-OH-hqX-view-5EZ-qb-Rvc.nib</key>
 		<data>
-		S9cO5PfBYJfk89XuQAQAWI+0VQs=
+		1uCbrQILuiUw/ajOZiRJrMZDAGo=
 		</data>
 		<key>Base.lproj/TTEtc.storyboardc/njF-fG-x3w-view-Nzs-Fl-aXS.nib</key>
 		<data>
@@ -182,11 +182,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		ahCh+FzpQA1KzCXI/xWfkrVNGhU=
+		465EpSIrR2ISB7qgOGZzd5pUxRQ=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		7mBQ+p109eSAY+WPklu7+098O6w=
+		SEb/znfbrsN5vE24/cs1oSlrEX8=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -194,11 +194,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		7mBQ+p109eSAY+WPklu7+098O6w=
+		SEb/znfbrsN5vE24/cs1oSlrEX8=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		5y1F7l6FXcThJRj8kZczHPWYYZc=
+		7NDbxWUKEl6qIco4n6RZvDRwx5M=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -212,7 +212,34 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4wb7xhOwCAtNRETAsmhJCfedWF8=
+			Oj6mCLFSbOZ7/Bj9gRjz6I5bveA=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>en.lproj/TTCamera.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FZpGJ4IVT/mxhZ3Zjy2IuAEJKQ8=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>en.lproj/TTEtc.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			2V3gLSNdVDvn8B4jFf9SCWdIShQ=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>en.lproj/TTPopup.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			lwtK9svhtPNG2PmAfeQOUjh1cGQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -221,7 +248,34 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			orcdEIXuJbG5TEqtL4y+ChGxO4U=
+			gVHz6rwBGOVyV8cSBagV41+NZvE=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ja.lproj/TTCamera.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			2ZSrApzUp9r5Y7KynkOPiTvIZ7c=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ja.lproj/TTEtc.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			pOGRBnqNIvNpImN2+G61uMi0feU=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ja.lproj/TTPopup.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			yDDTVC52rAEXGc1gjPsiWtRXDtE=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -230,7 +284,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kxkIXuKbDY4gf+cZE2yDm29RhEM=
+			VkZDgGKFRM1v7eBH7vj5x1hGf8E=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -253,6 +307,15 @@
 			<key>optional</key>
 			<true/>
 		</dict>
+		<key>ko.lproj/TTPopup.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FkSJwYWG9pO3wYuhjp8kECDOAt8=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
 	</dict>
 	<key>files2</key>
 	<dict>
@@ -260,7 +323,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			JueWULeQYmmr06xpnmZFs1th48CDkn6t/5jtABOEOOc=
+			eAOFFUxtD4Pomd6+Tz/I84pGLVeleHDFdiVhJsW2Ayc=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/BNt-Va-ldg-view-Ehd-vn-RgT.nib</key>
@@ -295,7 +358,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			wGUCs5k0laT/GI+uwpEepCmiuyhD4pZATeYydNv/MR4=
+			ck0G+adxKygaIGGc8wohac/eXczLeYqBK1/i1v0umBM=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/Odz-r6-ju9-view-VIo-WM-1CP.nib</key>
@@ -442,7 +505,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UaSZQunJURIKZFSbPy2OJ3plXchFoy4UIUu/qY1o0Ds=
+			RU/q5nOetSXCb6QDlppT/OS6K1p7/0mR/8Fs5bZQDKU=
 			</data>
 		</dict>
 		<key>Base.lproj/TTEtc.storyboardc/njF-fG-x3w-view-Nzs-Fl-aXS.nib</key>
@@ -561,14 +624,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			2Rrq0htxPEYD+jmd72Ie7NAwRjDqaNggIiqtj3oeGoQ=
+			WYod3UZnhi1f+r/4C2tEq+OsaVMsEimwbOLVIfcgnEI=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Wl09cgMqtUfHolAp7GiKj9TyVRVlgRZB7wk9vAnclL0=
+			zXFuaKXsjKbgQvctnovq4ay+fr8U+B5hejSb0j1aFGY=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -582,14 +645,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Wl09cgMqtUfHolAp7GiKj9TyVRVlgRZB7wk9vAnclL0=
+			zXFuaKXsjKbgQvctnovq4ay+fr8U+B5hejSb0j1aFGY=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gRiHewfYaJ6C7fzVCEJL2x2gMUDF+znkL4HUsEsgjKg=
+			dJvn/bFhXpEOUm7H5U4UuPZMAbGUiup44RpPol3naMc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -610,7 +673,34 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			PQIUDXG81uh4J4iUVAlXE72r7N1uNEmQHaBQ/qeMGQ8=
+			Go9X+YICHxXzivH9YTlLN3GjFnf8gHnLumGjLQdNn24=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>en.lproj/TTCamera.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Om2JNL2GC4Pxg/PL0QyishzXyJ+zvs16HTaoBo7elEg=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>en.lproj/TTEtc.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			m7f/7GL+RxpiIHDDzIVT45ccpYWkoNSu2N6/bJwCTdw=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>en.lproj/TTPopup.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			215voAYA51wKjG/83IW1F5zFx2ITtB92uyr5GwHyXYM=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -619,7 +709,34 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Bcbya/kPLRDXASkbVmKbszFNEUUl0jkWEGtWU2hTxWU=
+			GFU1WEa1tuTD71QGTRoZu+1p7ogcH/+wyRPkPmaILPw=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ja.lproj/TTCamera.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			CznsnhBAH4z4/6/GmIxgVDi1DrcdJaa5xzFg4seBf4Q=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ja.lproj/TTEtc.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+6r40sEhlk3afu/U2LZ42NDe+ZlI8uVDEikFQP3KmSs=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ja.lproj/TTPopup.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			95EnrEmgw8TchQN9NKLPcOQlm5hqlgHL0/t0VCTVpHY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -628,7 +745,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			H2IBqppyqaIom2HO/e6HgbfvFpBFp2HuZzeLaXuIv7U=
+			IHb/ApnrPrQFLZEHyCwJsqrQ8wUVr+zAhie8/yxRPT0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -647,6 +764,15 @@
 			<key>hash2</key>
 			<data>
 			XnSUbvrFO2zg4srwybGmbkc6Frli6vH17iYtd0bIiks=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>ko.lproj/TTPopup.strings</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			vlldVX9HNJdEhLpm482qb0aeOkE2TgERxOMsTNz6uLc=
 			</data>
 			<key>optional</key>
 			<true/>
