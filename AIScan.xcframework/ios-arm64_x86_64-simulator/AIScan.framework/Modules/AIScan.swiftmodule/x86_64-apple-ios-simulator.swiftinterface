@@ -294,6 +294,7 @@ public enum ModelLibType {
   }
 }
 @_hasMissingDesignatedInitializers public class AIScanManager {
+  public static let sdkVersion: Swift.String
   public static var license: AIScan.TTLicense?
   public static var analysisTracker: (any AIScan.TTAnalysisTracker)?
   public static var isNotRemoveFiles: Swift.Bool
@@ -301,7 +302,6 @@ public enum ModelLibType {
   public static var isHapticEnabled: Swift.Bool
   public static var isAnimationEnabled: Swift.Bool
   public static var albumName: Swift.String?
-  public static let sdkVersion: Swift.String
   public static func configure(license: AIScan.TTLicense)
   public static func configure(authFileData: Foundation.Data)
   public static func setAPNS(token: Swift.String?)

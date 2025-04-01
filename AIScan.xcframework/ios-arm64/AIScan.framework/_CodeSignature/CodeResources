@@ -182,11 +182,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		q1rZTUT9TPLvXF7Gtk91/hzvC08=
+		+mvRwacAaHxqdGNIpvQMFpFTDi0=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		0BtQ81jpYAo4X1j1E9rZAbuFh7U=
+		CXluGeVdFTH486WCtoGEELZuwl8=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -194,11 +194,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		0BtQ81jpYAo4X1j1E9rZAbuFh7U=
+		CXluGeVdFTH486WCtoGEELZuwl8=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		fhcBEKWgsvw7V1F72Oi6+0icOYM=
+		WmPR/cbNR8BBnh8XqNdLI+ownmE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -624,14 +624,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			TtxZNahw+CW2SfUNmSGcWBzc8usTIAmgcNSOwqgSEvM=
+			Weyg/ih8FkIsbeArIWLLqYMgW4dTCEKJ8cd6oO8NvuA=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fEJUQLU+neNJIBZoUAOuyRNiZ5jbU92+UZVnUV3g3J8=
+			ZkmmwqarPExJezcIVMqXyZ5/drq8bGod4lCvYhsNM0c=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -645,14 +645,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			fEJUQLU+neNJIBZoUAOuyRNiZ5jbU92+UZVnUV3g3J8=
+			ZkmmwqarPExJezcIVMqXyZ5/drq8bGod4lCvYhsNM0c=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Oblmn1G5Ma85bw7OiPK4YEwSRa6XPkZjIBsPfx5zEyY=
+			XKPU4B5HQnAERIKcMsgkrIQ04515XVKnObriKR15swg=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
