@@ -312,6 +312,9 @@ public enum ModelLibType {
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
   @objc deinit
 }
+extension AIScan.AIScanManager {
+  public static func clearUserData()
+}
 public struct InferenceResult {
   public let label: Swift.Int
   public let ratio: Swift.Double
