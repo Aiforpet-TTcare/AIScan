@@ -165,6 +165,9 @@ extension Foundation.Date {
   public var ttISO8601: Swift.String {
     get
   }
+  public var ttSeoul: Swift.String {
+    get
+  }
 }
 public protocol TTPopupEntry : AnyObject {
   var viewForPopup: UIKit.UIView { get }
