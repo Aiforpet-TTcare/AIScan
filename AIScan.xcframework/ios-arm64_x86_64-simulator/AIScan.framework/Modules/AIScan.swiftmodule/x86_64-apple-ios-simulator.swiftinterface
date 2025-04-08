@@ -168,6 +168,9 @@ extension Foundation.Date {
   public var ttSeoul: Swift.String {
     get
   }
+  public var localDateString: Swift.String {
+    get
+  }
 }
 public protocol TTPopupEntry : AnyObject {
   var viewForPopup: UIKit.UIView { get }
