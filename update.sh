@@ -17,7 +17,7 @@ PACKAGE="Package.swift"
 
 # PACKAGE 파일 버전 업데이트
 echo "Updating version in $PACKAGE to $NEW_VERSION..."
-sed -i '' "s/Version: .*/Version: \"$NEW_VERSION\"/" $PACKAGE
+sed -i '' "s/tag: .*/tag: \"$NEW_VERSION\"/" $PACKAGE
 
 # Git 커밋 및 푸시
 echo "Committing and pushing changes to git..."
