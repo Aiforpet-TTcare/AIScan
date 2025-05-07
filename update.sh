@@ -15,6 +15,7 @@ sed -i '' "s/:tag => \".*\"/:tag => \"$NEW_VERSION\"/" $PODSPEC
 # Git 커밋 및 푸시
 echo "Committing and pushing changes to git..."
 git add .
+git add -f Package.swift
 git commit -m "Update podspec version to $NEW_VERSION"
 
 # 현재 브랜치 이름 가져오기
