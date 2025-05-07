@@ -8,26 +8,23 @@ let package = Package(
         .iOS(.v13)
     ],
     products: [
-        // 외부에는 이 wrapper 라이브러리만 노출
         .library(
-            name: "aiscan",
-            targets: ["AIScan"]
+            name: "aiscan", // ✅ 그대로
+            targets: ["aiscan"] // ⬅️ 소문자로 수정
         )
     ],
     dependencies: [
         .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", branch: "main")
     ],
     targets: [
-        // 실제 바이너리 프레임워크
         .binaryTarget(
-            name: "AIScanBinary",
+            name: "aiscanbinary", // ⬅️ 소문자 권장
             path: "AIScan.xcframework"
         ),
-        // Wrapper target – 의존성 추가를 위해 필요
         .target(
-            name: "AIScan",
+            name: "aiscan", // ⬅️ 소문자
             dependencies: [
-                "AIScanBinary",
+                "aiscanbinary", // ⬅️ 위와 일치
                 .product(name: "TensorFlowLiteSwift", package: "TensorFlowLiteSwift")
             ],
             path: "Sources/AIScanStub",
