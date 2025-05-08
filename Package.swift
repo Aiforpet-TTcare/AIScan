@@ -1,16 +1,16 @@
 // swift-tools-version: 6.1
-// tag: "1.0.10"
+// tag: "1.0.11"
 import PackageDescription
 
 let package = Package(
-    name: "aiscan",
+    name: "AIScan",
     platforms: [
         .iOS(.v13)
     ],
     products: [
         // 외부에는 이 wrapper 라이브러리만 노출
         .library(
-            name: "aiscan",
+            name: "AIScan",
             targets: ["AIScan"]
         )
     ],
