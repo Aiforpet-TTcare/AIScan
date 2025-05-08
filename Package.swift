@@ -1,30 +1,33 @@
-// swift-tools-version: 6.1
-// tag: "1.0.8"
+// swift-tools-version: 5.9
+// tag: "1.0.9"
 import PackageDescription
 
 let package = Package(
-    name: "aiscan",
+    name: "AIScan",
     platforms: [
         .iOS(.v13)
     ],
     products: [
+        // 외부에는 이 wrapper 라이브러리만 노출
         .library(
-            name: "aiscan", // ✅ 그대로
-            targets: ["aiscan"] // ⬅️ 소문자로 수정
+            name: "AIScan",
+            targets: ["AIScan"]
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", branch: "main")
+        .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", tag: "1.0.9"
     ],
     targets: [
+        // 실제 바이너리 프레임워크
         .binaryTarget(
-            name: "aiscanbinary", // ⬅️ 소문자 권장
+            name: "AIScanBinary",
             path: "AIScan.xcframework"
         ),
+        // Wrapper target – 의존성 추가를 위해 필요
         .target(
-            name: "aiscan", // ⬅️ 소문자
+            name: "AIScan",
             dependencies: [
-                "aiscanbinary", // ⬅️ 위와 일치
+                "AIScanBinary",
                 .product(name: "TensorFlowLiteSwift", package: "TensorFlowLiteSwift")
             ],
             path: "Sources/AIScanStub",
