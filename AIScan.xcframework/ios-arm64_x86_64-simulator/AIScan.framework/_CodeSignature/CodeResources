@@ -194,11 +194,11 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		LDyLGPJ1JMmluQLuRiE/U6CO3ag=
+		SOka6RTvETHcwFs5s/vUd0ay5Uc=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		EYNDL6bJETldUehdYcBJgiMdbh4=
+		7CJha/V+p78be6xAhkPn7mlXFX4=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
@@ -214,11 +214,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		0rSz/UdxFWyMYe7cBppt2eTCikg=
+		qtFA5ESjTXarOjk53pmG5yfk6N4=
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		EYNDL6bJETldUehdYcBJgiMdbh4=
+		7CJha/V+p78be6xAhkPn7mlXFX4=
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
@@ -234,7 +234,7 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		THi4TlpVjEsEH67pof46RppEBUk=
+		h/Za4IBk6035MBpIFz2PcnLCanc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -243,26 +243,6 @@
 		<key>PrivacyInfo.xcprivacy</key>
 		<data>
 		OGl4H7ny93gyz1FVztaVI+HrHt8=
-		</data>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/analytics/coremldata.bin</key>
-		<data>
-		0GM++yS3g3nGBH3oMoTUvoRGH1o=
-		</data>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/coremldata.bin</key>
-		<data>
-		7X3kfHlwgg02IWXNT/dMkSyOFh4=
-		</data>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/metadata.json</key>
-		<data>
-		pqcpGDRauVJ35JCZfhMvFKXe26I=
-		</data>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/model.mil</key>
-		<data>
-		hQwrwSu9dwZEPxO+dCDMTfkak5Q=
-		</data>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/weights/weight.bin</key>
-		<data>
-		EZsUDnpkApUD7xR/kDNDNxOsJcA=
 		</data>
 		<key>en.lproj/Localizable.strings</key>
 		<dict>
@@ -712,7 +692,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RHheQWVpPTms7Pgg0KW5W/oPM8zJkpT1XNZYRD+hXlc=
+			7Fdy9/DNjzS+57HukK0qRReA8NRg0p7KOEh1UQbcTsc=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
@@ -740,14 +720,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ad0nDrAzo+fi1fYSbb9F5qThZbWQPubi22Y5QQZ4n5g=
+			39shJH8SFn279dom6HOVmSBFxCnwm/mIWrXv1XPn5qA=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RHheQWVpPTms7Pgg0KW5W/oPM8zJkpT1XNZYRD+hXlc=
+			7Fdy9/DNjzS+57HukK0qRReA8NRg0p7KOEh1UQbcTsc=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
@@ -775,7 +755,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			2eVHSSd30XYEkGfYBo6aUKaMuw7YBoO1g0e/LQm5+ao=
+			ldfHwLL2Wpe5Fm5i0j9jskCENils39ERvxakzF/ljII=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -790,41 +770,6 @@
 			<key>hash2</key>
 			<data>
 			ozHVGGR0Pr5OAN0iNgtKU4trOsJqaz61QJTmCjaVmhI=
-			</data>
-		</dict>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/analytics/coremldata.bin</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			dw63R5z/5/SDRKtK8CPSOJoyb1bMqX74bmJRyK08bBE=
-			</data>
-		</dict>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/coremldata.bin</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			juj+AHB2VgE6d2DZKhYjxifmriZRr5qWEd0FOSK7Zo0=
-			</data>
-		</dict>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/metadata.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			hI76mA2kPwP1mBHhL/Fu02/fTw5HxnQdCKhCGVn4lPU=
-			</data>
-		</dict>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/model.mil</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			aEkSAmGP5bsHucrCqOhSKUo1b97vTiWQuKmpOXO2Sns=
-			</data>
-		</dict>
-		<key>dogKeypointKnee_20250221_version3.mlmodelc/weights/weight.bin</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			bSq5i3rnIx4W4vpkhmGKdLwy7NeU61GTWxw7Wsgdx78=
 			</data>
 		</dict>
 		<key>en.lproj/Localizable.strings</key>
