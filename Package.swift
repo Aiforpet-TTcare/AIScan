@@ -15,7 +15,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", from: "2.17.1")
+        .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", from: "2.17.3")
     ],
     targets: [
         // binaryTarget의 이름을 실제 모듈명과 일치시킴
