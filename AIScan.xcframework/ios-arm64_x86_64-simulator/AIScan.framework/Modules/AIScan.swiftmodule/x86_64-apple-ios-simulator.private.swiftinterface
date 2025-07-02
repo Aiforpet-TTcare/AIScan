@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.1 effective-5.10 (swiftlang-6.1.0.110.21 clang-1700.0.13.3)
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
 // swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name AIScan
-// swift-module-flags-ignorable:  -interface-compiler-version 6.1
+// swift-module-flags-ignorable:  -interface-compiler-version 6.1.2
 @_exported import AIScan
 import ARKit
 import AVFoundation
@@ -18,6 +18,8 @@ import CoreVideo
 import DeveloperToolsSupport
 import Foundation
 import ImageIO
+import Metal
+import MetalPerformanceShaders
 import Photos
 import Swift
 import SwiftUI
@@ -80,9 +82,10 @@ extension AIScan.TTCameraGuideViewController : WebKit.WKUIDelegate {
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func webView(_ webView: WebKit.WKWebView, willDismissEditMenuWithAnimator animator: any UIKit.UIEditMenuInteractionAnimating)
 }
 public struct TTLicense : Swift.Codable {
-  public init(serviceRegion: Swift.String? = nil, serviceHost: Swift.String? = nil, clientID: Swift.String? = nil, clientKeyID: Swift.String? = nil, clientKeySecret: Swift.String? = nil, clientKey: Swift.String? = nil, accessToken: Swift.String? = nil, accountId: Swift.String? = nil, fcmToken: Swift.String? = nil, showGovCertMark: Swift.Bool? = nil)
+  public init(serviceRegion: Swift.String? = nil, serviceHost: Swift.String? = nil, serviceVersion: Swift.Int = 1, clientID: Swift.String? = nil, clientKeyID: Swift.String? = nil, clientKeySecret: Swift.String? = nil, clientKey: Swift.String? = nil, accessToken: Swift.String? = nil, accountId: Swift.String? = nil, fcmToken: Swift.String? = nil, showGovCertMark: Swift.Bool? = nil)
   public var serviceRegion: Swift.String?
   public var serviceHost: Swift.String?
+  public var serviceVersion: Swift.Int?
   public var clientID: Swift.String?, clientKeyID: Swift.String?, clientKeySecret: Swift.String?, clientKey: Swift.String?
   public var accessToken: Swift.String?
   public var accountID: Swift.String?
@@ -273,6 +276,17 @@ public struct TTResult : Swift.Codable {
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
+public struct TTResultV3 : Swift.Codable {
+  public var feedbacks: [AIScan.Feedback]?
+  public var dataValue: AIScan.TTData? {
+    get
+  }
+  public var string: Swift.String? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
 public struct TTData : Swift.Codable {
   public var diagID: Swift.Int?
   public init(from decoder: any Swift.Decoder) throws
@@ -335,7 +349,14 @@ public struct TTFile : Swift.Equatable {
   public var detailPartType: AIScan.DetailPartType?
   public var url: Foundation.URL?
   public var path: Swift.String?
+  public var videoIntervals: [AIScan.VideoInterval]?
+  public var description: Swift.String?
   public static func == (lhs: AIScan.TTFile, rhs: AIScan.TTFile) -> Swift.Bool
+}
+public struct VideoInterval : Swift.Equatable, Swift.Codable {
+  public static func == (a: AIScan.VideoInterval, b: AIScan.VideoInterval) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public enum PartType {
   case eye
