@@ -20,7 +20,6 @@ import Foundation
 import ImageIO
 import Metal
 import MetalPerformanceShaders
-import Photos
 import Swift
 import SwiftUI
 import TensorFlowLite
