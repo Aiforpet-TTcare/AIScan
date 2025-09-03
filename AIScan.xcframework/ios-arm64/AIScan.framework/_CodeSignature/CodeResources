@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		eVuc8UG56X23Cr00Vjh/iV2KODw=
+		9uA632FF2EpeV2JYPSbWhOcT/o8=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/BNt-Va-ldg-view-Ehd-vn-RgT.nib</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Odz-r6-ju9-view-VIo-WM-1CP.nib</key>
 		<data>
-		O7KfrnZcWeLEM1os1TehfBnbqqY=
+		bZn3nAFkk9NC53QrKbVgtei3AqM=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/PreviewGuideViewController.nib</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Q7G-DC-hAh-view-ySw-eP-buY.nib</key>
 		<data>
-		xYs9Vd8GLpaB5j7aUBSB0rrT55o=
+		KQ+WzAxk+WxnZXfEgqLLJjNW70Q=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/TTGuideJointLottieViewController.nib</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Y6W-OH-hqX-view-5EZ-qb-Rvc.nib</key>
 		<data>
-		WJPibaM/uB8FljTneOak0fXKn5s=
+		TPo3v0RLpLTHbtcD9yDbz4nqnMI=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/b6Q-u1-dpR-view-izD-oM-0LL.nib</key>
 		<data>
@@ -138,7 +138,7 @@
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/Info.plist</key>
 		<data>
-		FnkLdpTEFfE/fmKCs+1c8BU7T58=
+		HqxK87/Mg51tq92sfmA3X7t2HPg=
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/Qko-61-gnC-view-5V0-Hn-WEb.nib</key>
 		<data>
@@ -146,7 +146,7 @@
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/RJ2-sE-buA-view-amY-UT-ngX.nib</key>
 		<data>
-		VpQ4QWFz85LrC62n9dRdBG7Nd3s=
+		mK0lTNRrQvlGbUAtsRE9pl2WmeM=
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/TTFlashWarningAlertViewController.nib</key>
 		<data>
@@ -172,6 +172,10 @@
 		<data>
 		BO4cU3Qo70ih5jBT2cLmvyQQbzA=
 		</data>
+		<key>Base.lproj/TTPopup.storyboardc/TTPopupSelectedSkinViewController.nib</key>
+		<data>
+		oKC6PHQ2d1wDkmyeiMuOzmxcdV8=
+		</data>
 		<key>Base.lproj/TTPopup.storyboardc/TTPopupTimeoverViewController.nib</key>
 		<data>
 		IiJrdpK/vtPvRqdbBevYgIVeRPg=
@@ -179,6 +183,10 @@
 		<key>Base.lproj/TTPopup.storyboardc/XD0-Qm-tTP-view-FCI-sF-DL2.nib</key>
 		<data>
 		aC1htTHjWqJCm57wHQ5F2dfcE3Q=
+		</data>
+		<key>Base.lproj/TTPopup.storyboardc/ab9-LR-Qmb-view-FVe-Dr-BWJ.nib</key>
+		<data>
+		ape/vU7gGUkXsaXvCRtsdi5+PGk=
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/iCM-8f-3c5-view-hnd-Ev-ceU.nib</key>
 		<data>
@@ -198,11 +206,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		2nuhYLkjYCR89rysNaNEbJ7UNhg=
+		ejX7w7F6M7e9d6NcHJADzzNrcSs=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		PH4g1SoPNsfBTCTSld732iPWBrI=
+		0ai47bH8H++OrvaGzsJ/mK9oLZM=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -210,11 +218,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		PH4g1SoPNsfBTCTSld732iPWBrI=
+		0ai47bH8H++OrvaGzsJ/mK9oLZM=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		3ZbvrEM3DMAaoveyurTV1EtFvjI=
+		O4OaHF4UjvX/+iR869nvsYEiicw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -228,7 +236,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			2uZ6RdkZBQdoGI2CiCGIYzcbnM0=
+			9c7CdD808goCOIm3tzXAiWSZm80=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -237,7 +245,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			iFx+J8tvqCFBezxDd+urGbtPydk=
+			1B+rcPpM7xuDsTpMh0AHPoXsTDs=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -264,7 +272,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			HE/v2RjmejR7QzTXcOCiYiA7awM=
+			UH0nT7T8ha2sL8Jd0tX5N4WCdX8=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -273,7 +281,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ATW1ItsqjohfpDH9aJGq+i5jcCU=
+			qbt4XO1DZi6Vj4KRKNceuPTGIcQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -291,7 +299,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kmYyiX08BsVSLmFLzijnbqvBU+M=
+			WYrsgUCloE8JQZd81dA090/f55U=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -304,7 +312,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ur4kBT0FYwNeGzlPNm/oTzMdruo=
+			ujTblSceZV2TVzZM8krYFnxJf3k=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -313,7 +321,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			sZeKhNafDUtE3Psmz4iaPqX5F64=
+			VIQclo8b7l0aI30FqoiauPmi9L4=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -331,7 +339,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			7Goxl42r+3AN+ppNsdn2bJu0B2E=
+			TxxiDbbFx+P5MlYFwQ4HfBy+VHw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -343,7 +351,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jBbnBsQ/xwxUwF6+uHXVuAMUchO0gMGsdJuUM0kj8UU=
+			XU24ZGQJruLs5VEZK1H3zFjcNr1Vg1+QTm31H4PmJo8=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/BNt-Va-ldg-view-Ehd-vn-RgT.nib</key>
@@ -385,7 +393,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jYPhHK8mm/LSxNBbTija0tPJlfHRrI4GHKDIcTH/s7k=
+			HKogDZQq0AF7x6Q+I6tUu6ayp5Xfs2JrTRY8WuuN7hM=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/PreviewGuideViewController.nib</key>
@@ -406,7 +414,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SDJBfDs1eOpwzvDUdecADqXOhn7yPjhP383u1vSgmJ4=
+			uRtOYnRFo/nwUfPKRFzNneTPn0nodTWT7B/jPSlAl5M=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/TTGuideJointLottieViewController.nib</key>
@@ -448,7 +456,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			PSrBph8DtyTXtt4GGlj2KQDaoBfx10SV76MijtlOgZw=
+			P3Q6JyY8bFqLiRd/lyMcZ7GiVIXFoLtO+jo8bkapqHI=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/b6Q-u1-dpR-view-izD-oM-0LL.nib</key>
@@ -574,7 +582,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Nj0zWigNdY0df4d/vIboTaq+Q6bowW/VHhvWEk9SaMM=
+			xCKbr+03WSZaYrmGAPCTtwbfDdYl5Fzz2gxZiP8e57M=
 			</data>
 		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/Qko-61-gnC-view-5V0-Hn-WEb.nib</key>
@@ -588,7 +596,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			k54k5c73Nke0yFF8gHANa8MuFrbKrLGwkG5lMVteKZM=
+			wxp+0KNd58acyRAyHEzjv5GOk3Fcpe975nfqgM93m8k=
 			</data>
 		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/TTFlashWarningAlertViewController.nib</key>
@@ -633,6 +641,13 @@
 			MHQg0YjZ4iCg4oWq/6Vm7zQl2MVJ8JBwNz+vzV/79Y4=
 			</data>
 		</dict>
+		<key>Base.lproj/TTPopup.storyboardc/TTPopupSelectedSkinViewController.nib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Ek4+IUaYCM3jmPHP3SVYuqtge9kiBgwSozLrrGr4J00=
+			</data>
+		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/TTPopupTimeoverViewController.nib</key>
 		<dict>
 			<key>hash2</key>
@@ -645,6 +660,13 @@
 			<key>hash2</key>
 			<data>
 			48awLPeKpdIuNe1sYI1OKr0R91MG0yH3WS8DwLXI/LQ=
+			</data>
+		</dict>
+		<key>Base.lproj/TTPopup.storyboardc/ab9-LR-Qmb-view-FVe-Dr-BWJ.nib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			yNdDmPPHsCYsS24BaBxp9i3JXoXmjeQQbL6oOrk1YP0=
 			</data>
 		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/iCM-8f-3c5-view-hnd-Ev-ceU.nib</key>
@@ -672,14 +694,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			m9ENhGEAnKfB57k7JdB9nPMRnCpV+Z/ru/aoyEdQFJs=
+			exXTh3NrUbeZSXC1nuwb0itjVkIIsKDARxHfqwDZCgg=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			7AItTTUOo10bPTfbjssp9THIXiM09PJU/zBlS4/4CX8=
+			91LQsFSoXoM2C0Ank7S5XcvAuT2ptuBlu1oIkfZkjjw=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -693,14 +715,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			7AItTTUOo10bPTfbjssp9THIXiM09PJU/zBlS4/4CX8=
+			91LQsFSoXoM2C0Ank7S5XcvAuT2ptuBlu1oIkfZkjjw=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			F5HXUioXUSpHreREtavTUmrzs7fBbBiyd3ZUcLV1mIw=
+			It6BcuMM68vQghYScvIokgQhG4jIe8Xsi6Lg45RlQ4I=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -721,7 +743,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5L6NA7HqV3meHAZKnu5vz0Xcpy3V16wmv579PBE+Nbs=
+			iiJA71agfToRJ8/rYvNWIDKaBArZAbkB8EKxAzBB6NA=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -730,7 +752,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			tTeQEGCmeuRwWN5FTp7rwRV8qT+DQqoduUpQ2F0Rmlw=
+			fkfXhRRrfm4Dxv0wOb13KdZQt1k6KyVxyXSihArNRsk=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -757,7 +779,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			75cq0U1abNXMcPT65OhP2M+IhWulEmGnbcbR+0wOZck=
+			ekEeujcVlJ7RzZVNLgmCqXWRRHjZLrOfHRMSUUQTUA8=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -766,7 +788,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+aBMieDlgEC1HgsmVfB5nYOLiSGrNhP45yie1tJF4M0=
+			Wr18BJy7UoealYYjHLNRJvGx7NxFvmN1h1BNQNjmeZs=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -784,7 +806,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			aaICM5rgeTNFJv/qXWbFLL6/3mTyWrWwUPzMLPu3Odw=
+			NgW5GQ6QKbBs3yrolCGMjrVIhT63Rp1OWE/bEUkaCQw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -800,7 +822,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			LBQUzIMGBzm5kaB5J9Sea5TyzpvweGGea0gNAkHWHjw=
+			9SXf2sk8WdqvKqyIB89BMq8R9QGKrMJC/jwJga/iW3w=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -809,7 +831,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/qYaqY4OGQxVu3WEACyXPEM/8ZMQJ9vkIOLdR+DfN3g=
+			egBqZi9syC63Gn/DVohjhvdlZFwGf7gJ75wuXf+Wvv8=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -827,7 +849,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WURGaULfbVhMb8j8I9QmOzDqlew+YOjqxNN8fIhibCU=
+			GP93DuF/MqsGaEAbiGTtKqhKd5JWdStTd+hs7vE5tEY=
 			</data>
 			<key>optional</key>
 			<true/>
