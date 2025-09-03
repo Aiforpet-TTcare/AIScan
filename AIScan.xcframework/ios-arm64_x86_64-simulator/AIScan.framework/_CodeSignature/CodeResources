@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		9uA632FF2EpeV2JYPSbWhOcT/o8=
+		eVuc8UG56X23Cr00Vjh/iV2KODw=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/BNt-Va-ldg-view-Ehd-vn-RgT.nib</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Odz-r6-ju9-view-VIo-WM-1CP.nib</key>
 		<data>
-		bZn3nAFkk9NC53QrKbVgtei3AqM=
+		O7KfrnZcWeLEM1os1TehfBnbqqY=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/PreviewGuideViewController.nib</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Q7G-DC-hAh-view-ySw-eP-buY.nib</key>
 		<data>
-		KQ+WzAxk+WxnZXfEgqLLJjNW70Q=
+		xYs9Vd8GLpaB5j7aUBSB0rrT55o=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/TTGuideJointLottieViewController.nib</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/Y6W-OH-hqX-view-5EZ-qb-Rvc.nib</key>
 		<data>
-		TPo3v0RLpLTHbtcD9yDbz4nqnMI=
+		WJPibaM/uB8FljTneOak0fXKn5s=
 		</data>
 		<key>Base.lproj/TTCamera.storyboardc/b6Q-u1-dpR-view-izD-oM-0LL.nib</key>
 		<data>
@@ -138,7 +138,7 @@
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/Info.plist</key>
 		<data>
-		HqxK87/Mg51tq92sfmA3X7t2HPg=
+		FnkLdpTEFfE/fmKCs+1c8BU7T58=
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/Qko-61-gnC-view-5V0-Hn-WEb.nib</key>
 		<data>
@@ -146,7 +146,7 @@
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/RJ2-sE-buA-view-amY-UT-ngX.nib</key>
 		<data>
-		mK0lTNRrQvlGbUAtsRE9pl2WmeM=
+		VpQ4QWFz85LrC62n9dRdBG7Nd3s=
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/TTFlashWarningAlertViewController.nib</key>
 		<data>
@@ -172,10 +172,6 @@
 		<data>
 		BO4cU3Qo70ih5jBT2cLmvyQQbzA=
 		</data>
-		<key>Base.lproj/TTPopup.storyboardc/TTPopupSelectedSkinViewController.nib</key>
-		<data>
-		oKC6PHQ2d1wDkmyeiMuOzmxcdV8=
-		</data>
 		<key>Base.lproj/TTPopup.storyboardc/TTPopupTimeoverViewController.nib</key>
 		<data>
 		IiJrdpK/vtPvRqdbBevYgIVeRPg=
@@ -183,10 +179,6 @@
 		<key>Base.lproj/TTPopup.storyboardc/XD0-Qm-tTP-view-FCI-sF-DL2.nib</key>
 		<data>
 		aC1htTHjWqJCm57wHQ5F2dfcE3Q=
-		</data>
-		<key>Base.lproj/TTPopup.storyboardc/ab9-LR-Qmb-view-FVe-Dr-BWJ.nib</key>
-		<data>
-		ape/vU7gGUkXsaXvCRtsdi5+PGk=
 		</data>
 		<key>Base.lproj/TTPopup.storyboardc/iCM-8f-3c5-view-hnd-Ev-ceU.nib</key>
 		<data>
@@ -206,11 +198,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		lMlbK90pYBhpFOCOPjvabIi9U/E=
+		i0wn8nVLxskdhcMvXizXB60T4lo=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		75QId+rQfhGnCRkrBw1gHpS3aps=
+		doPlG73va4ZxotVPHifJ1XdcmT8=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -218,19 +210,19 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		75QId+rQfhGnCRkrBw1gHpS3aps=
+		doPlG73va4ZxotVPHifJ1XdcmT8=
 		</data>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		m3UR4kd7F7MZkPsvjO/HYpBQUlI=
+		sEp0ohBX4L6Dmas76GEH0EnM3FI=
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		lMlbK90pYBhpFOCOPjvabIi9U/E=
+		i0wn8nVLxskdhcMvXizXB60T4lo=
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		MsRO0Di/RSAtt+Ac0Kc2QgHbTE4=
+		l+b3yikV0Gtb1g9zHl1eGwb4DcQ=
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -238,11 +230,11 @@
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		MsRO0Di/RSAtt+Ac0Kc2QgHbTE4=
+		l+b3yikV0Gtb1g9zHl1eGwb4DcQ=
 		</data>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		muKF7oMWp2O3K3Dgvyuo7+FA20k=
+		p2MjSGYTF2fYMrRYC+nbm/Svjg8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -256,7 +248,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9c7CdD808goCOIm3tzXAiWSZm80=
+			2uZ6RdkZBQdoGI2CiCGIYzcbnM0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -265,7 +257,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			1B+rcPpM7xuDsTpMh0AHPoXsTDs=
+			iFx+J8tvqCFBezxDd+urGbtPydk=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -292,7 +284,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			UH0nT7T8ha2sL8Jd0tX5N4WCdX8=
+			HE/v2RjmejR7QzTXcOCiYiA7awM=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -301,7 +293,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			qbt4XO1DZi6Vj4KRKNceuPTGIcQ=
+			ATW1ItsqjohfpDH9aJGq+i5jcCU=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -319,7 +311,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			WYrsgUCloE8JQZd81dA090/f55U=
+			kmYyiX08BsVSLmFLzijnbqvBU+M=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -332,7 +324,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ujTblSceZV2TVzZM8krYFnxJf3k=
+			ur4kBT0FYwNeGzlPNm/oTzMdruo=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -341,7 +333,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			VIQclo8b7l0aI30FqoiauPmi9L4=
+			sZeKhNafDUtE3Psmz4iaPqX5F64=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -359,7 +351,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			TxxiDbbFx+P5MlYFwQ4HfBy+VHw=
+			7Goxl42r+3AN+ppNsdn2bJu0B2E=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -371,7 +363,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			XU24ZGQJruLs5VEZK1H3zFjcNr1Vg1+QTm31H4PmJo8=
+			jBbnBsQ/xwxUwF6+uHXVuAMUchO0gMGsdJuUM0kj8UU=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/BNt-Va-ldg-view-Ehd-vn-RgT.nib</key>
@@ -413,7 +405,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			HKogDZQq0AF7x6Q+I6tUu6ayp5Xfs2JrTRY8WuuN7hM=
+			jYPhHK8mm/LSxNBbTija0tPJlfHRrI4GHKDIcTH/s7k=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/PreviewGuideViewController.nib</key>
@@ -434,7 +426,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			uRtOYnRFo/nwUfPKRFzNneTPn0nodTWT7B/jPSlAl5M=
+			SDJBfDs1eOpwzvDUdecADqXOhn7yPjhP383u1vSgmJ4=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/TTGuideJointLottieViewController.nib</key>
@@ -476,7 +468,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			P3Q6JyY8bFqLiRd/lyMcZ7GiVIXFoLtO+jo8bkapqHI=
+			PSrBph8DtyTXtt4GGlj2KQDaoBfx10SV76MijtlOgZw=
 			</data>
 		</dict>
 		<key>Base.lproj/TTCamera.storyboardc/b6Q-u1-dpR-view-izD-oM-0LL.nib</key>
@@ -602,7 +594,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xCKbr+03WSZaYrmGAPCTtwbfDdYl5Fzz2gxZiP8e57M=
+			Nj0zWigNdY0df4d/vIboTaq+Q6bowW/VHhvWEk9SaMM=
 			</data>
 		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/Qko-61-gnC-view-5V0-Hn-WEb.nib</key>
@@ -616,7 +608,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			wxp+0KNd58acyRAyHEzjv5GOk3Fcpe975nfqgM93m8k=
+			k54k5c73Nke0yFF8gHANa8MuFrbKrLGwkG5lMVteKZM=
 			</data>
 		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/TTFlashWarningAlertViewController.nib</key>
@@ -661,13 +653,6 @@
 			MHQg0YjZ4iCg4oWq/6Vm7zQl2MVJ8JBwNz+vzV/79Y4=
 			</data>
 		</dict>
-		<key>Base.lproj/TTPopup.storyboardc/TTPopupSelectedSkinViewController.nib</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Ek4+IUaYCM3jmPHP3SVYuqtge9kiBgwSozLrrGr4J00=
-			</data>
-		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/TTPopupTimeoverViewController.nib</key>
 		<dict>
 			<key>hash2</key>
@@ -680,13 +665,6 @@
 			<key>hash2</key>
 			<data>
 			48awLPeKpdIuNe1sYI1OKr0R91MG0yH3WS8DwLXI/LQ=
-			</data>
-		</dict>
-		<key>Base.lproj/TTPopup.storyboardc/ab9-LR-Qmb-view-FVe-Dr-BWJ.nib</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			yNdDmPPHsCYsS24BaBxp9i3JXoXmjeQQbL6oOrk1YP0=
 			</data>
 		</dict>
 		<key>Base.lproj/TTPopup.storyboardc/iCM-8f-3c5-view-hnd-Ev-ceU.nib</key>
@@ -714,14 +692,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			vobCnvNLPy31iCvImhlXYRS4qIlH3TKtZyk2mqCYlKg=
+			EVnXi+PQZxKyeyo/AJ5RdnJGt11Wp0NIaMRRF15H6Z0=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			WCd/MOtq4tXMMXEn4hWpmPwmJPf+pwAdFjNT2zDB204=
+			IwTvf/2CMcMcWAHz4kYDHKS19EAeUvAOikW49KovjMc=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
@@ -735,28 +713,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WCd/MOtq4tXMMXEn4hWpmPwmJPf+pwAdFjNT2zDB204=
+			IwTvf/2CMcMcWAHz4kYDHKS19EAeUvAOikW49KovjMc=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			EECWDocpBuHkuG2Sy7XILR7vyzr4hbqt28xEOAKgdlo=
+			hnk1qGy+sZS0D4IOIARSoWEEAqqePEpjXnRWDb0Tf3o=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vobCnvNLPy31iCvImhlXYRS4qIlH3TKtZyk2mqCYlKg=
+			EVnXi+PQZxKyeyo/AJ5RdnJGt11Wp0NIaMRRF15H6Z0=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/D5wvVKLH0KRli+Be2MILm/IHDKcKgnRzXCTtnzqZA4=
+			G2oiiaw3gL2fAuKHnzZvOh04w/zRRrqedf+YLBQzYsw=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -770,14 +748,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/D5wvVKLH0KRli+Be2MILm/IHDKcKgnRzXCTtnzqZA4=
+			G2oiiaw3gL2fAuKHnzZvOh04w/zRRrqedf+YLBQzYsw=
 			</data>
 		</dict>
 		<key>Modules/AIScan.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			1vyQhjtoKytbCMuADwCxSG9gpJewHLP/01+MRY0vXCA=
+			UzQF2B5Q2CbqtRFEKXWmzN4mgcKsXwhsYFDA6ZIfktA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -798,7 +776,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			iiJA71agfToRJ8/rYvNWIDKaBArZAbkB8EKxAzBB6NA=
+			5L6NA7HqV3meHAZKnu5vz0Xcpy3V16wmv579PBE+Nbs=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -807,7 +785,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			fkfXhRRrfm4Dxv0wOb13KdZQt1k6KyVxyXSihArNRsk=
+			tTeQEGCmeuRwWN5FTp7rwRV8qT+DQqoduUpQ2F0Rmlw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -834,7 +812,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ekEeujcVlJ7RzZVNLgmCqXWRRHjZLrOfHRMSUUQTUA8=
+			75cq0U1abNXMcPT65OhP2M+IhWulEmGnbcbR+0wOZck=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -843,7 +821,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Wr18BJy7UoealYYjHLNRJvGx7NxFvmN1h1BNQNjmeZs=
+			+aBMieDlgEC1HgsmVfB5nYOLiSGrNhP45yie1tJF4M0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -861,7 +839,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NgW5GQ6QKbBs3yrolCGMjrVIhT63Rp1OWE/bEUkaCQw=
+			aaICM5rgeTNFJv/qXWbFLL6/3mTyWrWwUPzMLPu3Odw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -877,7 +855,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9SXf2sk8WdqvKqyIB89BMq8R9QGKrMJC/jwJga/iW3w=
+			LBQUzIMGBzm5kaB5J9Sea5TyzpvweGGea0gNAkHWHjw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -886,7 +864,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			egBqZi9syC63Gn/DVohjhvdlZFwGf7gJ75wuXf+Wvv8=
+			/qYaqY4OGQxVu3WEACyXPEM/8ZMQJ9vkIOLdR+DfN3g=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -904,7 +882,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GP93DuF/MqsGaEAbiGTtKqhKd5JWdStTd+hs7vE5tEY=
+			WURGaULfbVhMb8j8I9QmOzDqlew+YOjqxNN8fIhibCU=
 			</data>
 			<key>optional</key>
 			<true/>
