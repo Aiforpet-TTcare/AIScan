@@ -1,5 +1,5 @@
 // swift-tools-version: 6.1
-// tag: "1.1.8"
+// tag: "1.1.8-nightly"
 import PackageDescription
 
 let package = Package(

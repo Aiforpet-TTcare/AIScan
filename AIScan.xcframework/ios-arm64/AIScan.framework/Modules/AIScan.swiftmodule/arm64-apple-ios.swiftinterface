@@ -264,7 +264,7 @@ public struct TTPopupAttributes {
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
   @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
 }
-public struct TTResult : Swift.Codable {
+public struct AISResult : Swift.Codable {
   public var feedbacks: [AIScan.Feedback]?
   public var dataValue: AIScan.TTData? {
     get
@@ -275,7 +275,7 @@ public struct TTResult : Swift.Codable {
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
-public struct TTResultV3 : Swift.Codable {
+public struct AISResultV3 : Swift.Codable {
   public var feedbacks: [AIScan.Feedback]?
   public var dataValue: AIScan.TTData? {
     get
@@ -317,7 +317,6 @@ public enum ModelLibType {
   public static var isHiddenSkeleton: Swift.Bool
   public static var isHapticEnabled: Swift.Bool
   public static var isAnimationEnabled: Swift.Bool
-  public static var albumName: Swift.String?
   public static func configure(license: AIScan.TTLicense)
   public static func configure(authFileData: Foundation.Data)
   public static func setAPNS(token: Swift.String?)
@@ -326,8 +325,7 @@ public enum ModelLibType {
   public static func flashAlert()
   public static func report(isSuccess: Swift.Bool = false)
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: (any Swift.Encodable)? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, metadata: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, resultCompletion: ((AIScan.AISResultV3?, (any Swift.Error)?) -> Swift.Void)? = nil)
   @objc deinit
 }
 extension AIScan.AIScanManager {
@@ -342,6 +340,65 @@ public struct InferenceInfo {
   public let model: AIScan.ModelType
   public let prediction: [Swift.Double]
   public func calculate() -> AIScan.InferenceResult
+}
+public struct TTResult : Swift.Codable {
+  public var dataValue: AIScan.TTData? {
+    get
+  }
+  public var string: Swift.String? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum TTCameraType : Swift.CaseIterable {
+  case eye
+  case tooth
+  case skin
+  case joint
+  public static func == (a: AIScan.TTCameraType, b: AIScan.TTCameraType) -> Swift.Bool
+  public typealias AllCases = [AIScan.TTCameraType]
+  nonisolated public static var allCases: [AIScan.TTCameraType] {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum TTPetType : Swift.String, Swift.Hashable, Swift.Codable, Swift.CaseIterable {
+  case dog
+  case cat
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [AIScan.TTPetType]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [AIScan.TTPetType] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class TTManager {
+  public static func configure(authFileData: Foundation.Data)
+  public static func configure(license: AIScan.TTLicense)
+  public static var isHapticEnabled: Swift.Bool {
+    get
+    set
+  }
+  public static var analysisTracker: (any AIScan.TTAnalysisTracker)? {
+    get
+    set
+  }
+  @objc deinit
+}
+extension AIScan.TTManager {
+  public static func guideURLString(petType: AIScan.PetType, partType: AIScan.PartType) -> Swift.String?
+  public static func eye(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func tooth(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func skin(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func showGuideFirst(cameraType: AIScan.TTCameraType, petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func clearUserDefaults()
 }
 public struct TTFile : Swift.Equatable {
   public var identifier: Swift.String?
@@ -415,7 +472,7 @@ public protocol TTResultViewCotrollable : UIKit.UIViewController {
   var backCompletaion: (() -> Swift.Void)? { get set }
   var closeCompletaion: (() -> Swift.Void)? { get set }
   var diagID: Swift.Int? { get set }
-  var result: AIScan.TTResult? { get set }
+  var result: AIScan.AISResultV3? { get set }
   func close()
   func back()
 }
@@ -546,6 +603,9 @@ extension AIScan.ModelLibType : Swift.Hashable {}
 extension AIScan.ModelType : Swift.Equatable {}
 extension AIScan.ModelType : Swift.Hashable {}
 extension AIScan.ModelType : Swift.RawRepresentable {}
+extension AIScan.TTCameraType : Swift.Equatable {}
+extension AIScan.TTCameraType : Swift.Hashable {}
+extension AIScan.TTPetType : Swift.RawRepresentable {}
 extension AIScan.PartType : Swift.Equatable {}
 extension AIScan.PartType : Swift.Hashable {}
 extension AIScan.TTFileType : Swift.Equatable {}
