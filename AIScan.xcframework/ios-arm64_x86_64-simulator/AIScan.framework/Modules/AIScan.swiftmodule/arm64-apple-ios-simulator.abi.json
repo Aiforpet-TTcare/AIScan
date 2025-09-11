@@ -25397,105 +25397,105 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1508,
+      "offset": 1534,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1550,
+      "offset": 1576,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1599,
+      "offset": 1625,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 1696,
+      "offset": 1722,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "FloatLiteral",
-      "offset": 1745,
+      "offset": 1771,
       "length": 4,
       "value": "0.25"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1796,
+      "offset": 1822,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 1934,
+      "offset": 1960,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 1946,
+      "offset": 1972,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2171,
+      "offset": 2197,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2183,
+      "offset": 2209,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 3538,
+      "offset": 3564,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 3849,
+      "offset": 3875,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 3929,
+      "offset": 3955,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 37132,
+      "offset": 37332,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 38024,
+      "offset": 38224,
       "length": 5,
       "value": "false"
     },
@@ -26762,28 +26762,28 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 5502,
+      "offset": 5879,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 7149,
+      "offset": 7526,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 8967,
+      "offset": 9344,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 10764,
+      "offset": 11141,
       "length": 4,
       "value": "true"
     },
