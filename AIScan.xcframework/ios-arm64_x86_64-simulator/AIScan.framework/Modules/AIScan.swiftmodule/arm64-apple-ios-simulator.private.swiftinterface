@@ -25,12 +25,14 @@ import SwiftUI
 import TensorFlowLite
 import TensorFlowLiteC
 import UIKit
+import UniformTypeIdentifiers
 import Vision
 import VisionKit
 import WebKit
 import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
+import onnxruntime_objc
 import simd
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor @preconcurrency public class TTCameraGuideViewController : UIKit.UIViewController {
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public func viewDidLoad()
@@ -127,6 +129,52 @@ public struct TTPosition : Swift.Codable {
 }
 extension CoreVideo.CVBuffer : @unchecked @retroactive Swift.Sendable {
 }
+public struct Diagnosis : Swift.Codable {
+  public var key: Swift.String
+  public var name: Swift.String
+  public var inputHeight: Swift.Int
+  public var inputWidth: Swift.Int
+  public var heatmapShape: [Swift.Int]
+  public var predShape: [Swift.Int]
+  public var label: Swift.Int?
+  public var ratio: Swift.Double?
+  public var abnormLevel: Swift.Int?
+  public var heatmapValue: [Swift.Float32]?
+  public var predValue: [Swift.Float32]?
+  public var resultLabel: AIScan.TypeClassification?
+  public var image: UIKit.UIImage?
+  public var heatmap: UIKit.UIImage?
+  public var heatmapURL: Foundation.URL?
+  public var smoothedValue: Swift.String?
+  public var polygons: [[CoreFoundation.CGPoint]]?
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+extension AIScan.Diagnosis {
+  public var description: Swift.String {
+    get
+  }
+  public var jsonString: Swift.String {
+    get
+  }
+}
+public struct DiagnosisResult {
+  public var petType: AIScan.PetType?
+  public var partType: AIScan.PartType?
+  public var detailPartType: AIScan.DetailPartType?
+  public var cameraMetadataDescription: Swift.String?
+  public var image: UIKit.UIImage?
+  public var diagnosis: [AIScan.Diagnosis]
+  public var files: [Foundation.URL]
+  public var originalFileURL: Foundation.URL?
+  public var croppedAFile: Foundation.URL?
+  public var croppedBFile: Foundation.URL?
+  public var optionalFiles: [Foundation.URL]
+  public var startTime: Foundation.Date?
+  public var endTime: Foundation.Date?
+  public var result: AIScan.TTResult?
+  public var angle: CoreFoundation.CGFloat
+}
 public enum TTPositionCode : Swift.String, Swift.Codable {
   case eyeRight
   case eyeLeft
@@ -147,8 +195,49 @@ public enum TTPositionCode : Swift.String, Swift.Codable {
     get
   }
 }
+public enum TypeClassification : Swift.String {
+  case dog
+  case cat
+  case human
+  case etc
+  case blur
+  case closeEye
+  case fur
+  case red
+  case ok
+  case normal
+  case unknown
+  case blephredema
+  case blephroncus
+  case chemosis
+  case cherry
+  case discharge
+  case ectropion
+  case epiphora
+  case mild
+  case severe
+  case opacity
+  case erosionUlcer
+  case lichenification
+  case mass
+  case redness
+  case pigmentation
+  case pustuleCrust
+  case scale
+  case calculus
+  case inflammation
+  case necrosis
+  case hyperemia
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
 public struct TTResultStatus : Swift.Codable {
-  public var feedbacks: [AIScan.Feedback]?
+  public var diagnosisResult: AIScan.DiagnosisResult?
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -355,6 +444,7 @@ public enum PetType : Swift.String {
 public enum ModelLibType {
   case coreML
   case tflite
+  case onnx
   public static func == (a: AIScan.ModelLibType, b: AIScan.ModelLibType) -> Swift.Bool
   public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
@@ -493,6 +583,9 @@ public struct TTFile : Swift.Equatable {
   public var videoIntervals: [AIScan.VideoInterval]?
   public var description: Swift.String?
   public static func == (lhs: AIScan.TTFile, rhs: AIScan.TTFile) -> Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func make(type: AIScan.TTFileType = .image, image: UIKit.UIImage?) -> AIScan.TTFile
+  #endif
 }
 public struct VideoInterval : Swift.Equatable, Swift.Codable {
   public static func == (a: AIScan.VideoInterval, b: AIScan.VideoInterval) -> Swift.Bool
@@ -507,6 +600,12 @@ public enum PartType {
   case etc
   case tooth
   case joint
+  public var key: Swift.String {
+    get
+  }
+  public var detailKey: Swift.String {
+    get
+  }
   public static func == (a: AIScan.PartType, b: AIScan.PartType) -> Swift.Bool
   public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
@@ -515,7 +614,6 @@ public enum PartType {
 }
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor @preconcurrency public class TTGalleryViewController : UIKit.UIViewController, UIKit.UIScrollViewDelegate, UIKit.UICollectionViewDelegate, UIKit.UICollectionViewDataSource, UIKit.UICollectionViewDelegateFlowLayout {
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public func viewDidLoad()
-  @objc deinit
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, numberOfItemsInSection section: Swift.Int) -> Swift.Int
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, cellForItemAt indexPath: Foundation.IndexPath) -> UIKit.UICollectionViewCell
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, layout collectionViewLayout: UIKit.UICollectionViewLayout, sizeForItemAt indexPath: Foundation.IndexPath) -> CoreFoundation.CGSize
@@ -527,6 +625,10 @@ public enum PartType {
   #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
   #endif
+  @objc deinit
+}
+extension AIScan.TTGalleryViewController {
+  @_Concurrency.MainActor @preconcurrency public static func instance(currentIndex: Swift.Int = 0, files: [AIScan.TTFile]) -> AIScan.TTGalleryViewController
 }
 public enum TTFileType : Swift.String {
   case image
@@ -570,12 +672,16 @@ public protocol TTResultViewCotrollable : UIKit.UIViewController {
   var diagID: Swift.Int? { get set }
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
+  var diagnosisResult: AIScan.DiagnosisResult? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   var result: AIScan.AISResultV3? { get set }
   #endif
   func close()
   func back()
 }
 public enum ModelType : Swift.String, Swift.CaseIterable {
+  case angleEstimator
   case commonEyeTeethNoseDetect
   case commonEyeClassification
   case commonTeethClassification
@@ -586,31 +692,35 @@ public enum ModelType : Swift.String, Swift.CaseIterable {
   case dogKeypoint
   case catEyeCropBlur
   case catTeethCropBlur
+  case commonEyeSegment
+  case commonToothSegment
+  case dogSkinSegment
   case dogEyeBlepharedema
   case dogEyeBlepharoncus
   case dogEyeChemosis
   case dogEyeCherry
   case dogEyeDischarge
   case dogEyeEctropion
-  case dogEyeEntropion
   case dogEyeEpiphora
   case dogEyeHyperemia
   case dogEyeOpacity
-  case dogEyeUlcer
   case dogSkinErosionulcer
-  case dogSkinExcoriation
-  case dogSkinHyperpigmentation
   case dogSkinLichenification
-  case dogTeethCalculus
-  case dogTeethInflammation
+  case dogSkinMass
+  case dogSkinPapulePlaque
+  case dogSkinPigmentation
+  case dogSkinPustuleCrust
+  case dogSkinRedness
+  case dogSkinScale
+  case dogToothCalculus
+  case dogToothInflammation
   case catEyeBlepharedema
   case catEyeChemosis
+  case catEyeCornealnecrosis
   case catEyeDischarge
   case catEyeHyperemia
-  case catEyeNecrosis
-  case catEyeUlcer
-  case catTeethCalculus
-  case catTeethInflammation
+  case catToothCalculus
+  case catToothInflammation
   case classificationEye
   case detectEye
   case catCropBlurEye
@@ -622,8 +732,19 @@ public enum ModelType : Swift.String, Swift.CaseIterable {
   case classificationSkin
   case dogCropBlurSkin
   case detectJoint
+  public var resultKeys: [AIScan.TypeClassification] {
+    get
+  }
+  public var isBCaseScale: Swift.Bool {
+    get
+  }
   #if compiler(>=5.3) && $NonescapableTypes
   public var title: Swift.String? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var modelKey: Swift.String? {
     get
   }
   #endif
@@ -647,8 +768,25 @@ public struct Feedback {
   public var detailPartType: AIScan.DetailPartType?
   public var inferenceInfo: AIScan.InferenceInfo?
   public var inferenceResult: AIScan.InferenceResult?
+  public var output: [[Swift.Float32]]?
   public var heatmapMultiArray: CoreML.MLMultiArray?
   public var heatmapImage: UIKit.UIImage?
+  public var resultLabel: AIScan.TypeClassification?
+}
+public struct Detection {
+}
+extension UIKit.UIImage {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func annotated(with output0: [Swift.Float32], output1: [Swift.Float32], confidenceThreshold: Swift.Float = 0.5, iouThreshold: Swift.Float = 0.45, maskThreshold: Swift.Float = 0.5) -> UIKit.UIImage?
+  #endif
+}
+public struct CameraMetadata : Swift.Encodable {
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+extension AIScan.CameraMetadata : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
 }
 extension UIKit.UIImage {
   #if compiler(>=5.3) && $NonescapableTypes
@@ -696,6 +834,12 @@ extension Foundation.URLSession {
 extension AIScan.TTPositionCode : Swift.Equatable {}
 extension AIScan.TTPositionCode : Swift.Hashable {}
 extension AIScan.TTPositionCode : Swift.RawRepresentable {}
+extension AIScan.TypeClassification : Swift.Equatable {}
+extension AIScan.TypeClassification : Swift.Hashable {}
+extension AIScan.TypeClassification : Swift.RawRepresentable {}
+extension AIScan.ModelType : Swift.Equatable {}
+extension AIScan.ModelType : Swift.Hashable {}
+extension AIScan.ModelType : Swift.RawRepresentable {}
 extension AIScan.TTPopupActionStyle : Swift.Equatable {}
 extension AIScan.TTPopupActionStyle : Swift.Hashable {}
 extension AIScan.TTPopupPosition : Swift.Equatable {}
@@ -705,9 +849,6 @@ extension AIScan.PetType : Swift.Hashable {}
 extension AIScan.PetType : Swift.RawRepresentable {}
 extension AIScan.ModelLibType : Swift.Equatable {}
 extension AIScan.ModelLibType : Swift.Hashable {}
-extension AIScan.ModelType : Swift.Equatable {}
-extension AIScan.ModelType : Swift.Hashable {}
-extension AIScan.ModelType : Swift.RawRepresentable {}
 extension AIScan.TTCameraType : Swift.Equatable {}
 extension AIScan.TTCameraType : Swift.Hashable {}
 extension AIScan.TTPetType : Swift.RawRepresentable {}
