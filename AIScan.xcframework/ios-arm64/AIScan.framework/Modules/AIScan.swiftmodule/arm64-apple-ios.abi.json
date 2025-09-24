@@ -31724,163 +31724,142 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 34463,
+      "offset": 34508,
       "length": 3,
       "value": "180"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 34512,
+      "offset": 34557,
       "length": 3,
       "value": "180"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "BooleanLiteral",
-      "offset": 36060,
+      "offset": 36105,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 36486,
+      "offset": 36531,
       "length": 3,
       "value": "640"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 36499,
+      "offset": 36544,
       "length": 3,
       "value": "640"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "FloatLiteral",
-      "offset": 36538,
+      "offset": 36583,
       "length": 3,
       "value": "0.6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 36604,
+      "offset": 36649,
       "length": 2,
       "value": "11"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 36610,
+      "offset": 36655,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "StringLiteral",
-      "offset": 36613,
+      "offset": 36658,
       "length": 23,
       "value": "\"invalid output length\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 36667,
+      "offset": 36712,
       "length": 2,
       "value": "11"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "Array",
-      "offset": 36998,
+      "offset": 37043,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37030,
+      "offset": 37075,
       "length": 2,
       "value": "64"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37052,
+      "offset": 37097,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37084,
+      "offset": 37129,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37098,
+      "offset": 37143,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37111,
+      "offset": 37156,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37124,
+      "offset": 37169,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37156,
+      "offset": 37201,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37206,
+      "offset": 37251,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37216,
+      "offset": 37261,
       "length": 1,
       "value": "0"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
-      "kind": "IntegerLiteral",
-      "offset": 37260,
-      "length": 1,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
-      "kind": "IntegerLiteral",
-      "offset": 37275,
-      "length": 1,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
-      "kind": "IntegerLiteral",
-      "offset": 37290,
-      "length": 1,
-      "value": "2"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
@@ -31892,49 +31871,70 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37396,
+      "offset": 37320,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
+      "kind": "IntegerLiteral",
+      "offset": 37335,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
+      "kind": "IntegerLiteral",
+      "offset": 37350,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
+      "kind": "IntegerLiteral",
+      "offset": 37441,
       "length": 1,
       "value": "5"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37412,
+      "offset": 37457,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37428,
+      "offset": 37473,
       "length": 1,
       "value": "7"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37458,
+      "offset": 37503,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37474,
+      "offset": 37519,
       "length": 1,
       "value": "9"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 37490,
+      "offset": 37535,
       "length": 2,
       "value": "10"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "FloatLiteral",
-      "offset": 38400,
+      "offset": 38445,
       "length": 3,
       "value": "0.5"
     },
@@ -33152,35 +33152,35 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisLiteModelInferenceManager.swift",
       "kind": "Array",
-      "offset": 478,
+      "offset": 519,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisLiteModelInferenceManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 527,
+      "offset": 568,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisLiteModelInferenceManager.swift",
       "kind": "Array",
-      "offset": 612,
+      "offset": 653,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisLiteModelInferenceManager.swift",
       "kind": "Array",
-      "offset": 663,
+      "offset": 704,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisLiteModelInferenceManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 873,
+      "offset": 914,
       "length": 1,
       "value": "0"
     },
