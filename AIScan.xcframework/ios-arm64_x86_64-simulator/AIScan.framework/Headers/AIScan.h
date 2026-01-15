@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LoadMetadata.h"
-#import "HPHeatmap.h"
+
 //! Project version number for AIScan.
 FOUNDATION_EXPORT double AIScanVersionNumber;
 
