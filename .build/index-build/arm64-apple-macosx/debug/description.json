@@ -1,0 +1,692 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.AIScanWrapper-arm64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/sources",
+      "importPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/Sources/AIScanStub/dummy.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/swift-version--4C302ED0DA056DB5.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/TensorFlowLite.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "AIScanWrapper",
+      "moduleOutputPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/AIScanWrapper.swiftmodule",
+      "objects" : [
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/dummy.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-enable-batch-mode",
+        "-Onone",
+        "-enable-testing",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/AIScanWrapper-Swift.h",
+        "-swift-version",
+        "6",
+        "-Xfrontend",
+        "-experimental-lazy-typecheck",
+        "-Xfrontend",
+        "-experimental-skip-all-function-bodies",
+        "-Xfrontend",
+        "-experimental-allow-module-with-compiler-errors",
+        "-Xfrontend",
+        "-empty-abi-descriptor",
+        "-sdk",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+        "-F",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "aiscan_ios"
+      ],
+      "outputFileMapPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/AIScanWrapper.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : true,
+      "sources" : [
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/Sources/AIScanStub/dummy.swift"
+      ],
+      "tempsPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.Link-arm64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/sources",
+      "importPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteC/Sources/Link/TensorFlowLiteC.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/swift-version--4C302ED0DA056DB5.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "Link",
+      "moduleOutputPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/Link.swiftmodule",
+      "objects" : [
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/TensorFlowLiteC.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-enable-batch-mode",
+        "-Onone",
+        "-enable-testing",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/Link-Swift.h",
+        "-swift-version",
+        "6",
+        "-Xfrontend",
+        "-experimental-lazy-typecheck",
+        "-Xfrontend",
+        "-experimental-skip-all-function-bodies",
+        "-Xfrontend",
+        "-experimental-allow-module-with-compiler-errors",
+        "-Xfrontend",
+        "-empty-abi-descriptor",
+        "-sdk",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+        "-F",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings",
+        "-user-module-version",
+        "2.17.4",
+        "-package-name",
+        "tensorflowlitec"
+      ],
+      "outputFileMapPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/Link.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : true,
+      "sources" : [
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteC/Sources/Link/TensorFlowLiteC.swift"
+      ],
+      "tempsPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.TensorFlowLite-arm64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/sources",
+      "importPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Delegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Interpreter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/InterpreterError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Model.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/QuantizationParameters.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunnerError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Tensor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/TensorFlowLite.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/swift-version--4C302ED0DA056DB5.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/Link.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TensorFlowLite",
+      "moduleOutputPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/TensorFlowLite.swiftmodule",
+      "objects" : [
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Delegate.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Interpreter.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/InterpreterError.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Model.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/QuantizationParameters.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunner.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunnerError.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Tensor.swift.o",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-enable-batch-mode",
+        "-Onone",
+        "-enable-testing",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite-Swift.h",
+        "-swift-version",
+        "5",
+        "-Xfrontend",
+        "-experimental-lazy-typecheck",
+        "-Xfrontend",
+        "-experimental-skip-all-function-bodies",
+        "-Xfrontend",
+        "-experimental-allow-module-with-compiler-errors",
+        "-Xfrontend",
+        "-empty-abi-descriptor",
+        "-sdk",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+        "-F",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules/TensorFlowLite.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : true,
+      "sources" : [
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Delegate.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Interpreter.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/InterpreterError.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Model.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/QuantizationParameters.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunner.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunnerError.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Tensor.swift",
+        "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/TensorFlowLite.swift"
+      ],
+      "tempsPath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "AIScanWrapper" : [
+      "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "AIScanWrapper",
+      "-package-name",
+      "aiscan_ios",
+      "-incremental",
+      "-c",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/Sources/AIScanStub/dummy.swift",
+      "-I",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.13",
+      "-enable-batch-mode",
+      "-Onone",
+      "-enable-testing",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/AIScanWrapper-Swift.h",
+      "-swift-version",
+      "6",
+      "-Xfrontend",
+      "-experimental-lazy-typecheck",
+      "-Xfrontend",
+      "-experimental-skip-all-function-bodies",
+      "-Xfrontend",
+      "-experimental-allow-module-with-compiler-errors",
+      "-Xfrontend",
+      "-empty-abi-descriptor",
+      "-sdk",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+      "-F",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "aiscan_ios",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "Link" : [
+      "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "Link",
+      "-package-name",
+      "tensorflowlitec",
+      "-incremental",
+      "-c",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteC/Sources/Link/TensorFlowLiteC.swift",
+      "-I",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.13",
+      "-enable-batch-mode",
+      "-Onone",
+      "-enable-testing",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/Link-Swift.h",
+      "-swift-version",
+      "6",
+      "-Xfrontend",
+      "-experimental-lazy-typecheck",
+      "-Xfrontend",
+      "-experimental-skip-all-function-bodies",
+      "-Xfrontend",
+      "-experimental-allow-module-with-compiler-errors",
+      "-Xfrontend",
+      "-empty-abi-descriptor",
+      "-sdk",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+      "-F",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-suppress-warnings",
+      "-user-module-version",
+      "2.17.4",
+      "-package-name",
+      "tensorflowlitec",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "TensorFlowLite" : [
+      "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "TensorFlowLite",
+      "-incremental",
+      "-c",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Delegate.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Interpreter.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/InterpreterError.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Model.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/QuantizationParameters.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunner.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunnerError.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Tensor.swift",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/TensorFlowLite.swift",
+      "-I",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.13",
+      "-enable-batch-mode",
+      "-Onone",
+      "-enable-testing",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite-Swift.h",
+      "-swift-version",
+      "5",
+      "-Xfrontend",
+      "-experimental-lazy-typecheck",
+      "-Xfrontend",
+      "-experimental-skip-all-function-bodies",
+      "-Xfrontend",
+      "-experimental-allow-module-with-compiler-errors",
+      "-Xfrontend",
+      "-empty-abi-descriptor",
+      "-sdk",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+      "-F",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-suppress-warnings",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "AIScanWrapper" : [
+      "TensorFlowLite",
+      "Link",
+      "TensorFlowLiteC",
+      "AIScan"
+    ],
+    "Link" : [
+
+    ],
+    "TensorFlowLite" : [
+      "Link",
+      "TensorFlowLiteC"
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "enableAllTraits" : false
+  },
+  "writeCommands" : {
+    "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/Sources/AIScanStub/dummy.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/sources"
+    },
+    "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteC/Sources/Link/TensorFlowLiteC.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/sources"
+    },
+    "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Delegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Interpreter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/InterpreterError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Model.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/QuantizationParameters.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunnerError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Tensor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/TensorFlowLite.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/sources"
+    },
+    "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/swift-version--4C302ED0DA056DB5.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode 16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/swift-version--4C302ED0DA056DB5.txt"
+    }
+  }
+}

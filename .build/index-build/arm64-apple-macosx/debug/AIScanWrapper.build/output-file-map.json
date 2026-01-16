@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/master.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/Sources/AIScanStub/dummy.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/dummy.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/dummy.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/dummy~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/dummy.swiftdeps"
+  }
+}

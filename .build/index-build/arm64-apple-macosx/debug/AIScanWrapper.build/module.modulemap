@@ -1,0 +1,4 @@
+module AIScanWrapper {
+    header "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/AIScanWrapper.build/AIScanWrapper-Swift.h"
+    requires objc
+}

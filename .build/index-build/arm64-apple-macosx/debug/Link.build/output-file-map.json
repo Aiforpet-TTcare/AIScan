@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/master.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteC/Sources/Link/TensorFlowLiteC.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/TensorFlowLiteC.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/TensorFlowLiteC.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/TensorFlowLiteC~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/TensorFlowLiteC.swiftdeps"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "": {
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/master.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Delegate.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Delegate.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Delegate.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Delegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Delegate.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Interpreter.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Interpreter.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Interpreter.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Interpreter~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Interpreter.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/InterpreterError.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/InterpreterError.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/InterpreterError.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/InterpreterError~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/InterpreterError.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Model.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Model.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Model.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Model~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Model.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/QuantizationParameters.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/QuantizationParameters.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/QuantizationParameters.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/QuantizationParameters~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/QuantizationParameters.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunner.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunner.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunner.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunner~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunner.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/SignatureRunnerError.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunnerError.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunnerError.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunnerError~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/SignatureRunnerError.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/Tensor.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Tensor.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Tensor.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Tensor~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/Tensor.swiftdeps"
+  },
+  "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/checkouts/TensorFlowLiteSwift/Sources/TensorFlowLite/tensorflow/lite/swift/Sources/TensorFlowLite.swift": {
+    "dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite.d",
+    "object": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite.swift.o",
+    "swiftmodule": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite~partial.swiftmodule",
+    "swift-dependencies": "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite.swiftdeps"
+  }
+}
