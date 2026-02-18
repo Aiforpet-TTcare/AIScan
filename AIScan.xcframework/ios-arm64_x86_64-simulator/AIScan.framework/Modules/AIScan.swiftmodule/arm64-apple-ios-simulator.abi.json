@@ -25287,7 +25287,7 @@
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewModel.swift",
       "kind": "BooleanLiteral",
-      "offset": 27651,
+      "offset": 27655,
       "length": 5,
       "value": "false"
     },
@@ -25679,84 +25679,84 @@
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 1402,
+      "offset": 1404,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "BooleanLiteral",
-      "offset": 1731,
+      "offset": 1733,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 2035,
+      "offset": 2037,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 2269,
+      "offset": 2271,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 2295,
+      "offset": 2297,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 2373,
+      "offset": 2375,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "Array",
-      "offset": 2464,
+      "offset": 2466,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "BooleanLiteral",
-      "offset": 6125,
+      "offset": 6127,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 6302,
+      "offset": 6304,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 6323,
+      "offset": 6325,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 6474,
+      "offset": 6476,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Extension\/Image+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 6498,
+      "offset": 6500,
       "length": 1,
       "value": "2"
     },
@@ -25798,7 +25798,7 @@
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Camera\/Overlay\/TTOverlaySkinViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 3903,
+      "offset": 3973,
       "length": 5,
       "value": "false"
     },
@@ -25994,7 +25994,7 @@
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Util\/Popup\/TTPopupManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 5623,
+      "offset": 5625,
       "length": 4,
       "value": "true"
     },
@@ -26687,21 +26687,21 @@
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 13286,
+      "offset": 13294,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 13326,
+      "offset": 13334,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 13358,
+      "offset": 13366,
       "length": 1,
       "value": "2"
     },
@@ -27310,21 +27310,21 @@
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Model\/Heatmap.swift",
       "kind": "IntegerLiteral",
-      "offset": 2443,
+      "offset": 2447,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Model\/Heatmap.swift",
       "kind": "IntegerLiteral",
-      "offset": 2541,
+      "offset": 2545,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/AIScan\/AIScan\/AIScan\/AIScan\/Model\/Heatmap.swift",
       "kind": "IntegerLiteral",
-      "offset": 2569,
+      "offset": 2573,
       "length": 1,
       "value": "0"
     },
