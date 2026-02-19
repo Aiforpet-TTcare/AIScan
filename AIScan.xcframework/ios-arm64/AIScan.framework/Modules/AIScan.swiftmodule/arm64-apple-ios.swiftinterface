@@ -82,12 +82,10 @@ extension AIScan.TTCameraGuideViewController : WebKit.WKUIDelegate {
   #endif
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func webViewDidClose(_ webView: WebKit.WKWebView)
   @available(iOS 15.0, *)
-  @_Concurrency.MainActor @preconcurrency @objc dynamic public func webView(_ webView: WebKit.WKWebView, decideMediaCapturePermissionsFor origin: WebKit.WKSecurityOrigin, initiatedBy frame: WebKit.WKFrameInfo, type: WebKit.WKMediaCaptureType) async -> WebKit.WKPermissionDecision
-  @available(iOS 15.0, *)
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func webView(_ webView: WebKit.WKWebView, requestDeviceOrientationAndMotionPermissionFor origin: WebKit.WKSecurityOrigin, initiatedByFrame frame: WebKit.WKFrameInfo, decisionHandler: @escaping (WebKit.WKPermissionDecision) -> Swift.Void)
   #if compiler(>=5.3) && $NonescapableTypes
   @available(iOS 13.0, *)
-  @_Concurrency.MainActor @preconcurrency @objc dynamic public func webView(_ webView: WebKit.WKWebView, contextMenuConfigurationFor elementInfo: WebKit.WKContextMenuElementInfo) async -> UIKit.UIContextMenuConfiguration?
+  @_Concurrency.MainActor @preconcurrency @objc dynamic public func webView(_ webView: WebKit.WKWebView, contextMenuConfigurationForElement elementInfo: WebKit.WKContextMenuElementInfo, completionHandler: @escaping (UIKit.UIContextMenuConfiguration?) -> Swift.Void)
   #endif
   @available(iOS 13.0, *)
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func webView(_ webView: WebKit.WKWebView, contextMenuWillPresentForElement elementInfo: WebKit.WKContextMenuElementInfo)
@@ -381,7 +379,9 @@ public enum ModelLibType {
   public static func alert(_ text: Swift.String?)
   #endif
   public static func flashAlert()
-  public static func report(isSuccess: Swift.Bool = false)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func report(isSuccess: Swift.Bool = false, completion: ((Swift.Result<Foundation.Data, any Swift.Error>) -> Swift.Void)? = nil)
+  #endif
   #if compiler(>=5.3) && $NonescapableTypes
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewCotrollable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
@@ -684,10 +684,6 @@ public class TTPromise<T> : Swift.Hashable {
   public var hashValue: Swift.Int {
     get
   }
-}
-@available(iOS 13.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-extension AIScan.TTPromise {
-  public func value() async throws -> T
 }
 extension Foundation.URLSession {
   public func data(for request: Foundation.URLRequest) -> AIScan.TTPromise<(Foundation.Data, Foundation.URLResponse)>
