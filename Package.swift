@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", from: "2.17.4"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.19"),
-        .package(url: "https://github.com/kjaylee/OnnxRuntimeObjC.git", from: "1.20.0"),
+        .package(url: "https://github.com/kjaylee/OnnxRuntimeObjC.git", from: "1.20.1"),
     ],
     targets: [
         // binaryTarget의 이름을 실제 모듈명과 일치시킴
