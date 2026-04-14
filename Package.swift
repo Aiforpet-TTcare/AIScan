@@ -1,5 +1,5 @@
 // swift-tools-version: 6.1
-// tag: "1.3.3-lite"
+// tag: "1.3.6-lite"
 import PackageDescription
 
 let package = Package(
@@ -16,7 +16,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/kjaylee/TensorFlowLiteSwift.git", from: "2.17.4"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.19"),
         .package(url: "https://github.com/kjaylee/OnnxRuntimeObjC.git", from: "1.20.1"),
     ],
     targets: [
@@ -31,7 +30,6 @@ let package = Package(
             dependencies: [
                 "AIScan",
                 .product(name: "TensorFlowLiteSwift", package: "TensorFlowLiteSwift"),
-                .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "OnnxRuntimeObjC", package: "OnnxRuntimeObjC"),
             ],
             path: "Sources/AIScanStub",

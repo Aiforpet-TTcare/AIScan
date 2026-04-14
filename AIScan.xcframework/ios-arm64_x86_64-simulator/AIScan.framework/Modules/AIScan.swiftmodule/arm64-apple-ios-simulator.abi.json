@@ -13944,7 +13944,10 @@
         "name": "onnxruntime_objc",
         "printedName": "onnxruntime_objc",
         "declKind": "Import",
-        "moduleName": "AIScan"
+        "moduleName": "AIScan",
+        "declAttributes": [
+          "ImplementationOnly"
+        ]
       },
       {
         "kind": "Import",
@@ -17223,6 +17226,16 @@
             "usr": "s:s9EscapableP",
             "mangledName": "$ss9EscapableP"
           }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "AIScan",
+        "declAttributes": [
+          "RawDocComment"
         ]
       },
       {
@@ -23202,13 +23215,6 @@
       },
       {
         "kind": "Import",
-        "name": "ZIPFoundation",
-        "printedName": "ZIPFoundation",
-        "declKind": "Import",
-        "moduleName": "AIScan"
-      },
-      {
-        "kind": "Import",
         "name": "Foundation",
         "printedName": "Foundation",
         "declKind": "Import",
@@ -23359,7 +23365,10 @@
         "name": "onnxruntime_objc",
         "printedName": "onnxruntime_objc",
         "declKind": "Import",
-        "moduleName": "AIScan"
+        "moduleName": "AIScan",
+        "declAttributes": [
+          "ImplementationOnly"
+        ]
       },
       {
         "kind": "TypeDecl",
@@ -38178,21 +38187,21 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "Array",
-      "offset": 6194,
+      "offset": 6936,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "StringLiteral",
-      "offset": 14663,
+      "offset": 15405,
       "length": 9,
       "value": "\"name_kr\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "StringLiteral",
-      "offset": 14695,
+      "offset": 15437,
       "length": 9,
       "value": "\"name_en\""
     },
@@ -40038,6 +40047,34 @@
       "value": "[]"
     },
     {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisStatus.swift",
+      "kind": "StringLiteral",
+      "offset": 277,
+      "length": 9,
+      "value": "\"WARNING\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisStatus.swift",
+      "kind": "StringLiteral",
+      "offset": 307,
+      "length": 11,
+      "value": "\"CAUTION_Q\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisStatus.swift",
+      "kind": "StringLiteral",
+      "offset": 339,
+      "length": 9,
+      "value": "\"CAUTION\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisStatus.swift",
+      "kind": "StringLiteral",
+      "offset": 369,
+      "length": 8,
+      "value": "\"NORMAL\""
+    },
+    {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/Overlay\/TTOverlaySkinViewController.swift",
       "kind": "FloatLiteral",
       "offset": 506,
@@ -41118,49 +41155,49 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "FloatLiteral",
-      "offset": 606,
+      "offset": 585,
       "length": 5,
       "value": "120.0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "FloatLiteral",
-      "offset": 903,
+      "offset": 882,
       "length": 4,
       "value": "45.0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "FloatLiteral",
-      "offset": 1359,
+      "offset": 1338,
       "length": 5,
       "value": "600.0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 1599,
+      "offset": 1578,
       "length": 2,
       "value": "10"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 36654,
+      "offset": 28892,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 36694,
+      "offset": 28932,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/NetworkManager\/NetworkManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 36726,
+      "offset": 28964,
       "length": 1,
       "value": "2"
     },
@@ -41216,161 +41253,161 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "StringLiteral",
-      "offset": 403,
+      "offset": 424,
       "length": 7,
       "value": "\"1.0.0\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 571,
+      "offset": 592,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 618,
+      "offset": 639,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 664,
+      "offset": 685,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 712,
+      "offset": 733,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 764,
+      "offset": 785,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 808,
+      "offset": 829,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 1055,
+      "offset": 1076,
       "length": 2,
       "value": "32"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 2141,
+      "offset": 2162,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 2394,
+      "offset": 2415,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "FloatLiteral",
-      "offset": 2644,
+      "offset": 2665,
       "length": 4,
       "value": "0.05"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 3171,
+      "offset": 3192,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "StringLiteral",
-      "offset": 3609,
+      "offset": 3630,
       "length": 25,
       "value": "\"com.ttcare.aiscan.state\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "Array",
-      "offset": 3951,
+      "offset": 3972,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "FloatLiteral",
-      "offset": 4206,
+      "offset": 4227,
       "length": 3,
       "value": "1.0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 4453,
+      "offset": 4474,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 9557,
+      "offset": 9578,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 11204,
+      "offset": 11225,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 11460,
+      "offset": 11481,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 13795,
+      "offset": 13816,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 14051,
+      "offset": 14072,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 16315,
+      "offset": 16336,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/AIScanManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 16571,
+      "offset": 16592,
       "length": 4,
       "value": "true"
     },
