@@ -364,7 +364,6 @@ public struct AIScanResult : Swift.Codable {
   public var position: Swift.String?
   public var createdAt: Swift.Int?
   public var metadata: [Swift.String : AIScan.AnyCodable]?
-  public var internalMetadata: [Swift.String : AIScan.AnyCodable]?
   #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
@@ -409,6 +408,7 @@ public enum ModelLibType {
   public static let sdkVersion: Swift.String
   public static var license: AIScan.TTLicense?
   public static var analysisTracker: (any AIScan.TTAnalysisTracker)?
+  @available(*, deprecated, message: "Ignored in v2.0+. Generated media is always wiped at the next showCamera() entry. Copy files out from the callback if longer retention is needed.")
   public static var isNotRemoveFiles: Swift.Bool
   public static var isHiddenSkeleton: Swift.Bool
   public static var isHapticEnabled: Swift.Bool
@@ -558,6 +558,9 @@ public enum PartType {
   case joint
   case skin
   public var key: Swift.String {
+    get
+  }
+  public var catalogKey: Swift.String {
     get
   }
   public var detailKey: Swift.String {
