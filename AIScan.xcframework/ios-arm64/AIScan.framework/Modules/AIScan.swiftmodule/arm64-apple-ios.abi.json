@@ -31931,84 +31931,84 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3569,
+      "offset": 3573,
       "length": 5,
       "value": "\"DOG\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3594,
+      "offset": 3598,
       "length": 5,
       "value": "\"CAT\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3845,
+      "offset": 3849,
       "length": 5,
       "value": "\"EYE\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3870,
+      "offset": 3874,
       "length": 5,
       "value": "\"EAR\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3896,
+      "offset": 3900,
       "length": 6,
       "value": "\"BODY\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3923,
+      "offset": 3927,
       "length": 6,
       "value": "\"FOOT\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 3951,
+      "offset": 3955,
       "length": 7,
       "value": "\"TEETH\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 4173,
+      "offset": 4177,
       "length": 19,
       "value": "\"time_to_see_a_vet\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 4221,
+      "offset": 4225,
       "length": 16,
       "value": "\"home_care_tips\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 4615,
+      "offset": 4619,
       "length": 9,
       "value": "\"name_kr\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 4647,
+      "offset": 4651,
       "length": 9,
       "value": "\"name_en\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/RowDataLoader.swift",
       "kind": "StringLiteral",
-      "offset": 4679,
+      "offset": 4683,
       "length": 9,
       "value": "\"name_ja\""
     },
