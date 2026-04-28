@@ -25,7 +25,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "1.3.7")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "2.0.2")
 ]
 ```
 
@@ -34,7 +34,7 @@ Or in Xcode: **File > Add Package Dependencies** and enter the repository URL.
 ### CocoaPods
 
 ```ruby
-pod 'AIScan', '~> 1.3.7'
+pod 'AIScan', '~> 2.0.2'
 ```
 
 ---
