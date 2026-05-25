@@ -1,0 +1,69 @@
+{
+  "DOG": {
+    "EYE": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "Le pupille sono di dimensioni diverse?",
+        "Il tuo cane urta contro gli oggetti o sembra non riuscire a vedere?",
+        "Il tuo cane strizza l'occhio o non riesce a tenerlo aperto?",
+        "Il tuo cane si allontana quando viene toccato vicino all'occhio?",
+        "Il tuo cane è meno attivo del solito o mangia meno?"
+      ]
+    },
+    "BODY": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "C'è un gonfiore improvviso del viso o del corpo?",
+        "C'è una ferita aperta con sanguinamento continuo?",
+        "Sono presenti nuove macchie viola o lividi inspiegabili sulla pelle?",
+        "Il tuo cane è debole, collassa o ha difficoltà a respirare?"
+      ]
+    },
+    "FOOT": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "C'è un gonfiore improvviso del viso o del corpo?",
+        "C'è una ferita aperta con sanguinamento continuo?",
+        "Sono presenti nuove macchie viola o lividi inspiegabili sulla pelle?",
+        "Il tuo cane è debole, collassa o ha difficoltà a respirare?"
+      ]
+    },
+    "EAR": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "Il tuo cane perde l'equilibrio o non riesce a camminare normalmente?",
+        "Il tuo cane tiene la testa inclinata da un lato?",
+        "Il tuo cane scuote ripetutamente la testa e non riesce a riposare?",
+        "Il tuo cane ha smesso di mangiare o è diventato insolitamente inattivo?"
+      ]
+    },
+    "TEETH": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "C'è sanguinamento dalla bocca che non si arresta?",
+        "Si è verificato un gonfiore improvviso sotto un occhio?",
+        "Il tuo cane improvvisamente non riesce a masticare o rifiuta il cibo?"
+      ]
+    }
+  },
+  "CAT": {
+    "EYE": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "Le pupille sono di dimensioni diverse?",
+        "Il tuo gatto urta contro gli oggetti o sembra non riuscire a vedere?",
+        "Il tuo gatto strizza l'occhio o non riesce a tenerlo aperto?",
+        "Il tuo gatto si allontana quando viene toccato vicino all'occhio?",
+        "Il tuo gatto è meno attivo del solito o mangia meno?"
+      ]
+    },
+    "TEETH": {
+      "title": "Seleziona eventuali sintomi presenti nel tuo animale domestico",
+      "questions": [
+        "C'è sanguinamento dalla bocca?",
+        "Il tuo gatto rifiuta il cibo o non riesce a mangiare?",
+        "Il tuo gatto sbava più del solito?"
+      ]
+    }
+  }
+}

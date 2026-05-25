@@ -1,0 +1,2037 @@
+{
+  "DOG": {
+    "EYE": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se lo strizzare o il battere le palpebre non migliora",
+          "Se l’occhio rimane parzialmente o completamente chiuso",
+          "Se arrossamento, gonfiore o secrezione continuano o peggiorano",
+          "Se l’occhio diventa opaco o appare diverso dall’altro occhio",
+          "Se il cane sembra sensibile alla luce o mostra segni di alterazioni della vista",
+          "Se un nodulo sulla palpebra cresce, cambia o inizia a irritare l’occhio"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Occhi – Consigli per la cura a casa",
+        "contents": [
+          "Evita che shampoo o prodotti per la toelettatura entrino negli occhi del tuo animale",
+          "Quando necessario, rimuovi delicatamente eventuali secrezioni con acqua tiepida e garza morbida",
+          "Mantieni il pelo intorno agli occhi ben curato in modo che non tocchi la superficie oculare",
+          "Valuta l’aggiunta quotidiana di un integratore per il supporto oculare contenente omega-3 e antiossidanti per aiutare a mantenere una vista sana e l’equilibrio lacrimale"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "epiphora",
+          "name": "Epifora",
+          "name_kr": "유루증",
+          "name_en": "Epiphora",
+          "name_it": "Epifora",
+          "name_ja": "ゆる症",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Lacrimazione eccessiva che mantiene umida l’area intorno all’occhio e può rendere il pelo circostante marrone o rossastro."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Cheratite",
+                "Congiuntivite",
+                "Ostruzione del dotto nasolacrimale",
+                "Entropion"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Dotto lacrimale ostruito",
+                "Palpebra rivolta verso l’interno",
+                "Allergie",
+                "Irritazione della superficie dell’occhio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Rimuovi delicatamente le lacrime con soluzione fisiologica sterile e garza morbida",
+                "Fai accorciare il pelo da un toelettatore in modo che non tocchi gli occhi",
+                "Se sono stati introdotti nuovi snack di recente, sospendili per 1–2 settimane"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "ectropion",
+          "name": "Ectropion",
+          "name_kr": "안검외반증",
+          "name_en": "Ectropion",
+          "name_it": "Ectropion",
+          "name_ja": "眼剣外反症",
+          "score": -3,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Condizione in cui la palpebra inferiore si rilassa verso l’esterno, lasciando una parte dell’occhio più esposta."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congenito (predisposizione associata alla razza)",
+                "Cambiamenti legati all’età",
+                "Paralisi del nervo facciale",
+                "Trauma palpebrale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Forma della palpebra legata alla razza",
+                "Rilassamento del tessuto palpebrale legato all’età",
+                "Irritazione o infiammazione di lunga durata",
+                "Lesione precedente"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Mantieni pulite le palpebre se compare secrezione",
+                "Controlla la presenza di arrossamento o secrezione",
+                "Evita, quando possibile, ambienti polverosi o ventosi"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "cherry",
+          "name": "Occhio a ciliegia",
+          "name_kr": "제3안검돌출증",
+          "name_en": "Cherry eye",
+          "name_it": "Occhio a ciliegia",
+          "name_ja": "第3眼剣突出症",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Condizione in cui la terza palpebra, normalmente nascosta, protrude e appare come un rigonfiamento rosso e gonfio."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Prolasso della ghiandola della terza palpebra (occhio a ciliegia)",
+                "Infiammazione della terza palpebra",
+                "Neoplasia"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Dislocazione della ghiandola della terza palpebra (\"occhio a ciliegia\")",
+                "Tessuto di supporto debole",
+                "Tendenza legata alla razza"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita di toccare il tessuto protruso.",
+                "Usa un collare elisabettiano se lo sfregamento continua",
+                "È consigliata una valutazione veterinaria"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "hyperemia",
+          "name": "Occhio rosso",
+          "name_kr": "충혈",
+          "name_en": "Red eye",
+          "name_it": "Occhio rosso",
+          "name_ja": "充血",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "La parte bianca dell’occhio appare più rossa del solito, con vasi sanguigni più visibili."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congiuntivite",
+                "Uveite",
+                "Glaucoma",
+                "Cheratocongiuntivite secca",
+                "Trauma oculare / corpo estraneo"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Congiuntivite (infezione o allergia)",
+                "Irritazione o corpo estraneo",
+                "Aumento della pressione all’interno dell’occhio",
+                "Infiammazione all’interno dell’occhio",
+                "Occhio secco"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Lascia riposare il cane in un ambiente tranquillo e poco illuminato",
+                "Evita fumo, spray o odori intensi",
+                "Limita i cambiamenti stressanti in casa"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "opacity",
+          "name": "Opacità",
+          "name_kr": "혼탁",
+          "name_en": "Opacity",
+          "name_it": "Opacità",
+          "name_ja": "混濁",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Aspetto torbido o velato sulla superficie dell’occhio."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Cataratta",
+                "Sclerosi nucleare",
+                "Edema corneale / cheratite",
+                "Uveite",
+                "Glaucoma"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infiammazione corneale",
+                "Cataratta",
+                "Alterazione del cristallino legata all’età",
+                "Aumento della pressione oculare",
+                "Infiammazione all’interno dell’occhio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Osserva eventuali segni di riduzione della vista",
+                "Mantieni invariata la disposizione dei mobili"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "discharge",
+          "name": "Secrezione oculare",
+          "name_kr": "눈곱",
+          "name_en": "Eye discharge",
+          "name_it": "Secrezione oculare",
+          "name_ja": "雪だるま",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Secrezione che si accumula intorno all’occhio e può apparire trasparente, bianca, gialla o marrone."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congiuntivite",
+                "Cheratocongiuntivite secca",
+                "Ostruzione del dotto nasolacrimale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione (batterica o virale)",
+                "Allergie",
+                "Occhio secco (ridotta produzione lacrimale)",
+                "Irritazione o piccole particelle",
+                "Dotto lacrimale ostruito"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Pulisci delicatamente con soluzione fisiologica sterile e garza morbida",
+                "Controlla eventuali cambiamenti di colore o quantità"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "chemosis",
+          "name": "Edema congiuntivale",
+          "name_kr": "결막부종",
+          "name_en": "Conjunctival edema",
+          "name_it": "Edema congiuntivale",
+          "name_ja": "結膜浮腫",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Gonfiore della parte bianca dell’occhio o del tessuto interno rosa."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congiuntivite allergica",
+                "Congiuntivite",
+                "Irritazione oculare / corpo estraneo"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Allergie",
+                "Congiuntivite",
+                "Infezione",
+                "Irritazione"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Usa un collare elisabettiano se lo sfregamento continua",
+                "Limita l’esposizione a polvere e vento"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "blepharedema",
+          "name": "Blefaredema",
+          "name_kr": "안검부종",
+          "name_en": "Blepharedema",
+          "name_it": "Blefaredema",
+          "name_ja": "眼瞼浮腫",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Gonfiore e ispessimento delle palpebre."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Blefarite",
+                "Reazione allergica",
+                "Trauma",
+                "Edema sistemico"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infiammazione palpebrale",
+                "Reazione allergica",
+                "Piccola lesione",
+                "Ritenzione di liquidi"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita di toccare o comprimere le palpebre",
+                "Lava la cuccia e la biancheria una volta alla settimana",
+                "Sospendi i nuovi snack",
+                "Evita fumo o spray"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "blepharoncus",
+          "name": "Massa palpebrale",
+          "name_kr": "안검혹",
+          "name_en": "Eyelid mass",
+          "name_it": "Massa palpebrale",
+          "name_ja": "眼瞼",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un nodulo o rigonfiamento nell’area della palpebra."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Orzaiolo",
+                "Calazio",
+                "Neoplasia benigna",
+                "Neoplasia maligna"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Ghiandola sebacea ostruita (orzaiolo)",
+                "Crescita benigna",
+                "Più raramente, un tumore più serio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né manipolare il nodulo",
+                "Controlla eventuali cambiamenti di dimensione o forma"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "BODY": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se l’arrossamento o l’irritazione si diffonde o peggiora",
+          "Se il cane continua a grattarsi spesso nonostante le cure di base",
+          "Se noti ferite aperte, sanguinamento o aree umide e irritate",
+          "Se la pelle sviluppa un odore forte o insolito persistente",
+          "Se un nodulo cresce, cambia aspetto o diventa rosso o doloroso"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Pelle – Consigli per la cura a casa",
+        "contents": [
+          "Dopo il bagno, asciuga delicatamente le aree con poca ventilazione, come ascelle, inguine e spazi tra le dita, usando un asciugamano morbido o un asciugatore a temperatura bassa e fresca",
+          "Il leccamento frequente delle zampe può essere legato a irritazione cutanea, noia o stress. Esercizio regolare e attività di arricchimento possono aiutare a ridurlo",
+          "Tieni nota di shampoo, prodotti per la toelettatura, alimenti e snack. Cambiamenti di prodotti o ingredienti possono talvolta contribuire all’irritazione cutanea",
+          "Un integratore quotidiano per il supporto della pelle contenente acidi grassi omega-3 e omega-6 può aiutare a mantenere pelle e mantello in buone condizioni"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "redness",
+          "name": "Arrossamento",
+          "name_kr": "발적",
+          "name_en": "Redness",
+          "name_it": "Arrossamento",
+          "name_ja": "発赤",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un’area della pelle che appare più rossa rispetto al colore normale della pelle del cane."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Piodermite superficiale",
+                "Dermatite da Malassezia",
+                "Infestazione da ectoparassiti",
+                "Dermatite irritativa da contatto"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Malattia cutanea allergica",
+                "Infezione batterica o da lieviti",
+                "Parassiti",
+                "Irritazione da contatto"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita irritanti recenti come erba, nuovi shampoo, detergenti o prodotti per la pulizia",
+                "Sospendi snack o integratori introdotti di recente per 1–2 settimane",
+                "Usa un collare elisabettiano se il leccamento continua",
+                "Lava la cuccia e la biancheria una volta alla settimana"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pigmentation",
+          "name": "Pigmentazione",
+          "name_kr": "색소침착",
+          "name_en": "Pigmentation",
+          "name_it": "Pigmentazione",
+          "name_ja": "色素沈着",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un’area di pelle scurita che può essere naturalmente più scura o esserlo diventata gradualmente a causa di infiammazione o irritazione persistente."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Dermatite da Malassezia",
+                "Piodermite superficiale",
+                "Dermatosi endocrina",
+                "Acanthosis nigricans",
+                "Iperpigmentazione post-infiammatoria"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Variazione normale della pelle in alcuni cani",
+                "Infiammazione cutanea di lunga durata",
+                "Allergie croniche",
+                "Squilibrio ormonale",
+                "Scurimento post-infiammatorio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Riduci lo sfregamento causato da pettorine o collari",
+                "Continua la gestione dell’allergia precedentemente prescritta, se applicabile",
+                "Limita l’eccessiva esposizione al sole delle aree con poco pelo"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "lichenification",
+          "name": "Lichenificazione",
+          "name_kr": "태선화",
+          "name_en": "Lichenification",
+          "name_it": "Lichenificazione",
+          "name_ja": "テソンファ",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Pelle ispessita e ruvida causata da infiammazione cronica o da prurito o irritazione ripetuti."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Dermatite da Malassezia",
+                "Dermatite batterica cronica",
+                "Granuloma da leccamento acrale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Malattia cutanea allergica di lunga durata",
+                "Crescita eccessiva di lieviti",
+                "Infezione batterica cronica",
+                "Grattamento o leccamento ripetuto"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Usa un collare elisabettiano se il leccamento o il grattamento continua",
+                "Mantieni l’area pulita e ben asciutta",
+                "Mantieni un controllo costante delle allergie"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "erosionUlcer",
+          "name": "Erosione / Ulcera",
+          "name_kr": "미란/궤양",
+          "name_en": "Erosion / Ulcer",
+          "name_it": "Erosione / Ulcera",
+          "name_ja": "ミラン/潰瘍",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Condizione in cui la superficie della pelle è abrasa o un danno più profondo crea un’area depressa."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Piodermite profonda",
+                "Malattia cutanea autoimmune",
+                "Lesione cutanea traumatica",
+                "Neoplasia cutanea"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione cutanea profonda",
+                "Malattia cutanea immunomediata",
+                "Tumore cutaneo",
+                "Ferita cutanea"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Tieni lontani detriti e sporco",
+                "Usa un collare elisabettiano per prevenire il leccamento",
+                "È consigliata una valutazione veterinaria"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pustuleCrust",
+          "name": "Pustola / Crosta",
+          "name_kr": "농포/딱지",
+          "name_en": "Pustule / Crust",
+          "name_it": "Pustola / Crosta",
+          "name_ja": "農耕/かさぶた",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Pustola: piccole protuberanze piene di pus",
+                "Crosta: secrezioni o fluidi cutanei essiccati e induriti sulla superficie",
+                "Quando interessa l’orecchio, le croste possono essere secrezioni essiccate provenienti dall’interno dell’orecchio e indurite sull’orecchio esterno."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Piodermite superficiale",
+                "Dermatite da Malassezia",
+                "Dermatite atopica",
+                "Infestazione da ectoparassiti",
+                "Otite esterna"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione cutanea batterica",
+                "Infezione da lieviti",
+                "Allergie",
+                "Parassiti",
+                "Infezione dell’orecchio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né grattare le lesioni",
+                "Usa un collare elisabettiano se il leccamento continua",
+                "Sospendi gli snack introdotti di recente per 1–2 settimane",
+                "Se precedentemente consigliato dal veterinario, usa un detergente antisettico specifico per cani"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mass",
+          "name": "Massa",
+          "name_kr": "혹",
+          "name_en": "Mass",
+          "name_it": "Massa",
+          "name_ja": "こんにちは",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un nodulo arrotondato visibile sulla pelle o sotto la pelle."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Mastocitoma",
+                "Neoplasia cutanea benigna",
+                "Neoplasia cutanea maligna",
+                "Ascesso",
+                "Granuloma"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infiammazione o ascesso",
+                "Crescita benigna",
+                "Più raramente, un tumore più serio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né manipolare il nodulo",
+                "Scatta una foto ogni settimana per monitorarne le dimensioni",
+                "Misura con un righello per confrontare le dimensioni"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "scale",
+          "name": "Desquamazione",
+          "name_kr": "각질",
+          "name_en": "Scale",
+          "name_it": "Desquamazione",
+          "name_ja": "角質",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Scaglie o squame bianche o gialle che si sollevano dalla pelle o vi aderiscono."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite seborroica",
+                "Dermatite da Malassezia",
+                "Dermatite atopica",
+                "Piodermite superficiale",
+                "Dermatosi endocrina (ipotiroidismo)",
+                "Infestazione da ectoparassiti",
+                "Dermatite da allergia alimentare",
+                "Dermatofitosi"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Pelle grassa o desquamata",
+                "Infezione da lieviti",
+                "Allergie",
+                "Infezione batterica",
+                "Squilibrio ormonale",
+                "Parassiti",
+                "Infezione fungina"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Spazzola regolarmente per rimuovere le scaglie libere",
+                "Usa uno shampoo idratante delicato specifico per cani"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "FOOT": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se l’arrossamento o l’irritazione si diffonde o peggiora",
+          "Se il cane continua a grattarsi spesso nonostante le cure di base",
+          "Se noti ferite aperte, sanguinamento o aree umide e irritate",
+          "Se la pelle sviluppa un odore forte o insolito persistente",
+          "Se un nodulo cresce, cambia aspetto o diventa rosso o doloroso"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Pelle – Consigli per la cura a casa",
+        "contents": [
+          "Dopo il bagno, asciuga delicatamente le aree con poca ventilazione, come ascelle, inguine e spazi tra le dita, usando un asciugamano morbido o un asciugatore a temperatura bassa e fresca",
+          "Il leccamento frequente delle zampe può essere legato a irritazione cutanea, noia o stress. Esercizio regolare e attività di arricchimento possono aiutare a ridurlo",
+          "Tieni nota di shampoo, prodotti per la toelettatura, alimenti e snack. Cambiamenti di prodotti o ingredienti possono talvolta contribuire all’irritazione cutanea",
+          "Un integratore quotidiano per il supporto della pelle contenente acidi grassi omega-3 e omega-6 può aiutare a mantenere pelle e mantello in buone condizioni"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "redness",
+          "name": "Arrossamento",
+          "name_kr": "발적",
+          "name_en": "Redness",
+          "name_it": "Arrossamento",
+          "name_ja": "発赤",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un’area della pelle che appare più rossa rispetto al colore normale della pelle del cane."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Piodermite superficiale",
+                "Dermatite da Malassezia",
+                "Infestazione da ectoparassiti",
+                "Dermatite irritativa da contatto"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Malattia cutanea allergica",
+                "Infezione batterica o da lieviti",
+                "Parassiti",
+                "Irritazione da contatto"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita irritanti recenti come erba, nuovi shampoo, detergenti o prodotti per la pulizia",
+                "Sospendi snack o integratori introdotti di recente per 1–2 settimane",
+                "Usa un collare elisabettiano se il leccamento continua",
+                "Lava la cuccia e la biancheria una volta alla settimana"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pigmentation",
+          "name": "Pigmentazione",
+          "name_kr": "색소침착",
+          "name_en": "Pigmentation",
+          "name_it": "Pigmentazione",
+          "name_ja": "色素沈着",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un’area di pelle scurita che può essere naturalmente più scura o esserlo diventata gradualmente a causa di infiammazione o irritazione persistente."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Dermatite da Malassezia",
+                "Piodermite superficiale",
+                "Dermatosi endocrina",
+                "Acanthosis nigricans",
+                "Iperpigmentazione post-infiammatoria"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Variazione normale della pelle in alcuni cani",
+                "Infiammazione cutanea di lunga durata",
+                "Allergie croniche",
+                "Squilibrio ormonale",
+                "Scurimento post-infiammatorio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Riduci lo sfregamento causato da pettorine o collari",
+                "Continua la gestione dell’allergia precedentemente prescritta, se applicabile",
+                "Limita l’eccessiva esposizione al sole delle aree con poco pelo"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "lichenification",
+          "name": "Lichenificazione",
+          "name_kr": "태선화",
+          "name_en": "Lichenification",
+          "name_it": "Lichenificazione",
+          "name_ja": "テソンファ",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Pelle ispessita e ruvida causata da infiammazione cronica o da prurito o irritazione ripetuti."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Dermatite da Malassezia",
+                "Dermatite batterica cronica",
+                "Granuloma da leccamento acrale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Malattia cutanea allergica di lunga durata",
+                "Crescita eccessiva di lieviti",
+                "Infezione batterica cronica",
+                "Grattamento o leccamento ripetuto"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Usa un collare elisabettiano se il leccamento o il grattamento continua",
+                "Mantieni l’area pulita e ben asciutta",
+                "Mantieni un controllo costante delle allergie"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "erosionUlcer",
+          "name": "Erosione / Ulcera",
+          "name_kr": "미란/궤양",
+          "name_en": "Erosion / Ulcer",
+          "name_it": "Erosione / Ulcera",
+          "name_ja": "ミラン/潰瘍",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Condizione in cui la superficie della pelle è abrasa o un danno più profondo crea un’area depressa."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Piodermite profonda",
+                "Malattia cutanea autoimmune",
+                "Lesione cutanea traumatica",
+                "Neoplasia cutanea"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione cutanea profonda",
+                "Malattia cutanea immunomediata",
+                "Tumore cutaneo",
+                "Ferita cutanea"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Tieni lontani detriti e sporco",
+                "Usa un collare elisabettiano per prevenire il leccamento",
+                "È consigliata una valutazione veterinaria"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pustuleCrust",
+          "name": "Pustola / Crosta",
+          "name_kr": "농포/딱지",
+          "name_en": "Pustule / Crust",
+          "name_it": "Pustola / Crosta",
+          "name_ja": "農耕/かさぶた",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Pustola: piccole protuberanze piene di pus",
+                "Crosta: secrezioni o fluidi cutanei essiccati e induriti sulla superficie",
+                "Quando interessa l’orecchio, le croste possono essere secrezioni essiccate provenienti dall’interno dell’orecchio e indurite sull’orecchio esterno."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Piodermite superficiale",
+                "Dermatite da Malassezia",
+                "Dermatite atopica",
+                "Infestazione da ectoparassiti",
+                "Otite esterna"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione cutanea batterica",
+                "Infezione da lieviti",
+                "Allergie",
+                "Parassiti",
+                "Infezione dell’orecchio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né grattare le lesioni",
+                "Usa un collare elisabettiano se il leccamento continua",
+                "Sospendi gli snack introdotti di recente per 1–2 settimane",
+                "Se precedentemente consigliato dal veterinario, usa un detergente antisettico specifico per cani"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mass",
+          "name": "Massa",
+          "name_kr": "혹",
+          "name_en": "Mass",
+          "name_it": "Massa",
+          "name_ja": "こんにちは",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un nodulo arrotondato visibile sulla pelle o sotto la pelle."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Mastocitoma",
+                "Neoplasia cutanea benigna",
+                "Neoplasia cutanea maligna",
+                "Ascesso",
+                "Granuloma"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infiammazione o ascesso",
+                "Crescita benigna",
+                "Più raramente, un tumore più serio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né manipolare il nodulo",
+                "Scatta una foto ogni settimana per monitorarne le dimensioni",
+                "Misura con un righello per confrontare le dimensioni"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "scale",
+          "name": "Desquamazione",
+          "name_kr": "각질",
+          "name_en": "Scale",
+          "name_it": "Desquamazione",
+          "name_ja": "角質",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Scaglie o squame bianche o gialle che si sollevano dalla pelle o vi aderiscono."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite seborroica",
+                "Dermatite da Malassezia",
+                "Dermatite atopica",
+                "Piodermite superficiale",
+                "Dermatosi endocrina (ipotiroidismo)",
+                "Infestazione da ectoparassiti",
+                "Dermatite da allergia alimentare",
+                "Dermatofitosi"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Pelle grassa o desquamata",
+                "Infezione da lieviti",
+                "Allergie",
+                "Infezione batterica",
+                "Squilibrio ormonale",
+                "Parassiti",
+                "Infezione fungina"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Spazzola regolarmente per rimuovere le scaglie libere",
+                "Usa uno shampoo idratante delicato specifico per cani"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "EAR": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se il cane continua a scuotere la testa o a grattarsi nonostante le cure di base",
+          "Se arrossamento o gonfiore all’interno dell’orecchio aumentano",
+          "Se secrezioni dense o accumuli abbondanti continuano nonostante una pulizia delicata",
+          "Se il cane sembra provare dolore quando l’orecchio viene toccato",
+          "Se l’inclinazione della testa o i problemi di equilibrio continuano",
+          "Se un nodulo cresce, cambia aspetto o diventa rosso o doloroso"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Orecchio – Consigli per la cura a casa",
+        "contents": [
+          "Mantieni le orecchie pulite e asciutte, soprattutto dopo il bagno o il nuoto",
+          "Usa il detergente auricolare solo come indicato e interrompi se compaiono arrossamento o maggiore irritazione",
+          "Tieni traccia di eventuali cambiamenti di cibo o snack, poiché le allergie alimentari possono influire sulla salute dell’orecchio",
+          "Un integratore quotidiano per il supporto di pelle e orecchie contenente acidi grassi omega-3 può aiutare a mantenere la normale salute auricolare"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "redness",
+          "name": "Arrossamento",
+          "name_kr": "발적",
+          "name_en": "Redness",
+          "name_it": "Arrossamento",
+          "name_ja": "発赤",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un’area della pelle che appare più rossa rispetto al colore normale della pelle del cane."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Piodermite superficiale",
+                "Dermatite da Malassezia",
+                "Infestazione da ectoparassiti",
+                "Dermatite irritativa da contatto"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Malattia cutanea allergica",
+                "Infezione batterica o da lieviti",
+                "Parassiti",
+                "Irritazione da contatto"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita irritanti recenti come erba, nuovi shampoo, detergenti o prodotti per la pulizia",
+                "Sospendi snack o integratori introdotti di recente per 1–2 settimane",
+                "Usa un collare elisabettiano se il leccamento continua",
+                "Lava la cuccia e la biancheria una volta alla settimana"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pigmentation",
+          "name": "Pigmentazione",
+          "name_kr": "색소침착",
+          "name_en": "Pigmentation",
+          "name_it": "Pigmentazione",
+          "name_ja": "色素沈着",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un’area di pelle scurita che può essere naturalmente più scura o esserlo diventata gradualmente a causa di infiammazione o irritazione persistente."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Dermatite da Malassezia",
+                "Piodermite superficiale",
+                "Dermatosi endocrina",
+                "Acanthosis nigricans",
+                "Iperpigmentazione post-infiammatoria"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Variazione normale della pelle in alcuni cani",
+                "Infiammazione cutanea di lunga durata",
+                "Allergie croniche",
+                "Squilibrio ormonale",
+                "Scurimento post-infiammatorio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Riduci lo sfregamento causato da pettorine o collari",
+                "Continua la gestione dell’allergia precedentemente prescritta, se applicabile",
+                "Limita l’eccessiva esposizione al sole delle aree con poco pelo"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "lichenification",
+          "name": "Lichenificazione",
+          "name_kr": "태선화",
+          "name_en": "Lichenification",
+          "name_it": "Lichenificazione",
+          "name_ja": "テソンファ",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Pelle ispessita e ruvida causata da infiammazione cronica o da prurito o irritazione ripetuti."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite atopica",
+                "Dermatite da allergia alimentare",
+                "Dermatite da Malassezia",
+                "Dermatite batterica cronica",
+                "Granuloma da leccamento acrale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Malattia cutanea allergica di lunga durata",
+                "Crescita eccessiva di lieviti",
+                "Infezione batterica cronica",
+                "Grattamento o leccamento ripetuto"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Usa un collare elisabettiano se il leccamento o il grattamento continua",
+                "Mantieni l’area pulita e ben asciutta",
+                "Mantieni un controllo costante delle allergie"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "erosionUlcer",
+          "name": "Erosione / Ulcera",
+          "name_kr": "미란/궤양",
+          "name_en": "Erosion / Ulcer",
+          "name_it": "Erosione / Ulcera",
+          "name_ja": "ミラン/潰瘍",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Condizione in cui la superficie della pelle è abrasa o un danno più profondo crea un’area depressa."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Piodermite profonda",
+                "Malattia cutanea autoimmune",
+                "Lesione cutanea traumatica",
+                "Neoplasia cutanea"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione cutanea profonda",
+                "Malattia cutanea immunomediata",
+                "Tumore cutaneo",
+                "Ferita cutanea"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Tieni lontani detriti e sporco",
+                "Usa un collare elisabettiano per prevenire il leccamento",
+                "È consigliata una valutazione veterinaria"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pustuleCrust",
+          "name": "Pustola / Crosta",
+          "name_kr": "농포/딱지",
+          "name_en": "Pustule / Crust",
+          "name_it": "Pustola / Crosta",
+          "name_ja": "農耕/かさぶた",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Pustola: piccole protuberanze piene di pus",
+                "Crosta: secrezioni o fluidi cutanei essiccati e induriti sulla superficie",
+                "Quando interessa l’orecchio, le croste possono essere secrezioni essiccate provenienti dall’interno dell’orecchio e indurite sull’orecchio esterno."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Piodermite superficiale",
+                "Dermatite da Malassezia",
+                "Dermatite atopica",
+                "Infestazione da ectoparassiti",
+                "Otite esterna"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione cutanea batterica",
+                "Infezione da lieviti",
+                "Allergie",
+                "Parassiti",
+                "Infezione dell’orecchio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né grattare le lesioni",
+                "Usa un collare elisabettiano se il leccamento continua",
+                "Sospendi gli snack introdotti di recente per 1–2 settimane",
+                "Se precedentemente consigliato dal veterinario, usa un detergente antisettico specifico per cani"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mass",
+          "name": "Massa",
+          "name_kr": "혹",
+          "name_en": "Mass",
+          "name_it": "Massa",
+          "name_ja": "こんにちは",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Un nodulo arrotondato visibile sulla pelle o sotto la pelle."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Mastocitoma",
+                "Neoplasia cutanea benigna",
+                "Neoplasia cutanea maligna",
+                "Ascesso",
+                "Granuloma"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infiammazione o ascesso",
+                "Crescita benigna",
+                "Più raramente, un tumore più serio"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Non comprimere né manipolare il nodulo",
+                "Scatta una foto ogni settimana per monitorarne le dimensioni",
+                "Misura con un righello per confrontare le dimensioni"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "scale",
+          "name": "Desquamazione",
+          "name_kr": "각질",
+          "name_en": "Scale",
+          "name_it": "Desquamazione",
+          "name_ja": "角質",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Scaglie o squame bianche o gialle che si sollevano dalla pelle o vi aderiscono."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Dermatite seborroica",
+                "Dermatite da Malassezia",
+                "Dermatite atopica",
+                "Piodermite superficiale",
+                "Dermatosi endocrina (ipotiroidismo)",
+                "Infestazione da ectoparassiti",
+                "Dermatite da allergia alimentare",
+                "Dermatofitosi"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Pelle grassa o desquamata",
+                "Infezione da lieviti",
+                "Allergie",
+                "Infezione batterica",
+                "Squilibrio ormonale",
+                "Parassiti",
+                "Infezione fungina"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Spazzola regolarmente per rimuovere le scaglie libere",
+                "Usa uno shampoo idratante delicato specifico per cani"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "TEETH": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se il cane mostra segni di dolore alla bocca mentre mangia o mastica",
+          "Se le gengive sono rosse, gonfie o sanguinano",
+          "Se l’alito cattivo peggiora in modo evidente",
+          "Se noti denti mobili o un forte accumulo di tartaro",
+          "Se non c’è miglioramento nonostante le cure dentali di base"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Denti - Consigli per la cura a casa",
+        "contents": [
+          "Spazzola i denti del cane ogni giorno, o almeno 2–3 volte alla settimana, usando un dentifricio sicuro per animali e uno spazzolino morbido",
+          "Se spazzolare è difficile, snack dentali o diete dentali possono aiutare a gestire la placca"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "calculus",
+          "name": "Tartaro",
+          "name_kr": "치석",
+          "name_en": "Tartar",
+          "name_it": "Tartaro",
+          "name_ja": "歯石",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Placca dentale indurita sulla superficie del dente che diventa un deposito duro simile a pietra, giallo, marrone o grigio."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Calcolo dentale",
+                "Malattia parodontale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Accumulo di placca sui denti",
+                "Spazzolamento poco frequente",
+                "Residui di cibo sui denti"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Spazzola quotidianamente i denti del cane usando un dentifricio specifico per cani",
+                "Offri snack dentali progettati per ridurre la placca",
+                "Fornisci giochi da masticare sicuri per aiutare a controllare l’accumulo"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "inflammation",
+          "name": "Infiammazione",
+          "name_kr": "염증",
+          "name_en": "Inflammation",
+          "name_it": "Infiammazione",
+          "name_ja": "炎症",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Gonfiore, arrossamento o sanguinamento delle gengive."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Gengivite",
+                "Parodontite",
+                "Ascesso della radice dentale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Accumulo di tartaro",
+                "Infezione batterica delle gengive",
+                "Irritazione gengivale"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Inizia uno spazzolamento quotidiano delicato se tollerato",
+                "Usa salviette dentali se lo spazzolamento è difficile",
+                "Evita ossa dure o oggetti che possono irritare le gengive",
+                "Valuta un collutorio dentale specifico per cani"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "CAT": {
+    "EYE": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se lo strizzare gli occhi continua o l’occhio rimane parzialmente o completamente chiuso",
+          "Se arrossamento, gonfiore o secrezione non migliorano o peggiorano",
+          "Se l’occhio diventa opaco, sviluppa una macchia scura o appare diverso dall’altro occhio",
+          "Se il gatto sembra sensibile alla luce o mostra segni di dolore oculare",
+          "Se la vista sembra compromessa",
+          "Se il gatto diventa meno attivo, si nasconde più del solito o mangia meno"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Occhi – Consigli per la cura a casa",
+        "contents": [
+          "Usa una garza morbida inumidita con acqua tiepida per pulire delicatamente le secrezioni oculari",
+          "Tieni il gatto lontano da candele profumate, spray e fragranze domestiche intense che possono irritare gli occhi",
+          "Se il gatto ha una storia di herpesvirus felino, cerca di ridurre lo stress e mantenere un ambiente stabile, poiché lo stress può scatenare riacutizzazioni",
+          "Un integratore quotidiano per il supporto oculare contenente omega-3 e antiossidanti può aiutare a mantenere normali la salute immunitaria e oculare"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "discharge",
+          "name": "Secrezione oculare",
+          "name_kr": "눈곱",
+          "name_en": "Eye discharge",
+          "name_it": "Secrezione oculare",
+          "name_ja": "雪だるま",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Secrezione che si accumula intorno all’occhio e può apparire trasparente, bianca, gialla o marrone."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congiuntivite",
+                "Infezione delle vie respiratorie superiori feline",
+                "Cheratite",
+                "Ulcera corneale",
+                "Ostruzione del dotto nasolacrimale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione oculare",
+                "Malattia respiratoria virale",
+                "Ostruzione del dotto lacrimale",
+                "Irritazione superficiale"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Pulisci delicatamente la secrezione con soluzione fisiologica sterile e garza morbida",
+                "Controlla la presenza di starnuti, secrezione nasale o riduzione dell’appetito"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "cornealnecrosis",
+          "name": "Necrosi corneale",
+          "name_kr": "각막조직괴사",
+          "name_en": "Corneal necrosis",
+          "name_it": "Necrosi corneale",
+          "name_ja": "角膜組織壊死",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Una macchia marrone o nera sulla superficie dell’occhio (cornea) che può indicare tessuto danneggiato."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Sequestro corneale ",
+                "Ulcera corneale",
+                "Cheratite"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Irritazione oculare di lunga durata",
+                "Infezione virale",
+                "Tendenza legata alla razza"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Riduci l’esposizione alla luce intensa",
+                "Usa un collare elisabettiano se lo sfregamento continua"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "blepharedema",
+          "name": "Blefaredema",
+          "name_kr": "안검부종",
+          "name_en": "Blepharedema",
+          "name_it": "Blefaredema",
+          "name_ja": "眼瞼浮腫",
+          "score": -3,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Gonfiore e ispessimento delle palpebre."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Blefarite",
+                "Dermatite allergica ",
+                "Trauma palpebrale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infiammazione palpebrale",
+                "Reazione allergica"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita di toccare o comprimere le palpebre",
+                "Usa un collare elisabettiano se lo sfregamento continua"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "chemosis",
+          "name": "Edema congiuntivale",
+          "name_kr": "결막부종",
+          "name_en": "Conjunctival edema",
+          "name_it": "Edema congiuntivale",
+          "name_ja": "結膜浮腫",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Gonfiore della parte bianca dell’occhio o del tessuto interno rosa."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congiuntivite ",
+                "Congiuntivite allergica",
+                "Infezione da herpesvirus felino"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione virale o batterica",
+                "Allergie",
+                "Irritazione"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Usa un collare elisabettiano se lo sfregamento continua",
+                "Se l’irritazione persiste, rimuovi temporaneamente nuova lettiera, spray o detergenti"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "hyperemia",
+          "name": "Occhio rosso",
+          "name_kr": "충혈",
+          "name_en": "Red eye",
+          "name_it": "Occhio rosso",
+          "name_ja": "充血",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "La parte bianca dell’occhio appare più rossa del solito, con vasi sanguigni più visibili."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Congiuntivite",
+                "Uveite",
+                "Glaucoma",
+                "Trauma oculare"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Infezione oculare",
+                "Infiammazione all’interno dell’occhio",
+                "Aumento della pressione oculare"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Lascia riposare il gatto in un ambiente tranquillo e poco illuminato",
+                "Evita fumo e odori intensi",
+                "Limita i cambiamenti stressanti in casa"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "TEETH": {
+      "time_to_see_a_vet": {
+        "title": "Quando consultare un veterinario",
+        "contents": [
+          "Se il gatto mangia meno o sembra esitante nel mangiare",
+          "Se il gatto evita di masticare o lascia cadere il cibo mentre mangia",
+          "Se le gengive sono rosse, gonfie o sanguinano",
+          "Se noti salivazione eccessiva o che si tocca la bocca con la zampa",
+          "Se l’alito cattivo peggiora in modo evidente"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Denti – Consigli per la cura a casa",
+        "contents": [
+          "Spazzola i denti del gatto ogni giorno, o almeno alcune volte alla settimana, usando un dentifricio sicuro per animali e uno spazzolino a setole morbide",
+          "Se spazzolare è difficile, snack dentali o diete dentali possono aiutare a gestire la placca"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "calculus",
+          "name": "Tartaro",
+          "name_kr": "치석",
+          "name_en": "Tartar",
+          "name_it": "Tartaro",
+          "name_ja": "歯石",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Placca dentale indurita sulla superficie del dente che diventa un deposito duro simile a pietra, giallo, marrone o grigio."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Calcolo dentale",
+                "Malattia parodontale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Accumulo di placca sui denti",
+                "Spazzolamento poco frequente",
+                "Residui di cibo sui denti"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Inizia a spazzolare gradualmente se il gatto lo tollera",
+                "Usa un dentifricio specifico per gatti",
+                "Prova salviette dentali se lo spazzolamento è difficile",
+                "Offri snack dentali formulati per il controllo del tartaro"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "inflammation",
+          "name": "Infiammazione",
+          "name_kr": "염증",
+          "name_en": "Inflammation",
+          "name_it": "Infiammazione",
+          "name_ja": "炎症",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Che cos’è",
+              "contents": [
+                "Gonfiore, arrossamento o sanguinamento delle gengive."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Condizioni cliniche correlate",
+              "contents": [
+                "Gengivite",
+                "Parodontite",
+                "Gengivostomatite cronica felina",
+                "Riassorbimento dentale"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Possibili cause",
+              "contents": [
+                "Accumulo di tartaro",
+                "Infezione batterica o virale",
+                "Infiammazione immunomediata",
+                "Danno o riassorbimento dentale"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Cosa puoi fare",
+              "contents": [
+                "Evita snack duri o cibo secco che possono irritare le gengive",
+                "Offri cibo più morbido se la masticazione sembra fastidiosa",
+                "Mantieni pulita l’area della bocca se compare salivazione eccessiva",
+                "Mantieni un ambiente calmo e poco stressante"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

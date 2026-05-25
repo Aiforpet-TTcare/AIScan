@@ -24,8 +24,10 @@
       "symptoms": [
         {
           "code": "epiphora",
+          "name": "Epiphora",
           "name_kr": "유루증",
           "name_en": "Epiphora",
+          "score": -9,
           "details": [
             {
               "key": "what_it_is",
@@ -67,8 +69,10 @@
         },
         {
           "code": "ectropion",
+          "name": "Ectropion",
           "name_kr": "안검외반증",
           "name_en": "Ectropion",
+          "score": -3,
           "details": [
             {
               "key": "what_it_is",
@@ -110,8 +114,10 @@
         },
         {
           "code": "cherry",
+          "name": "Cherry eye",
           "name_kr": "제3안검돌출증",
           "name_en": "Cherry eye",
+          "score": -12,
           "details": [
             {
               "key": "what_it_is",
@@ -151,8 +157,10 @@
         },
         {
           "code": "hyperemia",
+          "name": "Red eye",
           "name_kr": "충혈",
           "name_en": "Red eye",
+          "score": -12,
           "details": [
             {
               "key": "what_it_is",
@@ -196,8 +204,10 @@
         },
         {
           "code": "opacity",
+          "name": "Opacity",
           "name_kr": "혼탁",
           "name_en": "Opacity",
+          "score": -9,
           "details": [
             {
               "key": "what_it_is",
@@ -240,8 +250,10 @@
         },
         {
           "code": "discharge",
+          "name": "Eye discharge",
           "name_kr": "눈곱",
           "name_en": "Eye discharge",
+          "score": -9,
           "details": [
             {
               "key": "what_it_is",
@@ -282,8 +294,10 @@
         },
         {
           "code": "chemosis",
+          "name": "Conjunctival edema",
           "name_kr": "결막부종",
           "name_en": "Conjunctival edema",
+          "score": -12,
           "details": [
             {
               "key": "what_it_is",
@@ -323,8 +337,10 @@
         },
         {
           "code": "blepharedema",
+          "name": "Blepharedema",
           "name_kr": "안검부종",
           "name_en": "Blepharedema",
+          "score": -9,
           "details": [
             {
               "key": "what_it_is",
@@ -367,8 +383,10 @@
         },
         {
           "code": "blepharoncus",
+          "name": "Eyelid mass",
           "name_kr": "안검혹",
           "name_en": "Eyelid mass",
+          "score": -9,
           "details": [
             {
               "key": "what_it_is",
@@ -432,8 +450,10 @@
       "symptoms": [
         {
           "code": "redness",
+          "name": "Redness",
           "name_kr": "발적",
           "name_en": "Redness",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -475,8 +495,10 @@
         },
         {
           "code": "pigmentation",
+          "name": "Pigmentation",
           "name_kr": "색소침착",
           "name_en": "Pigmentation",
+          "score": -5,
           "details": [
             {
               "key": "what_it_is",
@@ -517,8 +539,10 @@
         },
         {
           "code": "lichenification",
+          "name": "Lichenification",
           "name_kr": "태선화",
           "name_en": "Lichenification",
+          "score": -5,
           "details": [
             {
               "key": "what_it_is",
@@ -558,8 +582,10 @@
         },
         {
           "code": "erosionUlcer",
+          "name": "Erosion / Ulcer",
           "name_kr": "미란/궤양",
           "name_en": "Erosion / Ulcer",
+          "score": -21,
           "details": [
             {
               "key": "what_it_is",
@@ -601,8 +627,10 @@
         },
         {
           "code": "pustuleCrust",
+          "name": "Pustule / Crust",
           "name_kr": "농포/딱지",
           "name_en": "Pustule / Crust",
+          "score": -21,
           "details": [
             {
               "key": "what_it_is",
@@ -646,8 +674,10 @@
         },
         {
           "code": "mass",
+          "name": "Mass",
           "name_kr": "혹",
           "name_en": "Mass",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -689,8 +719,10 @@
         },
         {
           "code": "scale",
+          "name": "Scale",
           "name_kr": "각질",
           "name_en": "Scale",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -759,8 +791,10 @@
       "symptoms": [
         {
           "code": "redness",
+          "name": "Redness",
           "name_kr": "발적",
           "name_en": "Redness",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -805,8 +839,10 @@
         },
         {
           "code": "pigmentation",
+          "name": "Pigmentation",
           "name_kr": "색소침착",
           "name_en": "Pigmentation",
+          "score": -5,
           "details": [
             {
               "key": "what_it_is",
@@ -852,8 +888,10 @@
         },
         {
           "code": "lichenification",
+          "name": "Lichenification",
           "name_kr": "태선화",
           "name_en": "Lichenification",
+          "score": -5,
           "details": [
             {
               "key": "what_it_is",
@@ -896,8 +934,10 @@
         },
         {
           "code": "erosionUlcer",
+          "name": "Erosion / Ulcer",
           "name_kr": "미란/궤양",
           "name_en": "Erosion / Ulcer",
+          "score": -21,
           "details": [
             {
               "key": "what_it_is",
@@ -939,8 +979,10 @@
         },
         {
           "code": "pustuleCrust",
+          "name": "Pustule / Crust",
           "name_kr": "농포/딱지",
           "name_en": "Pustule / Crust",
+          "score": -21,
           "details": [
             {
               "key": "what_it_is",
@@ -987,8 +1029,10 @@
         },
         {
           "code": "mass",
+          "name": "Mass",
           "name_kr": "혹",
           "name_en": "Mass",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -1030,8 +1074,10 @@
         },
         {
           "code": "scale",
+          "name": "Scale",
           "name_kr": "각질",
           "name_en": "Scale",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -1102,8 +1148,10 @@
       "symptoms": [
         {
           "code": "redness",
+          "name": "Redness",
           "name_kr": "발적",
           "name_en": "Redness",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -1148,8 +1196,10 @@
         },
         {
           "code": "pigmentation",
+          "name": "Pigmentation",
           "name_kr": "색소침착",
           "name_en": "Pigmentation",
+          "score": -5,
           "details": [
             {
               "key": "what_it_is",
@@ -1195,8 +1245,10 @@
         },
         {
           "code": "lichenification",
+          "name": "Lichenification",
           "name_kr": "태선화",
           "name_en": "Lichenification",
+          "score": -5,
           "details": [
             {
               "key": "what_it_is",
@@ -1239,8 +1291,10 @@
         },
         {
           "code": "erosionUlcer",
+          "name": "Erosion / Ulcer",
           "name_kr": "미란/궤양",
           "name_en": "Erosion / Ulcer",
+          "score": -21,
           "details": [
             {
               "key": "what_it_is",
@@ -1282,8 +1336,10 @@
         },
         {
           "code": "pustuleCrust",
+          "name": "Pustule / Crust",
           "name_kr": "농포/딱지",
           "name_en": "Pustule / Crust",
+          "score": -21,
           "details": [
             {
               "key": "what_it_is",
@@ -1330,8 +1386,10 @@
         },
         {
           "code": "mass",
+          "name": "Mass",
           "name_kr": "혹",
           "name_en": "Mass",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -1373,8 +1431,10 @@
         },
         {
           "code": "scale",
+          "name": "Scale",
           "name_kr": "각질",
           "name_en": "Scale",
+          "score": -16,
           "details": [
             {
               "key": "what_it_is",
@@ -1443,8 +1503,10 @@
       "symptoms": [
         {
           "code": "calculus",
+          "name": "Tartar",
           "name_kr": "치석",
           "name_en": "Tartar",
+          "score": -50,
           "details": [
             {
               "key": "what_it_is",
@@ -1483,8 +1545,10 @@
         },
         {
           "code": "inflammation",
+          "name": "Inflammation",
           "name_kr": "염증",
           "name_en": "Inflammation",
+          "score": -50,
           "details": [
             {
               "key": "what_it_is",
@@ -1551,8 +1615,10 @@
       "symptoms": [
         {
           "code": "discharge",
+          "name": "Eye discharge",
           "name_kr": "눈곱",
           "name_en": "Eye discharge",
+          "score": -9,
           "details": [
             {
               "key": "what_it_is",
@@ -1594,8 +1660,10 @@
         },
         {
           "code": "cornealnecrosis",
+          "name": "Corneal necrosis",
           "name_kr": "각막조직괴사",
           "name_en": "Corneal necrosis",
+          "score": -12,
           "details": [
             {
               "key": "what_it_is",
@@ -1634,8 +1702,10 @@
         },
         {
           "code": "blepharedema",
+          "name": "Blepharedema",
           "name_kr": "안검부종",
           "name_en": "Blepharedema",
+          "score": -3,
           "details": [
             {
               "key": "what_it_is",
@@ -1673,8 +1743,10 @@
         },
         {
           "code": "chemosis",
+          "name": "Conjunctival edema",
           "name_kr": "결막부종",
           "name_en": "Conjunctival edema",
+          "score": -12,
           "details": [
             {
               "key": "what_it_is",
@@ -1713,8 +1785,10 @@
         },
         {
           "code": "hyperemia",
+          "name": "Red eye",
           "name_kr": "충혈",
           "name_en": "Red eye",
+          "score": -12,
           "details": [
             {
               "key": "what_it_is",
@@ -1776,8 +1850,10 @@
       "symptoms": [
         {
           "code": "calculus",
+          "name": "Tartar",
           "name_kr": "치석",
           "name_en": "Tartar",
+          "score": -50,
           "details": [
             {
               "key": "what_it_is",
@@ -1817,8 +1893,10 @@
         },
         {
           "code": "inflammation",
+          "name": "Inflammation",
           "name_kr": "염증",
           "name_en": "Inflammation",
+          "score": -50,
           "details": [
             {
               "key": "what_it_is",

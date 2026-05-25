@@ -24,6 +24,7 @@
       "symptoms": [
         {
           "code": "epiphora",
+          "name": "Epiphora",
           "name_kr": "유루증",
           "name_en": "Epiphora",
           "name_ja": "ゆる症",
@@ -69,6 +70,7 @@
         },
         {
           "code": "ectropion",
+          "name": "Ectropion",
           "name_kr": "안검외반증",
           "name_en": "Ectropion",
           "name_ja": "眼剣外反症",
@@ -114,6 +116,7 @@
         },
         {
           "code": "cherry",
+          "name": "Cherry eye",
           "name_kr": "제3안검돌출증",
           "name_en": "Cherry eye",
           "name_ja": "第3眼剣突出症",
@@ -157,6 +160,7 @@
         },
         {
           "code": "hyperemia",
+          "name": "Red eye",
           "name_kr": "충혈",
           "name_en": "Red eye",
           "name_ja": "充血",
@@ -204,6 +208,7 @@
         },
         {
           "code": "opacity",
+          "name": "Opacity",
           "name_kr": "혼탁",
           "name_en": "Opacity",
           "name_ja": "混濁",
@@ -250,6 +255,7 @@
         },
         {
           "code": "discharge",
+          "name": "Eye discharge",
           "name_kr": "눈곱",
           "name_en": "Eye discharge",
           "name_ja": "雪だるま",
@@ -294,6 +300,7 @@
         },
         {
           "code": "chemosis",
+          "name": "Conjunctival edema",
           "name_kr": "결막부종",
           "name_en": "Conjunctival edema",
           "name_ja": "結膜浮腫",
@@ -337,6 +344,7 @@
         },
         {
           "code": "blepharedema",
+          "name": "Blepharedema",
           "name_kr": "안검부종",
           "name_en": "Blepharedema",
           "name_ja": "眼瞼浮腫",
@@ -383,6 +391,7 @@
         },
         {
           "code": "blepharoncus",
+          "name": "Eyelid mass",
           "name_kr": "안검혹",
           "name_en": "Eyelid mass",
           "name_ja": "眼瞼",
@@ -449,6 +458,7 @@
       "symptoms": [
         {
           "code": "redness",
+          "name": "Redness",
           "name_kr": "발적",
           "name_en": "Redness",
           "name_ja": "発赤",
@@ -497,6 +507,7 @@
         },
         {
           "code": "pigmentation",
+          "name": "Pigmentation",
           "name_kr": "색소침착",
           "name_en": "Pigmentation",
           "name_ja": "色素沈着",
@@ -546,6 +557,7 @@
         },
         {
           "code": "lichenification",
+          "name": "Lichenification",
           "name_kr": "태선화",
           "name_en": "Lichenification",
           "name_ja": "テソンファ",
@@ -592,6 +604,7 @@
         },
         {
           "code": "erosionUlcer",
+          "name": "Erosion / Ulcer",
           "name_kr": "미란/궤양",
           "name_en": "Erosion / Ulcer",
           "name_ja": "ミラン/潰瘍",
@@ -637,6 +650,7 @@
         },
         {
           "code": "pustuleCrust",
+          "name": "Pustule / Crust",
           "name_kr": "농포/딱지",
           "name_en": "Pustule / Crust",
           "name_ja": "農耕/かさぶた",
@@ -687,6 +701,7 @@
         },
         {
           "code": "mass",
+          "name": "Mass",
           "name_kr": "혹",
           "name_en": "Mass",
           "name_ja": "こんにちは",
@@ -732,6 +747,7 @@
         },
         {
           "code": "scale",
+          "name": "Scale",
           "name_kr": "각질",
           "name_en": "Scale",
           "name_ja": "角質",
@@ -806,6 +822,7 @@
       "symptoms": [
         {
           "code": "redness",
+          "name": "Redness",
           "name_kr": "발적",
           "name_en": "Redness",
           "name_ja": "発赤",
@@ -854,6 +871,7 @@
         },
         {
           "code": "pigmentation",
+          "name": "Pigmentation",
           "name_kr": "색소침착",
           "name_en": "Pigmentation",
           "name_ja": "色素沈着",
@@ -903,6 +921,7 @@
         },
         {
           "code": "lichenification",
+          "name": "Lichenification",
           "name_kr": "태선화",
           "name_en": "Lichenification",
           "name_ja": "テソンファ",
@@ -949,6 +968,7 @@
         },
         {
           "code": "erosionUlcer",
+          "name": "Erosion / Ulcer",
           "name_kr": "미란/궤양",
           "name_en": "Erosion / Ulcer",
           "name_ja": "ミラン/潰瘍",
@@ -994,6 +1014,7 @@
         },
         {
           "code": "pustuleCrust",
+          "name": "Pustule / Crust",
           "name_kr": "농포/딱지",
           "name_en": "Pustule / Crust",
           "name_ja": "農耕/かさぶた",
@@ -1044,6 +1065,7 @@
         },
         {
           "code": "mass",
+          "name": "Mass",
           "name_kr": "혹",
           "name_en": "Mass",
           "name_ja": "こんにちは",
@@ -1089,6 +1111,7 @@
         },
         {
           "code": "scale",
+          "name": "Scale",
           "name_kr": "각질",
           "name_en": "Scale",
           "name_ja": "角質",
@@ -1164,6 +1187,7 @@
       "symptoms": [
         {
           "code": "redness",
+          "name": "Redness",
           "name_kr": "발적",
           "name_en": "Redness",
           "name_ja": "発赤",
@@ -1212,6 +1236,7 @@
         },
         {
           "code": "pigmentation",
+          "name": "Pigmentation",
           "name_kr": "색소침착",
           "name_en": "Pigmentation",
           "name_ja": "色素沈着",
@@ -1261,6 +1286,7 @@
         },
         {
           "code": "lichenification",
+          "name": "Lichenification",
           "name_kr": "태선화",
           "name_en": "Lichenification",
           "name_ja": "テソンファ",
@@ -1307,6 +1333,7 @@
         },
         {
           "code": "erosionUlcer",
+          "name": "Erosion / Ulcer",
           "name_kr": "미란/궤양",
           "name_en": "Erosion / Ulcer",
           "name_ja": "ミラン/潰瘍",
@@ -1352,6 +1379,7 @@
         },
         {
           "code": "pustuleCrust",
+          "name": "Pustule / Crust",
           "name_kr": "농포/딱지",
           "name_en": "Pustule / Crust",
           "name_ja": "農耕/かさぶた",
@@ -1402,6 +1430,7 @@
         },
         {
           "code": "mass",
+          "name": "Mass",
           "name_kr": "혹",
           "name_en": "Mass",
           "name_ja": "こんにちは",
@@ -1447,6 +1476,7 @@
         },
         {
           "code": "scale",
+          "name": "Scale",
           "name_kr": "각질",
           "name_en": "Scale",
           "name_ja": "角質",
@@ -1519,6 +1549,7 @@
       "symptoms": [
         {
           "code": "calculus",
+          "name": "Tartar",
           "name_kr": "치석",
           "name_en": "Tartar",
           "name_ja": "歯石",
@@ -1561,6 +1592,7 @@
         },
         {
           "code": "inflammation",
+          "name": "Inflammation",
           "name_kr": "염증",
           "name_en": "Inflammation",
           "name_ja": "炎症",
@@ -1631,6 +1663,7 @@
       "symptoms": [
         {
           "code": "discharge",
+          "name": "Eye discharge",
           "name_kr": "눈곱",
           "name_en": "Eye discharge",
           "name_ja": "雪だるま",
@@ -1676,6 +1709,7 @@
         },
         {
           "code": "cornealnecrosis",
+          "name": "Corneal necrosis",
           "name_kr": "각막조직괴사",
           "name_en": "Corneal necrosis",
           "name_ja": "角膜組織壊死",
@@ -1718,6 +1752,7 @@
         },
         {
           "code": "blepharedema",
+          "name": "Blepharedema",
           "name_kr": "안검부종",
           "name_en": "Blepharedema",
           "name_ja": "眼瞼浮腫",
@@ -1759,6 +1794,7 @@
         },
         {
           "code": "chemosis",
+          "name": "Conjunctival edema",
           "name_kr": "결막부종",
           "name_en": "Conjunctival edema",
           "name_ja": "結膜浮腫",
@@ -1801,6 +1837,7 @@
         },
         {
           "code": "hyperemia",
+          "name": "Red eye",
           "name_kr": "충혈",
           "name_en": "Red eye",
           "name_ja": "充血",
@@ -1866,6 +1903,7 @@
       "symptoms": [
         {
           "code": "calculus",
+          "name": "Tartar",
           "name_kr": "치석",
           "name_en": "Tartar",
           "name_ja": "歯石",
@@ -1909,6 +1947,7 @@
         },
         {
           "code": "inflammation",
+          "name": "Inflammation",
           "name_kr": "염증",
           "name_en": "Inflammation",
           "name_ja": "炎症",

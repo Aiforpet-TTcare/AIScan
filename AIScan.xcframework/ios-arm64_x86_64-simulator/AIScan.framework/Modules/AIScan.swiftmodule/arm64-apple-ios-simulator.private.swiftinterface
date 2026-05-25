@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.2.4 effective-5.10 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)
-// swift-module-flags: -target arm64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name AIScan
-// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.4
+// swift-compiler-version: Apple Swift version 6.3.2 effective-5.10 (swiftlang-6.3.2.1.108 clang-2100.1.1.101)
+// swift-module-flags: -target arm64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name AIScan
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.2
 @_exported import AIScan
 import ARKit
 import AVFoundation
@@ -29,7 +29,7 @@ import UIKit
 import UniformTypeIdentifiers
 import Vision
 import VisionKit
-import WebKit
+@preconcurrency import WebKit
 import _Concurrency
 import _PhotosUI_SwiftUI
 import _StringProcessing
@@ -50,12 +50,8 @@ import simd
     set
   }
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public func viewDidLoad()
-  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
-  #endif
   @objc deinit
 }
 extension AIScan.ResultViewController : UIKit.UICollectionViewDelegate, UIKit.UICollectionViewDataSource {
@@ -63,16 +59,14 @@ extension AIScan.ResultViewController : UIKit.UICollectionViewDelegate, UIKit.UI
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, cellForItemAt indexPath: Foundation.IndexPath) -> UIKit.UICollectionViewCell
 }
 extension AIScan.ResultViewController {
-  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency public static func instance(part: AIScan.PartType?, hasSymptoms: Swift.Bool = false) -> AIScan.ResultViewController
-  #endif
 }
 extension AIScan.ResultViewController : AIScan.TTResultViewControllable, AIScan.TTQuestionnaireControllable, AIScan.TTQuestionnaireResultControllable {
   @_Concurrency.MainActor @preconcurrency public func back()
   @_Concurrency.MainActor @preconcurrency public func close()
 }
 final public class QuestionViewModel : Foundation.ObservableObject {
-  @Combine.Published @_projectedValueProperty($currentIndex) final public var currentIndex: Swift.Int {
+  @Combine.Published<Swift.Int> @_projectedValueProperty($currentIndex) final public var currentIndex: Swift.Int {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -84,7 +78,7 @@ final public class QuestionViewModel : Foundation.ObservableObject {
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  @Combine.Published @_projectedValueProperty($questions) final public var questions: [Swift.String] {
+  @Combine.Published<[Swift.String]> @_projectedValueProperty($questions) final public var questions: [Swift.String] {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -96,23 +90,19 @@ final public class QuestionViewModel : Foundation.ObservableObject {
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  #if compiler(>=5.3) && $NonescapableTypes
-  @Combine.Published @_projectedValueProperty($answers) final public var answers: [Swift.Bool?] {
+  @Combine.Published<[Swift.Bool?]> @_projectedValueProperty($answers) final public var answers: [Swift.Bool?] {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     _modify
   }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   final public var $answers: Combine.Published<[Swift.Bool?]>.Publisher {
     get
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  #endif
-  @Combine.Published @_projectedValueProperty($isFinished) final public var isFinished: Swift.Bool {
+  @Combine.Published<Swift.Bool> @_projectedValueProperty($isFinished) final public var isFinished: Swift.Bool {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -124,7 +114,7 @@ final public class QuestionViewModel : Foundation.ObservableObject {
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  @Combine.Published @_projectedValueProperty($isSubmitting) final public var isSubmitting: Swift.Bool {
+  @Combine.Published<Swift.Bool> @_projectedValueProperty($isSubmitting) final public var isSubmitting: Swift.Bool {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -149,9 +139,7 @@ final public class QuestionViewModel : Foundation.ObservableObject {
   public typealias Body = @_opaqueReturnTypeOf("$s6AIScan18WizardQuestionViewV4bodyQrvp", 0) __
 }
 public struct TTLicense : Swift.Codable {
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(serviceRegion: Swift.String? = nil, serviceHost: Swift.String? = nil, serviceVersion: Swift.Int = 1, clientID: Swift.String? = nil, clientKeyID: Swift.String? = nil, clientKeySecret: Swift.String? = nil, clientKey: Swift.String? = nil, accessToken: Swift.String? = nil, accountId: Swift.String? = nil, fcmToken: Swift.String? = nil, showGovCertMark: Swift.Bool? = nil)
-  #endif
   public var serviceRegion: Swift.String?
   public var serviceHost: Swift.String?
   public var serviceVersion: Swift.Int?
@@ -246,9 +234,7 @@ public enum TypeClassification : Swift.String {
   case inflammation
   case necrosis
   case hyperemia
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -267,9 +253,7 @@ public struct AIScanModel {
 public struct OnDeviceQuestion : Swift.Codable {
   public var text: Swift.String?
   public var select: Swift.String?
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(text: Swift.String? = nil, select: Swift.String? = nil)
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -279,18 +263,14 @@ public struct OnDeviceResponse : Swift.Codable {
   public var status: Swift.String?
   public var description: AIScan.OnDeviceDescription?
   public var symptoms: [AIScan.OnDeviceSymptom]?
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(title: Swift.String? = nil, analyzedDate: Swift.String? = nil, status: Swift.String? = nil, description: AIScan.OnDeviceDescription? = nil, symptoms: [AIScan.OnDeviceSymptom]? = nil)
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
 public struct OnDeviceDescription : Swift.Codable {
   public var title: Swift.String?
   public var contents: [Swift.String]?
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(title: Swift.String? = nil, contents: [Swift.String]? = nil)
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -301,9 +281,7 @@ public struct OnDeviceSymptom : Swift.Codable {
   public var cropImageUrl: Swift.String?
   public var score: Swift.Int?
   public var details: [AIScan.OnDeviceSymptomDetail]?
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(code: Swift.String? = nil, name: Swift.String? = nil, heatmapPath: Swift.String? = nil, cropImageUrl: Swift.String? = nil, score: Swift.Int? = nil, details: [AIScan.OnDeviceSymptomDetail]? = nil)
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -311,9 +289,7 @@ public struct OnDeviceSymptomDetail : Swift.Codable {
   public var key: Swift.String?
   public var title: Swift.String?
   public var contents: [Swift.String]?
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(key: Swift.String? = nil, title: Swift.String? = nil, contents: [Swift.String]? = nil)
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -344,16 +320,12 @@ public struct TTDetail : Swift.Codable {
 }
 public struct AISResult : Swift.Codable {
   public var feedbacks: [AIScan.Feedback]?
-  #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
   }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public var string: Swift.String? {
     get
   }
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -364,16 +336,12 @@ public struct AIScanResult : Swift.Codable {
   public var position: Swift.String?
   public var createdAt: Swift.Int?
   public var metadata: [Swift.String : AIScan.AnyCodable]?
-  #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
   }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public var string: Swift.String? {
     get
   }
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -386,9 +354,7 @@ public struct TTData : Swift.Codable {
 public enum PetType : Swift.String {
   case dog
   case cat
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -417,26 +383,14 @@ public enum ModelLibType {
   public static var isAlbumEnabled: Swift.Bool
   public static func configure(license: AIScan.TTLicense)
   public static func configure(authFileData: Foundation.Data)
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func setAPNS(token: Swift.String?)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func toast(_ text: Swift.String?)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func alert(_ text: Swift.String?)
-  #endif
   public static func flashAlert()
   public static func report(isSuccess: Swift.Bool = false)
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: (any Swift.Encodable)? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, metadata: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, resultCompletion: ((AIScan.AIScanResult?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
   @objc deinit
 }
 extension AIScan.AIScanManager {
@@ -454,16 +408,12 @@ public struct InferenceInfo {
   public func calculate() -> AIScan.InferenceResult
 }
 public struct TTResult : Swift.Codable {
-  #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
   }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public var string: Swift.String? {
     get
   }
-  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -485,9 +435,7 @@ public enum TTCameraType : Swift.CaseIterable {
 public enum TTPetType : Swift.String, Swift.Hashable, Swift.Codable, Swift.CaseIterable {
   case dog
   case cat
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias AllCases = [AIScan.TTPetType]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [AIScan.TTPetType] {
@@ -504,30 +452,18 @@ public enum TTPetType : Swift.String, Swift.Hashable, Swift.Codable, Swift.CaseI
     get
     set
   }
-  #if compiler(>=5.3) && $NonescapableTypes
   public static var analysisTracker: (any AIScan.TTAnalysisTracker)? {
     get
     set
   }
-  #endif
   @objc deinit
 }
 extension AIScan.TTManager {
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func guideURLString(petType: AIScan.PetType, partType: AIScan.PartType) -> Swift.String?
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func eye(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func tooth(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func skin(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func showGuideFirst(cameraType: AIScan.TTCameraType, petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
   public static func clearUserDefaults()
 }
 public struct TTFile : Swift.Equatable {
@@ -540,9 +476,7 @@ public struct TTFile : Swift.Equatable {
   public var videoIntervals: [AIScan.VideoInterval]?
   public var description: Swift.String?
   public static func == (lhs: AIScan.TTFile, rhs: AIScan.TTFile) -> Swift.Bool
-  #if compiler(>=5.3) && $NonescapableTypes
   public static func make(type: AIScan.TTFileType = .image, image: UIKit.UIImage?) -> AIScan.TTFile
-  #endif
 }
 public struct VideoInterval : Swift.Equatable, Swift.Codable {
   public static func == (a: AIScan.VideoInterval, b: AIScan.VideoInterval) -> Swift.Bool
@@ -579,12 +513,8 @@ public enum PartType {
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, layout collectionViewLayout: UIKit.UICollectionViewLayout, sizeForItemAt indexPath: Foundation.IndexPath) -> CoreFoundation.CGSize
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, didEndDisplaying cell: UIKit.UICollectionViewCell, forItemAt indexPath: Foundation.IndexPath)
   @_Concurrency.MainActor @preconcurrency @objc public func scrollViewDidEndDecelerating(_ scrollView: UIKit.UIScrollView)
-  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
-  #endif
   @objc deinit
 }
 extension AIScan.TTGalleryViewController {
@@ -593,9 +523,7 @@ extension AIScan.TTGalleryViewController {
 public enum TTFileType : Swift.String {
   case image
   case video
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -608,9 +536,7 @@ public enum DetailPartType : Swift.String, Swift.CaseIterable {
   public var positionTitle: Swift.String {
     get
   }
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias AllCases = [AIScan.DetailPartType]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [AIScan.DetailPartType] {
@@ -622,21 +548,11 @@ public enum DetailPartType : Swift.String, Swift.CaseIterable {
 }
 public typealias TTResultCompletion = (Swift.Int?) -> any AIScan.TTResultViewControllable
 public protocol TTResultViewControllable : UIKit.UIViewController {
-  #if compiler(>=5.3) && $NonescapableTypes
   var backCompletaion: (() -> Swift.Void)? { get set }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   var closeCompletaion: (() -> Swift.Void)? { get set }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   var diagID: Swift.Int? { get set }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   var diagnosisResult: AIScan.DiagnosisResult? { get set }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   var result: AIScan.AIScanResult? { get set }
-  #endif
   func close()
   func back()
 }
@@ -646,9 +562,7 @@ public protocol TTQuestionnaireControllable : AnyObject {
   var shouldShowQuestionnaire: Swift.Bool { get set }
 }
 public protocol TTQuestionnaireResultControllable : AnyObject {
-  #if compiler(>=5.3) && $NonescapableTypes
   var hasSymptomsFromQuestionnaire: Swift.Bool? { get set }
-  #endif
 }
 public enum ModelType : Swift.String, Swift.CaseIterable {
   case angleEstimator
@@ -708,19 +622,13 @@ public enum ModelType : Swift.String, Swift.CaseIterable {
   public var isBCaseScale: Swift.Bool {
     get
   }
-  #if compiler(>=5.3) && $NonescapableTypes
   public var title: Swift.String? {
     get
   }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public var modelKey: Swift.String? {
     get
   }
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias AllCases = [AIScan.ModelType]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [AIScan.ModelType] {
@@ -744,9 +652,7 @@ public struct Feedback {
   public var resultLabel: AIScan.TypeClassification?
 }
 extension UIKit.UIImage {
-  #if compiler(>=5.3) && $NonescapableTypes
   public func annotated(with output0: [Swift.Float32], output1: [Swift.Float32], confidenceThreshold: Swift.Float = 0.5, iouThreshold: Swift.Float = 0.45, maskThreshold: Swift.Float = 0.5) -> UIKit.UIImage?
-  #endif
 }
 public struct CameraMetadata : Swift.Encodable {
   public func encode(to encoder: any Swift.Encoder) throws
@@ -757,9 +663,7 @@ extension AIScan.CameraMetadata : Swift.CustomStringConvertible {
   }
 }
 extension UIKit.UIImage {
-  #if compiler(>=5.3) && $NonescapableTypes
   public func overlayHeatmap(from heatmapMultiArray: CoreML.MLMultiArray, overlayFrame: CoreFoundation.CGRect? = nil, alpha: CoreFoundation.CGFloat = 0.6) -> UIKit.UIImage?
-  #endif
 }
 extension AIScan.PartType : Swift.Equatable {}
 extension AIScan.PartType : Swift.Hashable {}
