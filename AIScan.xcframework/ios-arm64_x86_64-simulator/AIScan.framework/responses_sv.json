@@ -1,0 +1,2037 @@
+{
+  "DOG": {
+    "EYE": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om kisande eller blinkande inte förbättras",
+          "Om ögat förblir delvis eller helt stängt",
+          "Om rodnad, svullnad eller flytning kvarstår eller förvärras",
+          "Om ögat blir grumligt eller ser annorlunda ut än det andra ögat",
+          "Om din hund verkar ljuskänslig eller visar tecken på synförändringar",
+          "Om en knöl på ögonlocket växer, förändras eller börjar irritera ögat"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Öga – råd för vård hemma",
+        "contents": [
+          "Undvik att få schampo eller pälsvårdsprodukter i ditt djurs ögon",
+          "Torka försiktigt bort eventuell flytning med varmt vatten och mjuk gasväv vid behov",
+          "Håll håret runt ögonen prydligt trimmat så att det inte nuddar ögats yta",
+          "Överväg ett dagligt tillskott som stödjer ögonhälsan, med omega-3 och antioxidanter, för att hjälpa till att bibehålla normal syn och tårproduktion"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "epiphora",
+          "name": "Tårflöde",
+          "name_sv": "Tårflöde",
+          "name_kr": "유루증",
+          "name_en": "Epiphora",
+          "name_ja": "ゆる症",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Överdriven tårproduktion som gör området runt ögat fuktigt och kan färga pälsen runt ögat brun eller rödaktig."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Keratit",
+                "Konjunktivit",
+                "Blockerad tårkanal",
+                "Entropion"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Blockerad tårkanal",
+                "Ögonlock som viker sig inåt",
+                "Allergier",
+                "Irritation på ögats yta"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Torka försiktigt bort tårar med steril koksaltlösning och mjuk gasväv",
+                "Låt en hundfrisör hålla håret borta från ögonen",
+                "Om nya godbitar nyligen introducerats, pausa dem i 1–2 veckor"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "ectropion",
+          "name": "Ektropion",
+          "name_sv": "Ektropion",
+          "name_kr": "안검외반증",
+          "name_en": "Ectropion",
+          "name_ja": "眼剣外反症",
+          "score": -3,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett tillstånd där det nedre ögonlocket hänger utåt och gör att en del av ögat blir mer exponerad."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Medfött, ofta kopplat till rasbenägenhet",
+                "Åldersrelaterade förändringar",
+                "Ansiktsnervsförlamning",
+                "Skada på ögonlocket"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Rasrelaterad ögonlocksform",
+                "Åldersrelaterad slapphet i ögonlocksvävnaden",
+                "Långvarig irritation eller inflammation",
+                "Tidigare skada"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Håll ögonlocken rena om flytning uppstår",
+                "Håll utkik efter rodnad eller flytning",
+                "Undvik dammiga eller blåsiga miljöer när det är möjligt"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "cherry",
+          "name": "Körsbärsöga",
+          "name_sv": "Körsbärsöga",
+          "name_kr": "제3안검돌출증",
+          "name_en": "Cherry eye",
+          "name_ja": "第3眼剣突出症",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett tillstånd där tredje ögonlocket, som normalt är dolt, buktar fram och syns som en röd, svullen knöl."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Framfall av tredje ögonlockets körtel, cherry eye",
+                "Inflammation i tredje ögonlocket",
+                "Tumörsjukdom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Förskjutning av tredje ögonlockets körtel, cherry eye",
+                "Svag stödjevävnad",
+                "Rasrelaterad benägenhet"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik att röra vid den utbuktande vävnaden.",
+                "Använd krage om hunden fortsätter att gnugga sig",
+                "Veterinärbedömning rekommenderas"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "hyperemia",
+          "name": "Rött öga",
+          "name_sv": "Rött öga",
+          "name_kr": "충혈",
+          "name_en": "Red eye",
+          "name_ja": "充血",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Den vita delen av ögat ser rödare ut än vanligt, med mer synliga blodkärl."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Konjunktivit",
+                "Uveit",
+                "Glaukom",
+                "Keratokonjunktivitis sicca",
+                "Ögonskada eller främmande föremål"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Konjunktivit, infektion eller allergi",
+                "Irritation eller främmande föremål",
+                "Ökat tryck inne i ögat",
+                "Inflammation inne i ögat",
+                "Torra ögon"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Låt din hund vila i en lugn och dämpad miljö",
+                "Undvik rök, sprayer eller starka dofter",
+                "Begränsa stressande förändringar i hemmet"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "opacity",
+          "name": "Grumling",
+          "name_sv": "Grumling",
+          "name_kr": "혼탁",
+          "name_en": "Opacity",
+          "name_ja": "混濁",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett grumligt eller disigt utseende på ögat eller ögats yta."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Katarakt",
+                "Nukleär skleros",
+                "Hornhinneödem eller keratit",
+                "Uveit",
+                "Glaukom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Hornhinneinflammation",
+                "Katarakt",
+                "Åldersrelaterad linsförändring",
+                "Ökat ögontryck",
+                "Inflammation inne i ögat"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Håll utkik efter tecken på nedsatt syn",
+                "Behåll möbleringen oförändrad"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "discharge",
+          "name": "Ögonflytning",
+          "name_sv": "Ögonflytning",
+          "name_kr": "눈곱",
+          "name_en": "Eye discharge",
+          "name_ja": "雪だるま",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Flytning som samlas runt ögat och kan vara klar, vit, gul eller brun."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Konjunktivit",
+                "Keratokonjunktivitis sicca",
+                "Blockerad tårkanal"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Infektion, bakteriell eller viral",
+                "Allergier",
+                "Torra ögon, minskad tårproduktion",
+                "Irritation eller små partiklar",
+                "Blockerad tårkanal"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Torka försiktigt med steril koksaltlösning och mjuk gasväv",
+                "Var uppmärksam på förändringar i färg eller mängd"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "chemosis",
+          "name": "Konjunktivalt ödem",
+          "name_sv": "Konjunktivalt ödem",
+          "name_kr": "결막부종",
+          "name_en": "Conjunctival edema",
+          "name_ja": "結膜浮腫",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Svullnad i den vita delen av ögat eller den rosa inre vävnaden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Allergisk konjunktivit",
+                "Konjunktivit",
+                "Ögonirritation eller främmande kropp"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Allergier",
+                "Konjunktivit",
+                "Infektion",
+                "Irritation"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Använd krage om hunden fortsätter att gnugga sig",
+                "Begränsa exponering för damm och vind"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "blepharedema",
+          "name": "Ögonlockssvullnad",
+          "name_sv": "Ögonlockssvullnad",
+          "name_kr": "안검부종",
+          "name_en": "Blepharedema",
+          "name_ja": "眼瞼浮腫",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Svullnad och förtjockning av ögonlocken."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Blefarit",
+                "Allergisk reaktion",
+                "Trauma",
+                "Systemiskt ödem"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Ögonlocksinflammation",
+                "Allergisk reaktion",
+                "Mindre skada",
+                "Vätskeansamling"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik att röra eller klämma på ögonlocken",
+                "Tvätta bäddmaterial varje vecka",
+                "Pausa nya godbitar",
+                "Undvik rök eller sprayer"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "blepharoncus",
+          "name": "Knöl på ögonlocket",
+          "name_sv": "Knöl på ögonlocket",
+          "name_kr": "안검혹",
+          "name_en": "Eyelid mass",
+          "name_ja": "眼瞼",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "En knöl eller bula på ögonlocksområdet."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Hordeolum",
+                "Chalazion",
+                "Godartad tumör",
+                "Elakartad tumör"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Blockerad talgkörtel, vagel",
+                "Godartad tillväxt",
+                "Mer sällan en allvarligare tumör"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och manipulera inte knölen",
+                "Var uppmärksam på förändringar i storlek eller form"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "BODY": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om rodnad eller irritation sprider sig eller blir värre",
+          "Om din hund fortsätter att klia sig ofta trots grundläggande vård",
+          "Om du ser öppna sår, blödning eller fuktiga irriterade hudområden",
+          "Om huden får en ihållande stark eller ovanlig lukt",
+          "Om en knöl växer, förändrar utseende eller blir röd eller smärtsam"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Hud – råd för vård hemma",
+        "contents": [
+          "Efter bad, torka försiktigt områden med begränsad luftcirkulation – som armhålor, ljumskar och mellan tårna – med en mjuk handduk eller en fön på låg och sval inställning",
+          "Frekvent slickande på tassarna kan vara kopplat till hudirritation, tristess eller stress. Regelbunden motion och aktivering kan hjälpa till att minska slickandet",
+          "För anteckningar över schampon, pälsvårdsprodukter, foder och godbitar. Förändringar i produkter eller ingredienser kan ibland bidra till hudirritation",
+          "Ett dagligt hudstödjande tillskott med omega-3- och omega-6-fettsyror kan hjälpa till att bibehålla normal hud- och pälshälsa"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "redness",
+          "name": "Rodnad",
+          "name_sv": "Rodnad",
+          "name_kr": "발적",
+          "name_en": "Redness",
+          "name_ja": "発赤",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett hudområde som ser rödare ut än din hunds normala hudfärg."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Ytlig pyodermi",
+                "Malassezia-dermatit",
+                "Angrepp av yttre parasiter",
+                "Irritativt kontakteksem"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Allergisk hudsjukdom",
+                "Bakterie- eller jästsvampsinfektion",
+                "Parasiter",
+                "Kontaktirritation"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik nya möjliga irritanter som gräs, nya schampon, tvättmedel eller rengöringsmedel",
+                "Pausa nyligen introducerade godbitar eller tillskott i 1–2 veckor",
+                "Använd krage om slickandet fortsätter",
+                "Tvätta bäddmaterial varje vecka"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pigmentation",
+          "name": "Pigmentering",
+          "name_sv": "Pigmentering",
+          "name_kr": "색소침착",
+          "name_en": "Pigmentation",
+          "name_ja": "色素沈着",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett mörkare hudområde som kan vara naturligt mörkare, eller som gradvis har blivit mörkare på grund av långvarig inflammation eller irritation."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Malassezia-dermatit",
+                "Ytlig pyodermi",
+                "Endokrin dermatos",
+                "Acanthosis nigricans",
+                "Postinflammatorisk hyperpigmentering"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Normal hudvariation hos vissa hundar",
+                "Långvarig hudinflammation",
+                "Kroniska allergier",
+                "Hormonell obalans",
+                "Postinflammatorisk mörkfärgning"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Minska friktion från sele eller halsband",
+                "Fortsätt med tidigare ordinerad allergihantering om sådan finns",
+                "Begränsa överdriven solexponering på områden med gles päls"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "lichenification",
+          "name": "Likenifiering",
+          "name_sv": "Likenifiering",
+          "name_kr": "태선화",
+          "name_en": "Lichenification",
+          "name_ja": "テソンファ",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Förtjockad och förgrovad hud orsakad av kronisk inflammation eller upprepad klåda eller irritation."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Malassezia-dermatit",
+                "Kronisk bakteriell dermatit",
+                "Akralt slickgranulom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Långvarig allergisk hudsjukdom",
+                "Överväxt av jästsvamp",
+                "Kronisk bakteriell infektion",
+                "Upprepat kliande eller slickande"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Använd krage om slickande eller kliande fortsätter",
+                "Håll området rent och väl torkat",
+                "Fortsätt med konsekvent allergikontroll"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "erosionUlcer",
+          "name": "Erosion / sår",
+          "name_sv": "Erosion / sår",
+          "name_kr": "미란/궤양",
+          "name_en": "Erosion / Ulcer",
+          "name_ja": "ミラン/潰瘍",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett tillstånd där hudytan har skalats av, eller där djupare skada skapar ett insjunket område."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Djup pyodermi",
+                "Autoimmun hudsjukdom",
+                "Traumatisk hudskada",
+                "Hudtumör"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Djup hudinfektion",
+                "Immunrelaterad hudsjukdom",
+                "Hudtumör",
+                "Hudskada"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Håll smuts och skräp borta",
+                "Använd krage för att förhindra slickande",
+                "Veterinärbedömning rekommenderas"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pustuleCrust",
+          "name": "Pustel / skorpa",
+          "name_sv": "Pustel / skorpa",
+          "name_kr": "농포/딱지",
+          "name_en": "Pustule / Crust",
+          "name_ja": "農耕/かさぶた",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Pustel: små upphöjningar fyllda med var",
+                "Skorpa: hårdnad, torkad flytning eller hudvätska på ytan",
+                "När det påverkar örat kan skorpor vara torkad flytning från insidan av örat som har hårdnat på ytterörat."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Ytlig pyodermi",
+                "Malassezia-dermatit",
+                "Atopisk dermatit",
+                "Angrepp av yttre parasiter",
+                "Extern otit"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Bakteriell hudinfektion",
+                "Jästsvampsinfektion",
+                "Allergier",
+                "Parasiter",
+                "Öroninfektion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och pilla inte på hudförändringarna",
+                "Använd krage om slickandet fortsätter",
+                "Pausa nyligen introducerade godbitar i 1–2 veckor",
+                "Om din veterinär tidigare rekommenderat det, använd en antiseptisk tvätt avsedd för hundar"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mass",
+          "name": "Knöl",
+          "name_sv": "Knöl",
+          "name_kr": "혹",
+          "name_en": "Mass",
+          "name_ja": "こんにちは",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "En rundad knöl som syns på eller under huden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Mastcellstumör",
+                "Godartad hudtumör",
+                "Elakartad hudtumör",
+                "Abscess",
+                "Granulom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Inflammation eller abscess",
+                "Godartad tillväxt",
+                "Mer sällan en allvarligare tumör"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och manipulera inte knölen",
+                "Ta ett foto varje vecka för att följa storleken",
+                "Mät med linjal för jämförelse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "scale",
+          "name": "Hudfjällning",
+          "name_sv": "Hudfjällning",
+          "name_kr": "각질",
+          "name_en": "Scale",
+          "name_ja": "角質",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Vita eller gula hudflagor eller fjäll som lossnar från eller sitter fast på huden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Seborroisk dermatit",
+                "Malassezia-dermatit",
+                "Atopisk dermatit",
+                "Ytlig pyodermi",
+                "Endokrin dermatos, hypotyreos",
+                "Angrepp av yttre parasiter",
+                "Foderallergisk dermatit",
+                "Dermatofytos"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Fet eller fjällande hud",
+                "Jästsvampsinfektion",
+                "Allergier",
+                "Bakteriell infektion",
+                "Hormonell obalans",
+                "Parasiter",
+                "Svampinfektion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Borsta regelbundet för att ta bort lösa flagor",
+                "Använd ett milt, återfuktande schampo avsett för hundar"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "FOOT": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om rodnad eller irritation sprider sig eller blir värre",
+          "Om din hund fortsätter att klia sig ofta trots grundläggande vård",
+          "Om du ser öppna sår, blödning eller fuktiga irriterade hudområden",
+          "Om huden får en ihållande stark eller ovanlig lukt",
+          "Om en knöl växer, förändrar utseende eller blir röd eller smärtsam"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Hud – råd för vård hemma",
+        "contents": [
+          "Efter bad, torka försiktigt områden med begränsad luftcirkulation – som armhålor, ljumskar och mellan tårna – med en mjuk handduk eller en fön på låg och sval inställning",
+          "Frekvent slickande på tassarna kan vara kopplat till hudirritation, tristess eller stress. Regelbunden motion och aktivering kan hjälpa till att minska slickandet",
+          "För anteckningar över schampon, pälsvårdsprodukter, foder och godbitar. Förändringar i produkter eller ingredienser kan ibland bidra till hudirritation",
+          "Ett dagligt hudstödjande tillskott med omega-3- och omega-6-fettsyror kan hjälpa till att bibehålla normal hud- och pälshälsa"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "redness",
+          "name": "Rodnad",
+          "name_sv": "Rodnad",
+          "name_kr": "발적",
+          "name_en": "Redness",
+          "name_ja": "発赤",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett hudområde som ser rödare ut än din hunds normala hudfärg."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Ytlig pyodermi",
+                "Malassezia-dermatit",
+                "Angrepp av yttre parasiter",
+                "Irritativt kontakteksem"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Allergisk hudsjukdom",
+                "Bakterie- eller jästsvampsinfektion",
+                "Parasiter",
+                "Kontaktirritation"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik nya möjliga irritanter som gräs, nya schampon, tvättmedel eller rengöringsmedel",
+                "Pausa nyligen introducerade godbitar eller tillskott i 1–2 veckor",
+                "Använd krage om slickandet fortsätter",
+                "Tvätta bäddmaterial varje vecka"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pigmentation",
+          "name": "Pigmentering",
+          "name_sv": "Pigmentering",
+          "name_kr": "색소침착",
+          "name_en": "Pigmentation",
+          "name_ja": "色素沈着",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett mörkare hudområde som kan vara naturligt mörkare, eller som gradvis har blivit mörkare på grund av långvarig inflammation eller irritation."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Malassezia-dermatit",
+                "Ytlig pyodermi",
+                "Endokrin dermatos",
+                "Acanthosis nigricans",
+                "Postinflammatorisk hyperpigmentering"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Normal hudvariation hos vissa hundar",
+                "Långvarig hudinflammation",
+                "Kroniska allergier",
+                "Hormonell obalans",
+                "Postinflammatorisk mörkfärgning"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Minska friktion från sele eller halsband",
+                "Fortsätt med tidigare ordinerad allergihantering om sådan finns",
+                "Begränsa överdriven solexponering på områden med gles päls"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "lichenification",
+          "name": "Likenifiering",
+          "name_sv": "Likenifiering",
+          "name_kr": "태선화",
+          "name_en": "Lichenification",
+          "name_ja": "テソンファ",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Förtjockad och förgrovad hud orsakad av kronisk inflammation eller upprepad klåda eller irritation."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Malassezia-dermatit",
+                "Kronisk bakteriell dermatit",
+                "Akralt slickgranulom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Långvarig allergisk hudsjukdom",
+                "Överväxt av jästsvamp",
+                "Kronisk bakteriell infektion",
+                "Upprepat kliande eller slickande"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Använd krage om slickande eller kliande fortsätter",
+                "Håll området rent och väl torkat",
+                "Fortsätt med konsekvent allergikontroll"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "erosionUlcer",
+          "name": "Erosion / sår",
+          "name_sv": "Erosion / sår",
+          "name_kr": "미란/궤양",
+          "name_en": "Erosion / Ulcer",
+          "name_ja": "ミラン/潰瘍",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett tillstånd där hudytan har skalats av, eller där djupare skada skapar ett insjunket område."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Djup pyodermi",
+                "Autoimmun hudsjukdom",
+                "Traumatisk hudskada",
+                "Hudtumör"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Djup hudinfektion",
+                "Immunrelaterad hudsjukdom",
+                "Hudtumör",
+                "Hudskada"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Håll smuts och skräp borta",
+                "Använd krage för att förhindra slickande",
+                "Veterinärbedömning rekommenderas"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pustuleCrust",
+          "name": "Pustel / skorpa",
+          "name_sv": "Pustel / skorpa",
+          "name_kr": "농포/딱지",
+          "name_en": "Pustule / Crust",
+          "name_ja": "農耕/かさぶた",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Pustel: små upphöjningar fyllda med var",
+                "Skorpa: hårdnad, torkad flytning eller hudvätska på ytan",
+                "När det påverkar örat kan skorpor vara torkad flytning från insidan av örat som har hårdnat på ytterörat."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Ytlig pyodermi",
+                "Malassezia-dermatit",
+                "Atopisk dermatit",
+                "Angrepp av yttre parasiter",
+                "Extern otit"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Bakteriell hudinfektion",
+                "Jästsvampsinfektion",
+                "Allergier",
+                "Parasiter",
+                "Öroninfektion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och pilla inte på hudförändringarna",
+                "Använd krage om slickandet fortsätter",
+                "Pausa nyligen introducerade godbitar i 1–2 veckor",
+                "Om din veterinär tidigare rekommenderat det, använd en antiseptisk tvätt avsedd för hundar"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mass",
+          "name": "Knöl",
+          "name_sv": "Knöl",
+          "name_kr": "혹",
+          "name_en": "Mass",
+          "name_ja": "こんにちは",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "En rundad knöl som syns på eller under huden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Mastcellstumör",
+                "Godartad hudtumör",
+                "Elakartad hudtumör",
+                "Abscess",
+                "Granulom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Inflammation eller abscess",
+                "Godartad tillväxt",
+                "Mer sällan en allvarligare tumör"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och manipulera inte knölen",
+                "Ta ett foto varje vecka för att följa storleken",
+                "Mät med linjal för jämförelse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "scale",
+          "name": "Hudfjällning",
+          "name_sv": "Hudfjällning",
+          "name_kr": "각질",
+          "name_en": "Scale",
+          "name_ja": "角質",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Vita eller gula hudflagor eller fjäll som lossnar från eller sitter fast på huden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Seborroisk dermatit",
+                "Malassezia-dermatit",
+                "Atopisk dermatit",
+                "Ytlig pyodermi",
+                "Endokrin dermatos, hypotyreos",
+                "Angrepp av yttre parasiter",
+                "Foderallergisk dermatit",
+                "Dermatofytos"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Fet eller fjällande hud",
+                "Jästsvampsinfektion",
+                "Allergier",
+                "Bakteriell infektion",
+                "Hormonell obalans",
+                "Parasiter",
+                "Svampinfektion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Borsta regelbundet för att ta bort lösa flagor",
+                "Använd ett milt, återfuktande schampo avsett för hundar"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "EAR": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om din hund fortsätter att skaka på huvudet eller klia sig trots grundläggande vård",
+          "Om rodnad eller svullnad inne i örat ökar",
+          "Om tjock flytning eller kraftiga beläggningar kvarstår trots försiktig rengöring",
+          "Om din hund verkar ha ont när örat vidrörs",
+          "Om huvudlutning eller balansproblem fortsätter",
+          "Om en knöl växer, förändrar utseende eller blir röd eller smärtsam"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Öra – råd för vård hemma",
+        "contents": [
+          "Håll öronen rena och torra, särskilt efter bad eller simning",
+          "Använd öronrengöring endast enligt anvisning och sluta om rodnad eller ökad irritation uppstår",
+          "Följ upp förändringar i foder eller godbitar, eftersom foderallergier kan påverka öronhälsan",
+          "Ett dagligt hud- och öronstödjande tillskott med omega-3-fettsyror kan hjälpa till att bibehålla normal öronhälsa"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "redness",
+          "name": "Rodnad",
+          "name_sv": "Rodnad",
+          "name_kr": "발적",
+          "name_en": "Redness",
+          "name_ja": "発赤",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett hudområde som ser rödare ut än din hunds normala hudfärg."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Ytlig pyodermi",
+                "Malassezia-dermatit",
+                "Angrepp av yttre parasiter",
+                "Irritativt kontakteksem"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Allergisk hudsjukdom",
+                "Bakterie- eller jästsvampsinfektion",
+                "Parasiter",
+                "Kontaktirritation"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik nya möjliga irritanter som gräs, nya schampon, tvättmedel eller rengöringsmedel",
+                "Pausa nyligen introducerade godbitar eller tillskott i 1–2 veckor",
+                "Använd krage om slickandet fortsätter",
+                "Tvätta bäddmaterial varje vecka"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pigmentation",
+          "name": "Pigmentering",
+          "name_sv": "Pigmentering",
+          "name_kr": "색소침착",
+          "name_en": "Pigmentation",
+          "name_ja": "色素沈着",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett mörkare hudområde som kan vara naturligt mörkare, eller som gradvis har blivit mörkare på grund av långvarig inflammation eller irritation."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Malassezia-dermatit",
+                "Ytlig pyodermi",
+                "Endokrin dermatos",
+                "Acanthosis nigricans",
+                "Postinflammatorisk hyperpigmentering"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Normal hudvariation hos vissa hundar",
+                "Långvarig hudinflammation",
+                "Kroniska allergier",
+                "Hormonell obalans",
+                "Postinflammatorisk mörkfärgning"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Minska friktion från sele eller halsband",
+                "Fortsätt med tidigare ordinerad allergihantering om sådan finns",
+                "Begränsa överdriven solexponering på områden med gles päls"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "lichenification",
+          "name": "Likenifiering",
+          "name_sv": "Likenifiering",
+          "name_kr": "태선화",
+          "name_en": "Lichenification",
+          "name_ja": "テソンファ",
+          "score": -5,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Förtjockad och förgrovad hud orsakad av kronisk inflammation eller upprepad klåda eller irritation."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Atopisk dermatit",
+                "Foderallergisk dermatit",
+                "Malassezia-dermatit",
+                "Kronisk bakteriell dermatit",
+                "Akralt slickgranulom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Långvarig allergisk hudsjukdom",
+                "Överväxt av jästsvamp",
+                "Kronisk bakteriell infektion",
+                "Upprepat kliande eller slickande"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Använd krage om slickande eller kliande fortsätter",
+                "Håll området rent och väl torkat",
+                "Fortsätt med konsekvent allergikontroll"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "erosionUlcer",
+          "name": "Erosion / sår",
+          "name_sv": "Erosion / sår",
+          "name_kr": "미란/궤양",
+          "name_en": "Erosion / Ulcer",
+          "name_ja": "ミラン/潰瘍",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Ett tillstånd där hudytan har skalats av, eller där djupare skada skapar ett insjunket område."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Djup pyodermi",
+                "Autoimmun hudsjukdom",
+                "Traumatisk hudskada",
+                "Hudtumör"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Djup hudinfektion",
+                "Immunrelaterad hudsjukdom",
+                "Hudtumör",
+                "Hudskada"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Håll smuts och skräp borta",
+                "Använd krage för att förhindra slickande",
+                "Veterinärbedömning rekommenderas"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "pustuleCrust",
+          "name": "Pustel / skorpa",
+          "name_sv": "Pustel / skorpa",
+          "name_kr": "농포/딱지",
+          "name_en": "Pustule / Crust",
+          "name_ja": "農耕/かさぶた",
+          "score": -21,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Pustel: små upphöjningar fyllda med var",
+                "Skorpa: hårdnad, torkad flytning eller hudvätska på ytan",
+                "När det påverkar örat kan skorpor vara torkad flytning från insidan av örat som har hårdnat på ytterörat."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Ytlig pyodermi",
+                "Malassezia-dermatit",
+                "Atopisk dermatit",
+                "Angrepp av yttre parasiter",
+                "Extern otit"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Bakteriell hudinfektion",
+                "Jästsvampsinfektion",
+                "Allergier",
+                "Parasiter",
+                "Öroninfektion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och pilla inte på hudförändringarna",
+                "Använd krage om slickandet fortsätter",
+                "Pausa nyligen introducerade godbitar i 1–2 veckor",
+                "Om din veterinär tidigare rekommenderat det, använd en antiseptisk tvätt avsedd för hundar"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "mass",
+          "name": "Knöl",
+          "name_sv": "Knöl",
+          "name_kr": "혹",
+          "name_en": "Mass",
+          "name_ja": "こんにちは",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "En rundad knöl som syns på eller under huden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Mastcellstumör",
+                "Godartad hudtumör",
+                "Elakartad hudtumör",
+                "Abscess",
+                "Granulom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Inflammation eller abscess",
+                "Godartad tillväxt",
+                "Mer sällan en allvarligare tumör"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Kläm inte och manipulera inte knölen",
+                "Ta ett foto varje vecka för att följa storleken",
+                "Mät med linjal för jämförelse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "scale",
+          "name": "Hudfjällning",
+          "name_sv": "Hudfjällning",
+          "name_kr": "각질",
+          "name_en": "Scale",
+          "name_ja": "角質",
+          "score": -16,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Vita eller gula hudflagor eller fjäll som lossnar från eller sitter fast på huden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Seborroisk dermatit",
+                "Malassezia-dermatit",
+                "Atopisk dermatit",
+                "Ytlig pyodermi",
+                "Endokrin dermatos, hypotyreos",
+                "Angrepp av yttre parasiter",
+                "Foderallergisk dermatit",
+                "Dermatofytos"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Fet eller fjällande hud",
+                "Jästsvampsinfektion",
+                "Allergier",
+                "Bakteriell infektion",
+                "Hormonell obalans",
+                "Parasiter",
+                "Svampinfektion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Borsta regelbundet för att ta bort lösa flagor",
+                "Använd ett milt, återfuktande schampo avsett för hundar"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "TEETH": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om din hund visar tecken på smärta i munnen när den äter eller tuggar",
+          "Om tandköttet är rött, svullet eller blöder",
+          "Om dålig andedräkt blir tydligt värre",
+          "Om du märker lösa tänder eller kraftig tandstensbeläggning",
+          "Om det inte blir någon förbättring trots grundläggande tandvård"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Tänder – råd för vård hemma",
+        "contents": [
+          "Borsta din hunds tänder dagligen, eller minst 2–3 gånger i veckan, med djursäker tandkräm och en mjuk tandborste",
+          "Om tandborstning är svårt kan dentaltugg eller tandvårdsfoder hjälpa till att hantera plack"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "calculus",
+          "name": "Tandsten",
+          "name_sv": "Tandsten",
+          "name_kr": "치석",
+          "name_en": "Tartar",
+          "name_ja": "歯石",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Förhårdnat tandplack på tandytan som blir en gul, brun eller grå stenliknande beläggning."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Tandsten",
+                "Parodontal sjukdom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Plackansamling på tänderna",
+                "Oregelbunden tandborstning",
+                "Matrester på tänderna"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Borsta din hunds tänder dagligen med tandkräm avsedd för hundar",
+                "Ge dentaltugg som är utformade för att minska plack",
+                "Ge säkra tuggleksaker som hjälper till att kontrollera beläggningar"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "inflammation",
+          "name": "Inflammation",
+          "name_sv": "Inflammation",
+          "name_kr": "염증",
+          "name_en": "Inflammation",
+          "name_ja": "炎症",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Svullnad, rodnad eller blödning i tandköttet."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Gingivit",
+                "Parodontit",
+                "Tandrotsabscess"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Tandstensansamling",
+                "Bakteriell tandköttsinfektion",
+                "Irritation i tandköttet"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Börja med försiktig daglig tandborstning om hunden tolererar det",
+                "Använd tandservetter om tandborstning är svårt",
+                "Undvik hårda ben eller föremål som kan irritera tandköttet",
+                "Överväg en munskölj avsedd för hundar"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "CAT": {
+    "EYE": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om kisande fortsätter eller ögat förblir delvis eller helt stängt",
+          "Om rodnad, svullnad eller flytning inte förbättras eller förvärras",
+          "Om ögat blir grumligt, får en mörk fläck eller ser annorlunda ut än det andra ögat",
+          "Om din katt verkar ljuskänslig eller visar tecken på ögonsmärta",
+          "Om synen verkar påverkad",
+          "Om din katt blir mindre aktiv, gömmer sig mer än vanligt eller äter mindre"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Öga – råd för vård hemma",
+        "contents": [
+          "Använd en mjuk gasvävskompress fuktad med varmt vatten för att försiktigt rengöra ögonflytning",
+          "Håll din katt borta från doftljus, sprayer och starka hushållsdofter som kan irritera ögonen",
+          "Om din katt har haft infektion med felint herpesvirus, försök minska stress och behålla en stabil miljö eftersom stress kan utlösa skov",
+          "Ett dagligt tillskott som stödjer ögonhälsan, med omega-3 och antioxidanter, kan hjälpa till att bibehålla normal immunfunktion och ögonhälsa"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "discharge",
+          "name": "Ögonflytning",
+          "name_sv": "Ögonflytning",
+          "name_kr": "눈곱",
+          "name_en": "Eye discharge",
+          "name_ja": "雪だるま",
+          "score": -9,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Flytning som samlas runt ögat och kan vara klar, vit, gul eller brun."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Konjunktivit",
+                "Övre luftvägsinfektion hos katt",
+                "Keratit",
+                "Hornhinnesår",
+                "Blockerad tårkanal"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Ögoninfektion",
+                "Viral luftvägssjukdom",
+                "Blockerad tårkanal",
+                "Irritation på ögats yta"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Rengör flytning försiktigt med steril koksaltlösning och mjuk gasväv",
+                "Kontrollera om katten nyser, har näsflöde eller minskad aptit"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "cornealnecrosis",
+          "name": "Hornhinnenekros",
+          "name_sv": "Hornhinnenekros",
+          "name_kr": "각막조직괴사",
+          "name_en": "Corneal necrosis",
+          "name_ja": "角膜組織壊死",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "En brun eller svart fläck på ögats yta, hornhinnan, som kan tyda på skadad vävnad."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Hornhinnesequester",
+                "Hornhinnesår",
+                "Keratit"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Långvarig ögonirritation",
+                "Virusinfektion",
+                "Rasrelaterad benägenhet"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Minska exponering för starkt ljus",
+                "Använd krage om katten fortsätter att gnugga sig"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "blepharedema",
+          "name": "Ögonlockssvullnad",
+          "name_sv": "Ögonlockssvullnad",
+          "name_kr": "안검부종",
+          "name_en": "Blepharedema",
+          "name_ja": "眼瞼浮腫",
+          "score": -3,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Svullnad och förtjockning av ögonlocken."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Blefarit",
+                "Allergisk dermatit",
+                "Skada på ögonlocket"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Ögonlocksinflammation",
+                "Allergisk reaktion"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik att röra eller klämma på ögonlocken",
+                "Använd krage om katten fortsätter att gnugga sig"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "chemosis",
+          "name": "Konjunktivalt ödem",
+          "name_sv": "Konjunktivalt ödem",
+          "name_kr": "결막부종",
+          "name_en": "Conjunctival edema",
+          "name_ja": "結膜浮腫",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Svullnad i den vita delen av ögat eller den rosa inre vävnaden."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Konjunktivit",
+                "Allergisk konjunktivit",
+                "Infektion med felint herpesvirus"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Viral eller bakteriell infektion",
+                "Allergier",
+                "Irritation"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Använd krage om katten fortsätter att gnugga sig",
+                "Om irritation kvarstår, ta tillfälligt bort ny kattsand, sprayer eller rengöringsmedel"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "hyperemia",
+          "name": "Rött öga",
+          "name_sv": "Rött öga",
+          "name_kr": "충혈",
+          "name_en": "Red eye",
+          "name_ja": "充血",
+          "score": -12,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Den vita delen av ögat ser rödare ut än vanligt, med mer synliga blodkärl."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Konjunktivit",
+                "Uveit",
+                "Glaukom",
+                "Ögonskada"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Ögoninfektion",
+                "Inflammation inne i ögat",
+                "Ökat ögontryck"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Låt din katt vila i en lugn och dämpad miljö",
+                "Undvik rök och starka dofter",
+                "Begränsa stressande förändringar i hemmet"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "TEETH": {
+      "time_to_see_a_vet": {
+        "title": "När du bör kontakta veterinär",
+        "contents": [
+          "Om din katt äter mindre eller verkar tveka inför att äta",
+          "Om din katt undviker att tugga eller tappar mat när den äter",
+          "Om tandköttet är rött, svullet eller blöder",
+          "Om du märker dregling eller att katten tassar mot munnen",
+          "Om dålig andedräkt blir tydligt värre"
+        ]
+      },
+      "home_care_tips": {
+        "title": "Tänder – råd för vård hemma",
+        "contents": [
+          "Borsta din katts tänder dagligen, eller minst några gånger i veckan, med djursäker tandkräm och en mjuk tandborste",
+          "Om tandborstning är svårt kan tandgodis eller tandvårdsfoder hjälpa till att hantera plack"
+        ]
+      },
+      "symptoms": [
+        {
+          "code": "calculus",
+          "name": "Tandsten",
+          "name_sv": "Tandsten",
+          "name_kr": "치석",
+          "name_en": "Tartar",
+          "name_ja": "歯石",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Förhårdnat tandplack på tandytan som blir en gul, brun eller grå stenliknande beläggning."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Tandsten",
+                "Parodontal sjukdom"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Plackansamling på tänderna",
+                "Oregelbunden tandborstning",
+                "Matrester på tänderna"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Börja borsta långsamt om din katt tolererar det",
+                "Använd tandkräm avsedd för katter",
+                "Prova tandservetter om tandborstning är svårt",
+                "Ge tandgodis som är avsett att hjälpa till att kontrollera tandsten"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "inflammation",
+          "name": "Inflammation",
+          "name_sv": "Inflammation",
+          "name_kr": "염증",
+          "name_en": "Inflammation",
+          "name_ja": "炎症",
+          "score": -50,
+          "details": [
+            {
+              "key": "what_it_is",
+              "title": "Vad det är",
+              "contents": [
+                "Svullnad, rodnad eller blödning i tandköttet."
+              ]
+            },
+            {
+              "key": "related_clinical_conditions",
+              "title": "Relaterade kliniska tillstånd",
+              "contents": [
+                "Gingivit",
+                "Parodontit",
+                "Kronisk gingivostomatit hos katt",
+                "Tandresorption"
+              ]
+            },
+            {
+              "key": "possible_causes",
+              "title": "Möjliga orsaker",
+              "contents": [
+                "Tandstensansamling",
+                "Bakteriell eller viral infektion",
+                "Immunrelaterad inflammation",
+                "Tandskada eller resorption"
+              ]
+            },
+            {
+              "key": "what_you_can_do",
+              "title": "Vad du kan göra",
+              "contents": [
+                "Undvik hårda godbitar eller torrfoder som kan irritera tandköttet",
+                "Erbjud mjukare mat om tuggandet verkar obekvämt",
+                "Håll området runt munnen rent om katten dreglar",
+                "Behåll en lugn miljö med låg stress"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

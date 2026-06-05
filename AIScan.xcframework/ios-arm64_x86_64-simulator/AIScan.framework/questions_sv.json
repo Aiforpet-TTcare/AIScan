@@ -1,0 +1,69 @@
+{
+  "DOG": {
+    "EYE": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Är pupillerna olika stora?",
+        "Stöter din hund emot saker eller verkar ha svårt att se?",
+        "Kisar din hund eller kan den inte hålla ögat öppet?",
+        "Drar sig din hund undan när du rör vid området nära ögat?",
+        "Är din hund mindre aktiv än vanligt eller äter den mindre?"
+      ]
+    },
+    "BODY": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Har ansiktet eller kroppen plötsligt svullnat upp?",
+        "Finns det ett öppet hudsår som fortsätter att blöda?",
+        "Finns det nya lila fläckar eller oförklarliga blåmärken på huden?",
+        "Är din hund svag, kollapsar den eller har den svårt att andas?"
+      ]
+    },
+    "FOOT": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Har ansiktet eller kroppen plötsligt svullnat upp?",
+        "Finns det ett öppet hudsår som fortsätter att blöda?",
+        "Finns det nya lila fläckar eller oförklarliga blåmärken på huden?",
+        "Är din hund svag, kollapsar den eller har den svårt att andas?"
+      ]
+    },
+    "EAR": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Tappar din hund balansen eller kan den inte gå normalt?",
+        "Håller din hund huvudet lutat åt ena sidan?",
+        "Skakar din hund på huvudet upprepade gånger och kan inte komma till ro?",
+        "Har din hund slutat äta eller blivit ovanligt inaktiv?"
+      ]
+    },
+    "TEETH": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Blöder det från munnen och slutar inte?",
+        "Har det plötsligt uppstått svullnad under ena ögat?",
+        "Kan din hund plötsligt inte tugga eller vägrar den att äta?"
+      ]
+    }
+  },
+  "CAT": {
+    "EYE": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Är pupillerna olika stora?",
+        "Stöter din katt emot saker eller verkar ha svårt att se?",
+        "Kisar din katt eller kan den inte hålla ögat öppet?",
+        "Drar sig din katt undan när du rör vid området nära ögat?",
+        "Är din katt mindre aktiv än vanligt eller äter den mindre?"
+      ]
+    },
+    "TEETH": {
+      "title": "Markera de symtom som stämmer in på ditt husdjur",
+      "questions": [
+        "Blöder det från munnen?",
+        "Vägrar din katt att äta eller verkar den inte kunna äta?",
+        "Dreglar din katt mer än vanligt?"
+      ]
+    }
+  }
+}

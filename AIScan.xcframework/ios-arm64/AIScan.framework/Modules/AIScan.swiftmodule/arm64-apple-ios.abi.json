@@ -49736,28 +49736,28 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "IntegerLiteral",
-      "offset": 617,
+      "offset": 627,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "Array",
-      "offset": 8000,
+      "offset": 8010,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "StringLiteral",
-      "offset": 16864,
+      "offset": 16874,
       "length": 9,
       "value": "\"name_kr\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewModel.swift",
       "kind": "StringLiteral",
-      "offset": 16896,
+      "offset": 16906,
       "length": 9,
       "value": "\"name_en\""
     },
@@ -50240,182 +50240,182 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 15618,
+      "offset": 15744,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "StringLiteral",
-      "offset": 22439,
+      "offset": 22565,
       "length": 21,
       "value": "\"PDFExportFooterView\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 22667,
+      "offset": 22793,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22719,
+      "offset": 22845,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22721,
+      "offset": 22847,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22733,
+      "offset": 22859,
       "length": 3,
       "value": "172"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22737,
+      "offset": 22863,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22748,
+      "offset": 22874,
       "length": 3,
       "value": "199"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22752,
+      "offset": 22878,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22764,
+      "offset": 22890,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22815,
+      "offset": 22941,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23103,
+      "offset": 23229,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23227,
+      "offset": 23353,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "StringLiteral",
-      "offset": 23298,
+      "offset": 23424,
       "length": 21,
       "value": "\"square.and.arrow.up\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23418,
+      "offset": 23544,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23427,
+      "offset": 23553,
       "length": 2,
       "value": "-6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23439,
+      "offset": 23565,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23449,
+      "offset": 23575,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23507,
+      "offset": 23633,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23516,
+      "offset": 23642,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23527,
+      "offset": 23653,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23537,
+      "offset": 23663,
       "length": 2,
       "value": "-6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23841,
+      "offset": 23967,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23926,
+      "offset": 24052,
       "length": 3,
       "value": "-16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 24002,
+      "offset": 24128,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 24067,
+      "offset": 24193,
       "length": 2,
       "value": "56"
     },
