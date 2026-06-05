@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.2 effective-5.10 (swiftlang-6.3.2.1.108 clang-2100.1.1.101)
-// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name AIScan
-// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.2
+// swift-compiler-version: Apple Swift version 6.2.4 effective-5.10 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)
+// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name AIScan
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.4
 @_exported import AIScan
 import ARKit
 import AVFoundation
@@ -14,6 +14,7 @@ import CoreImage
 import CoreML
 import CoreMedia
 import CoreMotion
+import CoreText
 import CoreVideo
 import DeveloperToolsSupport
 import Foundation
@@ -21,6 +22,7 @@ import ImageIO
 import Metal
 import MetalPerformanceShaders
 import PhotosUI
+import Security
 import Swift
 import SwiftUI
 import TensorFlowLite
@@ -29,7 +31,7 @@ import UIKit
 import UniformTypeIdentifiers
 import Vision
 import VisionKit
-@preconcurrency import WebKit
+import WebKit
 import _Concurrency
 import _PhotosUI_SwiftUI
 import _StringProcessing
@@ -50,23 +52,30 @@ import simd
     set
   }
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public func viewDidLoad()
+  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
+  #endif
   @objc deinit
 }
 extension AIScan.ResultViewController : UIKit.UICollectionViewDelegate, UIKit.UICollectionViewDataSource {
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, numberOfItemsInSection section: Swift.Int) -> Swift.Int
+  @_Concurrency.MainActor @preconcurrency @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, viewForSupplementaryElementOfKind kind: Swift.String, at indexPath: Foundation.IndexPath) -> UIKit.UICollectionReusableView
   @_Concurrency.MainActor @preconcurrency @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, cellForItemAt indexPath: Foundation.IndexPath) -> UIKit.UICollectionViewCell
 }
 extension AIScan.ResultViewController {
+  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency public static func instance(part: AIScan.PartType?, hasSymptoms: Swift.Bool = false) -> AIScan.ResultViewController
+  #endif
 }
 extension AIScan.ResultViewController : AIScan.TTResultViewControllable, AIScan.TTQuestionnaireControllable, AIScan.TTQuestionnaireResultControllable {
   @_Concurrency.MainActor @preconcurrency public func back()
   @_Concurrency.MainActor @preconcurrency public func close()
 }
 final public class QuestionViewModel : Foundation.ObservableObject {
-  @Combine.Published<Swift.Int> @_projectedValueProperty($currentIndex) final public var currentIndex: Swift.Int {
+  @Combine.Published @_projectedValueProperty($currentIndex) final public var currentIndex: Swift.Int {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -78,7 +87,7 @@ final public class QuestionViewModel : Foundation.ObservableObject {
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  @Combine.Published<[Swift.String]> @_projectedValueProperty($questions) final public var questions: [Swift.String] {
+  @Combine.Published @_projectedValueProperty($questions) final public var questions: [Swift.String] {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -90,19 +99,23 @@ final public class QuestionViewModel : Foundation.ObservableObject {
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  @Combine.Published<[Swift.Bool?]> @_projectedValueProperty($answers) final public var answers: [Swift.Bool?] {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($answers) final public var answers: [Swift.Bool?] {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     _modify
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var $answers: Combine.Published<[Swift.Bool?]>.Publisher {
     get
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  @Combine.Published<Swift.Bool> @_projectedValueProperty($isFinished) final public var isFinished: Swift.Bool {
+  #endif
+  @Combine.Published @_projectedValueProperty($isFinished) final public var isFinished: Swift.Bool {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -114,7 +127,7 @@ final public class QuestionViewModel : Foundation.ObservableObject {
     @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
     set
   }
-  @Combine.Published<Swift.Bool> @_projectedValueProperty($isSubmitting) final public var isSubmitting: Swift.Bool {
+  @Combine.Published @_projectedValueProperty($isSubmitting) final public var isSubmitting: Swift.Bool {
     get
     @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
     set
@@ -139,7 +152,9 @@ final public class QuestionViewModel : Foundation.ObservableObject {
   public typealias Body = @_opaqueReturnTypeOf("$s6AIScan18WizardQuestionViewV4bodyQrvp", 0) __
 }
 public struct TTLicense : Swift.Codable {
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(serviceRegion: Swift.String? = nil, serviceHost: Swift.String? = nil, serviceVersion: Swift.Int = 1, clientID: Swift.String? = nil, clientKeyID: Swift.String? = nil, clientKeySecret: Swift.String? = nil, clientKey: Swift.String? = nil, accessToken: Swift.String? = nil, accountId: Swift.String? = nil, fcmToken: Swift.String? = nil, showGovCertMark: Swift.Bool? = nil)
+  #endif
   public var serviceRegion: Swift.String?
   public var serviceHost: Swift.String?
   public var serviceVersion: Swift.Int?
@@ -234,7 +249,9 @@ public enum TypeClassification : Swift.String {
   case inflammation
   case necrosis
   case hyperemia
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -253,7 +270,9 @@ public struct AIScanModel {
 public struct OnDeviceQuestion : Swift.Codable {
   public var text: Swift.String?
   public var select: Swift.String?
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(text: Swift.String? = nil, select: Swift.String? = nil)
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -263,14 +282,18 @@ public struct OnDeviceResponse : Swift.Codable {
   public var status: Swift.String?
   public var description: AIScan.OnDeviceDescription?
   public var symptoms: [AIScan.OnDeviceSymptom]?
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(title: Swift.String? = nil, analyzedDate: Swift.String? = nil, status: Swift.String? = nil, description: AIScan.OnDeviceDescription? = nil, symptoms: [AIScan.OnDeviceSymptom]? = nil)
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
 public struct OnDeviceDescription : Swift.Codable {
   public var title: Swift.String?
   public var contents: [Swift.String]?
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(title: Swift.String? = nil, contents: [Swift.String]? = nil)
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -281,7 +304,9 @@ public struct OnDeviceSymptom : Swift.Codable {
   public var cropImageUrl: Swift.String?
   public var score: Swift.Int?
   public var details: [AIScan.OnDeviceSymptomDetail]?
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(code: Swift.String? = nil, name: Swift.String? = nil, heatmapPath: Swift.String? = nil, cropImageUrl: Swift.String? = nil, score: Swift.Int? = nil, details: [AIScan.OnDeviceSymptomDetail]? = nil)
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -289,7 +314,9 @@ public struct OnDeviceSymptomDetail : Swift.Codable {
   public var key: Swift.String?
   public var title: Swift.String?
   public var contents: [Swift.String]?
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(key: Swift.String? = nil, title: Swift.String? = nil, contents: [Swift.String]? = nil)
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -314,18 +341,34 @@ public protocol TTAnalysisTracker {
   func trackEvent(eventName: Swift.String, properties: [Swift.String : Swift.String])
   func trackScreen(screenName: Swift.String)
 }
+final public class TTPlatformAnalyticsTracker : AIScan.TTAnalysisTracker {
+  public init()
+  final public func trackEvent(eventName: Swift.String, properties: [Swift.String : Swift.String])
+  final public func trackScreen(screenName: Swift.String)
+  @objc deinit
+}
+final public class TTCompositeAnalysisTracker : AIScan.TTAnalysisTracker {
+  public init(_ trackers: [any AIScan.TTAnalysisTracker])
+  final public func trackEvent(eventName: Swift.String, properties: [Swift.String : Swift.String])
+  final public func trackScreen(screenName: Swift.String)
+  @objc deinit
+}
 public struct TTDetail : Swift.Codable {
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
 public struct AISResult : Swift.Codable {
   public var feedbacks: [AIScan.Feedback]?
+  #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public var string: Swift.String? {
     get
   }
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -336,12 +379,16 @@ public struct AIScanResult : Swift.Codable {
   public var position: Swift.String?
   public var createdAt: Swift.Int?
   public var metadata: [Swift.String : AIScan.AnyCodable]?
+  #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public var string: Swift.String? {
     get
   }
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -354,7 +401,9 @@ public struct TTData : Swift.Codable {
 public enum PetType : Swift.String {
   case dog
   case cat
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -381,16 +430,41 @@ public enum ModelLibType {
   public static var isAnimationEnabled: Swift.Bool
   public static var isQuestionnaireEnabled: Swift.Bool
   public static var isAlbumEnabled: Swift.Bool
+  public static var isPdfExportEnabled: Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static var onPDFExported: ((Foundation.URL) -> Swift.Void)? {
+    get
+    set
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static var lastExportedPDFURL: Foundation.URL? {
+    get
+    set
+  }
+  #endif
   public static func configure(license: AIScan.TTLicense)
   public static func configure(authFileData: Foundation.Data)
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func setAPNS(token: Swift.String?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func toast(_ text: Swift.String?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func alert(_ text: Swift.String?)
+  #endif
   public static func flashAlert()
   public static func report(isSuccess: Swift.Bool = false)
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: (any Swift.Encodable)? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, metadata: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, resultCompletion: ((AIScan.AIScanResult?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: (any Swift.Encodable)? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, metadata: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, resultCompletion: ((AIScan.AIScanResult?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
   @objc deinit
 }
 extension AIScan.AIScanManager {
@@ -408,12 +482,16 @@ public struct InferenceInfo {
   public func calculate() -> AIScan.InferenceResult
 }
 public struct TTResult : Swift.Codable {
+  #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public var string: Swift.String? {
     get
   }
+  #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
@@ -435,7 +513,9 @@ public enum TTCameraType : Swift.CaseIterable {
 public enum TTPetType : Swift.String, Swift.Hashable, Swift.Codable, Swift.CaseIterable {
   case dog
   case cat
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias AllCases = [AIScan.TTPetType]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [AIScan.TTPetType] {
@@ -452,18 +532,30 @@ public enum TTPetType : Swift.String, Swift.Hashable, Swift.Codable, Swift.CaseI
     get
     set
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   public static var analysisTracker: (any AIScan.TTAnalysisTracker)? {
     get
     set
   }
+  #endif
   @objc deinit
 }
 extension AIScan.TTManager {
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func guideURLString(petType: AIScan.PetType, partType: AIScan.PartType) -> Swift.String?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func eye(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func tooth(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func skin(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func showGuideFirst(cameraType: AIScan.TTCameraType, petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  #endif
   public static func clearUserDefaults()
 }
 public struct TTFile : Swift.Equatable {
@@ -476,7 +568,9 @@ public struct TTFile : Swift.Equatable {
   public var videoIntervals: [AIScan.VideoInterval]?
   public var description: Swift.String?
   public static func == (lhs: AIScan.TTFile, rhs: AIScan.TTFile) -> Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
   public static func make(type: AIScan.TTFileType = .image, image: UIKit.UIImage?) -> AIScan.TTFile
+  #endif
 }
 public struct VideoInterval : Swift.Equatable, Swift.Codable {
   public static func == (a: AIScan.VideoInterval, b: AIScan.VideoInterval) -> Swift.Bool
@@ -513,8 +607,12 @@ public enum PartType {
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, layout collectionViewLayout: UIKit.UICollectionViewLayout, sizeForItemAt indexPath: Foundation.IndexPath) -> CoreFoundation.CGSize
   @_Concurrency.MainActor @preconcurrency @objc public func collectionView(_ collectionView: UIKit.UICollectionView, didEndDisplaying cell: UIKit.UICollectionViewCell, forItemAt indexPath: Foundation.IndexPath)
   @_Concurrency.MainActor @preconcurrency @objc public func scrollViewDidEndDecelerating(_ scrollView: UIKit.UIScrollView)
+  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
+  #endif
   @objc deinit
 }
 extension AIScan.TTGalleryViewController {
@@ -523,7 +621,9 @@ extension AIScan.TTGalleryViewController {
 public enum TTFileType : Swift.String {
   case image
   case video
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -536,7 +636,9 @@ public enum DetailPartType : Swift.String, Swift.CaseIterable {
   public var positionTitle: Swift.String {
     get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias AllCases = [AIScan.DetailPartType]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [AIScan.DetailPartType] {
@@ -548,11 +650,21 @@ public enum DetailPartType : Swift.String, Swift.CaseIterable {
 }
 public typealias TTResultCompletion = (Swift.Int?) -> any AIScan.TTResultViewControllable
 public protocol TTResultViewControllable : UIKit.UIViewController {
+  #if compiler(>=5.3) && $NonescapableTypes
   var backCompletaion: (() -> Swift.Void)? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   var closeCompletaion: (() -> Swift.Void)? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   var diagID: Swift.Int? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   var diagnosisResult: AIScan.DiagnosisResult? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   var result: AIScan.AIScanResult? { get set }
+  #endif
   func close()
   func back()
 }
@@ -562,7 +674,9 @@ public protocol TTQuestionnaireControllable : AnyObject {
   var shouldShowQuestionnaire: Swift.Bool { get set }
 }
 public protocol TTQuestionnaireResultControllable : AnyObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   var hasSymptomsFromQuestionnaire: Swift.Bool? { get set }
+  #endif
 }
 public enum ModelType : Swift.String, Swift.CaseIterable {
   case angleEstimator
@@ -622,13 +736,19 @@ public enum ModelType : Swift.String, Swift.CaseIterable {
   public var isBCaseScale: Swift.Bool {
     get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   public var title: Swift.String? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public var modelKey: Swift.String? {
     get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
+  #endif
   public typealias AllCases = [AIScan.ModelType]
   public typealias RawValue = Swift.String
   nonisolated public static var allCases: [AIScan.ModelType] {
@@ -652,7 +772,9 @@ public struct Feedback {
   public var resultLabel: AIScan.TypeClassification?
 }
 extension UIKit.UIImage {
+  #if compiler(>=5.3) && $NonescapableTypes
   public func annotated(with output0: [Swift.Float32], output1: [Swift.Float32], confidenceThreshold: Swift.Float = 0.5, iouThreshold: Swift.Float = 0.45, maskThreshold: Swift.Float = 0.5) -> UIKit.UIImage?
+  #endif
 }
 public struct CameraMetadata : Swift.Encodable {
   public func encode(to encoder: any Swift.Encoder) throws
@@ -663,7 +785,594 @@ extension AIScan.CameraMetadata : Swift.CustomStringConvertible {
   }
 }
 extension UIKit.UIImage {
+  #if compiler(>=5.3) && $NonescapableTypes
   public func overlayHeatmap(from heatmapMultiArray: CoreML.MLMultiArray, overlayFrame: CoreFoundation.CGRect? = nil, alpha: CoreFoundation.CGFloat = 0.6) -> UIKit.UIImage?
+  #endif
+}
+final public class AIScanClient : @unchecked Swift.Sendable {
+  public enum PetType : Swift.String, Swift.Codable, Swift.Sendable {
+    case dog
+    case cat
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum Part : Swift.String, Swift.Codable, Swift.Sendable {
+    case eye
+    case skin
+    case teeth
+    case joint
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum SubPart : Swift.String, Swift.Codable, Swift.Sendable {
+    case left
+    case right
+    case belly
+    case foot
+    case ear
+    case center
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum Platform : Swift.String, Swift.Codable, Swift.Sendable {
+    case ios
+    case android
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum ResultLabel : Swift.String, Swift.Codable, Swift.Sendable {
+    case normal
+    case abnormal
+    case unknown
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public struct Manifest : Swift.Codable, Swift.Sendable {
+    public let models: [AIScan.AIScanClient.Manifest.Model]
+    public let thresholds: [Swift.String : Swift.Double]
+    public let qna: [Swift.String : AIScan.AIScanClient.Manifest.QnaLocale]
+    public struct Model : Swift.Codable, Swift.Sendable {
+      public let name: Swift.String
+      public let pet: Swift.String
+      public let part: Swift.String
+      public let type: Swift.String
+      public let subtype: Swift.String?
+      public let runtime: Swift.String
+      public let version: Swift.String
+      public let url: Swift.String
+      public let sha256: Swift.String
+      public let size: Swift.Int64
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public struct QnaLocale : Swift.Codable, Swift.Sendable {
+      public let questions_url: Swift.String
+      public let responses_url: Swift.String
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct UploadTicket : Swift.Codable, Swift.Sendable {
+    public let store_path: Swift.String
+    public let upload_url: Swift.String
+    public let method: Swift.String
+    public let headers: [Swift.String : Swift.String]
+    public let expires_at: Foundation.Date
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct DiagnosisInference : Swift.Codable, Swift.Sendable {
+    public let model_key: Swift.String
+    public let model_version: Swift.String?
+    public let result_label: AIScan.AIScanClient.ResultLabel
+    public let score: Swift.Double
+    public let abnormal_level: Swift.Int?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(model_key: Swift.String, model_version: Swift.String? = nil, result_label: AIScan.AIScanClient.ResultLabel, score: Swift.Double, abnormal_level: Swift.Int? = nil)
+    #endif
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct QuestionnaireAnswer : Swift.Codable, Swift.Sendable {
+    public let question_id: Swift.String
+    public let value: Swift.String
+    public init(question_id: Swift.String, value: Swift.String)
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct DiagnosisRequest : Swift.Codable, Swift.Sendable {
+    public struct Pet : Swift.Codable, Swift.Sendable {
+      public let type: AIScan.AIScanClient.PetType
+      public let id: Swift.String?
+      #if compiler(>=5.3) && $NonescapableTypes
+      public init(type: AIScan.AIScanClient.PetType, id: Swift.String? = nil)
+      #endif
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public struct DiagnosisDescriptor : Swift.Codable, Swift.Sendable {
+      public let part: AIScan.AIScanClient.Part
+      public let sub_part: Swift.String?
+      public let started_at: Foundation.Date
+      public let ended_at: Foundation.Date
+      #if compiler(>=5.3) && $NonescapableTypes
+      public init(part: AIScan.AIScanClient.Part, sub_part: Swift.String? = nil, started_at: Foundation.Date, ended_at: Foundation.Date)
+      #endif
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public struct Original : Swift.Codable, Swift.Sendable {
+      public let store_path: Swift.String
+      public let filename: Swift.String
+      public let size_bytes: Swift.Int64
+      public let checksum_sha256: Swift.String?
+      #if compiler(>=5.3) && $NonescapableTypes
+      public init(store_path: Swift.String, filename: Swift.String, size_bytes: Swift.Int64, checksum_sha256: Swift.String? = nil)
+      #endif
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public struct Questionnaire : Swift.Codable, Swift.Sendable {
+      public let answers: [AIScan.AIScanClient.QuestionnaireAnswer]
+      public init(answers: [AIScan.AIScanClient.QuestionnaireAnswer])
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public struct SkinConditionLevels : Swift.Codable, Swift.Sendable {
+      public let sensitivity: Swift.Int
+      public let dryness: Swift.Int
+      public let roughness: Swift.Int
+      public init(sensitivity: Swift.Int, dryness: Swift.Int, roughness: Swift.Int)
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public struct ClientMetadata : Swift.Codable, Swift.Sendable {
+      public let sdk_version: Swift.String
+      public let platform: AIScan.AIScanClient.Platform
+      public let os: Swift.String?
+      public let device_model: Swift.String?
+      public let locale: Swift.String?
+      #if compiler(>=5.3) && $NonescapableTypes
+      public init(sdk_version: Swift.String, platform: AIScan.AIScanClient.Platform, os: Swift.String? = nil, device_model: Swift.String? = nil, locale: Swift.String? = nil)
+      #endif
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public let pet: AIScan.AIScanClient.DiagnosisRequest.Pet
+    public let diagnosis: AIScan.AIScanClient.DiagnosisRequest.DiagnosisDescriptor
+    public let original: AIScan.AIScanClient.DiagnosisRequest.Original
+    public let inferences: [AIScan.AIScanClient.DiagnosisInference]
+    public let questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire?
+    public let skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels?
+    public let client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(pet: AIScan.AIScanClient.DiagnosisRequest.Pet, diagnosis: AIScan.AIScanClient.DiagnosisRequest.DiagnosisDescriptor, original: AIScan.AIScanClient.DiagnosisRequest.Original, inferences: [AIScan.AIScanClient.DiagnosisInference], questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire? = nil, skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels? = nil, client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata)
+    #endif
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct DiagnosisReceipt : Swift.Codable, Swift.Sendable {
+    public let diagnosis_id: Swift.String
+    public let stored_at: Foundation.Date
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Diagnosis : Swift.Codable, Swift.Sendable {
+    public let id: Swift.String
+    public let app_id: Swift.String
+    public let pet: Swift.String
+    public let part: Swift.String
+    public let sub_part: Swift.String?
+    public let status: Swift.String
+    public let image_ref: Swift.String?
+    public let created_at: Foundation.Date
+    public let completed_at: Foundation.Date?
+    public let result: AIScan.AIScanClient.Diagnosis.Result?
+    public struct Result : Swift.Codable, Swift.Sendable {
+      public let inferences: [AIScan.AIScanClient.DiagnosisInference]
+      public let questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire?
+      public func encode(to encoder: any Swift.Encoder) throws
+      public init(from decoder: any Swift.Decoder) throws
+    }
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct Quota : Swift.Codable, Swift.Sendable {
+    public let limit: Swift.Int?
+    public let used: Swift.Int
+    public let remaining: Swift.Int
+    public let expires_at: Foundation.Date?
+    public let exhausted: Swift.Bool
+    public let expired: Swift.Bool
+    public var blocked: Swift.Bool {
+      get
+    }
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct TelemetryEvent : Swift.Codable, Swift.Sendable {
+    public let event_type: Swift.String
+    public let occurred_at: Foundation.Date
+    public let attributes: [Swift.String : AIScan.AIScanClient.AnyValue]?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(event_type: Swift.String, occurred_at: Foundation.Date = Date(), attributes: [Swift.String : AIScan.AIScanClient.AnyValue]? = nil)
+    #endif
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public enum AnyValue : Swift.Codable, Swift.Sendable {
+    case string(Swift.String)
+    case int(Swift.Int)
+    case double(Swift.Double)
+    case bool(Swift.Bool)
+    public init(from decoder: any Swift.Decoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
+  }
+  public enum Error : Swift.Error, Swift.CustomStringConvertible, Swift.Sendable {
+    case invalidPublishableKey
+    case invalidConfiguration(Swift.String)
+    case network(Foundation.URLError)
+    case decoding(Swift.DecodingError)
+    case http(Swift.Int, Foundation.Data?)
+    case unexpected(Swift.String)
+    public var description: Swift.String {
+      get
+    }
+  }
+  public struct Options : @unchecked Swift.Sendable {
+    public let tokenBrokerURL: Foundation.URL
+    public let gatewayURL: Foundation.URL
+    public let apiVersion: Swift.String?
+    public let sdkVersion: Swift.String
+    public let requestTimeout: Foundation.TimeInterval
+    public let urlSession: Foundation.URLSession?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(tokenBrokerURL: Foundation.URL = URL(string: "https://token-broker.ai4pet.com")!, gatewayURL: Foundation.URL = URL(string: "https://sdk-gateway.ai4pet.com")!, apiVersion: Swift.String? = nil, sdkVersion: Swift.String = "2.0.0", requestTimeout: Foundation.TimeInterval = 30, urlSession: Foundation.URLSession? = nil)
+    #endif
+  }
+  public struct AppIdentity : Swift.Sendable {
+    public let bundleID: Swift.String?
+    public let teamID: Swift.String?
+    public let packageName: Swift.String?
+    public let appVersion: Swift.String?
+    public let signingCertSHA256: Swift.String?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(bundleID: Swift.String? = nil, teamID: Swift.String? = nil, packageName: Swift.String? = nil, appVersion: Swift.String? = nil, signingCertSHA256: Swift.String? = nil)
+    #endif
+  }
+  convenience public init(publishableKey: Swift.String, options: AIScan.AIScanClient.Options = Options()) throws
+  public init(publishableKey: Swift.String, appIdentity: AIScan.AIScanClient.AppIdentity, options: AIScan.AIScanClient.Options = Options()) throws
+  final public func manifest(pet: AIScan.AIScanClient.PetType, part: AIScan.AIScanClient.Part) async throws -> AIScan.AIScanClient.Manifest
+  public struct UploadRequest : Swift.Sendable {
+    public let filename: Swift.String
+    public let sizeBytes: Swift.Int64
+    public let contentType: Swift.String
+    public let purpose: Swift.String
+    public init(filename: Swift.String, sizeBytes: Swift.Int64, contentType: Swift.String, purpose: Swift.String)
+  }
+  final public func requestUploadTickets(_ files: [AIScan.AIScanClient.UploadRequest]) async throws -> [AIScan.AIScanClient.UploadTicket]
+  final public func uploadOriginal(_ data: Foundation.Data, to ticket: AIScan.AIScanClient.UploadTicket) async throws
+  final public func submitDiagnosis(_ request: AIScan.AIScanClient.DiagnosisRequest, idempotencyKey: Swift.String) async throws -> AIScan.AIScanClient.DiagnosisReceipt
+  final public func fetchDiagnosis(id: Swift.String) async throws -> AIScan.AIScanClient.Diagnosis
+  final public func quota() async throws -> AIScan.AIScanClient.Quota
+  final public func track(_ events: [AIScan.AIScanClient.TelemetryEvent]) async throws
+  @objc deinit
+}
+public enum TTDeviceID {
+  public static func current() -> Swift.String
+}
+public enum TTSource : Swift.String, Swift.Sendable {
+  case camera
+  case album
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTAlbumCancelReason : Swift.String, Swift.Sendable {
+  case userCancel
+  case permissionDenied
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTTelemetryEvent : Swift.String, Swift.Sendable {
+  case sdkInitialized
+  case sessionStarted
+  case permissionRequested
+  case permissionGranted
+  case permissionDenied
+  case captureAttempted
+  case captureCompleted
+  case captureFailed
+  case qualityCheckFailed
+  case uploadStarted
+  case uploadCompleted
+  case uploadFailed
+  case inferenceStarted
+  case inferenceFailed
+  case scanCompleted
+  case resultViewed
+  case resultShared
+  case sessionAbandoned
+  case albumOpened
+  case albumPhotoSelected
+  case albumCanceled
+  case manifestFetched
+  case manifestFetchFailed
+  case tokenIssued
+  case tokenIssueFailed
+  case tokenRefreshed
+  case tokenRefreshFailed
+  case uploadPresignCompleted
+  case uploadPresignFailed
+  case diagnosisSubmitFailed
+  case modelDownloadStarted
+  case modelDownloaded
+  case modelDownloadFailed
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTCaptureFailReason : Swift.String, Swift.Sendable {
+  case cameraError
+  case lowLight
+  case blur
+  case trackingLost
+  case timeout
+  case userCanceled
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTQualityCheckFailReason : Swift.String, Swift.Sendable {
+  case resolution
+  case exposure
+  case focus
+  case occlusion
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTUploadFailReason : Swift.String, Swift.Sendable {
+  case network
+  case sizeLimit
+  case httpServerError
+  case timeout
+  case presignExpired
+  case checksumMismatch
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTInferenceFailReason : Swift.String, Swift.Sendable {
+  case modelError
+  case invalidImage
+  case timeout
+  case oom
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTPermissionDenyReason : Swift.String, Swift.Sendable {
+  case userChoice
+  case osSetting
+  case systemDialogBlocked
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTPermissionGrantReason : Swift.String, Swift.Sendable {
+  case userChoice
+  case preExisting
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTManifestFailReason : Swift.String, Swift.Sendable {
+  case network, timeout
+  case http4xx
+  case http5xx
+  case parseError
+  case unauthorized
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTTokenFailReason : Swift.String, Swift.Sendable {
+  case network, timeout
+  case invalidKey
+  case expired
+  case http5xx
+  case parseError
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTPresignFailReason : Swift.String, Swift.Sendable {
+  case network, timeout
+  case http4xx
+  case http5xx
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTDxSubmitFailReason : Swift.String, Swift.Sendable {
+  case network, timeout
+  case idempotencyConflict
+  case http4xx
+  case http5xx
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum TTModelDownloadFailReason : Swift.String, Swift.Sendable {
+  case network, timeout
+  case http4xx
+  case http5xx
+  case checksumMismatch
+  case diskFull
+  case parseError
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class TTTelemetry : @unchecked Swift.Sendable {
+  public static let shared: AIScan.TTTelemetry
+  final public func startSession()
+  @discardableResult
+  final public func incrementShot() -> Swift.Int
+  final public func currentShot() -> Swift.Int
+  final public func setSource(_ source: AIScan.TTSource)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func currentSource() -> AIScan.TTSource?
+  #endif
+  final public func endSession()
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func sdkInitialized(manifestEtag: Swift.String? = nil, manifestAgeMs: Swift.Int? = nil)
+  #endif
+  final public func sessionStarted(petType: Swift.String, part: Swift.String)
+  final public func albumOpened()
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func albumPhotoSelected(count: Swift.Int, assetID: Swift.String? = nil)
+  #endif
+  final public func albumCanceled(reason: AIScan.TTAlbumCancelReason)
+  final public func permissionRequested(_ permission: Swift.String)
+  final public func permissionGranted(_ permission: Swift.String, reason: AIScan.TTPermissionGrantReason = .userChoice)
+  final public func permissionDenied(_ permission: Swift.String, reason: AIScan.TTPermissionDenyReason)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func captureAttempted(trigger: Swift.String = "manual", frameIndex: Swift.Int? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func captureCompleted(imageWidth: Swift.Int, imageHeight: Swift.Int, imageBytes: Swift.Int, trackingScore: Swift.Double? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func captureFailed(reason: AIScan.TTCaptureFailReason, errorCode: Swift.String? = nil, trackingScore: Swift.Double? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func qualityCheckFailed(reason: AIScan.TTQualityCheckFailReason, blurScore: Swift.Double? = nil, exposureEV: Swift.Double? = nil)
+  #endif
+  final public func uploadStarted(storePath: Swift.String, sizeBytes: Swift.Int, contentType: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func uploadCompleted(sizeBytes: Swift.Int, elapsedMs: Swift.Int? = nil)
+  #endif
+  final public func uploadFailed(reason: AIScan.TTUploadFailReason, httpStatus: Swift.Int = 0, retryAttempt: Swift.Int = 0)
+  final public func inferenceStarted(modelKey: Swift.String, modelVersion: Swift.String, runtime: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func inferenceFailed(reason: AIScan.TTInferenceFailReason, modelKey: Swift.String, modelVersion: Swift.String, errorCode: Swift.String? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func scanCompleted(diagnosisID: Swift.String, resultLabel: Swift.String, score: Swift.Double, elapsedMs: Swift.Int? = nil)
+  #endif
+  final public func resultViewed(diagnosisID: Swift.String, tab: Swift.String = "summary")
+  final public func resultShared(diagnosisID: Swift.String, channel: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func manifestFetched(etag: Swift.String?, ageMs: Swift.Int, httpStatus: Swift.Int = 200)
+  #endif
+  final public func manifestFetchFailed(reason: AIScan.TTManifestFailReason, httpStatus: Swift.Int = 0, retryAttempt: Swift.Int = 0)
+  final public func tokenIssued(expiresInSeconds: Swift.Int)
+  final public func tokenIssueFailed(reason: AIScan.TTTokenFailReason, httpStatus: Swift.Int = 0)
+  final public func tokenRefreshed(expiresInSeconds: Swift.Int)
+  final public func tokenRefreshFailed(reason: AIScan.TTTokenFailReason, httpStatus: Swift.Int = 0)
+  final public func uploadPresignCompleted()
+  final public func uploadPresignFailed(reason: AIScan.TTPresignFailReason, httpStatus: Swift.Int = 0)
+  final public func diagnosisSubmitFailed(reason: AIScan.TTDxSubmitFailReason, httpStatus: Swift.Int = 0)
+  final public func modelDownloadStarted(modelKey: Swift.String)
+  final public func modelDownloaded(modelKey: Swift.String, sizeBytes: Swift.Int, elapsedMs: Swift.Int)
+  final public func modelDownloadFailed(modelKey: Swift.String, reason: AIScan.TTModelDownloadFailReason, httpStatus: Swift.Int = 0, retryAttempt: Swift.Int = 0)
+  @objc deinit
+}
+public enum AIScanClientBridge {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static var shared: AIScan.AIScanClient? {
+    get
+  }
+  #endif
+  public static func register(_ client: AIScan.AIScanClient)
+  public static func reset()
+  public static func required(_ caller: Swift.StaticString = #function) -> AIScan.AIScanClient
 }
 extension AIScan.PartType : Swift.Equatable {}
 extension AIScan.PartType : Swift.Hashable {}
@@ -688,3 +1397,60 @@ extension AIScan.TTFileType : Swift.RawRepresentable {}
 extension AIScan.DetailPartType : Swift.Equatable {}
 extension AIScan.DetailPartType : Swift.Hashable {}
 extension AIScan.DetailPartType : Swift.RawRepresentable {}
+extension AIScan.AIScanClient.PetType : Swift.Equatable {}
+extension AIScan.AIScanClient.PetType : Swift.Hashable {}
+extension AIScan.AIScanClient.PetType : Swift.RawRepresentable {}
+extension AIScan.AIScanClient.Part : Swift.Equatable {}
+extension AIScan.AIScanClient.Part : Swift.Hashable {}
+extension AIScan.AIScanClient.Part : Swift.RawRepresentable {}
+extension AIScan.AIScanClient.SubPart : Swift.Equatable {}
+extension AIScan.AIScanClient.SubPart : Swift.Hashable {}
+extension AIScan.AIScanClient.SubPart : Swift.RawRepresentable {}
+extension AIScan.AIScanClient.Platform : Swift.Equatable {}
+extension AIScan.AIScanClient.Platform : Swift.Hashable {}
+extension AIScan.AIScanClient.Platform : Swift.RawRepresentable {}
+extension AIScan.AIScanClient.ResultLabel : Swift.Equatable {}
+extension AIScan.AIScanClient.ResultLabel : Swift.Hashable {}
+extension AIScan.AIScanClient.ResultLabel : Swift.RawRepresentable {}
+extension AIScan.TTSource : Swift.Equatable {}
+extension AIScan.TTSource : Swift.Hashable {}
+extension AIScan.TTSource : Swift.RawRepresentable {}
+extension AIScan.TTAlbumCancelReason : Swift.Equatable {}
+extension AIScan.TTAlbumCancelReason : Swift.Hashable {}
+extension AIScan.TTAlbumCancelReason : Swift.RawRepresentable {}
+extension AIScan.TTTelemetryEvent : Swift.Equatable {}
+extension AIScan.TTTelemetryEvent : Swift.Hashable {}
+extension AIScan.TTTelemetryEvent : Swift.RawRepresentable {}
+extension AIScan.TTCaptureFailReason : Swift.Equatable {}
+extension AIScan.TTCaptureFailReason : Swift.Hashable {}
+extension AIScan.TTCaptureFailReason : Swift.RawRepresentable {}
+extension AIScan.TTQualityCheckFailReason : Swift.Equatable {}
+extension AIScan.TTQualityCheckFailReason : Swift.Hashable {}
+extension AIScan.TTQualityCheckFailReason : Swift.RawRepresentable {}
+extension AIScan.TTUploadFailReason : Swift.Equatable {}
+extension AIScan.TTUploadFailReason : Swift.Hashable {}
+extension AIScan.TTUploadFailReason : Swift.RawRepresentable {}
+extension AIScan.TTInferenceFailReason : Swift.Equatable {}
+extension AIScan.TTInferenceFailReason : Swift.Hashable {}
+extension AIScan.TTInferenceFailReason : Swift.RawRepresentable {}
+extension AIScan.TTPermissionDenyReason : Swift.Equatable {}
+extension AIScan.TTPermissionDenyReason : Swift.Hashable {}
+extension AIScan.TTPermissionDenyReason : Swift.RawRepresentable {}
+extension AIScan.TTPermissionGrantReason : Swift.Equatable {}
+extension AIScan.TTPermissionGrantReason : Swift.Hashable {}
+extension AIScan.TTPermissionGrantReason : Swift.RawRepresentable {}
+extension AIScan.TTManifestFailReason : Swift.Equatable {}
+extension AIScan.TTManifestFailReason : Swift.Hashable {}
+extension AIScan.TTManifestFailReason : Swift.RawRepresentable {}
+extension AIScan.TTTokenFailReason : Swift.Equatable {}
+extension AIScan.TTTokenFailReason : Swift.Hashable {}
+extension AIScan.TTTokenFailReason : Swift.RawRepresentable {}
+extension AIScan.TTPresignFailReason : Swift.Equatable {}
+extension AIScan.TTPresignFailReason : Swift.Hashable {}
+extension AIScan.TTPresignFailReason : Swift.RawRepresentable {}
+extension AIScan.TTDxSubmitFailReason : Swift.Equatable {}
+extension AIScan.TTDxSubmitFailReason : Swift.Hashable {}
+extension AIScan.TTDxSubmitFailReason : Swift.RawRepresentable {}
+extension AIScan.TTModelDownloadFailReason : Swift.Equatable {}
+extension AIScan.TTModelDownloadFailReason : Swift.Hashable {}
+extension AIScan.TTModelDownloadFailReason : Swift.RawRepresentable {}

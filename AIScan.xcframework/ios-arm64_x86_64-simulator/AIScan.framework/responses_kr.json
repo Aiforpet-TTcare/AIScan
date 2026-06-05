@@ -39,7 +39,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "각막염",
                 "결막염",
@@ -49,7 +49,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "눈물길 막힘",
                 "눈꺼풀이 안쪽으로 말려 들어간 상태",
@@ -85,7 +85,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "선천성 요인(품종 관련 소인)",
                 "노령성 변화",
@@ -95,7 +95,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "품종에 따른 눈꺼풀 구조",
                 "나이에 따른 눈꺼풀 조직 이완",
@@ -131,7 +131,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "제3안검샘 탈출(체리아이)",
                 "제3안검 염증",
@@ -140,7 +140,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "세 번째 눈꺼풀샘 탈출(체리아이)",
                 "지지 조직 약화",
@@ -175,7 +175,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "결막염",
                 "포도막염",
@@ -186,7 +186,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "결막염(감염 또는 알레르기)",
                 "자극 또는 이물",
@@ -223,7 +223,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "백내장",
                 "핵경화",
@@ -234,7 +234,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "각막 염증",
                 "백내장",
@@ -270,7 +270,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "결막염",
                 "건성각결막염",
@@ -279,7 +279,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "감염(세균 또는 바이러스)",
                 "알레르기",
@@ -315,7 +315,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "알레르기성 결막염",
                 "결막염",
@@ -324,7 +324,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "알레르기",
                 "결막염",
@@ -359,7 +359,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "안검염",
                 "알레르기 반응",
@@ -369,7 +369,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "눈꺼풀 염증",
                 "알레르기 반응",
@@ -406,7 +406,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "맥립종",
                 "산립종",
@@ -416,7 +416,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "피지선 막힘(다래끼)",
                 "양성 종양",
@@ -473,7 +473,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -485,7 +485,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "알레르기성 피부 질환",
                 "세균 또는 효모 감염",
@@ -522,7 +522,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -535,7 +535,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "원래 피부색이 짙은 경우(정상 범위)",
                 "장기간 지속된 피부 염증",
@@ -572,7 +572,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -583,7 +583,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "만성 알레르기성 피부 질환",
                 "효모 과증식",
@@ -619,7 +619,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "심부 농피증",
                 "자가면역성 피부질환",
@@ -629,7 +629,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "심부 피부 감염",
                 "면역 관련 피부 질환",
@@ -667,7 +667,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "표재성 농피증",
                 "말라세지아 피부염",
@@ -678,7 +678,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "세균성 피부 감염",
                 "효모 감염",
@@ -716,7 +716,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "비만세포종",
                 "양성 피부 종양",
@@ -727,7 +727,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "염증 또는 농양",
                 "양성 종양",
@@ -762,7 +762,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "지루성 피부염",
                 "말라세지아 피부염",
@@ -776,7 +776,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "지루성 피부",
                 "효모 감염",
@@ -837,7 +837,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -849,7 +849,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "알레르기성 피부 질환",
                 "세균 또는 효모 감염",
@@ -886,7 +886,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -899,7 +899,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "원래 피부색이 짙은 경우(정상 범위)",
                 "장기간 지속된 피부 염증",
@@ -936,7 +936,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -947,7 +947,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "만성 알레르기성 피부 질환",
                 "효모 과증식",
@@ -983,7 +983,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "심부 농피증",
                 "자가면역성 피부질환",
@@ -993,7 +993,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "심부 피부 감염",
                 "면역 관련 피부 질환",
@@ -1031,7 +1031,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "표재성 농피증",
                 "말라세지아 피부염",
@@ -1042,7 +1042,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "세균성 피부 감염",
                 "효모 감염",
@@ -1080,7 +1080,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "비만세포종",
                 "양성 피부 종양",
@@ -1091,7 +1091,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "염증 또는 농양",
                 "양성 종양",
@@ -1126,7 +1126,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "지루성 피부염",
                 "말라세지아 피부염",
@@ -1140,7 +1140,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "지루성 피부",
                 "효모 감염",
@@ -1202,7 +1202,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -1214,7 +1214,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "알레르기성 피부 질환",
                 "세균 또는 효모 감염",
@@ -1251,7 +1251,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -1264,7 +1264,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "원래 피부색이 짙은 경우(정상 범위)",
                 "장기간 지속된 피부 염증",
@@ -1301,7 +1301,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "아토피 피부염",
                 "음식 알레르기 피부염",
@@ -1312,7 +1312,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "만성 알레르기성 피부 질환",
                 "효모 과증식",
@@ -1348,7 +1348,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "심부 농피증",
                 "자가면역성 피부질환",
@@ -1358,7 +1358,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "심부 피부 감염",
                 "면역 관련 피부 질환",
@@ -1396,7 +1396,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "표재성 농피증",
                 "말라세지아 피부염",
@@ -1407,7 +1407,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "세균성 피부 감염",
                 "효모 감염",
@@ -1445,7 +1445,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "비만세포종",
                 "양성 피부 종양",
@@ -1456,7 +1456,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "염증 또는 농양",
                 "양성 종양",
@@ -1491,7 +1491,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "지루성 피부염",
                 "말라세지아 피부염",
@@ -1505,7 +1505,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "지루성 피부",
                 "효모 감염",
@@ -1564,7 +1564,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "치석",
                 "치주질환"
@@ -1572,7 +1572,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "치아에 치태(플라크)가 쌓인 상태",
                 "양치가 충분히 이루어지지 않은 경우",
@@ -1607,7 +1607,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "치은염",
                 "치주염",
@@ -1616,7 +1616,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "치석이 쌓인 상태",
                 "세균에 의한 잇몸 감염",
@@ -1678,7 +1678,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "결막염",
                 "고양이 상부 호흡기 감염",
@@ -1689,7 +1689,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "눈 감염",
                 "바이러스성 호흡기 질환",
@@ -1724,7 +1724,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "각막 부골편",
                 "각막궤양",
@@ -1733,7 +1733,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "장기간 지속된 눈 자극",
                 "바이러스 감염",
@@ -1767,7 +1767,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "안검염",
                 "알레르기성 피부염",
@@ -1776,7 +1776,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "눈꺼풀 염증",
                 "알레르기 반응"
@@ -1809,7 +1809,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "결막염",
                 "알레르기성 결막염",
@@ -1818,7 +1818,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "바이러스 또는 세균 감염",
                 "알레르기",
@@ -1852,7 +1852,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "결막염",
                 "포도막염",
@@ -1862,7 +1862,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "눈 감염",
                 "안구 내부 염증",
@@ -1918,7 +1918,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "치석",
                 "치주질환"
@@ -1926,7 +1926,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "치아에 치태(플라크)가 쌓인 상태",
                 "양치가 충분히 이루어지지 않은 경우",
@@ -1962,7 +1962,7 @@
             },
             {
               "key": "related_clinical_conditions",
-              "title": "관련 질환 및 요인 (기업용)",
+              "title": "관련 질환 및 요인",
               "contents": [
                 "치은염",
                 "치주염",
@@ -1972,7 +1972,7 @@
             },
             {
               "key": "possible_causes",
-              "title": "가능한 원인 (보호자용)",
+              "title": "가능한 원인",
               "contents": [
                 "치석이 쌓인 상태",
                 "세균 또는 바이러스 감염",

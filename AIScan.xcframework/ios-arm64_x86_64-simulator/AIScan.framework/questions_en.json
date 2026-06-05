@@ -1,0 +1,69 @@
+{
+  "DOG": {
+    "EYE": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Are the pupils different in size?",
+        "Is your dog bumping into things or seeming unable to see?",
+        "Is your dog squinting or unable to keep the eye open?",
+        "Does your dog pull away when touched near the eye?",
+        "Is your dog less active than usual or eating less?"
+      ]
+    },
+    "BODY": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Is there sudden swelling of the face or body?",
+        "Is there open skin with continuous bleeding?",
+        "Are there new purple spots or unexplained bruises on the skin?",
+        "Is your dog weak, collapsing, or having difficulty breathing?"
+      ]
+    },
+    "FOOT": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Is there sudden swelling of the face or body?",
+        "Is there open skin with continuous bleeding?",
+        "Are there new purple spots or unexplained bruises on the skin?",
+        "Is your dog weak, collapsing, or having difficulty breathing?"
+      ]
+    },
+    "EAR": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Is your dog losing balance or unable to walk normally?",
+        "Is your dog keeping the head tilted to one side?",
+        "Is your dog shaking the head repeatedly and unable to rest?",
+        "Has your dog stopped eating or become unusually inactive?"
+      ]
+    },
+    "TEETH": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Is there bleeding from the mouth that does not stop?",
+        "Has there been sudden swelling under one eye?",
+        "Is your dog suddenly unable to chew or refusing food?"
+      ]
+    }
+  },
+  "CAT": {
+    "EYE": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Are the pupils different in size?",
+        "Is your cat bumping into things or seeming unable to see?",
+        "Is your cat squinting or unable to keep the eye open?",
+        "Does your cat pull away when touched near the eye?",
+        "Is your cat less active than usual or eating less?"
+      ]
+    },
+    "TEETH": {
+      "title": "Please check any symptoms that apply to your pet",
+      "questions": [
+        "Is there bleeding from the mouth?",
+        "Is your cat refusing food or unable to eat?",
+        "Is your cat drooling more than usual?"
+      ]
+    }
+  }
+}
