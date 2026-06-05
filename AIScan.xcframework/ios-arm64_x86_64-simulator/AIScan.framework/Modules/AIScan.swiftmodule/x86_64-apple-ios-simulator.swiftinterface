@@ -17,6 +17,7 @@ import CoreMotion
 import CoreText
 import CoreVideo
 import DeveloperToolsSupport
+import DeviceCheck
 import Foundation
 import ImageIO
 import Metal
