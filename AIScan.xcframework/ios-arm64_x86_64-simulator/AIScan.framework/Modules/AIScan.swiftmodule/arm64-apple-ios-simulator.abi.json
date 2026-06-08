@@ -24706,6 +24706,47 @@
           },
           {
             "kind": "Var",
+            "name": "platformPart",
+            "printedName": "platformPart",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:6AIScan8PartTypeO08platformB0SSvp",
+            "mangledName": "$s6AIScan8PartTypeO08platformB0SSvp",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan8PartTypeO08platformB0SSvg",
+                "mangledName": "$s6AIScan8PartTypeO08platformB0SSvg",
+                "moduleName": "AIScan",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "catalogKey",
             "printedName": "catalogKey",
             "children": [
@@ -42203,6 +42244,46 @@
           },
           {
             "kind": "Var",
+            "name": "preprocessFeedback",
+            "printedName": "preprocessFeedback",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(AIScan.TTTelemetryEvent.Type) -> AIScan.TTTelemetryEvent",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "TTTelemetryEvent",
+                    "printedName": "AIScan.TTTelemetryEvent",
+                    "usr": "s:6AIScan16TTTelemetryEventO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "AIScan.TTTelemetryEvent.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "TTTelemetryEvent",
+                        "printedName": "AIScan.TTTelemetryEvent",
+                        "usr": "s:6AIScan16TTTelemetryEventO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:6AIScan16TTTelemetryEventO18preprocessFeedbackyA2CmF",
+            "mangledName": "$s6AIScan16TTTelemetryEventO18preprocessFeedbackyA2CmF",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "qualityCheckFailed",
             "printedName": "qualityCheckFailed",
             "children": [
@@ -47513,7 +47594,7 @@
           {
             "kind": "Function",
             "name": "captureFailed",
-            "printedName": "captureFailed(reason:errorCode:trackingScore:)",
+            "printedName": "captureFailed(reason:errorCode:trackingScore:dominantThreshold:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -47555,11 +47636,26 @@
                 ],
                 "hasDefaultArg": true,
                 "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
               }
             ],
             "declKind": "Func",
-            "usr": "s:6AIScan11TTTelemetryC13captureFailed6reason9errorCode13trackingScoreyAA19TTCaptureFailReasonO_SSSgSdSgtF",
-            "mangledName": "$s6AIScan11TTTelemetryC13captureFailed6reason9errorCode13trackingScoreyAA19TTCaptureFailReasonO_SSSgSdSgtF",
+            "usr": "s:6AIScan11TTTelemetryC13captureFailed6reason9errorCode13trackingScore17dominantThresholdyAA19TTCaptureFailReasonO_SSSgSdSgAKtF",
+            "mangledName": "$s6AIScan11TTTelemetryC13captureFailed6reason9errorCode13trackingScore17dominantThresholdyAA19TTCaptureFailReasonO_SSSgSdSgAKtF",
             "moduleName": "AIScan",
             "declAttributes": [
               "Final",
@@ -47570,7 +47666,7 @@
           {
             "kind": "Function",
             "name": "qualityCheckFailed",
-            "printedName": "qualityCheckFailed(reason:blurScore:exposureEV:)",
+            "printedName": "qualityCheckFailed(reason:blurScore:exposureEV:dominantThreshold:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -47612,15 +47708,91 @@
                 ],
                 "hasDefaultArg": true,
                 "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
               }
             ],
             "declKind": "Func",
-            "usr": "s:6AIScan11TTTelemetryC18qualityCheckFailed6reason9blurScore10exposureEVyAA09TTQualityD10FailReasonO_SdSgAJtF",
-            "mangledName": "$s6AIScan11TTTelemetryC18qualityCheckFailed6reason9blurScore10exposureEVyAA09TTQualityD10FailReasonO_SdSgAJtF",
+            "usr": "s:6AIScan11TTTelemetryC18qualityCheckFailed6reason9blurScore10exposureEV17dominantThresholdyAA09TTQualityD10FailReasonO_SdSgAKSSSgtF",
+            "mangledName": "$s6AIScan11TTTelemetryC18qualityCheckFailed6reason9blurScore10exposureEV17dominantThresholdyAA09TTQualityD10FailReasonO_SdSgAKSSSgtF",
             "moduleName": "AIScan",
             "declAttributes": [
               "Final",
               "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "preprocessFeedback",
+            "printedName": "preprocessFeedback(part:passed:detail:inferenceMs:distanceUnit:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Double?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:6AIScan11TTTelemetryC18preprocessFeedback4part6passed6detail11inferenceMs12distanceUnitySS_SbSSSiSdSgtF",
+            "mangledName": "$s6AIScan11TTTelemetryC18preprocessFeedback4part6passed6detail11inferenceMs12distanceUnitySS_SbSSSiSdSgtF",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "RawDocComment"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -54363,658 +54535,665 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6024,
+      "offset": 6330,
+      "length": 21,
+      "value": "\"preprocess_feedback\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
+      "kind": "StringLiteral",
+      "offset": 6384,
       "length": 22,
       "value": "\"quality_check_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6079,
+      "offset": 6439,
       "length": 16,
       "value": "\"upload_started\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6128,
+      "offset": 6488,
       "length": 18,
       "value": "\"upload_completed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6179,
+      "offset": 6539,
       "length": 15,
       "value": "\"upload_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6227,
+      "offset": 6587,
       "length": 19,
       "value": "\"inference_started\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6279,
+      "offset": 6639,
       "length": 18,
       "value": "\"inference_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6330,
+      "offset": 6690,
       "length": 16,
       "value": "\"scan_completed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6379,
+      "offset": 6739,
       "length": 15,
       "value": "\"result_viewed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6427,
+      "offset": 6787,
       "length": 15,
       "value": "\"result_shared\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6475,
+      "offset": 6835,
       "length": 19,
       "value": "\"session_abandoned\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6666,
+      "offset": 7026,
       "length": 14,
       "value": "\"album_opened\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6713,
+      "offset": 7073,
       "length": 22,
       "value": "\"album_photo_selected\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 6768,
+      "offset": 7128,
       "length": 16,
       "value": "\"album_canceled\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7043,
+      "offset": 7403,
       "length": 18,
       "value": "\"manifest_fetched\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7098,
+      "offset": 7458,
       "length": 23,
       "value": "\"manifest_fetch_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7158,
+      "offset": 7518,
       "length": 14,
       "value": "\"token_issued\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7209,
+      "offset": 7569,
       "length": 20,
       "value": "\"token_issue_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7266,
+      "offset": 7626,
       "length": 17,
       "value": "\"token_refreshed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7320,
+      "offset": 7680,
       "length": 22,
       "value": "\"token_refresh_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7379,
+      "offset": 7739,
       "length": 26,
       "value": "\"upload_presign_completed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7442,
+      "offset": 7802,
       "length": 23,
       "value": "\"upload_presign_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7502,
+      "offset": 7862,
       "length": 25,
       "value": "\"diagnosis_submit_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7850,
+      "offset": 8210,
       "length": 24,
       "value": "\"model_download_started\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7911,
+      "offset": 8271,
       "length": 18,
       "value": "\"model_downloaded\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 7966,
+      "offset": 8326,
       "length": 23,
       "value": "\"model_download_failed\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8281,
+      "offset": 8641,
       "length": 14,
       "value": "\"camera_error\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8321,
+      "offset": 8681,
       "length": 11,
       "value": "\"low_light\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8358,
+      "offset": 8718,
       "length": 6,
       "value": "\"blur\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8390,
+      "offset": 8750,
       "length": 15,
       "value": "\"tracking_lost\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8431,
+      "offset": 8791,
       "length": 9,
       "value": "\"timeout\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8466,
+      "offset": 8826,
       "length": 15,
       "value": "\"user_canceled\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8564,
+      "offset": 8924,
       "length": 12,
       "value": "\"resolution\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8599,
+      "offset": 8959,
       "length": 10,
       "value": "\"exposure\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8632,
+      "offset": 8992,
       "length": 7,
       "value": "\"focus\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8662,
+      "offset": 9022,
       "length": 11,
       "value": "\"occlusion\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8755,
+      "offset": 9115,
       "length": 9,
       "value": "\"network\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8792,
+      "offset": 9152,
       "length": 12,
       "value": "\"size_limit\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8832,
+      "offset": 9192,
       "length": 5,
       "value": "\"5xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8865,
+      "offset": 9225,
       "length": 9,
       "value": "\"timeout\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8902,
+      "offset": 9262,
       "length": 17,
       "value": "\"presign_expired\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 8948,
+      "offset": 9308,
       "length": 19,
       "value": "\"checksum_mismatch\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9049,
+      "offset": 9409,
       "length": 13,
       "value": "\"model_error\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9087,
+      "offset": 9447,
       "length": 15,
       "value": "\"invalid_image\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9127,
+      "offset": 9487,
       "length": 9,
       "value": "\"timeout\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9161,
+      "offset": 9521,
       "length": 5,
       "value": "\"oom\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9256,
+      "offset": 9616,
       "length": 13,
       "value": "\"user_choice\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9301,
+      "offset": 9661,
       "length": 12,
       "value": "\"os_setting\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9345,
+      "offset": 9705,
       "length": 23,
       "value": "\"system_dialog_blocked\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9770,
+      "offset": 10130,
       "length": 13,
       "value": "\"user_choice\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 9807,
+      "offset": 10167,
       "length": 14,
       "value": "\"pre_existing\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 10191,
+      "offset": 10551,
       "length": 10,
       "value": "\"http_4xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 10221,
+      "offset": 10581,
       "length": 10,
       "value": "\"http_5xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 10254,
+      "offset": 10614,
       "length": 13,
       "value": "\"parse_error\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 10692,
+      "offset": 11052,
       "length": 13,
       "value": "\"invalid_key\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 10742,
+      "offset": 11102,
       "length": 10,
       "value": "\"http_5xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 10775,
+      "offset": 11135,
       "length": 13,
       "value": "\"parse_error\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 11087,
+      "offset": 11447,
       "length": 10,
       "value": "\"http_4xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 11117,
+      "offset": 11477,
       "length": 10,
       "value": "\"http_5xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 11454,
+      "offset": 11814,
       "length": 22,
       "value": "\"idempotency_conflict\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 11496,
+      "offset": 11856,
       "length": 10,
       "value": "\"http_4xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 11526,
+      "offset": 11886,
       "length": 10,
       "value": "\"http_5xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 11975,
+      "offset": 12335,
       "length": 10,
       "value": "\"http_4xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 12005,
+      "offset": 12365,
       "length": 10,
       "value": "\"http_5xx\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 12044,
+      "offset": 12404,
       "length": 19,
       "value": "\"checksum_mismatch\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 12084,
+      "offset": 12444,
       "length": 11,
       "value": "\"disk_full\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 12118,
+      "offset": 12478,
       "length": 13,
       "value": "\"parse_error\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 12766,
+      "offset": 13126,
       "length": 20,
       "value": "\"tt.telemetry.state\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "BooleanLiteral",
-      "offset": 12967,
+      "offset": 13327,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 13285,
+      "offset": 13645,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "BooleanLiteral",
-      "offset": 14053,
+      "offset": 14667,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "BooleanLiteral",
-      "offset": 14307,
+      "offset": 14921,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 21995,
+      "offset": 22609,
       "length": 8,
       "value": "\"manual\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 24942,
+      "offset": 27809,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 24965,
+      "offset": 27832,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 26452,
+      "offset": 29319,
       "length": 9,
       "value": "\"summary\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 27177,
+      "offset": 30044,
       "length": 3,
       "value": "200"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 27508,
+      "offset": 30375,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 27531,
+      "offset": 30398,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 28157,
+      "offset": 31024,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 28565,
+      "offset": 31432,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 29088,
+      "offset": 31955,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 29534,
+      "offset": 32401,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 31038,
+      "offset": 33905,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 31061,
+      "offset": 33928,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 36147,
+      "offset": 39014,
       "length": 28,
       "value": "\"CFBundleShortVersionString\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 36192,
+      "offset": 39059,
       "length": 7,
       "value": "\"2.0.0\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 36312,
+      "offset": 39179,
       "length": 28,
       "value": "\"CFBundleShortVersionString\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 36825,
+      "offset": 39692,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 36848,
+      "offset": 39715,
       "length": 12,
       "value": "\"hw.machine\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 36879,
+      "offset": 39746,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 36900,
+      "offset": 39767,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 36945,
+      "offset": 39812,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 36986,
+      "offset": 39853,
       "length": 12,
       "value": "\"hw.machine\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 37018,
+      "offset": 39885,
       "length": 1,
       "value": "0"
     },

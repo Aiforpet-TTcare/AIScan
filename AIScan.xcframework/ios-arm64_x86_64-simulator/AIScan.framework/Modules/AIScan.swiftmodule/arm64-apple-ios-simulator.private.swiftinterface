@@ -589,6 +589,9 @@ public enum PartType {
   public var key: Swift.String {
     get
   }
+  public var platformPart: Swift.String {
+    get
+  }
   public var catalogKey: Swift.String {
     get
   }
@@ -1120,6 +1123,7 @@ public enum TTTelemetryEvent : Swift.String, Swift.Sendable {
   case captureAttempted
   case captureCompleted
   case captureFailed
+  case preprocessFeedback
   case qualityCheckFailed
   case uploadStarted
   case uploadCompleted
@@ -1330,10 +1334,13 @@ public enum TTModelDownloadFailReason : Swift.String, Swift.Sendable {
   final public func captureCompleted(imageWidth: Swift.Int, imageHeight: Swift.Int, imageBytes: Swift.Int, trackingScore: Swift.Double? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  final public func captureFailed(reason: AIScan.TTCaptureFailReason, errorCode: Swift.String? = nil, trackingScore: Swift.Double? = nil)
+  final public func captureFailed(reason: AIScan.TTCaptureFailReason, errorCode: Swift.String? = nil, trackingScore: Swift.Double? = nil, dominantThreshold: Swift.String? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  final public func qualityCheckFailed(reason: AIScan.TTQualityCheckFailReason, blurScore: Swift.Double? = nil, exposureEV: Swift.Double? = nil)
+  final public func qualityCheckFailed(reason: AIScan.TTQualityCheckFailReason, blurScore: Swift.Double? = nil, exposureEV: Swift.Double? = nil, dominantThreshold: Swift.String? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func preprocessFeedback(part: Swift.String, passed: Swift.Bool, detail: Swift.String, inferenceMs: Swift.Int, distanceUnit: Swift.Double? = nil)
   #endif
   final public func uploadStarted(storePath: Swift.String, sizeBytes: Swift.Int, contentType: Swift.String)
   #if compiler(>=5.3) && $NonescapableTypes
