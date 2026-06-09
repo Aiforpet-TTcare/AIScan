@@ -1079,7 +1079,13 @@ final public class AIScanClient : @unchecked Swift.Sendable {
     public let sizeBytes: Swift.Int64
     public let contentType: Swift.String
     public let purpose: Swift.String
-    public init(filename: Swift.String, sizeBytes: Swift.Int64, contentType: Swift.String, purpose: Swift.String)
+    public let sessionID: Swift.String?
+    public let shotSeq: Swift.Int?
+    public let reason: Swift.String?
+    public let source: Swift.String?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(filename: Swift.String, sizeBytes: Swift.Int64, contentType: Swift.String, purpose: Swift.String, sessionID: Swift.String? = nil, shotSeq: Swift.Int? = nil, reason: Swift.String? = nil, source: Swift.String? = nil)
+    #endif
   }
   final public func requestUploadTickets(_ files: [AIScan.AIScanClient.UploadRequest]) async throws -> [AIScan.AIScanClient.UploadTicket]
   final public func uploadOriginal(_ data: Foundation.Data, to ticket: AIScan.AIScanClient.UploadTicket) async throws
@@ -1149,6 +1155,7 @@ public enum TTTelemetryEvent : Swift.String, Swift.Sendable {
   case modelDownloadStarted
   case modelDownloaded
   case modelDownloadFailed
+  case appReport
   #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
   #endif
@@ -1338,6 +1345,9 @@ public enum TTModelDownloadFailReason : Swift.String, Swift.Sendable {
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
   final public func qualityCheckFailed(reason: AIScan.TTQualityCheckFailReason, blurScore: Swift.Double? = nil, exposureEV: Swift.Double? = nil, dominantThreshold: Swift.String? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func appReport(reportData: Swift.String, failList: Swift.String = "", isSuccess: Swift.Bool, vendorId: Swift.String?, successScore: Swift.Double? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
   final public func preprocessFeedback(part: Swift.String, passed: Swift.Bool, detail: Swift.String, inferenceMs: Swift.Int, distanceUnit: Swift.Double? = nil)
