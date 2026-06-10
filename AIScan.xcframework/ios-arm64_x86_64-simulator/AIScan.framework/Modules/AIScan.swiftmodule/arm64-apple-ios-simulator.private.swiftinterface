@@ -421,7 +421,9 @@ public enum ModelLibType {
   }
 }
 @_hasMissingDesignatedInitializers public class AIScanManager {
-  public static let sdkVersion: Swift.String
+  public static var sdkVersion: Swift.String {
+    get
+  }
   public static var license: AIScan.TTLicense?
   public static var analysisTracker: (any AIScan.TTAnalysisTracker)?
   @available(*, deprecated, message: "Ignored in v2.0+. Generated media is always wiped at the next showCamera() entry. Copy files out from the callback if longer retention is needed.")
