@@ -4,6 +4,19 @@
 echo "Enter the new version:"
 read NEW_VERSION
 
+# 바이너리에 같은 버전을 스탬프한 뒤 태그한다 (런타임 telemetry sdk_version ==
+# pod/SPM 태그). 이 단계가 없으면 배포 태그만 올라가고 프레임워크 바이너리의
+# MARKETING_VERSION 은 그대로라 telemetry 가 어긋난다(이전엔 1.0 으로 고정 유입).
+# 형제 AIScan 소스 repo 에서 xcframework 를 재빌드해 이 디렉토리로 출력하고,
+# 소스 오브 트루스인 VERSION 파일도 동기화한다.
+AISCAN_SRC="${AISCAN_SRC:-../AIScan}"
+echo "Stamping + rebuilding AIScan.xcframework at $NEW_VERSION..."
+echo "$NEW_VERSION" > "$AISCAN_SRC/VERSION"
+if ! ( cd "$AISCAN_SRC" && GIT_LFS_SKIP_SMUDGE=1 bash create_xcframework.sh "$NEW_VERSION" ); then
+  echo "xcframework build failed — aborting release."
+  exit 1
+fi
+
 # Podspec 파일 이름
 PODSPEC="AIScan.podspec"
 
