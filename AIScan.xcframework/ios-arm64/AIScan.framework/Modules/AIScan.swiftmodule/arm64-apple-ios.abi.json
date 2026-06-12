@@ -13342,26 +13342,27 @@
               {
                 "kind": "TypeNominal",
                 "name": "Optional",
-                "printedName": "Swift.Int?",
+                "printedName": "Swift.Double?",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Int",
-                    "printedName": "Swift.Int",
-                    "usr": "s:Si"
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
                   }
                 ],
                 "usr": "s:Sq"
               }
             ],
             "declKind": "Var",
-            "usr": "s:6AIScan15OnDeviceSymptomV5scoreSiSgvp",
-            "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSiSgvp",
+            "usr": "s:6AIScan15OnDeviceSymptomV5scoreSdSgvp",
+            "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSdSgvp",
             "moduleName": "AIScan",
             "declAttributes": [
               "HasInitialValue",
               "HasStorage",
-              "AccessControl"
+              "AccessControl",
+              "RawDocComment"
             ],
             "hasStorage": true,
             "accessors": [
@@ -13373,21 +13374,21 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "Swift.Int?",
+                    "printedName": "Swift.Double?",
                     "children": [
                       {
                         "kind": "TypeNominal",
-                        "name": "Int",
-                        "printedName": "Swift.Int",
-                        "usr": "s:Si"
+                        "name": "Double",
+                        "printedName": "Swift.Double",
+                        "usr": "s:Sd"
                       }
                     ],
                     "usr": "s:Sq"
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:6AIScan15OnDeviceSymptomV5scoreSiSgvg",
-                "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSiSgvg",
+                "usr": "s:6AIScan15OnDeviceSymptomV5scoreSdSgvg",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSdSgvg",
                 "moduleName": "AIScan",
                 "implicit": true,
                 "accessorKind": "get"
@@ -13405,21 +13406,21 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "Swift.Int?",
+                    "printedName": "Swift.Double?",
                     "children": [
                       {
                         "kind": "TypeNominal",
-                        "name": "Int",
-                        "printedName": "Swift.Int",
-                        "usr": "s:Si"
+                        "name": "Double",
+                        "printedName": "Swift.Double",
+                        "usr": "s:Sd"
                       }
                     ],
                     "usr": "s:Sq"
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:6AIScan15OnDeviceSymptomV5scoreSiSgvs",
-                "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSiSgvs",
+                "usr": "s:6AIScan15OnDeviceSymptomV5scoreSdSgvs",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSdSgvs",
                 "moduleName": "AIScan",
                 "implicit": true,
                 "accessorKind": "set"
@@ -13436,8 +13437,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:6AIScan15OnDeviceSymptomV5scoreSiSgvM",
-                "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSiSgvM",
+                "usr": "s:6AIScan15OnDeviceSymptomV5scoreSdSgvM",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV5scoreSdSgvM",
                 "moduleName": "AIScan",
                 "implicit": true,
                 "accessorKind": "_modify"
@@ -13579,9 +13580,450 @@
             ]
           },
           {
+            "kind": "Var",
+            "name": "modelName",
+            "printedName": "modelName",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:6AIScan15OnDeviceSymptomV9modelNameSSSgvp",
+            "mangledName": "$s6AIScan15OnDeviceSymptomV9modelNameSSSgvp",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV9modelNameSSSgvg",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV9modelNameSSSgvg",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV9modelNameSSSgvs",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV9modelNameSSSgvs",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV9modelNameSSSgvM",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV9modelNameSSSgvM",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "abnormLevel",
+            "printedName": "abnormLevel",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Int?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:6AIScan15OnDeviceSymptomV11abnormLevelSiSgvp",
+            "mangledName": "$s6AIScan15OnDeviceSymptomV11abnormLevelSiSgvp",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Int?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV11abnormLevelSiSgvg",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV11abnormLevelSiSgvg",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Int?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV11abnormLevelSiSgvs",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV11abnormLevelSiSgvs",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV11abnormLevelSiSgvM",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV11abnormLevelSiSgvM",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "isAbnormal",
+            "printedName": "isAbnormal",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Bool?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:6AIScan15OnDeviceSymptomV10isAbnormalSbSgvp",
+            "mangledName": "$s6AIScan15OnDeviceSymptomV10isAbnormalSbSgvp",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Bool?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV10isAbnormalSbSgvg",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV10isAbnormalSbSgvg",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Bool?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV10isAbnormalSbSgvs",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV10isAbnormalSbSgvs",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV10isAbnormalSbSgvM",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV10isAbnormalSbSgvM",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "resultLabel",
+            "printedName": "resultLabel",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:6AIScan15OnDeviceSymptomV11resultLabelSSSgvp",
+            "mangledName": "$s6AIScan15OnDeviceSymptomV11resultLabelSSSgvp",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV11resultLabelSSSgvg",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV11resultLabelSSSgvg",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV11resultLabelSSSgvs",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV11resultLabelSSSgvs",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan15OnDeviceSymptomV11resultLabelSSSgvM",
+                "mangledName": "$s6AIScan15OnDeviceSymptomV11resultLabelSSSgvM",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(code:name:heatmapPath:cropImageUrl:score:details:)",
+            "printedName": "init(code:name:heatmapPath:cropImageUrl:score:details:modelName:abnormLevel:isAbnormal:resultLabel:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -13652,13 +14094,13 @@
               {
                 "kind": "TypeNominal",
                 "name": "Optional",
-                "printedName": "Swift.Int?",
+                "printedName": "Swift.Double?",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Int",
-                    "printedName": "Swift.Int",
-                    "usr": "s:Si"
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
                   }
                 ],
                 "hasDefaultArg": true,
@@ -13686,11 +14128,71 @@
                 ],
                 "hasDefaultArg": true,
                 "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Int?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Bool?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:6AIScan15OnDeviceSymptomV4code4name11heatmapPath12cropImageUrl5score7detailsACSSSg_A3JSiSgSayAA0bcD6DetailVGSgtcfc",
-            "mangledName": "$s6AIScan15OnDeviceSymptomV4code4name11heatmapPath12cropImageUrl5score7detailsACSSSg_A3JSiSgSayAA0bcD6DetailVGSgtcfc",
+            "usr": "s:6AIScan15OnDeviceSymptomV4code4name11heatmapPath12cropImageUrl5score7details9modelName11abnormLevel10isAbnormal11resultLabelACSSSg_A3NSdSgSayAA0bcD6DetailVGSgANSiSgSbSgANtcfc",
+            "mangledName": "$s6AIScan15OnDeviceSymptomV4code4name11heatmapPath12cropImageUrl5score7details9modelName11abnormLevel10isAbnormal11resultLabelACSSSg_A3NSdSgSayAA0bcD6DetailVGSgANSiSgSbSgANtcfc",
             "moduleName": "AIScan",
             "declAttributes": [
               "AccessControl"
@@ -17514,39 +18016,6 @@
             "moduleName": "AIScan"
           },
           {
-            "kind": "Constructor",
-            "name": "init",
-            "printedName": "init(rawValue:)",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "AIScan.PetType?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "PetType",
-                    "printedName": "AIScan.PetType",
-                    "usr": "s:6AIScan7PetTypeO"
-                  }
-                ],
-                "usr": "s:Sq"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
-              }
-            ],
-            "declKind": "Constructor",
-            "usr": "s:6AIScan7PetTypeO8rawValueACSgSS_tcfc",
-            "mangledName": "$s6AIScan7PetTypeO8rawValueACSgSS_tcfc",
-            "moduleName": "AIScan",
-            "implicit": true,
-            "init_kind": "Designated"
-          },
-          {
             "kind": "Var",
             "name": "rawValue",
             "printedName": "rawValue",
@@ -17584,6 +18053,39 @@
                 "accessorKind": "get"
               }
             ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rawValue:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "AIScan.PetType?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "PetType",
+                    "printedName": "AIScan.PetType",
+                    "usr": "s:6AIScan7PetTypeO"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:6AIScan7PetTypeO8rawValueACSgSS_tcfc",
+            "mangledName": "$s6AIScan7PetTypeO8rawValueACSgSS_tcfc",
+            "moduleName": "AIScan",
+            "implicit": true,
+            "init_kind": "Designated"
           }
         ],
         "declKind": "Enum",
@@ -37625,6 +38127,204 @@
               },
               {
                 "kind": "Var",
+                "name": "crop",
+                "printedName": "crop",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV4cropAC14ResultArtifactVSgvp",
+                "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV4cropAC14ResultArtifactVSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl",
+                  "RawDocComment"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "ResultArtifact",
+                            "printedName": "AIScan.AIScanClient.ResultArtifact",
+                            "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV4cropAC14ResultArtifactVSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV4cropAC14ResultArtifactVSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "heatmap",
+                "printedName": "heatmap",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV7heatmapAC14ResultArtifactVSgvp",
+                "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV7heatmapAC14ResultArtifactVSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "ResultArtifact",
+                            "printedName": "AIScan.AIScanClient.ResultArtifact",
+                            "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV7heatmapAC14ResultArtifactVSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV7heatmapAC14ResultArtifactVSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "symptom_images",
+                "printedName": "symptom_images",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "[AIScan.AIScanClient.SymptomImageSet]?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Array",
+                        "printedName": "[AIScan.AIScanClient.SymptomImageSet]",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "SymptomImageSet",
+                            "printedName": "AIScan.AIScanClient.SymptomImageSet",
+                            "usr": "s:6AIScan0A6ClientC15SymptomImageSetV"
+                          }
+                        ],
+                        "usr": "s:Sa"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV14symptom_imagesSayAC15SymptomImageSetVGSgvp",
+                "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV14symptom_imagesSayAC15SymptomImageSetVGSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl",
+                  "RawDocComment"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "[AIScan.AIScanClient.SymptomImageSet]?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Array",
+                            "printedName": "[AIScan.AIScanClient.SymptomImageSet]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "SymptomImageSet",
+                                "printedName": "AIScan.AIScanClient.SymptomImageSet",
+                                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV"
+                              }
+                            ],
+                            "usr": "s:Sa"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV14symptom_imagesSayAC15SymptomImageSetVGSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV14symptom_imagesSayAC15SymptomImageSetVGSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
                 "name": "client_metadata",
                 "printedName": "client_metadata",
                 "children": [
@@ -37670,7 +38370,7 @@
               {
                 "kind": "Constructor",
                 "name": "init",
-                "printedName": "init(pet:diagnosis:original:inferences:questionnaire:skin_condition_levels:client_metadata:)",
+                "printedName": "init(pet:diagnosis:original:inferences:questionnaire:skin_condition_levels:crop:heatmap:symptom_images:client_metadata:)",
                 "children": [
                   {
                     "kind": "TypeNominal",
@@ -37742,14 +38442,67 @@
                   },
                   {
                     "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "[AIScan.AIScanClient.SymptomImageSet]?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Array",
+                        "printedName": "[AIScan.AIScanClient.SymptomImageSet]",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "SymptomImageSet",
+                            "printedName": "AIScan.AIScanClient.SymptomImageSet",
+                            "usr": "s:6AIScan0A6ClientC15SymptomImageSetV"
+                          }
+                        ],
+                        "usr": "s:Sa"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
                     "name": "ClientMetadata",
                     "printedName": "AIScan.AIScanClient.DiagnosisRequest.ClientMetadata",
                     "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV0B8MetadataV"
                   }
                 ],
                 "declKind": "Constructor",
-                "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV3pet9diagnosis8original10inferences13questionnaire21skin_condition_levels15client_metadataA2E3PetV_AE0C10DescriptorVAE8OriginalVSayAC0C9InferenceVGAE13QuestionnaireVSgAE19SkinConditionLevelsVSgAE0B8MetadataVtcfc",
-                "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV3pet9diagnosis8original10inferences13questionnaire21skin_condition_levels15client_metadataA2E3PetV_AE0C10DescriptorVAE8OriginalVSayAC0C9InferenceVGAE13QuestionnaireVSgAE19SkinConditionLevelsVSgAE0B8MetadataVtcfc",
+                "usr": "s:6AIScan0A6ClientC16DiagnosisRequestV3pet9diagnosis8original10inferences13questionnaire21skin_condition_levels4crop7heatmap14symptom_images15client_metadataA2E3PetV_AE0C10DescriptorVAE8OriginalVSayAC0C9InferenceVGAE13QuestionnaireVSgAE19SkinConditionLevelsVSgAC14ResultArtifactVSgA5_SayAC15SymptomImageSetVGSgAE0B8MetadataVtcfc",
+                "mangledName": "$s6AIScan0A6ClientC16DiagnosisRequestV3pet9diagnosis8original10inferences13questionnaire21skin_condition_levels4crop7heatmap14symptom_images15client_metadataA2E3PetV_AE0C10DescriptorVAE8OriginalVSayAC0C9InferenceVGAE13QuestionnaireVSgAE19SkinConditionLevelsVSgAC14ResultArtifactVSgA5_SayAC15SymptomImageSetVGSgAE0B8MetadataVtcfc",
                 "moduleName": "AIScan",
                 "declAttributes": [
                   "AccessControl"
@@ -37857,6 +38610,720 @@
                 "printedName": "SendableMetatype",
                 "usr": "s:s16SendableMetatypeP",
                 "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "SymptomImageSet",
+            "printedName": "SymptomImageSet",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "code",
+                "printedName": "code",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV4codeSSvp",
+                "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV4codeSSvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC15SymptomImageSetV4codeSSvg",
+                    "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV4codeSSvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "crop",
+                "printedName": "crop",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV4cropAC14ResultArtifactVSgvp",
+                "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV4cropAC14ResultArtifactVSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "ResultArtifact",
+                            "printedName": "AIScan.AIScanClient.ResultArtifact",
+                            "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC15SymptomImageSetV4cropAC14ResultArtifactVSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV4cropAC14ResultArtifactVSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "heatmap",
+                "printedName": "heatmap",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV7heatmapAC14ResultArtifactVSgvp",
+                "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV7heatmapAC14ResultArtifactVSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "ResultArtifact",
+                            "printedName": "AIScan.AIScanClient.ResultArtifact",
+                            "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC15SymptomImageSetV7heatmapAC14ResultArtifactVSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV7heatmapAC14ResultArtifactVSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(code:crop:heatmap:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "SymptomImageSet",
+                    "printedName": "AIScan.AIScanClient.SymptomImageSet",
+                    "usr": "s:6AIScan0A6ClientC15SymptomImageSetV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ResultArtifact",
+                        "printedName": "AIScan.AIScanClient.ResultArtifact",
+                        "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV4code4crop7heatmapAESS_AC14ResultArtifactVSgAKtcfc",
+                "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV4code4crop7heatmapAESS_AC14ResultArtifactVSgAKtcfc",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "AccessControl"
+                ],
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(from:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "SymptomImageSet",
+                    "printedName": "AIScan.AIScanClient.SymptomImageSet",
+                    "usr": "s:6AIScan0A6ClientC15SymptomImageSetV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Decoder",
+                    "printedName": "any Swift.Decoder",
+                    "usr": "s:s7DecoderP"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV4fromAEs7Decoder_p_tKcfc",
+                "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV4fromAEs7Decoder_p_tKcfc",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "throwing": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Function",
+                "name": "encode",
+                "printedName": "encode(to:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Encoder",
+                    "printedName": "any Swift.Encoder",
+                    "usr": "s:s7EncoderP"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:6AIScan0A6ClientC15SymptomImageSetV6encode2toys7Encoder_p_tKF",
+                "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV6encode2toys7Encoder_p_tKF",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "throwing": true,
+                "funcSelfKind": "NonMutating"
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:6AIScan0A6ClientC15SymptomImageSetV",
+            "mangledName": "$s6AIScan0A6ClientC15SymptomImageSetV",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Decodable",
+                "printedName": "Decodable",
+                "usr": "s:Se",
+                "mangledName": "$sSe"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Encodable",
+                "printedName": "Encodable",
+                "usr": "s:SE",
+                "mangledName": "$sSE"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "ResultArtifact",
+            "printedName": "ResultArtifact",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "store_path",
+                "printedName": "store_path",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC14ResultArtifactV10store_pathSSvp",
+                "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV10store_pathSSvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC14ResultArtifactV10store_pathSSvg",
+                    "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV10store_pathSSvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "filename",
+                "printedName": "filename",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC14ResultArtifactV8filenameSSSgvp",
+                "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV8filenameSSSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC14ResultArtifactV8filenameSSSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV8filenameSSSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "size_bytes",
+                "printedName": "size_bytes",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Int64?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int64",
+                        "printedName": "Swift.Int64",
+                        "usr": "s:s5Int64V"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:6AIScan0A6ClientC14ResultArtifactV10size_bytess5Int64VSgvp",
+                "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV10size_bytess5Int64VSgvp",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.Int64?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Int64",
+                            "printedName": "Swift.Int64",
+                            "usr": "s:s5Int64V"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:6AIScan0A6ClientC14ResultArtifactV10size_bytess5Int64VSgvg",
+                    "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV10size_bytess5Int64VSgvg",
+                    "moduleName": "AIScan",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(store_path:filename:size_bytes:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ResultArtifact",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact",
+                    "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Int64?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int64",
+                        "printedName": "Swift.Int64",
+                        "usr": "s:s5Int64V"
+                      }
+                    ],
+                    "hasDefaultArg": true,
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:6AIScan0A6ClientC14ResultArtifactV10store_path8filename10size_bytesAESS_SSSgs5Int64VSgtcfc",
+                "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV10store_path8filename10size_bytesAESS_SSSgs5Int64VSgtcfc",
+                "moduleName": "AIScan",
+                "declAttributes": [
+                  "AccessControl"
+                ],
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(from:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ResultArtifact",
+                    "printedName": "AIScan.AIScanClient.ResultArtifact",
+                    "usr": "s:6AIScan0A6ClientC14ResultArtifactV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Decoder",
+                    "printedName": "any Swift.Decoder",
+                    "usr": "s:s7DecoderP"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:6AIScan0A6ClientC14ResultArtifactV4fromAEs7Decoder_p_tKcfc",
+                "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV4fromAEs7Decoder_p_tKcfc",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "throwing": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Function",
+                "name": "encode",
+                "printedName": "encode(to:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Encoder",
+                    "printedName": "any Swift.Encoder",
+                    "usr": "s:s7EncoderP"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:6AIScan0A6ClientC14ResultArtifactV6encode2toys7Encoder_p_tKF",
+                "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV6encode2toys7Encoder_p_tKF",
+                "moduleName": "AIScan",
+                "implicit": true,
+                "throwing": true,
+                "funcSelfKind": "NonMutating"
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:6AIScan0A6ClientC14ResultArtifactV",
+            "mangledName": "$s6AIScan0A6ClientC14ResultArtifactV",
+            "moduleName": "AIScan",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Decodable",
+                "printedName": "Decodable",
+                "usr": "s:Se",
+                "mangledName": "$sSe"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Encodable",
+                "printedName": "Encodable",
+                "usr": "s:SE",
+                "mangledName": "$sSE"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "publicResultImageBaseURL",
+            "printedName": "publicResultImageBaseURL",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:6AIScan0A6ClientC24publicResultImageBaseURLSSvpZ",
+            "mangledName": "$s6AIScan0A6ClientC24publicResultImageBaseURLSSvpZ",
+            "moduleName": "AIScan",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:6AIScan0A6ClientC24publicResultImageBaseURLSSvgZ",
+                "mangledName": "$s6AIScan0A6ClientC24publicResultImageBaseURLSSvgZ",
+                "moduleName": "AIScan",
+                "static": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
               }
             ]
           },
@@ -50910,392 +52377,392 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3033,
+      "offset": 3402,
       "length": 2,
       "value": "43"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3036,
+      "offset": 3405,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3049,
+      "offset": 3418,
       "length": 2,
       "value": "61"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3052,
+      "offset": 3421,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3064,
+      "offset": 3433,
       "length": 3,
       "value": "107"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3068,
+      "offset": 3437,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3080,
+      "offset": 3449,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3137,
+      "offset": 3506,
       "length": 3,
       "value": "244"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3141,
+      "offset": 3510,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3153,
+      "offset": 3522,
       "length": 3,
       "value": "244"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3157,
+      "offset": 3526,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3168,
+      "offset": 3537,
       "length": 3,
       "value": "244"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3172,
+      "offset": 3541,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3184,
+      "offset": 3553,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3241,
+      "offset": 3610,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3244,
+      "offset": 3613,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3257,
+      "offset": 3626,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3260,
+      "offset": 3629,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3272,
+      "offset": 3641,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3275,
+      "offset": 3644,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3288,
+      "offset": 3657,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3345,
+      "offset": 3714,
       "length": 2,
       "value": "92"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3348,
+      "offset": 3717,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3361,
+      "offset": 3730,
       "length": 3,
       "value": "111"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3365,
+      "offset": 3734,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3376,
+      "offset": 3745,
       "length": 3,
       "value": "160"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3380,
+      "offset": 3749,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3392,
+      "offset": 3761,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3449,
+      "offset": 3818,
       "length": 2,
       "value": "54"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3452,
+      "offset": 3821,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3465,
+      "offset": 3834,
       "length": 3,
       "value": "141"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3469,
+      "offset": 3838,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3480,
+      "offset": 3849,
       "length": 3,
       "value": "245"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3484,
+      "offset": 3853,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3496,
+      "offset": 3865,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3553,
+      "offset": 3922,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3557,
+      "offset": 3926,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3569,
+      "offset": 3938,
       "length": 3,
       "value": "151"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3573,
+      "offset": 3942,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3584,
+      "offset": 3953,
       "length": 2,
       "value": "13"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3587,
+      "offset": 3956,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3600,
+      "offset": 3969,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3657,
+      "offset": 4026,
       "length": 3,
       "value": "250"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3661,
+      "offset": 4030,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3673,
+      "offset": 4042,
       "length": 2,
       "value": "83"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3676,
+      "offset": 4045,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3688,
+      "offset": 4057,
       "length": 2,
       "value": "95"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3691,
+      "offset": 4060,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3704,
+      "offset": 4073,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3761,
+      "offset": 4130,
       "length": 2,
       "value": "67"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3764,
+      "offset": 4133,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3777,
+      "offset": 4146,
       "length": 3,
       "value": "186"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3781,
+      "offset": 4150,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3792,
+      "offset": 4161,
       "length": 2,
       "value": "18"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3795,
+      "offset": 4164,
       "length": 3,
       "value": "255"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/SkinFeatureCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3808,
+      "offset": 4177,
       "length": 1,
       "value": "1"
     },
@@ -51309,7 +52776,14 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultItemCell.swift",
       "kind": "IntegerLiteral",
-      "offset": 3710,
+      "offset": 2300,
+      "length": 2,
+      "value": "-1"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultItemCell.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4099,
       "length": 2,
       "value": "17"
     },
@@ -51364,176 +52838,351 @@
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
-      "kind": "StringLiteral",
-      "offset": 22565,
-      "length": 21,
-      "value": "\"PDFExportFooterView\""
+      "kind": "BooleanLiteral",
+      "offset": 20226,
+      "length": 4,
+      "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 22793,
+      "offset": 20361,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "Dictionary",
+      "offset": 20815,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22845,
+      "offset": 20924,
       "length": 1,
-      "value": "6"
+      "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22847,
-      "length": 3,
-      "value": "255"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 22859,
-      "length": 3,
-      "value": "172"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 22863,
-      "length": 3,
-      "value": "255"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 22874,
-      "length": 3,
-      "value": "199"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 22878,
-      "length": 3,
-      "value": "255"
-    },
-    {
-      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 22890,
+      "offset": 20930,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 22941,
+      "offset": 21242,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 21246,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 21272,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 21276,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 21547,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 21625,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "BooleanLiteral",
+      "offset": 22113,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "BooleanLiteral",
+      "offset": 22506,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 22669,
+      "length": 8,
+      "value": "\"NORMAL\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 22681,
+      "length": 8,
+      "value": "\"NORMAL\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 22692,
+      "length": 10,
+      "value": "\"ABNORMAL\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 22924,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 23047,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 23123,
+      "length": 9,
+      "value": "\"SUCCESS\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 23235,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 23364,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 23416,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 23504,
+      "length": 4,
+      "value": "1000"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 23660,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 23728,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "StringLiteral",
+      "offset": 25225,
+      "length": 21,
+      "value": "\"PDFExportFooterView\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "BooleanLiteral",
+      "offset": 25453,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25505,
+      "length": 1,
+      "value": "6"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25507,
+      "length": 3,
+      "value": "255"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25519,
+      "length": 3,
+      "value": "172"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25523,
+      "length": 3,
+      "value": "255"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25534,
+      "length": 3,
+      "value": "199"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25538,
+      "length": 3,
+      "value": "255"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25550,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
+      "kind": "IntegerLiteral",
+      "offset": 25601,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23229,
+      "offset": 25889,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23353,
+      "offset": 26013,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "StringLiteral",
-      "offset": 23424,
+      "offset": 26084,
       "length": 21,
       "value": "\"square.and.arrow.up\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23544,
+      "offset": 26204,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23553,
+      "offset": 26213,
       "length": 2,
       "value": "-6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23565,
+      "offset": 26225,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23575,
+      "offset": 26235,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23633,
+      "offset": 26293,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23642,
+      "offset": 26302,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23653,
+      "offset": 26313,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23663,
+      "offset": 26323,
       "length": 2,
       "value": "-6"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 23967,
+      "offset": 26627,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 24052,
+      "offset": 26712,
       "length": 3,
       "value": "-16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 24128,
+      "offset": 26788,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Result\/ResultViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 24193,
+      "offset": 26853,
       "length": 2,
       "value": "56"
     },
@@ -52884,98 +54533,105 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1517,
+      "offset": 2059,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1551,
+      "offset": 2115,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2149,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 1592,
+      "offset": 2190,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "StringLiteral",
-      "offset": 1944,
+      "offset": 2542,
       "length": 19,
       "value": "\"album_button_icon\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2168,
+      "offset": 2766,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "FloatLiteral",
-      "offset": 2217,
+      "offset": 2815,
       "length": 4,
       "value": "0.25"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 2268,
+      "offset": 2866,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2406,
+      "offset": 3004,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2418,
+      "offset": 3016,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2640,
+      "offset": 3238,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "IntegerLiteral",
-      "offset": 2652,
+      "offset": 3250,
       "length": 2,
       "value": "74"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 3959,
+      "offset": 4557,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 4258,
+      "offset": 4856,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/CameraViewController.swift",
       "kind": "BooleanLiteral",
-      "offset": 4334,
+      "offset": 4932,
       "length": 4,
       "value": "true"
     },
@@ -53202,6 +54858,118 @@
       "offset": 1497,
       "length": 2,
       "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "Array",
+      "offset": 9280,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "Dictionary",
+      "offset": 9367,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 9636,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 9671,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "Dictionary",
+      "offset": 10318,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "Array",
+      "offset": 10744,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11049,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11055,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11436,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "StringLiteral",
+      "offset": 11541,
+      "length": 10,
+      "value": "\"abnormal\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "StringLiteral",
+      "offset": 11554,
+      "length": 8,
+      "value": "\"normal\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11619,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11623,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11640,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11644,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/OnDeviceResponseBuilder.swift",
+      "kind": "Dictionary",
+      "offset": 12536,
+      "length": 27,
+      "value": "[(\"papuleplaque\", \"redness\")]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/CoreModel\/Diagnosis\/DiagnosisStatus.swift",
@@ -54984,7 +56752,7 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Camera\/AVCameraModel.swift",
       "kind": "BooleanLiteral",
-      "offset": 9441,
+      "offset": 9334,
       "length": 5,
       "value": "false"
     },
@@ -55362,154 +57130,161 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 12946,
+      "offset": 10275,
+      "length": 33,
+      "value": "\"https:\/\/cdn-results.ai4pet.com\/\""
+    },
+    {
+      "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
+      "kind": "StringLiteral",
+      "offset": 15303,
       "length": 33,
       "value": "\"https:\/\/token-broker.ai4pet.com\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 13025,
+      "offset": 15382,
       "length": 32,
       "value": "\"https:\/\/sdk-gateway.ai4pet.com\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 13133,
+      "offset": 15490,
       "length": 7,
       "value": "\"2.0.0\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "IntegerLiteral",
-      "offset": 13185,
+      "offset": 15542,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 20343,
+      "offset": 22700,
       "length": 6,
       "value": "\"POST\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 20414,
+      "offset": 22771,
       "length": 9,
       "value": "\"tickets\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 24339,
+      "offset": 26696,
       "length": 6,
       "value": "\"POST\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 24410,
+      "offset": 26767,
       "length": 8,
       "value": "\"events\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "BooleanLiteral",
-      "offset": 25262,
+      "offset": 27619,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 27308,
+      "offset": 30792,
       "length": 13,
       "value": "\"tt_pk_live_\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 27422,
+      "offset": 30906,
       "length": 6,
       "value": "\"none\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 27437,
+      "offset": 30921,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 27748,
+      "offset": 31232,
       "length": 12,
       "value": "\"app_attest\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 28062,
+      "offset": 31546,
       "length": 142,
       "value": "\"live publishable key requires App Attest, which is unavailable here (App Attest needs a real device; use a tt_pk_test_ key on the simulator)\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 28342,
+      "offset": 31826,
       "length": 102,
       "value": "\"live publishable key requires App Attest (iOS 14+ on a real device); use a tt_pk_test_ key otherwise\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 28520,
+      "offset": 32004,
       "length": 5,
       "value": "\"ios\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 29027,
+      "offset": 32511,
       "length": 15,
       "value": "\"access-tokens\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 29641,
+      "offset": 33125,
       "length": 6,
       "value": "\"POST\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "BooleanLiteral",
-      "offset": 30304,
+      "offset": 33788,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "Dictionary",
-      "offset": 34127,
+      "offset": 37611,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "Dictionary",
-      "offset": 34664,
+      "offset": 38148,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "Dictionary",
-      "offset": 35250,
+      "offset": 38734,
       "length": 3,
       "value": "[]"
     },
@@ -56174,203 +57949,203 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "Array",
-      "offset": 15784,
+      "offset": 16139,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "BooleanLiteral",
-      "offset": 15827,
+      "offset": 16182,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "Array",
-      "offset": 15884,
+      "offset": 16239,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "Array",
-      "offset": 16520,
+      "offset": 16875,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "BooleanLiteral",
-      "offset": 16557,
+      "offset": 16912,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 16612,
+      "offset": 16967,
       "length": 13,
       "value": "8000000000"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 16666,
+      "offset": 17021,
       "length": 2,
       "value": "50"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 26949,
+      "offset": 27765,
       "length": 8,
       "value": "\"manual\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 30529,
+      "offset": 31345,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 34023,
+      "offset": 34839,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 34046,
+      "offset": 34862,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 35533,
+      "offset": 36349,
       "length": 9,
       "value": "\"summary\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 36258,
+      "offset": 37074,
       "length": 3,
       "value": "200"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 36987,
+      "offset": 37803,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 37010,
+      "offset": 37826,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 37636,
+      "offset": 38452,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 38044,
+      "offset": 38860,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 38567,
+      "offset": 39383,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 39013,
+      "offset": 39829,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 40517,
+      "offset": 41333,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 40540,
+      "offset": 41356,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 46073,
+      "offset": 47588,
       "length": 28,
       "value": "\"CFBundleShortVersionString\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 46586,
+      "offset": 48101,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 46609,
+      "offset": 48124,
       "length": 12,
       "value": "\"hw.machine\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 46640,
+      "offset": 48155,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 46661,
+      "offset": 48176,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 46706,
+      "offset": 48221,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "StringLiteral",
-      "offset": 46747,
+      "offset": 48262,
       "length": 12,
       "value": "\"hw.machine\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanTelemetry.swift",
       "kind": "IntegerLiteral",
-      "offset": 46779,
+      "offset": 48294,
       "length": 1,
       "value": "0"
     },

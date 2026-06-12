@@ -301,10 +301,14 @@ public struct OnDeviceSymptom : Swift.Codable {
   public var name: Swift.String?
   public var heatmapPath: Swift.String?
   public var cropImageUrl: Swift.String?
-  public var score: Swift.Int?
+  public var score: Swift.Double?
   public var details: [AIScan.OnDeviceSymptomDetail]?
+  public var modelName: Swift.String?
+  public var abnormLevel: Swift.Int?
+  public var isAbnormal: Swift.Bool?
+  public var resultLabel: Swift.String?
   #if compiler(>=5.3) && $NonescapableTypes
-  public init(code: Swift.String? = nil, name: Swift.String? = nil, heatmapPath: Swift.String? = nil, cropImageUrl: Swift.String? = nil, score: Swift.Int? = nil, details: [AIScan.OnDeviceSymptomDetail]? = nil)
+  public init(code: Swift.String? = nil, name: Swift.String? = nil, heatmapPath: Swift.String? = nil, cropImageUrl: Swift.String? = nil, score: Swift.Double? = nil, details: [AIScan.OnDeviceSymptomDetail]? = nil, modelName: Swift.String? = nil, abnormLevel: Swift.Int? = nil, isAbnormal: Swift.Bool? = nil, resultLabel: Swift.String? = nil)
   #endif
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
@@ -980,13 +984,37 @@ final public class AIScanClient : @unchecked Swift.Sendable {
     public let inferences: [AIScan.AIScanClient.DiagnosisInference]
     public let questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire?
     public let skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels?
+    public let crop: AIScan.AIScanClient.ResultArtifact?
+    public let heatmap: AIScan.AIScanClient.ResultArtifact?
+    public let symptom_images: [AIScan.AIScanClient.SymptomImageSet]?
     public let client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata
     #if compiler(>=5.3) && $NonescapableTypes
-    public init(pet: AIScan.AIScanClient.DiagnosisRequest.Pet, diagnosis: AIScan.AIScanClient.DiagnosisRequest.DiagnosisDescriptor, original: AIScan.AIScanClient.DiagnosisRequest.Original, inferences: [AIScan.AIScanClient.DiagnosisInference], questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire? = nil, skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels? = nil, client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata)
+    public init(pet: AIScan.AIScanClient.DiagnosisRequest.Pet, diagnosis: AIScan.AIScanClient.DiagnosisRequest.DiagnosisDescriptor, original: AIScan.AIScanClient.DiagnosisRequest.Original, inferences: [AIScan.AIScanClient.DiagnosisInference], questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire? = nil, skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels? = nil, crop: AIScan.AIScanClient.ResultArtifact? = nil, heatmap: AIScan.AIScanClient.ResultArtifact? = nil, symptom_images: [AIScan.AIScanClient.SymptomImageSet]? = nil, client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata)
     #endif
     public func encode(to encoder: any Swift.Encoder) throws
     public init(from decoder: any Swift.Decoder) throws
   }
+  public struct SymptomImageSet : Swift.Codable, Swift.Sendable {
+    public let code: Swift.String
+    public let crop: AIScan.AIScanClient.ResultArtifact?
+    public let heatmap: AIScan.AIScanClient.ResultArtifact?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(code: Swift.String, crop: AIScan.AIScanClient.ResultArtifact? = nil, heatmap: AIScan.AIScanClient.ResultArtifact? = nil)
+    #endif
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public struct ResultArtifact : Swift.Codable, Swift.Sendable {
+    public let store_path: Swift.String
+    public let filename: Swift.String?
+    public let size_bytes: Swift.Int64?
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init(store_path: Swift.String, filename: Swift.String? = nil, size_bytes: Swift.Int64? = nil)
+    #endif
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(from decoder: any Swift.Decoder) throws
+  }
+  public static let publicResultImageBaseURL: Swift.String
   public struct DiagnosisReceipt : Swift.Codable, Swift.Sendable {
     public let diagnosis_id: Swift.String
     public let stored_at: Foundation.Date
