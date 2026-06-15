@@ -4,7 +4,7 @@
 
 ---
 
-**AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through image analysis.
+**AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through on-device image analysis.
 
 ## Supported Diagnostics
 
@@ -25,7 +25,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "2.0.2")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "2.1.9")
 ]
 ```
 
@@ -34,7 +34,7 @@ Or in Xcode: **File > Add Package Dependencies** and enter the repository URL.
 ### CocoaPods
 
 ```ruby
-pod 'AIScan', '~> 2.0.2'
+pod 'AIScan', '~> 2.1.9'
 ```
 
 ---
@@ -47,31 +47,62 @@ pod 'AIScan', '~> 2.0.2'
 
 ---
 
+## Authentication
+
+AIScan authenticates with a **publishable key** that AI for Pet issues for your app.
+Contact us to receive your key — we generate and provide it together with the app
+registration (bundle ID) it is bound to.
+
+| Key prefix | Use | App Attest |
+|---|---|---|
+| `tt_pk_test_…` | Development / testing | Not required (works in the simulator) |
+| `tt_pk_live_…` | Production | **Required** — iOS 14+ on a real device |
+
+> The publishable key is safe to ship in the app binary. It only mints
+> short-lived access tokens at runtime; it cannot be used to read or modify
+> account data.
+
+---
+
 ## Setup
 
-### 1. Configure Authentication
-
-Place your authentication JSON file in the app bundle and initialize the SDK:
+Register the platform client **once** at app launch (e.g. in your `AppDelegate`
+or scene setup). App identity (bundle ID, app version) is read automatically from
+`Bundle.main`, so the bundle ID must match the app registered for your key.
 
 ```swift
 import AIScan
 
 func application(_ application: UIApplication, didFinishLaunchingWithOptions ...) -> Bool {
-    if let url = Bundle.main.url(forResource: "auth-config", withExtension: "json"),
-       let data = try? Data(contentsOf: url) {
-        TTManager.configure(authFileData: data)
+    do {
+        let client = try AIScanClient(
+            publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"  // provided by AI for Pet
+        )
+        AIScanClientBridge.register(client)
+    } catch {
+        print("AIScan init failed: \(error)")
     }
     return true
 }
 ```
 
-> **Important:** Do not expose the authentication file through app resource extraction methods.
+`AIScanClientBridge.register(_:)` wires the SDK to the AI for Pet platform —
+all subsequent scans route their token / manifest / upload / record calls
+through this client.
 
-### 2. (Optional) Analytics Tracker
+> **Important**
+> - Register **once** per process, before the first `showCamera` call. Re-registering
+>   is unnecessary and should be avoided.
+> - `AIScanClient(...)` throws `Error.invalidPublishableKey` if the key is malformed
+>   (must start with `tt_pk_`). Handle it rather than force-trying.
+> - Call **`showCamera` on the main thread.** It asserts main-thread execution and
+>   will crash otherwise.
+
+### (Optional) Analytics & Haptics
 
 ```swift
-TTManager.analysisTracker = YourAnalyticsTracker()  // conforms to TTAnalysisTracker
-TTManager.isHapticEnabled = true
+AIScanManager.analysisTracker = YourAnalyticsTracker()  // conforms to TTAnalysisTracker
+AIScanManager.isHapticEnabled = true
 ```
 
 ---
@@ -97,13 +128,13 @@ AIScanManager.showCamera(
 
 ### Skin Part Selector
 
-For skin diagnostics, enable the skin part selector so users can choose between Ear, Body, and Paws:
+For skin diagnostics, pass `partType: .skin` to let users choose between
+Ear, Body, and Paws:
 
 ```swift
 AIScanManager.showCamera(
     petType: .dog,
-    partType: .belly,
-    showSkinSelector: true,
+    partType: .skin,
     resultCompletion: { result, error in
         // result: AIScanResult?
     }
@@ -120,8 +151,8 @@ AIScanManager.showCamera(
     partType: .eye,
     resultCompletion: { result, error in
         guard let result else { return }
-        print("Status: \(result.abnormalStatus ?? "N/A")")
-        print("Symptoms: \(result.abnormalSymptoms?.count ?? 0)")
+        print("Status: \(result.response?.status ?? "N/A")")
+        print("Symptoms: \(result.response?.symptoms?.count ?? 0)")
     }
 )
 ```
@@ -164,26 +195,31 @@ AIScanManager.showCamera(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `petType` | `PetType` | *required* | `.dog` or `.cat` |
-| `partType` | `PartType` | *required* | `.eye`, `.tooth`, `.ear`, `.belly`, `.foot`, `.etc`, `.joint` |
+| `partType` | `PartType` | *required* | `.eye`, `.tooth`, `.ear`, `.belly`, `.foot`, `.skin`, `.joint` |
 | `petId` | `String?` | `nil` | Pet identifier |
 | `userId` | `String?` | `nil` | User identifier |
 | `recordId` | `String?` | `nil` | Record identifier |
+| `petName` | `String?` | `nil` | Pet name |
 | `petBirthday` | `String?` | `nil` | Pet birthday (e.g. `"2024-01-01"`) |
 | `petBreedName` | `String?` | `nil` | Pet breed name |
 | `petGender` | `String?` | `nil` | `"M"` or `"F"` |
+| `petAdditionalInfo` | `String?` | `nil` | Free-form caller metadata |
 | `guideUrl` | `String?` | `nil` | URL for camera guide page |
 | `isFlashMode` | `Bool` | `true` | Enable flash mode |
-| `enableResultView` | `Bool` | `true` | Show built-in result screen. Set `false` for data-only mode. |
-| `showSkinSelector` | `Bool` | `false`/`true` | Show skin part selector popup. Default `true` for `resultCompletion` overload. |
-| `enablesQuestionnaire` | `Bool?` | `nil` | Enable questionnaire. `nil` uses server config. |
 | `allowsAlbum` | `Bool?` | `nil` | Show album button. `nil` uses server config. |
+| `enableResultView` | `Bool` | `true` | Show built-in result screen. Set `false` for data-only mode. |
+| `enablesQuestionnaire` | `Bool?` | `nil` | Enable questionnaire. `nil` uses server config. |
+| `enablePdfShare` | `Bool?` | `nil` | Enable PDF report share. `nil` uses server config. |
 | `resultViewController` | `TTResultViewControllable?` | `nil` | Custom result view controller |
+
+> Pass `partType: .skin` (not `.belly`/`.foot`/`.ear`) to surface the in-app skin
+> part selector. The selected sub-part is reported back in the result.
 
 ---
 
 ## Result Status
 
-The SDK determines diagnosis status based on AI model analysis and optional questionnaire:
+The SDK determines diagnosis status from the AI model analysis and the optional questionnaire:
 
 | Model | Questionnaire | Status | Meaning |
 |:---:|:---:|:---:|---|
@@ -194,6 +230,95 @@ The SDK determines diagnosis status based on AI model analysis and optional ques
 
 ---
 
+## Result Data Schema
+
+When you use `resultCompletion`, the closure receives an `AIScanResult`. Diagnosis
+runs on-device, so the result is assembled locally — there is no server round-trip
+for the result payload itself.
+
+### `AIScanResult`
+
+| Field | Type | Description |
+|---|---|---|
+| `response` | `OnDeviceResponse?` | Full structured result — status, symptoms, images, descriptions |
+| `questions` | `[OnDeviceQuestion]?` | Questionnaire answers, when the questionnaire ran |
+| `position` | `String?` | Scanned sub-part (`"EYER"`, `"EYEL"`, `"BELLY"`, `"FOOT"`, `"EAR"`, …) |
+| `createdAt` | `Int?` | Result time (Unix milliseconds) |
+| `metadata` | `[String: AnyCodable]?` | Whatever you passed via `petAdditionalInfo` |
+
+> The overall status and the symptom list live on `response` (`response.status`,
+> `response.symptoms`) — read them from there.
+
+### `OnDeviceResponse`
+
+| Field | Type | Description |
+|---|---|---|
+| `title` | `String?` | Headline message for the result status |
+| `analyzedDate` | `String?` | Display date, formatted `"yyyy. MM. dd HH:mm"` |
+| `status` | `String?` | `"NORMAL"` / `"ABNORMAL"` (questionnaire + scan combined) |
+| `description` | `OnDeviceDescription?` | `time_to_see_a_vet` or `home_care_tips` block |
+| `symptoms` | `[OnDeviceSymptom]?` | One entry per detected condition |
+| `cropImageUrl` | `String?` | Representative crop image URL |
+| `heatmapPath` | `String?` | Representative heatmap image URL |
+
+### `OnDeviceSymptom`
+
+| Field | Type | Description |
+|---|---|---|
+| `code` | `String?` | Catalog code (e.g. `redness`, `epiphora`, `calculus`) |
+| `name` | `String?` | Localized display name |
+| `modelName` | `String?` | Originating model key |
+| `isAbnormal` | `Bool?` | Whether this condition is flagged abnormal |
+| `abnormLevel` | `Int?` | Severity (`0` normal, `1` abnormal) |
+| `resultLabel` | `String?` | Raw class label |
+| `score` | `Double?` | Inference confidence, `0...1` |
+| `cropImageUrl` | `String?` | Per-symptom crop image URL |
+| `heatmapPath` | `String?` | Per-symptom heatmap image URL |
+| `details` | `[OnDeviceSymptomDetail]?` | Explanatory sections (what it is, causes, what to do) |
+
+> The symptom list is keyed by the symptom catalog and de-duplicated: when more than
+> one model maps to the same condition, you receive a single merged entry (the
+> abnormal result takes precedence). Expect at most one entry per condition code.
+
+### Result Image URLs
+
+`cropImageUrl` / `heatmapPath` resolve in one of two ways:
+
+- **Uploaded (typical):** a public `https://cdn-results.ai4pet.com/…` URL — durable,
+  safe to display or forward to your own backend.
+- **Local fallback:** a `file://…` path inside the SDK's working directory, used only
+  if the upload for that image failed. These are **valid for the current session
+  only** and may be cleaned up afterward — copy the bytes out if you need to keep them.
+
+Both kinds may appear in the same result; check the scheme before persisting.
+
+---
+
+## Error Handling
+
+The completion / result closures deliver an `Error` for failures the host should
+surface. When the built-in result view is enabled, the SDK also shows the user a
+localized alert and reports a short diagnostic code.
+
+| Code prefix | Meaning | User-facing guidance |
+|---|---|---|
+| `Dxxx` | Out of local storage | Free up space and retry |
+| `Ixxx` / `Exxx` | Transient on-device error (inference/engine) | Temporary error — retry |
+| `Pxxx` | Result upload failed | Check the network connection |
+| `Txxx` / `Jxxx` | Token mint / server-response parsing failed | Retry |
+| `Cxxx` | Diagnosis quota exhausted | No remaining scans on the plan |
+| others | Connectivity | Check the internet connection |
+
+Notes:
+
+- Codes are stable, single-letter-prefixed strings (e.g. `P001`, `T002`, `C001`).
+  Branch on the **prefix**, not the full string.
+- `Txxx` errors mean the publishable key could not mint an access token — verify the
+  key, the app's bundle ID matches the registered app, and (for `tt_pk_live_…` keys)
+  that you are on a real device with App Attest available.
+
+---
+
 ## Localization
 
 AIScan supports the following languages:
@@ -201,16 +326,19 @@ AIScan supports the following languages:
 - Korean (`ko`)
 - Japanese (`ja`)
 
+The SDK follows the host app's locale.
+
 ---
 
 ## License
 
 **Data and API Subscription License**
 
-This library requires a subscription license to access the AIScan service. Please refer to the service documentation for more details.
+This library requires a subscription license to access the AIScan service.
+Please refer to the service documentation for more details.
 
 ---
 
 ## Contact
 
-For more information, visit [AI for Pet](https://www.aiforpet.com/)
+For your publishable key or any other questions, visit [AI for Pet](https://www.aiforpet.com/).
