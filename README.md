@@ -13,7 +13,6 @@
 | **Eye** | ✅ | ✅ |
 | **Teeth** | ✅ | ✅ |
 | **Skin** (Ear / Body / Paws) | ✅ | - |
-| **Joint** | ✅ | - |
 
 ---
 
@@ -195,7 +194,7 @@ AIScanManager.showCamera(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `petType` | `PetType` | *required* | `.dog` or `.cat` |
-| `partType` | `PartType` | *required* | `.eye`, `.tooth`, `.ear`, `.belly`, `.foot`, `.skin`, `.joint` |
+| `partType` | `PartType` | *required* | `.eye`, `.tooth`, `.ear`, `.belly`, `.foot`, `.skin` |
 | `petId` | `String?` | `nil` | Pet identifier |
 | `userId` | `String?` | `nil` | User identifier |
 | `recordId` | `String?` | `nil` | Record identifier |
