@@ -13,7 +13,7 @@ By leveraging advanced machine learning algorithms, AIScan provides accurate and
   spec.homepage     = "https://www.aiforpet.com/"
   spec.license      = { :type => 'Data and API Subscription License', :text => 'This library requires a subscription license to access the AIScan service. Please refer to the service documentation for more details.' }
   spec.author       = { "hjlee" => "hjlee@aiforpet.com" }
-  spec.platform     = :ios, "13.0"
+  spec.platform     = :ios, "15.0"
   spec.source       = { :git => "https://github.com/Aiforpet-TTcare/AIScan.git", :tag => "2.1.9" }
   spec.vendored_frameworks = 'AIScan.xcframework'
   spec.dependency "TensorFlowLiteSwift", "~> 2.17.0"

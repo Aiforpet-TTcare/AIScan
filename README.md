@@ -41,7 +41,7 @@ pod 'AIScan', '~> 2.1.9'
 
 ## Requirements
 
-- iOS 13.0+
+- iOS 15.0+
 - Swift 5.9+
 - Xcode 15+
 

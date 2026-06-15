@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "AIScan",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v15)
     ],
     products: [
         // 외부에 노출되는 라이브러리명은 여전히 "AIScan"
