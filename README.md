@@ -292,6 +292,57 @@ for the result payload itself.
 
 Both kinds may appear in the same result; check the scheme before persisting.
 
+### Sample Result (JSON)
+
+iOS delivers the result as an `AIScanResult` object. The JSON below is its
+equivalent shape — the same payload a host can forward to a mother app, aligned
+with the Android SDK output. Keys map 1:1 to the struct fields; `nil` fields are
+omitted. (Example: a dog skin scan with one abnormal symptom.)
+
+```json
+{
+  "subPart": "BELLY",
+  "userId": "user-123",
+  "createdAt": 1749800000000,
+  "response": {
+    "title": "Monitor Closely",
+    "analyzedDate": "2026. 06. 15 14:30",
+    "status": "ABNORMAL",
+    "description": {
+      "title": "Home Care Tips",
+      "contents": ["Keep the area clean and dry.", "Watch for changes over the next few days."]
+    },
+    "cropImageUrl": "https://cdn-results.ai4pet.com/app_…/upl_…/diagnosis_crop",
+    "heatmapPath": "https://cdn-results.ai4pet.com/app_…/upl_…/diagnosis_heatmap",
+    "symptoms": [
+      {
+        "code": "redness",
+        "name": "Redness",
+        "modelName": "redness",
+        "isAbnormal": true,
+        "abnormLevel": 1,
+        "resultLabel": "abnormal",
+        "score": 0.87,
+        "cropImageUrl": "https://cdn-results.ai4pet.com/app_…/upl_…/diagnosis_crop",
+        "heatmapPath": "https://cdn-results.ai4pet.com/app_…/upl_…/diagnosis_heatmap",
+        "details": [
+          { "key": "what_it_is", "title": "What it is", "contents": ["…"] },
+          { "key": "what_you_can_do", "title": "What you can do", "contents": ["…"] }
+        ]
+      }
+    ]
+  },
+  "questions": [
+    { "text": "Is your pet scratching the area?", "select": "yes" }
+  ]
+}
+```
+
+> `symptoms` includes every analyzed model (normal entries carry `isAbnormal: false`
+> / `abnormLevel: 0`), de-duplicated per condition code. For a NORMAL result the
+> array still carries the analyzed conditions, and the representative
+> `cropImageUrl` / `heatmapPath` are populated from the scan.
+
 ---
 
 ## Error Handling
