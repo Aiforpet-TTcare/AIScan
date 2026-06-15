@@ -12,7 +12,7 @@
 |---|:---:|:---:|
 | **Eye** | ✅ | ✅ |
 | **Teeth** | ✅ | ✅ |
-| **Skin** (Ear / Body / Paws) | ✅ | ✅ |
+| **Skin** (Ear / Body / Paws) | ✅ | - |
 | **Joint** | ✅ | - |
 
 ---
