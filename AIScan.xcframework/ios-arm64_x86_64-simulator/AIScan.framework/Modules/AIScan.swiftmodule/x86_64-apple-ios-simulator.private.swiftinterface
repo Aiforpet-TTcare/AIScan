@@ -869,6 +869,7 @@ final public class AIScanClient : @unchecked Swift.Sendable {
     public let models: [AIScan.AIScanClient.Manifest.Model]
     public let thresholds: [Swift.String : Swift.Double]
     public let qna: [Swift.String : AIScan.AIScanClient.Manifest.QnaLocale]
+    public let qna_version: Swift.Int?
     public struct Model : Swift.Codable, Swift.Sendable {
       public let name: Swift.String
       public let pet: Swift.String
