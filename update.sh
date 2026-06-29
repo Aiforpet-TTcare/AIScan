@@ -32,6 +32,16 @@ PACKAGE="Package.swift"
 echo "Updating version in $PACKAGE to $NEW_VERSION..."
 sed -i '' "s/tag: .*/tag: \"$NEW_VERSION\"/" $PACKAGE
 
+# README 설치 스니펫 버전 동기화 (SPM `from:`, CocoaPods `~>`)
+README="README.md"
+if [ -f "$README" ]; then
+  echo "Updating version in $README to $NEW_VERSION..."
+  sed -i '' \
+    -e "s/from: \"[0-9][0-9.]*\"/from: \"$NEW_VERSION\"/g" \
+    -e "s/~> [0-9][0-9.]*/~> $NEW_VERSION/g" \
+    "$README"
+fi
+
 # Git 커밋 및 푸시
 echo "Committing and pushing changes to git..."
 git add .
