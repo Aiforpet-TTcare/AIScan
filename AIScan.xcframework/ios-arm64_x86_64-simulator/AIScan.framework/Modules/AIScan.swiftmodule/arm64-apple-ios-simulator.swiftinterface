@@ -381,7 +381,7 @@ public struct AIScanResult : Swift.Codable {
   public var questions: [AIScan.OnDeviceQuestion]?
   public var position: Swift.String?
   public var createdAt: Swift.Int?
-  public var metadata: [Swift.String : AIScan.AnyCodable]?
+  public func encode(to encoder: any Swift.Encoder) throws
   #if compiler(>=5.3) && $NonescapableTypes
   public var dataValue: AIScan.TTData? {
     get
@@ -392,7 +392,6 @@ public struct AIScanResult : Swift.Codable {
     get
   }
   #endif
-  public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
 public struct TTData : Swift.Codable {
@@ -467,13 +466,10 @@ public enum ModelLibType {
   public static func flashAlert()
   public static func report(isSuccess: Swift.Bool = false)
   #if compiler(>=5.3) && $NonescapableTypes
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: (any Swift.Encodable)? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Swift.String?, (any Swift.Error)?) -> Swift.Void)? = nil)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
-  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, metadata: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, resultCompletion: ((AIScan.AIScanResult?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func showCamera(petType: AIScan.PetType, partType: AIScan.PartType, petId: Swift.String? = nil, userId: Swift.String? = nil, recordId: Swift.String? = nil, petName: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = true, showGovCertMark: Swift.Bool? = nil, allowsAlbum: Swift.Bool? = nil, enableResultView: Swift.Bool = true, enablesQuestionnaire: Swift.Bool? = nil, enablePdfShare: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, resultCompletion: ((AIScan.AIScanResult?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
   @objc deinit
 }
@@ -555,16 +551,16 @@ extension AIScan.TTManager {
   public static func guideURLString(petType: AIScan.PetType, partType: AIScan.PartType) -> Swift.String?
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  public static func eye(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func eye(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  public static func tooth(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func tooth(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  public static func skin(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func skin(petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
   #if compiler(>=5.3) && $NonescapableTypes
-  public static func showGuideFirst(cameraType: AIScan.TTCameraType, petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, petAdditionalInfo: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func showGuideFirst(cameraType: AIScan.TTCameraType, petType: AIScan.TTPetType, petId: Swift.String? = nil, petName: Swift.String? = nil, petImageUrl: Swift.String? = nil, userId: Swift.String? = nil, petBirthday: Swift.String? = nil, petBreedName: Swift.String? = nil, petGender: Swift.String? = nil, recordId: Swift.String? = nil, guideUrl: Swift.String? = nil, isFlashMode: Swift.Bool = false, isContinuousShooting: Swift.Bool = false, showGovCertMark: Swift.Bool? = nil, resultViewController: (any AIScan.TTResultViewControllable)? = nil, isMeasurableDistance: Swift.Bool = false, isCameraDistance: Swift.Bool = false, completion: ((Any?, (any Swift.Error)?) -> Swift.Void)? = nil)
   #endif
   public static func clearUserDefaults()
 }
@@ -908,8 +904,9 @@ final public class AIScanClient : @unchecked Swift.Sendable {
     public let result_label: AIScan.AIScanClient.ResultLabel
     public let score: Swift.Double
     public let abnormal_level: Swift.Int?
+    public let pred_values: [Swift.Double]?
     #if compiler(>=5.3) && $NonescapableTypes
-    public init(model_key: Swift.String, model_version: Swift.String? = nil, result_label: AIScan.AIScanClient.ResultLabel, score: Swift.Double, abnormal_level: Swift.Int? = nil)
+    public init(model_key: Swift.String, model_version: Swift.String? = nil, result_label: AIScan.AIScanClient.ResultLabel, score: Swift.Double, abnormal_level: Swift.Int? = nil, pred_values: [Swift.Double]? = nil)
     #endif
     public func encode(to encoder: any Swift.Encoder) throws
     public init(from decoder: any Swift.Decoder) throws
@@ -985,12 +982,10 @@ final public class AIScanClient : @unchecked Swift.Sendable {
     public let inferences: [AIScan.AIScanClient.DiagnosisInference]
     public let questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire?
     public let skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels?
-    public let crop: AIScan.AIScanClient.ResultArtifact?
-    public let heatmap: AIScan.AIScanClient.ResultArtifact?
     public let symptom_images: [AIScan.AIScanClient.SymptomImageSet]?
     public let client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata
     #if compiler(>=5.3) && $NonescapableTypes
-    public init(pet: AIScan.AIScanClient.DiagnosisRequest.Pet, diagnosis: AIScan.AIScanClient.DiagnosisRequest.DiagnosisDescriptor, original: AIScan.AIScanClient.DiagnosisRequest.Original, inferences: [AIScan.AIScanClient.DiagnosisInference], questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire? = nil, skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels? = nil, crop: AIScan.AIScanClient.ResultArtifact? = nil, heatmap: AIScan.AIScanClient.ResultArtifact? = nil, symptom_images: [AIScan.AIScanClient.SymptomImageSet]? = nil, client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata)
+    public init(pet: AIScan.AIScanClient.DiagnosisRequest.Pet, diagnosis: AIScan.AIScanClient.DiagnosisRequest.DiagnosisDescriptor, original: AIScan.AIScanClient.DiagnosisRequest.Original, inferences: [AIScan.AIScanClient.DiagnosisInference], questionnaire: AIScan.AIScanClient.DiagnosisRequest.Questionnaire? = nil, skin_condition_levels: AIScan.AIScanClient.DiagnosisRequest.SkinConditionLevels? = nil, symptom_images: [AIScan.AIScanClient.SymptomImageSet]? = nil, client_metadata: AIScan.AIScanClient.DiagnosisRequest.ClientMetadata)
     #endif
     public func encode(to encoder: any Swift.Encoder) throws
     public init(from decoder: any Swift.Decoder) throws
