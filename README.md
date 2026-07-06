@@ -202,13 +202,13 @@ AIScanManager.showCamera(
 | `petBirthday` | `String?` | `nil` | Pet birthday (e.g. `"2024-01-01"`) |
 | `petBreedName` | `String?` | `nil` | Pet breed name |
 | `petGender` | `String?` | `nil` | `"M"` or `"F"` |
-| `petAdditionalInfo` | `String?` | `nil` | Free-form caller metadata |
+| `petAdditionalInfo` | `String?` | `nil` | Deprecated compatibility parameter. New integrations should omit it; SDK metadata is generated internally. |
 | `guideUrl` | `String?` | `nil` | URL for camera guide page |
 | `isFlashMode` | `Bool` | `true` | Enable flash mode |
 | `allowsAlbum` | `Bool?` | `nil` | Show album button. `nil` uses server config. |
 | `enableResultView` | `Bool` | `true` | Show built-in result screen. Set `false` for data-only mode. |
 | `enablesQuestionnaire` | `Bool?` | `nil` | Enable questionnaire. `nil` uses server config. |
-| `enablePdfShare` | `Bool?` | `nil` | Enable PDF report share. `nil` uses server config. |
+| `enablePdfShare` | `Bool?` | `nil` | Enable PDF report share. `nil` uses `AIScanManager.isPdfExportEnabled`. |
 | `resultViewController` | `TTResultViewControllable?` | `nil` | Custom result view controller |
 
 > Pass `partType: .skin` (not `.belly`/`.foot`/`.ear`) to surface the in-app skin
@@ -243,7 +243,7 @@ for the result payload itself.
 | `questions` | `[OnDeviceQuestion]?` | Questionnaire answers, when the questionnaire ran |
 | `position` | `String?` | Scanned sub-part (`"EYER"`, `"EYEL"`, `"BELLY"`, `"FOOT"`, `"EAR"`, …) |
 | `createdAt` | `Int?` | Result time (Unix milliseconds) |
-| `metadata` | `[String: AnyCodable]?` | Whatever you passed via `petAdditionalInfo` |
+| `metadata` | `[String: AnyCodable]?` | SDK-generated metadata; legacy `petAdditionalInfo` may be carried for compatibility. |
 
 > The overall status and the symptom list live on `response` (`response.status`,
 > `response.symptoms`) — read them from there.
