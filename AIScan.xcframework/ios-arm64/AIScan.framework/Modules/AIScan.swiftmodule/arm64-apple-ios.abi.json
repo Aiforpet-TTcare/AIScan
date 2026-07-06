@@ -57239,161 +57239,161 @@
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 10736,
+      "offset": 10710,
       "length": 33,
       "value": "\"https:\/\/cdn-results.ai4pet.com\/\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 15764,
+      "offset": 15738,
       "length": 33,
       "value": "\"https:\/\/token-broker.ai4pet.com\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 15843,
+      "offset": 15817,
       "length": 32,
       "value": "\"https:\/\/sdk-gateway.ai4pet.com\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 15951,
+      "offset": 15925,
       "length": 7,
       "value": "\"2.0.0\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "IntegerLiteral",
-      "offset": 16003,
+      "offset": 15977,
       "length": 2,
       "value": "30"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 23161,
+      "offset": 23135,
       "length": 6,
       "value": "\"POST\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 23232,
+      "offset": 23206,
       "length": 9,
       "value": "\"tickets\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 27157,
+      "offset": 27131,
       "length": 6,
       "value": "\"POST\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 27228,
+      "offset": 27202,
       "length": 8,
       "value": "\"events\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "BooleanLiteral",
-      "offset": 28080,
+      "offset": 28054,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 31253,
+      "offset": 31227,
       "length": 13,
       "value": "\"tt_pk_live_\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 31367,
+      "offset": 31341,
       "length": 6,
       "value": "\"none\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 31382,
+      "offset": 31356,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 31693,
+      "offset": 31667,
       "length": 12,
       "value": "\"app_attest\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 32007,
+      "offset": 31981,
       "length": 142,
       "value": "\"live publishable key requires App Attest, which is unavailable here (App Attest needs a real device; use a tt_pk_test_ key on the simulator)\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 32287,
+      "offset": 32261,
       "length": 102,
       "value": "\"live publishable key requires App Attest (iOS 14+ on a real device); use a tt_pk_test_ key otherwise\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 32465,
+      "offset": 32439,
       "length": 5,
       "value": "\"ios\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 32972,
+      "offset": 32946,
       "length": 15,
       "value": "\"access-tokens\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "StringLiteral",
-      "offset": 33586,
+      "offset": 33560,
       "length": 6,
       "value": "\"POST\""
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "BooleanLiteral",
-      "offset": 34249,
+      "offset": 34223,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "Dictionary",
-      "offset": 38072,
+      "offset": 38046,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "Dictionary",
-      "offset": 38609,
+      "offset": 38583,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/kjaylee\/workspace\/Lib\/AIScan\/AIScan\/AIScan\/Client\/AIScanClient.swift",
       "kind": "Dictionary",
-      "offset": 39195,
+      "offset": 39169,
       "length": 3,
       "value": "[]"
     },
