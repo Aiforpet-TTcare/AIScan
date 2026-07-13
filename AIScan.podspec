@@ -15,7 +15,25 @@ By leveraging advanced machine learning algorithms, AIScan provides accurate and
   spec.author       = { "hjlee" => "hjlee@aiforpet.com" }
   spec.platform     = :ios, "15.0"
   spec.source       = { :git => "https://github.com/Aiforpet-TTcare/AIScan.git", :tag => "2.2.3" }
-  spec.vendored_frameworks = 'AIScan.xcframework'
-  spec.dependency "TensorFlowLiteSwift", "~> 2.17.0"
-  spec.swift_version    = '6.0'
+  spec.swift_versions = ['5.9', '5.10', '6.0']
+  spec.default_subspec = 'UI'
+
+  spec.subspec 'Core' do |core|
+    core.vendored_frameworks = 'AIScanCore.xcframework'
+  end
+
+  spec.subspec 'UI' do |ui|
+    ui.source_files = 'Sources/AIScanCameraUI/**/*.swift', 'Sources/AIScanReferenceUI/**/*.swift'
+    ui.dependency 'AIScan/Core'
+  end
+
+  spec.subspec 'CameraUI' do |ui|
+    ui.source_files = 'Sources/AIScanCameraUI/**/*.swift'
+    ui.dependency 'AIScan/Core'
+  end
+
+  spec.subspec 'ReferenceUI' do |ui|
+    ui.source_files = 'Sources/AIScanReferenceUI/**/*.swift'
+    ui.dependency 'AIScan/Core'
+  end
 end

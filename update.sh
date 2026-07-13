@@ -10,10 +10,15 @@ read NEW_VERSION
 # 형제 AIScan 소스 repo 에서 xcframework 를 재빌드해 이 디렉토리로 출력하고,
 # 소스 오브 트루스인 VERSION 파일도 동기화한다.
 AISCAN_SRC="${AISCAN_SRC:-../AIScan}"
-echo "Stamping + rebuilding AIScan.xcframework at $NEW_VERSION..."
+DISTRIBUTION_ROOT="$(pwd)"
+echo "Stamping + rebuilding AIScanCore.xcframework at $NEW_VERSION..."
 echo "$NEW_VERSION" > "$AISCAN_SRC/VERSION"
-if ! ( cd "$AISCAN_SRC" && GIT_LFS_SKIP_SMUDGE=1 bash create_xcframework.sh "$NEW_VERSION" ); then
-  echo "xcframework build failed — aborting release."
+if ! ( cd "$AISCAN_SRC" && GIT_LFS_SKIP_SMUDGE=1 FRAMEWORK_NAME=AIScanCore OUTPUT_DIR="$DISTRIBUTION_ROOT" bash create_xcframework.sh "$NEW_VERSION" ); then
+  echo "AIScanCore.xcframework build failed — aborting release."
+  exit 1
+fi
+if ! ( cd "$AISCAN_SRC" && PUBLIC_ROOT="$DISTRIBUTION_ROOT" bash scripts/audit_public_artifact.sh ); then
+  echo "Public artifact audit failed — aborting release."
   exit 1
 fi
 
