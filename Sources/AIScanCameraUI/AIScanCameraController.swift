@@ -7,7 +7,12 @@ import UIKit
 public protocol AIScanCameraControllerDelegate: AnyObject {
     func aiscanCameraController(_ controller: AIScanCameraController, didUpdate evaluation: AISCFrameEvaluation)
     func aiscanCameraController(_ controller: AIScanCameraController, didCapture evaluation: AISCFrameEvaluation)
+    func aiscanCameraController(_ controller: AIScanCameraController, didProduce result: AISCDisplayResult)
     func aiscanCameraController(_ controller: AIScanCameraController, didFail error: Error)
+}
+
+public extension AIScanCameraControllerDelegate {
+    func aiscanCameraController(_ controller: AIScanCameraController, didProduce result: AISCDisplayResult) {}
 }
 
 public final class AIScanCameraController: NSObject, @unchecked Sendable {
@@ -22,6 +27,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
     private let videoOutput = AVCaptureVideoDataOutput()
     private weak var activeDevice: AVCaptureDevice?
     private var isEvaluatingFrame = false
+    private var isCaptureInProgress = false
     private var pendingManualCapture = false
 
     public convenience init(publishableKey: String) {
@@ -145,6 +151,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         captureQueue.async { [weak self] in
             self?.pendingManualCapture = false
             self?.isEvaluatingFrame = false
+            self?.isCaptureInProgress = false
         }
     }
 
@@ -169,13 +176,24 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
                 self.notifyFailure(error)
                 return
             }
-            guard let evaluation else { return }
+            guard let evaluation else {
+                self.notifyFailure(AIScanCameraControllerError.emptyFrameEvaluation)
+                return
+            }
             self.notifyUpdate(evaluation)
 
             if self.automaticallyCapturesReadyFrames,
                evaluation.captureAllowed {
-                self.capture(input: sendableInput.value)
+                self.requestCapture(input: sendableInput.value)
             }
+        }
+    }
+
+    private func requestCapture(input: AISCFrameInput) {
+        captureQueue.async { [weak self] in
+            guard let self, !self.isCaptureInProgress else { return }
+            self.isCaptureInProgress = true
+            self.capture(input: input)
         }
     }
 
@@ -183,11 +201,51 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         coreSession.captureFrame(input) { [weak self] evaluation, error in
             guard let self else { return }
             if let error {
+                self.finishCaptureForRetry()
                 self.notifyFailure(error)
                 return
             }
-            guard let evaluation else { return }
+            guard let evaluation else {
+                self.finishCaptureForRetry()
+                self.notifyFailure(AIScanCameraControllerError.emptyCaptureEvaluation)
+                return
+            }
+            guard evaluation.captureAllowed else {
+                self.finishCaptureForRetry()
+                self.notifyUpdate(evaluation)
+                return
+            }
             self.notifyCapture(evaluation)
+            self.diagnose(input: input)
+        }
+    }
+
+    private func diagnose(input: AISCFrameInput) {
+        guard let imageInput = AISCImageInput(pixelBuffer: input.pixelBuffer) else {
+            finishCaptureForRetry()
+            notifyFailure(AIScanCameraControllerError.cannotCreateImageInput)
+            return
+        }
+
+        coreSession.diagnoseImage(imageInput) { [weak self] result, error in
+            guard let self else { return }
+            if let error {
+                self.finishCaptureForRetry()
+                self.notifyFailure(error)
+                return
+            }
+            guard let result else {
+                self.finishCaptureForRetry()
+                self.notifyFailure(AIScanCameraControllerError.emptyDiagnosisResult)
+                return
+            }
+            self.notifyResult(result)
+        }
+    }
+
+    private func finishCaptureForRetry() {
+        captureQueue.async { [weak self] in
+            self?.isCaptureInProgress = false
         }
     }
 
@@ -204,6 +262,14 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.delegate?.aiscanCameraController(self, didCapture: evaluation.value)
+        }
+    }
+
+    private func notifyResult(_ result: AISCDisplayResult) {
+        let result = AIScanUncheckedSendable(result)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.delegate?.aiscanCameraController(self, didProduce: result.value)
         }
     }
 
@@ -225,7 +291,7 @@ extension AIScanCameraController: AVCaptureVideoDataOutputSampleBufferDelegate {
         if pendingManualCapture {
             pendingManualCapture = false
             guard let input = coreSession.frameInput(for: sampleBuffer, device: activeDevice) else { return }
-            capture(input: input)
+            requestCapture(input: input)
             return
         }
 
@@ -240,6 +306,10 @@ public enum AIScanCameraControllerError: Error {
     case unsupportedSessionPreset
     case notConfigured
     case torchUnavailable
+    case emptyFrameEvaluation
+    case emptyCaptureEvaluation
+    case cannotCreateImageInput
+    case emptyDiagnosisResult
 }
 
 private struct AIScanUncheckedSendable<Value>: @unchecked Sendable {
