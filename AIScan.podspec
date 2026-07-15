@@ -16,6 +16,8 @@ By leveraging advanced machine learning algorithms, AIScan provides accurate and
   spec.platform     = :ios, "15.0"
   spec.source       = { :git => "https://github.com/Aiforpet-TTcare/AIScan.git", :tag => "2.2.4" }
   spec.vendored_frameworks = 'AIScan.xcframework'
+  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
+  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
   spec.dependency "TensorFlowLiteSwift", "~> 2.17.0"
   spec.swift_version    = '6.0'
 end

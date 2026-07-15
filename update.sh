@@ -5,8 +5,18 @@ set -euo pipefail
 echo "Enter the new version:"
 read NEW_VERSION
 
+PODSPEC="AIScan.podspec"
+PREVIOUS_VERSION="$(awk -F '\"' '/spec.version[[:space:]]*=/{ print $2; exit }' "$PODSPEC")"
+GUIDE_REPO="${GUIDE_REPO:-kjaylee/com.aiforpet.sdk}"
+GUIDE_WORKFLOW="${GUIDE_WORKFLOW:-update-ios-guide.yml}"
+
 if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "Invalid version: $NEW_VERSION (expected x.y.z)"
+  exit 1
+fi
+
+if [ "$NEW_VERSION" = "$PREVIOUS_VERSION" ]; then
+  echo "New version matches the current version: $NEW_VERSION"
   exit 1
 fi
 
@@ -54,8 +64,66 @@ if ! ( cd "$AISCAN_SRC" && GIT_LFS_SKIP_SMUDGE=1 bash create_xcframework.sh "$NE
   exit 1
 fi
 
-# Podspec 파일 이름
-PODSPEC="AIScan.podspec"
+XCFRAMEWORK="AIScan.xcframework"
+WARN_BYTES=$((50 * 1024 * 1024))
+FAIL_BYTES=$((95 * 1024 * 1024))
+
+format_mib() {
+  awk -v bytes="$1" 'BEGIN { printf "%.2f MiB", bytes / 1024 / 1024 }'
+}
+
+SIM_BINARY="$(find "$XCFRAMEWORK" -type f -path '*-simulator/AIScan.framework/AIScan' -print -quit)"
+if [ -z "$SIM_BINARY" ]; then
+  echo "Simulator framework binary was not found in $XCFRAMEWORK."
+  exit 1
+fi
+
+SIM_ARCHS="$(xcrun lipo -archs "$SIM_BINARY")"
+if [ "$SIM_ARCHS" != "arm64" ]; then
+  echo "Simulator framework must be arm64-only (found: $SIM_ARCHS)."
+  exit 1
+fi
+
+echo "Validating XCFramework file sizes..."
+while IFS= read -r FILE; do
+  FILE_BYTES="$(stat -f%z "$FILE")"
+  if [ "$FILE_BYTES" -ge "$FAIL_BYTES" ]; then
+    echo "File exceeds the 95 MiB release limit: $FILE ($(format_mib "$FILE_BYTES"))"
+    exit 1
+  fi
+  if [ "$FILE_BYTES" -ge "$WARN_BYTES" ]; then
+    echo "Warning: large file will trigger GitHub's 50 MiB warning: $FILE ($(format_mib "$FILE_BYTES"))"
+  fi
+done < <(find "$XCFRAMEWORK" -type f -print)
+
+CURRENT_TOTAL_BYTES="$(find "$XCFRAMEWORK" -type f -exec stat -f%z {} \; | awk '{ total += $1 } END { print total + 0 }')"
+PREVIOUS_TOTAL_BYTES="$(git ls-tree -lr HEAD -- "$XCFRAMEWORK" | awk '{ total += $4 } END { print total + 0 }')"
+echo "XCFramework total: $(format_mib "$CURRENT_TOTAL_BYTES") (previous: $(format_mib "$PREVIOUS_TOTAL_BYTES"))"
+
+if [ "$PREVIOUS_TOTAL_BYTES" -gt 0 ] && [ $((CURRENT_TOTAL_BYTES * 100)) -gt $((PREVIOUS_TOTAL_BYTES * 105)) ]; then
+  echo "XCFramework grew by more than 5% compared with the currently published artifact."
+  exit 1
+fi
+
+trigger_guide_update() {
+  if [ "${SKIP_GUIDE_UPDATE:-0}" = "1" ]; then
+    echo "Skipping guide automation because SKIP_GUIDE_UPDATE=1."
+    return
+  fi
+
+  if ! command -v gh >/dev/null 2>&1 || ! gh auth status >/dev/null 2>&1; then
+    echo "Warning: GitHub CLI is unavailable or unauthenticated; guide PR was not requested."
+    return
+  fi
+
+  if gh workflow run "$GUIDE_WORKFLOW" --repo "$GUIDE_REPO" \
+    -f version="$NEW_VERSION" \
+    -f previous_version="$PREVIOUS_VERSION"; then
+    echo "Requested the $NEW_VERSION guide update workflow in $GUIDE_REPO."
+  else
+    echo "Warning: SDK was published, but the guide update workflow could not be requested."
+  fi
+}
 
 # Podspec 파일에서 버전 업데이트
 echo "Updating version in $PODSPEC to $NEW_VERSION..."
@@ -86,7 +154,7 @@ pod lib lint "$PODSPEC"
 
 # Git 커밋 및 푸시
 echo "Committing and pushing changes to git..."
-git add AIScan.xcframework "$PODSPEC" "$PACKAGE" README.md
+git add "$XCFRAMEWORK" "$PODSPEC" "$PACKAGE" README.md
 git commit -m "Update podspec version to $NEW_VERSION"
 
 # 태그 추가
@@ -102,3 +170,5 @@ pod spec lint "$PODSPEC"
 echo "Lint successful, pushing to trunk..."
 pod trunk push "$PODSPEC"
 echo "Successfully pushed $PODSPEC to CocoaPods trunk."
+
+trigger_guide_update
