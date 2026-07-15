@@ -11,7 +11,7 @@ let package = Package(
         // 외부 기본 제품은 source UI + Objective-C core 조합만 노출한다.
         .library(
             name: "AIScan",
-            targets: ["AIScanCameraUI", "AIScanReferenceUI"]
+            targets: ["AIScan"]
         ),
         .library(
             name: "AIScanCore",
@@ -33,6 +33,11 @@ let package = Package(
             path: "AIScanCore.xcframework"
         ),
         .target(
+            name: "AIScan",
+            dependencies: ["AIScanCore", "AIScanCameraUI", "AIScanReferenceUI"],
+            path: "Sources/AIScan"
+        ),
+        .target(
             name: "AIScanCameraUI",
             dependencies: ["AIScanCore"],
             path: "Sources/AIScanCameraUI"
@@ -41,6 +46,11 @@ let package = Package(
             name: "AIScanReferenceUI",
             dependencies: ["AIScanCore"],
             path: "Sources/AIScanReferenceUI"
+        ),
+        .testTarget(
+            name: "AIScanCompatibilityTests",
+            dependencies: ["AIScan"],
+            path: "Tests/AIScanCompatibilityTests"
         )
     ]
 )
