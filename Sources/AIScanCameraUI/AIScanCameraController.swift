@@ -15,7 +15,6 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
     public let coreSession: AISCSession
     @MainActor
     public weak var delegate: AIScanCameraControllerDelegate?
-    public var appliesCoreDevicePolicy: Bool = true
     public var automaticallyCapturesReadyFrames: Bool = false
 
     private let captureQueue = DispatchQueue(label: "com.aiforpet.AIScan.camera.capture")
@@ -86,9 +85,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         captureSession.addOutput(videoOutput)
 
         activeDevice = device
-        if appliesCoreDevicePolicy {
-            coreSession.applyCameraDevicePolicy(to: device, enabled: true)
-        }
+        coreSession.applyCameraDevicePolicy(to: device, enabled: true)
     }
 
     public func makePreviewLayer(videoGravity: AVLayerVideoGravity = .resizeAspectFill) -> AVCaptureVideoPreviewLayer {

@@ -58,13 +58,29 @@ if [ -n "$(git -C "$AISCAN_SRC" status --porcelain)" ]; then
   exit 1
 fi
 
+if [ ! -f "$AISCAN_SRC/VERSION" ]; then
+  echo "AIScan source VERSION file is missing."
+  exit 1
+fi
+SOURCE_VERSION="$(tr -d '[:space:]' < "$AISCAN_SRC/VERSION")"
+if [ "$SOURCE_VERSION" != "$NEW_VERSION" ]; then
+  echo "Source VERSION must already be $NEW_VERSION (found: ${SOURCE_VERSION:-empty})."
+  echo "Commit the private source version before running the public release."
+  exit 1
+fi
+SOURCE_REVISION="$(git -C "$AISCAN_SRC" rev-parse HEAD)"
+
 echo "Stamping + rebuilding AIScanCore.xcframework at $NEW_VERSION..."
-echo "$NEW_VERSION" > "$AISCAN_SRC/VERSION"
 if ! ( cd "$AISCAN_SRC" && GIT_LFS_SKIP_SMUDGE=1 FRAMEWORK_NAME=AIScanCore OUTPUT_DIR="$DISTRIBUTION_ROOT" bash create_xcframework.sh "$NEW_VERSION" ); then
   echo "AIScanCore.xcframework build failed — aborting release."
   exit 1
 fi
-if ! ( cd "$AISCAN_SRC" && PUBLIC_ROOT="$DISTRIBUTION_ROOT" bash scripts/audit_public_artifact.sh ); then
+
+PROVENANCE_FILE="AIScanCore.source.json"
+printf '{\n  "framework": "AIScanCore",\n  "source_version": "%s",\n  "source_revision": "%s",\n  "simulator_architectures": ["arm64"]\n}\n' \
+  "$SOURCE_VERSION" "$SOURCE_REVISION" > "$PROVENANCE_FILE"
+
+if ! ( cd "$AISCAN_SRC" && export EXPECTED_SOURCE_REVISION="$SOURCE_REVISION" && export EXPECTED_SOURCE_VERSION="$SOURCE_VERSION" && PUBLIC_ROOT="$DISTRIBUTION_ROOT" bash scripts/audit_public_artifact.sh ); then
   echo "Public artifact audit failed — aborting release."
   exit 1
 fi
@@ -160,7 +176,7 @@ pod lib lint "$PODSPEC"
 
 # Git 커밋 및 푸시
 echo "Committing and pushing changes to git..."
-git add "$XCFRAMEWORK" "$PODSPEC" "$PACKAGE" README.md
+git add "$XCFRAMEWORK" "$PROVENANCE_FILE" "$PODSPEC" "$PACKAGE" README.md
 git commit -m "Update podspec version to $NEW_VERSION"
 
 # 태그 추가
