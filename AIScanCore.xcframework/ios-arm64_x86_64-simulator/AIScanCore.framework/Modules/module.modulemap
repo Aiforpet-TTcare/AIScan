@@ -1,6 +1,0 @@
-framework module AIScanCore {
-  umbrella header "AIScanCore.h"
-  export *
-
-  module * { export * }
-}

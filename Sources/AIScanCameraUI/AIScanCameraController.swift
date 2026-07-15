@@ -1,17 +1,19 @@
-import AVFoundation
+@preconcurrency import AVFoundation
 import CoreMedia
 import UIKit
-import AIScanCore
+@preconcurrency import AIScanCore
 
+@MainActor
 public protocol AIScanCameraControllerDelegate: AnyObject {
     func aiscanCameraController(_ controller: AIScanCameraController, didUpdate evaluation: AISCFrameEvaluation)
     func aiscanCameraController(_ controller: AIScanCameraController, didCapture evaluation: AISCFrameEvaluation)
     func aiscanCameraController(_ controller: AIScanCameraController, didFail error: Error)
 }
 
-public final class AIScanCameraController: NSObject {
+public final class AIScanCameraController: NSObject, @unchecked Sendable {
     public let captureSession: AVCaptureSession
     public let coreSession: AISCSession
+    @MainActor
     public weak var delegate: AIScanCameraControllerDelegate?
     public var appliesCoreDevicePolicy: Bool = true
     public var automaticallyCapturesReadyFrames: Bool = false
@@ -42,8 +44,9 @@ public final class AIScanCameraController: NSObject {
     }
 
     public func prepare(context: AISCScanContext, completion: @escaping (Error?) -> Void) {
+        let completion = AIScanUncheckedSendable(completion)
         coreSession.prepare(with: context) { error in
-            completion(error)
+            completion.value(error)
         }
     }
 
@@ -94,6 +97,7 @@ public final class AIScanCameraController: NSObject {
         return layer
     }
 
+    @MainActor
     public func attachPreview(to view: UIView, videoGravity: AVLayerVideoGravity = .resizeAspectFill) {
         let layer = makePreviewLayer(videoGravity: videoGravity)
         layer.frame = view.bounds
@@ -101,16 +105,16 @@ public final class AIScanCameraController: NSObject {
     }
 
     public func startRunning() {
-        sessionQueue.async { [captureSession] in
-            guard !captureSession.isRunning else { return }
-            captureSession.startRunning()
+        sessionQueue.async { [weak self] in
+            guard let self, !self.captureSession.isRunning else { return }
+            self.captureSession.startRunning()
         }
     }
 
     public func stopRunning() {
-        sessionQueue.async { [captureSession] in
-            guard captureSession.isRunning else { return }
-            captureSession.stopRunning()
+        sessionQueue.async { [weak self] in
+            guard let self, self.captureSession.isRunning else { return }
+            self.captureSession.stopRunning()
         }
     }
 
@@ -157,7 +161,8 @@ public final class AIScanCameraController: NSObject {
         guard let input = coreSession.frameInput(for: sampleBuffer, device: activeDevice) else { return }
         isEvaluatingFrame = true
 
-        coreSession.evaluateFrame(input) { [weak self] evaluation, error in
+        let sendableInput = AIScanUncheckedSendable(input)
+        coreSession.evaluateFrame(sendableInput.value) { [weak self] evaluation, error in
             guard let self else { return }
             self.captureQueue.async {
                 self.isEvaluatingFrame = false
@@ -172,7 +177,7 @@ public final class AIScanCameraController: NSObject {
 
             if self.automaticallyCapturesReadyFrames,
                evaluation.captureAllowed {
-                self.capture(input: input)
+                self.capture(input: sendableInput.value)
             }
         }
     }
@@ -190,23 +195,26 @@ public final class AIScanCameraController: NSObject {
     }
 
     private func notifyUpdate(_ evaluation: AISCFrameEvaluation) {
+        let evaluation = AIScanUncheckedSendable(evaluation)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.delegate?.aiscanCameraController(self, didUpdate: evaluation)
+            self.delegate?.aiscanCameraController(self, didUpdate: evaluation.value)
         }
     }
 
     private func notifyCapture(_ evaluation: AISCFrameEvaluation) {
+        let evaluation = AIScanUncheckedSendable(evaluation)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.delegate?.aiscanCameraController(self, didCapture: evaluation)
+            self.delegate?.aiscanCameraController(self, didCapture: evaluation.value)
         }
     }
 
     private func notifyFailure(_ error: Error) {
+        let error = AIScanUncheckedSendable(error)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.delegate?.aiscanCameraController(self, didFail: error)
+            self.delegate?.aiscanCameraController(self, didFail: error.value)
         }
     }
 }
@@ -235,4 +243,12 @@ public enum AIScanCameraControllerError: Error {
     case unsupportedSessionPreset
     case notConfigured
     case torchUnavailable
+}
+
+private struct AIScanUncheckedSendable<Value>: @unchecked Sendable {
+    let value: Value
+
+    init(_ value: Value) {
+        self.value = value
+    }
 }

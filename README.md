@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "2.2.3")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "2.2.4")
 ]
 ```
 
@@ -33,7 +33,7 @@ Or in Xcode: **File > Add Package Dependencies** and enter the repository URL.
 ### CocoaPods
 
 ```ruby
-pod 'AIScan', '~> 2.2.3'
+pod 'AIScan', '~> 2.2.4'
 ```
 
 ### Secure Core / Reference UI
@@ -50,9 +50,9 @@ Swift Package Manager products:
 CocoaPods subspecs:
 
 ```ruby
-pod 'AIScan/Core', '~> 2.2.3'
-pod 'AIScan/CameraUI', '~> 2.2.3'
-pod 'AIScan/ReferenceUI', '~> 2.2.3'
+pod 'AIScan/Core', '~> 2.2.4'
+pod 'AIScan/CameraUI', '~> 2.2.4'
+pod 'AIScan/ReferenceUI', '~> 2.2.4'
 ```
 
 `AIScanCore` is the Objective-C binary facade. `AIScanCameraUI` owns the
