@@ -1,6 +1,6 @@
 {
   "framework": "AIScanCore",
   "source_version": "2.2.4",
-  "source_revision": "55da848e82a5763af0a9f8d8dd64d6a0c350b6d2",
+  "source_revision": "a9714d37e5fc944a3c4163e4309ea8bd3c416cf7",
   "simulator_architectures": ["arm64"]
 }
