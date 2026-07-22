@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "AIScan",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v15)
     ],
@@ -40,16 +41,18 @@ let package = Package(
         .target(
             name: "AIScanCameraUI",
             dependencies: ["AIScanCore"],
-            path: "Sources/AIScanCameraUI"
+            path: "Sources/AIScanCameraUI",
+            resources: [.process("Resources")]
         ),
         .target(
             name: "AIScanReferenceUI",
             dependencies: ["AIScanCore"],
-            path: "Sources/AIScanReferenceUI"
+            path: "Sources/AIScanReferenceUI",
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "AIScanCompatibilityTests",
-            dependencies: ["AIScan"],
+            dependencies: ["AIScan", "AIScanCameraUI", "AIScanReferenceUI"],
             path: "Tests/AIScanCompatibilityTests"
         )
     ]

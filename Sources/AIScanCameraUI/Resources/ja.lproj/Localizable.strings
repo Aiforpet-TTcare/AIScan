@@ -1,0 +1,9 @@
+"camera.preparing" = "準備中…";
+"camera.scanning" = "撮影位置を合わせてください";
+"camera.ready" = "撮影できます";
+"camera.analyzing" = "AI分析中…";
+"camera.complete" = "分析完了";
+"camera.capture" = "撮影";
+"camera.close" = "閉じる";
+"camera.retry" = "再試行";
+"camera.permission_denied" = "AI健康チェックを開始するにはカメラの許可が必要です。";

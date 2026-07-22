@@ -15,19 +15,18 @@ public final class AIScanCameraViewController: UIViewController {
     public var onFailure: ((Error) -> Void)?
     public var onClose: (() -> Void)?
 
-    private let statusLabel = UILabel()
-    private let progressView = UIProgressView(progressViewStyle: .default)
-    private let captureButton = UIButton(type: .system)
-    private let closeButton = UIButton(type: .system)
+    let chromeView = AIScanCameraChromeView()
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var didBeginScanning = false
     private var isClosed = false
+    var beginsScanningAutomatically = true
 
     public init(configuration: AISCConfiguration, context: AISCScanContext) {
         self.cameraController = AIScanCameraController(configuration: configuration)
         self.scanContext = context
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
+        overrideUserInterfaceStyle = .dark
     }
 
     @available(*, unavailable)
@@ -37,11 +36,16 @@ public final class AIScanCameraViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+        overrideUserInterfaceStyle = .dark
         view.backgroundColor = .black
         cameraController.delegate = self
         cameraController.automaticallyCapturesReadyFrames = true
         configureLayout()
-        beginScanningIfNeeded()
+        if beginsScanningAutomatically {
+            beginScanningIfNeeded()
+        } else {
+            previewLayer?.isHidden = true
+        }
     }
 
     public override func viewDidLayoutSubviews() {
@@ -64,74 +68,29 @@ public final class AIScanCameraViewController: UIViewController {
         view.layer.insertSublayer(previewLayer, at: 0)
         self.previewLayer = previewLayer
 
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        statusLabel.text = "Preparing…"
-        statusLabel.textColor = .white
-        statusLabel.textAlignment = .center
-        statusLabel.numberOfLines = 2
-        statusLabel.adjustsFontForContentSizeCategory = true
-        statusLabel.font = .preferredFont(forTextStyle: .headline)
-        statusLabel.accessibilityIdentifier = "aiscan.camera.status"
-
-        progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = .systemBlue
-        progressView.trackTintColor = UIColor.white.withAlphaComponent(0.3)
-        progressView.accessibilityIdentifier = "aiscan.camera.progress"
-
-        var captureConfiguration = UIButton.Configuration.filled()
-        captureConfiguration.image = UIImage(systemName: "camera.fill")
-        captureConfiguration.baseBackgroundColor = .white
-        captureConfiguration.baseForegroundColor = .black
-        captureConfiguration.cornerStyle = .capsule
-        captureButton.configuration = captureConfiguration
-        captureButton.translatesAutoresizingMaskIntoConstraints = false
-        captureButton.accessibilityLabel = "Capture"
-        captureButton.accessibilityIdentifier = "aiscan.camera.capture"
-        captureButton.isEnabled = false
-        captureButton.addAction(UIAction { [weak self] _ in
+        chromeView.translatesAutoresizingMaskIntoConstraints = false
+        chromeView.onCapture = { [weak self] in
             self?.cameraController.captureNextFrame()
-        }, for: .touchUpInside)
-
-        var closeConfiguration = UIButton.Configuration.plain()
-        closeConfiguration.image = UIImage(systemName: "xmark")
-        closeConfiguration.baseForegroundColor = .white
-        closeButton.configuration = closeConfiguration
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.accessibilityLabel = "Close"
-        closeButton.accessibilityIdentifier = "aiscan.camera.close"
-        closeButton.addAction(UIAction { [weak self] _ in
+        }
+        chromeView.onClose = { [weak self] in
             self?.close()
-        }, for: .touchUpInside)
-
-        view.addSubview(statusLabel)
-        view.addSubview(progressView)
-        view.addSubview(captureButton)
-        view.addSubview(closeButton)
-
+        }
+        chromeView.onRetry = { [weak self] in
+            self?.retry()
+        }
+        view.addSubview(chromeView)
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            closeButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
-            closeButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 44),
-            closeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
-
-            statusLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
-            statusLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            statusLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -16),
-
-            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 48),
-            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -48),
-            progressView.bottomAnchor.constraint(equalTo: captureButton.topAnchor, constant: -28),
-
-            captureButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            captureButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -28),
-            captureButton.widthAnchor.constraint(equalToConstant: 72),
-            captureButton.heightAnchor.constraint(equalToConstant: 72),
+            chromeView.topAnchor.constraint(equalTo: view.topAnchor),
+            chromeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            chromeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            chromeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 
     private func beginScanningIfNeeded() {
         guard !didBeginScanning else { return }
         didBeginScanning = true
+        applyPresentationState(.preparing)
 
         Task { [weak self] in
             let granted = await AIScanCameraController.requestCameraAccess()
@@ -157,7 +116,7 @@ public final class AIScanCameraViewController: UIViewController {
                         self.fail(error)
                         return
                     }
-                    self.statusLabel.text = "Scanning…"
+                    self.applyPresentationState(.scanning)
                     self.cameraController.startRunning()
                 }
             }
@@ -172,11 +131,21 @@ public final class AIScanCameraViewController: UIViewController {
         dismiss(animated: true)
     }
 
+    private func retry() {
+        guard !isClosed else { return }
+        cameraController.reset()
+        didBeginScanning = false
+        beginScanningIfNeeded()
+    }
+
     private func fail(_ error: Error) {
         guard !isClosed else { return }
-        statusLabel.text = error.localizedDescription
-        captureButton.isEnabled = false
+        applyPresentationState(.error(error.localizedDescription))
         onFailure?(error)
+    }
+
+    func applyPresentationState(_ state: AIScanCameraPresentationState) {
+        chromeView.apply(state: state)
     }
 }
 
@@ -186,17 +155,15 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         _ controller: AIScanCameraController,
         didUpdate evaluation: AISCFrameEvaluation
     ) {
-        progressView.setProgress(Float(evaluation.normalizedProgress), animated: true)
-        captureButton.isEnabled = evaluation.captureAllowed
-        statusLabel.text = evaluation.captureAllowed ? "Ready" : "Scanning…"
+        chromeView.setProgress(Float(evaluation.normalizedProgress), animated: true)
+        applyPresentationState(evaluation.captureAllowed ? .ready : .scanning)
     }
 
     public func aiscanCameraController(
         _ controller: AIScanCameraController,
         didCapture evaluation: AISCFrameEvaluation
     ) {
-        captureButton.isEnabled = false
-        statusLabel.text = "Analyzing…"
+        applyPresentationState(.analyzing)
     }
 
     public func aiscanCameraController(
@@ -204,7 +171,7 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         didProduce result: AISCDisplayResult
     ) {
         cameraController.stopRunning()
-        statusLabel.text = "Complete"
+        applyPresentationState(.complete)
         onResult?(result)
     }
 
@@ -216,13 +183,22 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
     }
 }
 
+enum AIScanCameraPresentationState: Equatable {
+    case preparing
+    case scanning
+    case ready
+    case analyzing
+    case complete
+    case error(String)
+}
+
 public enum AIScanCameraViewControllerError: LocalizedError {
     case cameraPermissionDenied
 
     public var errorDescription: String? {
         switch self {
         case .cameraPermissionDenied:
-            "Camera permission is required to start a scan."
+            AIScanCameraStrings.localized(.permissionDenied)
         }
     }
 }

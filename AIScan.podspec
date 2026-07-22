@@ -26,16 +26,22 @@ By leveraging advanced machine learning algorithms, AIScan provides accurate and
 
   spec.subspec 'UI' do |ui|
     ui.source_files = 'Sources/AIScan/**/*.swift', 'Sources/AIScanCameraUI/**/*.swift', 'Sources/AIScanReferenceUI/**/*.swift'
+    ui.resource_bundles = {
+      'AIScanCameraUIResources' => ['Sources/AIScanCameraUI/Resources/**/*'],
+      'AIScanReferenceUIResources' => ['Sources/AIScanReferenceUI/Resources/**/*']
+    }
     ui.dependency 'AIScan/Core'
   end
 
   spec.subspec 'CameraUI' do |ui|
     ui.source_files = 'Sources/AIScanCameraUI/**/*.swift'
+    ui.resource_bundles = { 'AIScanCameraUIResources' => ['Sources/AIScanCameraUI/Resources/**/*'] }
     ui.dependency 'AIScan/Core'
   end
 
   spec.subspec 'ReferenceUI' do |ui|
     ui.source_files = 'Sources/AIScanReferenceUI/**/*.swift'
+    ui.resource_bundles = { 'AIScanReferenceUIResources' => ['Sources/AIScanReferenceUI/Resources/**/*'] }
     ui.dependency 'AIScan/Core'
   end
 end

@@ -1,0 +1,9 @@
+"camera.preparing" = "준비 중…";
+"camera.scanning" = "촬영 위치를 맞춰주세요";
+"camera.ready" = "촬영 준비가 되었어요";
+"camera.analyzing" = "AI 분석 중…";
+"camera.complete" = "분석 완료";
+"camera.capture" = "촬영";
+"camera.close" = "닫기";
+"camera.retry" = "다시 시도";
+"camera.permission_denied" = "AI 건강 체크를 시작하려면 카메라 권한이 필요합니다.";
