@@ -14,6 +14,12 @@ select the connected iPhone, and set the `AISCAN_PUBLISHABLE_KEY` scheme
 environment variable. Never commit a real key. Choose the matching environment
 inside the app before presenting the camera.
 
+For physical-device screenshot tests, keep the phone unlocked with Developer
+Mode and UI Automation enabled. If Xcode reports `Timed out while enabling
+automation mode`, enable UI Automation in the device's Developer settings and
+rerun the UI test scheme; a normal signed build/install/launch does not require
+that automation session.
+
 The host provides:
 
 - a host-owned entry point into the fixed-dark public camera;
