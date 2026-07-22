@@ -140,7 +140,7 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func fail(_ error: Error) {
         guard !isClosed else { return }
-        applyPresentationState(.error(error.localizedDescription))
+        applyPresentationState(.error(AIScanCameraStrings.displayMessage(for: error)))
         onFailure?(error)
     }
 

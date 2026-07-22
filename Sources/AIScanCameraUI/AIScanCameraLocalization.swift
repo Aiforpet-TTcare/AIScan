@@ -1,4 +1,5 @@
 import Foundation
+import AIScanCore
 
 enum AIScanCameraStringKey: String {
     case preparing = "camera.preparing"
@@ -10,6 +11,7 @@ enum AIScanCameraStringKey: String {
     case close = "camera.close"
     case retry = "camera.retry"
     case permissionDenied = "camera.permission_denied"
+    case unavailable = "camera.unavailable"
 }
 
 enum AIScanCameraStrings {
@@ -25,6 +27,21 @@ enum AIScanCameraStrings {
             value: fallback(for: key),
             comment: ""
         )
+    }
+
+    static func displayMessage(for error: Error) -> String {
+        if let cameraError = error as? AIScanCameraViewControllerError {
+            switch cameraError {
+            case .cameraPermissionDenied:
+                return localized(.permissionDenied)
+            }
+        }
+
+        let approvedReason = (error as NSError).userInfo[AISCDisplayReasonKey] as? String
+        if let approvedReason, !approvedReason.isEmpty {
+            return approvedReason
+        }
+        return localized(.unavailable)
     }
 
     private static func localizedBundle(languageCode: String?) -> Bundle {
@@ -74,6 +91,8 @@ enum AIScanCameraStrings {
             "Retry"
         case .permissionDenied:
             "Camera permission is required to start a scan."
+        case .unavailable:
+            "Camera is unavailable. Please try again."
         }
     }
 }

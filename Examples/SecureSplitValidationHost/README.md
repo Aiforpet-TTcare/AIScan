@@ -19,6 +19,7 @@ The host provides:
 - a host-owned entry point into the fixed-dark public camera;
 - system, light, and dark appearance controls;
 - a deterministic sample result with the three eye symptom tabs;
+- a simulator-safe camera error/retry screenshot path with display-safe errors;
 - UI tests that retain light/dark result screenshots in the result bundle.
 
 The host main bundle explicitly declares English, Korean, and Japanese. A

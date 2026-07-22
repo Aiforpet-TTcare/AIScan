@@ -44,6 +44,8 @@ private final class ValidationHomeViewController: UIViewController {
 
         if ProcessInfo.processInfo.arguments.contains("--show-result") {
             presentSampleResult()
+        } else if ProcessInfo.processInfo.arguments.contains("--show-camera") {
+            presentCamera()
         }
     }
 

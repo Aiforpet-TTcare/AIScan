@@ -1,6 +1,39 @@
 import XCTest
 
 final class SecureSplitValidationHostUITests: XCTestCase {
+    func testCameraErrorRetryScreenshot() {
+        let app = XCUIApplication()
+        app.resetAuthorizationStatus(for: .camera)
+        app.launchEnvironment["AISCAN_PUBLISHABLE_KEY"] = "tt_pk_test_permission_ui"
+        app.launchArguments = [
+            "--show-camera",
+            "--appearance", "light",
+            "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US",
+        ]
+
+        addUIInterruptionMonitor(withDescription: "Camera permission") { alert in
+            for title in ["Don’t Allow", "Don't Allow"] where alert.buttons[title].exists {
+                alert.buttons[title].tap()
+                return true
+            }
+            return false
+        }
+
+        app.launch()
+        app.tap()
+
+        let retry = app.buttons["aiscan.camera.retry"]
+        XCTAssertTrue(retry.waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["aiscan.camera.close"].exists)
+        XCTAssertTrue(app.staticTexts["Camera is unavailable. Please try again."].exists)
+
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = "device_camera_error_retry_host_light"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testKoreanLightResultScreenshot() {
         captureResult(
             appearance: "light",

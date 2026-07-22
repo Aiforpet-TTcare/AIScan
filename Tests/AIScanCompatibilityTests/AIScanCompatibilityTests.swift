@@ -167,6 +167,34 @@ final class AIScanCompatibilityTests: XCTestCase {
         XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "en"), "AI analysis image")
     }
 
+    func testCameraErrorPresentationUsesOnlyApprovedDisplayReasons() {
+        let internalError = NSError(
+            domain: "AIScanCameraUI.AIScanCameraController",
+            code: -1,
+            userInfo: [NSLocalizedDescriptionKey: "internal camera implementation detail"]
+        )
+        XCTAssertEqual(
+            AIScanCameraStrings.displayMessage(for: internalError),
+            AIScanCameraStrings.localized(.unavailable)
+        )
+
+        let approvedError = NSError(
+            domain: "com.aiforpet.aiscan",
+            code: -1,
+            userInfo: [AISCDisplayReasonKey: "Approved display-safe reason"]
+        )
+        XCTAssertEqual(
+            AIScanCameraStrings.displayMessage(for: approvedError),
+            "Approved display-safe reason"
+        )
+        XCTAssertEqual(
+            AIScanCameraStrings.displayMessage(
+                for: AIScanCameraViewControllerError.cameraPermissionDenied
+            ),
+            AIScanCameraStrings.localized(.permissionDenied)
+        )
+    }
+
     func testReferenceThemePreservesLightPaletteAndUnselectedFrames() {
         let light = UITraitCollection(userInterfaceStyle: .light)
         let dark = UITraitCollection(userInterfaceStyle: .dark)

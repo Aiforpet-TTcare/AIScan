@@ -17,7 +17,7 @@ appearance cannot be changed accidentally while adding dark-mode support.
 | `04_result_accessibility_light.png` | Result screen at an accessibility Dynamic Type size in light mode |
 | `04_result_accessibility_dark.png` | Result screen at an accessibility Dynamic Type size in dark mode |
 
-`ValidationHost/` contains four full-app simulator captures produced by the
+`ValidationHost/` contains five full-app simulator captures produced by the
 branch-only validation host:
 
 | File | Contract |
@@ -26,6 +26,7 @@ branch-only validation host:
 | `05_result_ko_dark.png` | Korean captions and framed tabs in dark mode |
 | `06_result_en_light.png` | English package localization selected at runtime |
 | `07_result_ja_light.png` | Japanese package localization selected at runtime |
+| `08_camera_error_retry_host_light.png` | Fixed-dark camera fallback and retry UI under a light host |
 
 The host declares English, Korean, and Japanese in its main bundle. This is
 required for the system to select matching localizations from package resource

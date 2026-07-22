@@ -7,3 +7,4 @@
 "camera.close" = "閉じる";
 "camera.retry" = "再試行";
 "camera.permission_denied" = "AI健康チェックを開始するにはカメラの許可が必要です。";
+"camera.unavailable" = "カメラを使用できません。もう一度お試しください。";
