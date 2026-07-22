@@ -1,10 +1,8 @@
 @preconcurrency import AVFoundation
-@preconcurrency import PhotosUI
-import UniformTypeIdentifiers
 import UIKit
 @preconcurrency import AIScanCore
 
-/// Host-presentable production camera controller for the high-level AIScan facade.
+/// Minimal host-presentable camera controller for the high-level AIScan facade.
 ///
 /// Capture approval and diagnosis policy remain inside `AIScanCore`. This
 /// controller owns only AVFoundation/UI execution and display-safe callbacks.
@@ -21,8 +19,6 @@ public final class AIScanCameraViewController: UIViewController {
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var didBeginScanning = false
     private var isClosed = false
-    private var requestedFlashEnabled = false
-    private var temporaryAlbumImageURL: URL?
     var beginsScanningAutomatically = true
 
     public init(configuration: AISCConfiguration, context: AISCScanContext) {
@@ -43,7 +39,7 @@ public final class AIScanCameraViewController: UIViewController {
         overrideUserInterfaceStyle = .dark
         view.backgroundColor = .black
         cameraController.delegate = self
-        cameraController.automaticallyCapturesReadyFrames = false
+        cameraController.automaticallyCapturesReadyFrames = true
         configureLayout()
         if beginsScanningAutomatically {
             beginScanningIfNeeded()
@@ -73,10 +69,6 @@ public final class AIScanCameraViewController: UIViewController {
         self.previewLayer = previewLayer
 
         chromeView.translatesAutoresizingMaskIntoConstraints = false
-        chromeView.configure(
-            partType: scanContext.partType,
-            displaySubpart: scanContext.displaySubpart
-        )
         chromeView.onCapture = { [weak self] in
             self?.cameraController.captureNextFrame()
         }
@@ -85,18 +77,6 @@ public final class AIScanCameraViewController: UIViewController {
         }
         chromeView.onRetry = { [weak self] in
             self?.retry()
-        }
-        chromeView.onFlashChanged = { [weak self] enabled in
-            self?.requestedFlashEnabled = enabled
-            try? self?.cameraController.setTorchEnabled(enabled)
-        }
-        chromeView.onAlbum = { [weak self] in
-            self?.presentAlbumPicker()
-        }
-        chromeView.onStart = { [weak self] in
-            guard let self else { return }
-            self.cameraController.automaticallyCapturesReadyFrames = true
-            try? self.cameraController.setTorchEnabled(self.requestedFlashEnabled)
         }
         view.addSubview(chromeView)
         NSLayoutConstraint.activate([
@@ -123,7 +103,6 @@ public final class AIScanCameraViewController: UIViewController {
 
             do {
                 try self.cameraController.configure()
-                try? self.cameraController.setTorchEnabled(self.requestedFlashEnabled)
             } catch {
                 self.fail(error)
                 return
@@ -148,7 +127,6 @@ public final class AIScanCameraViewController: UIViewController {
         guard !isClosed else { return }
         isClosed = true
         cameraController.cancel()
-        removeTemporaryAlbumImage()
         onClose?()
         dismiss(animated: true)
     }
@@ -156,33 +134,8 @@ public final class AIScanCameraViewController: UIViewController {
     private func retry() {
         guard !isClosed else { return }
         cameraController.reset()
-        cameraController.automaticallyCapturesReadyFrames = false
-        chromeView.resetStartPrompt()
         didBeginScanning = false
         beginScanningIfNeeded()
-    }
-
-    private func presentAlbumPicker() {
-        var configuration = PHPickerConfiguration(photoLibrary: .shared())
-        configuration.selectionLimit = 1
-        configuration.filter = .images
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        present(picker, animated: true)
-    }
-
-    private func diagnoseAlbumImage(at stagedURL: URL) {
-        removeTemporaryAlbumImage()
-        temporaryAlbumImageURL = stagedURL
-        cameraController.stopRunning()
-        applyPresentationState(.analyzing)
-        cameraController.diagnoseImage(at: stagedURL)
-    }
-
-    private func removeTemporaryAlbumImage() {
-        guard let temporaryAlbumImageURL else { return }
-        try? FileManager.default.removeItem(at: temporaryAlbumImageURL)
-        self.temporaryAlbumImageURL = nil
     }
 
     private func fail(_ error: Error) {
@@ -193,61 +146,6 @@ public final class AIScanCameraViewController: UIViewController {
 
     func applyPresentationState(_ state: AIScanCameraPresentationState) {
         chromeView.apply(state: state)
-    }
-}
-
-@MainActor
-extension AIScanCameraViewController: PHPickerViewControllerDelegate {
-    public func picker(
-        _ picker: PHPickerViewController,
-        didFinishPicking results: [PHPickerResult]
-    ) {
-        picker.dismiss(animated: true)
-        guard let provider = results.first?.itemProvider else {
-            cameraController.startRunning()
-            return
-        }
-        guard
-              provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) else {
-            cameraController.startRunning()
-            return
-        }
-
-        provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { [weak self] sourceURL, error in
-            var stagedURL: URL?
-            var stagingError = error
-            if let sourceURL, stagingError == nil {
-                let fileExtension = sourceURL.pathExtension.isEmpty ? "img" : sourceURL.pathExtension
-                let destination = FileManager.default.temporaryDirectory
-                    .appendingPathComponent("aiscan-album-\(UUID().uuidString)")
-                    .appendingPathExtension(fileExtension)
-                do {
-                    try FileManager.default.copyItem(at: sourceURL, to: destination)
-                    stagedURL = destination
-                } catch {
-                    stagingError = error
-                }
-            }
-
-            let value = AIScanCameraCallbackValue((stagedURL, stagingError))
-            DispatchQueue.main.async { [weak self] in
-                guard let self else {
-                    if let stagedURL = value.value.0 {
-                        try? FileManager.default.removeItem(at: stagedURL)
-                    }
-                    return
-                }
-                if let error = value.value.1 {
-                    self.fail(error)
-                    return
-                }
-                guard let stagedURL = value.value.0 else {
-                    self.cameraController.startRunning()
-                    return
-                }
-                self.diagnoseAlbumImage(at: stagedURL)
-            }
-        }
     }
 }
 
@@ -273,7 +171,6 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         didProduce result: AISCDisplayResult
     ) {
         cameraController.stopRunning()
-        removeTemporaryAlbumImage()
         applyPresentationState(.complete)
         onResult?(result)
     }
@@ -282,7 +179,6 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         _ controller: AIScanCameraController,
         didFail error: Error
     ) {
-        removeTemporaryAlbumImage()
         fail(error)
     }
 }

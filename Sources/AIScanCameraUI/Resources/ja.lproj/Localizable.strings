@@ -4,14 +4,7 @@
 "camera.analyzing" = "AI分析中…";
 "camera.complete" = "分析完了";
 "camera.capture" = "撮影";
-"camera.flash" = "フラッシュ";
-"camera.album" = "写真ライブラリ";
 "camera.close" = "閉じる";
 "camera.retry" = "再試行";
-"camera.start" = "始める";
-"camera.flash_recommendation.title" = "フラッシュの使用をおすすめします。";
-"camera.flash_recommendation.action" = "フラッシュを使用するとより明確な結果を提供することができます。";
-"camera.flash_recommendation.action_accent" = "フラッシュを使用";
-"camera.flash_recommendation.body" = "一時的なフレッシュ活性化が動物に不便さ感じさせるかもしれませんが、健康上危害を及ぼす科学的な根拠はありません。不便さが気になりましたら、フラッシュの出口に薄めの紙を当てていただくと不便さを減らせます。";
 "camera.permission_denied" = "AI健康チェックを開始するにはカメラの許可が必要です。";
 "camera.unavailable" = "カメラを使用できません。もう一度お試しください。";

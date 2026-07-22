@@ -165,61 +165,6 @@ final class AIScanCompatibilityTests: XCTestCase {
         XCTAssertEqual(AIScanReferenceStrings.localized(.originalPhoto, languageCode: "ko"), "원본 사진")
         XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "ko"), "AI 분석 사진")
         XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "en"), "AI analysis image")
-        XCTAssertEqual(AIScanReferenceStrings.localized(.navigationTitle, languageCode: "ko"), "AI 건강 체크 결과")
-        XCTAssertEqual(AIScanReferenceStrings.localized(.symptomDescriptionTitle, languageCode: "ko"), "이 증상은 무엇인가요")
-        XCTAssertEqual(AIScanCameraStrings.localized(.flashRecommendationTitle, languageCode: "ko"), "플래시 사용을 권장해요")
-        XCTAssertEqual(AIScanCameraStrings.localized(.start, languageCode: "ko"), "시작하기")
-        XCTAssertEqual(AIScanCameraStrings.localized(.start, languageCode: "ja"), "始める")
-        XCTAssertEqual(
-            AIScanCameraStrings.localized(.flashRecommendationAction, languageCode: "ko"),
-            "플래시를 사용하면 더 명확한\n결과를 제공해 드려요."
-        )
-        XCTAssertEqual(
-            AIScanCameraStrings.localized(.flashRecommendationAction, languageCode: "en"),
-            "Use flash for better\nresults."
-        )
-        XCTAssertEqual(
-            AIScanCameraStrings.localized(.flashRecommendationBody, languageCode: "ko"),
-            "일시적인 플래시 활성화가 동물에게 불편함을 유발할 순 있지만 건강상 위해를 미친다는 과학적 근거는 없어요. 불편함이 우려되면 플래시 입구에 얇은 종이를 덧대어주시면 도움이 될 수 있어요."
-        )
-        XCTAssertEqual(
-            AIScanCameraStrings.localized(.flashRecommendationBody, languageCode: "en"),
-            "Sudden use of flash can startle your pet. There is no scientific evidence that it harms them, but to avoid a glare you can cover the flash with a piece of paper."
-        )
-    }
-
-    func testResultViewModelCarriesOnlyCompleteDisplaySafePresentationContent() {
-        let section = AIScanDisplayDetailSection(
-            id: "description",
-            kind: .symptomDescription,
-            title: "이 증상은 무엇인가요",
-            lines: ["눈물이 과도하게 흘러 눈 주변이 계속 젖어 있는 상태예요."]
-        )
-        let symptom = AIScanDisplaySymptomViewModel(
-            code: "tear",
-            name: "유루증",
-            abnormalLevel: 2,
-            resultLabel: "주의 깊은 관찰이 필요해요",
-            detailSections: [section]
-        )
-        let viewModel = AIScanDisplayResultViewModel(
-            status: "WARNING",
-            symptoms: [symptom],
-            statusStyle: .warning,
-            headline: "증상이 보여",
-            subheadline: "주의 깊은 관찰이 필요해요",
-            createdAtText: "2026. 07. 22 11:45"
-        )
-
-        XCTAssertEqual(viewModel.statusStyle, .warning)
-        XCTAssertEqual(viewModel.headline, "증상이 보여")
-        XCTAssertEqual(viewModel.subheadline, "주의 깊은 관찰이 필요해요")
-        XCTAssertEqual(viewModel.createdAtText, "2026. 07. 22 11:45")
-        XCTAssertEqual(viewModel.symptoms[0].detailSections, [section])
-        XCTAssertEqual(
-            Mirror(reflecting: section).children.compactMap(\.label),
-            ["id", "kind", "title", "lines"]
-        )
     }
 
     func testCameraErrorPresentationUsesOnlyApprovedDisplayReasons() {
@@ -285,22 +230,12 @@ final class AIScanCompatibilityTests: XCTestCase {
         )
         let capture = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.capture"))
         let close = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.close"))
-        let flash = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.flash"))
-        let album = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.album"))
-        let guide = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.guide"))
-        let startPrompt = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.start-prompt"))
-        let start = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.start"))
         let retry = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.retry"))
 
         XCTAssertTrue(status.adjustsFontForContentSizeCategory)
         XCTAssertEqual(capture.accessibilityLabel, AIScanCameraStrings.localized(.capture))
         XCTAssertEqual(close.accessibilityLabel, AIScanCameraStrings.localized(.close))
-        XCTAssertEqual(flash.accessibilityLabel, AIScanCameraStrings.localized(.flash))
-        XCTAssertEqual(album.accessibilityLabel, AIScanCameraStrings.localized(.album))
-        XCTAssertEqual(start.accessibilityLabel, AIScanCameraStrings.localized(.start))
         XCTAssertEqual(retry.accessibilityLabel, AIScanCameraStrings.localized(.retry))
-        XCTAssertFalse(guide.isAccessibilityElement)
-        XCTAssertFalse(startPrompt.isHidden)
         XCTAssertEqual(rgba(camera.view.backgroundColor ?? .clear), [0, 0, 0, 255])
 
         camera.overrideUserInterfaceStyle = .light
@@ -403,33 +338,14 @@ final class AIScanCompatibilityTests: XCTestCase {
 
     private func visualAuditResultViewModel() -> AIScanDisplayResultViewModel {
         AIScanDisplayResultViewModel(
-            status: "CAUTION",
+            status: "관찰이 필요해요",
+            diagnosisID: "2026. 07. 22 11:45",
             symptoms: [
                 AIScanDisplaySymptomViewModel(
                     code: "tear",
                     name: "유루증",
                     abnormalLevel: 2,
-                    resultLabel: "주의 깊은 관찰이 필요해요",
-                    detailSections: [
-                        AIScanDisplayDetailSection(
-                            id: "description",
-                            kind: .symptomDescription,
-                            title: "이 증상은 무엇인가요",
-                            lines: ["눈물이 과도하게 흘러 눈 주변이 계속 젖어 있는 상태예요. 눈 주변 털이 갈색이나 붉게 변할 수 있어요."]
-                        ),
-                        AIScanDisplayDetailSection(
-                            id: "conditions",
-                            kind: .relatedConditions,
-                            title: "관련 질환 및 요인",
-                            lines: ["각막염", "결막염", "비루관 폐색", "안검내반"]
-                        ),
-                        AIScanDisplayDetailSection(
-                            id: "home-care",
-                            kind: .homeCare,
-                            title: "홈케어 시 주의사항",
-                            lines: ["눈 주변을 청결하고 건조하게 관리해 주세요."]
-                        )
-                    ]
+                    resultLabel: "주의 깊은 관찰이 필요해요"
                 ),
                 AIScanDisplaySymptomViewModel(
                     code: "third-eyelid",
@@ -443,11 +359,7 @@ final class AIScanCompatibilityTests: XCTestCase {
                     abnormalLevel: 0,
                     resultLabel: "관찰되지 않아요"
                 ),
-            ],
-            statusStyle: .caution,
-            headline: "증상이 보여",
-            subheadline: "주의 깊은 관찰이 필요해요",
-            createdAtText: "2026. 07. 22 11:45"
+            ]
         )
     }
 

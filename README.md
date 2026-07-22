@@ -124,7 +124,7 @@ session.evaluateFrame(frameInput) { evaluation, error in
         print("Frame rejected: \(error)")
         return
     }
-    print("Ready to capture: \(evaluation?.captureAllowed == true)")
+    print("Ready to capture: \(evaluation?.readyToCapture == true)")
 }
 ```
 
@@ -150,37 +150,6 @@ import AIScanReferenceUI
 
 AIScanResultReferenceView(result: result)
 ```
-
-The default view restores the production camera/result structure while keeping
-all inference policy inside `AIScanCore`. Hosts with approved display copy can
-build a richer result without exposing scores or model data:
-
-```swift
-let section = AIScanDisplayDetailSection(
-    id: "description",
-    kind: .symptomDescription,
-    title: "What is this sign?",
-    lines: ["Display-safe explanatory copy"]
-)
-
-let viewModel = AIScanDisplayResultViewModel(
-    status: "CAUTION",
-    symptoms: [
-        AIScanDisplaySymptomViewModel(
-            code: "display-code",
-            name: "Display name",
-            detailSections: [section]
-        )
-    ],
-    statusStyle: .caution,
-    createdAtText: "2026. 07. 22 11:45"
-)
-
-AIScanResultReferenceView(viewModel: viewModel)
-```
-
-`AIScanDisplayDetailSection` is presentation-only. Do not place thresholds,
-raw predictions, model identifiers, or transport payloads in it.
 
 ---
 

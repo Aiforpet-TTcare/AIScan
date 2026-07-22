@@ -146,24 +146,6 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         }
     }
 
-    /// Diagnoses a host-selected still image through the same Core-owned
-    /// display-safe result boundary used by live capture.
-    public func diagnoseImage(at imageURL: URL) {
-        let input = AISCImageInput(imageURL: imageURL)
-        coreSession.diagnoseImage(input) { [weak self] result, error in
-            guard let self else { return }
-            if let error {
-                self.notifyFailure(error)
-                return
-            }
-            guard let result else {
-                self.notifyFailure(AIScanCameraControllerError.emptyDiagnosisResult)
-                return
-            }
-            self.notifyResult(result)
-        }
-    }
-
     public func reset() {
         coreSession.reset()
         captureQueue.async { [weak self] in

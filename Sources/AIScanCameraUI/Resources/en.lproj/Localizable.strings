@@ -4,14 +4,7 @@
 "camera.analyzing" = "Analyzing…";
 "camera.complete" = "Complete";
 "camera.capture" = "Capture";
-"camera.flash" = "Flash";
-"camera.album" = "Photo library";
 "camera.close" = "Close";
 "camera.retry" = "Retry";
-"camera.start" = "Start";
-"camera.flash_recommendation.title" = "We recommend using flash";
-"camera.flash_recommendation.action" = "Use flash for better\nresults.";
-"camera.flash_recommendation.action_accent" = "Use flash";
-"camera.flash_recommendation.body" = "Sudden use of flash can startle your pet. There is no scientific evidence that it harms them, but to avoid a glare you can cover the flash with a piece of paper.";
 "camera.permission_denied" = "Camera permission is required to start a scan.";
 "camera.unavailable" = "Camera is unavailable. Please try again.";
