@@ -2,3 +2,16 @@
 "result.analysis_photo" = "AI analysis image";
 "result.no_symptoms" = "No symptoms to display";
 "result.level" = "Level";
+"result.navigation_title" = "AI Health Check Result";
+"result.normal.headline" = "No concerning signs";
+"result.normal.subheadline" = "Keep up regular observation";
+"result.caution.headline" = "Signs were detected";
+"result.caution.subheadline" = "Close observation is recommended";
+"result.warning.headline" = "Signs were detected";
+"result.warning.subheadline" = "Please seek veterinary care";
+"result.section.symptom_description" = "What is this sign?";
+"result.section.related_conditions" = "Related conditions and causes";
+"result.section.home_care" = "Home-care guidance";
+"result.section.veterinary_care" = "When to see a veterinarian";
+"result.notice" = "This service uses AI to detect signs of illness and provide alerts. For an accurate diagnosis, consult a veterinarian.";
+"result.close" = "Close";

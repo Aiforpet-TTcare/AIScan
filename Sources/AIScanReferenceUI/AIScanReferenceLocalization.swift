@@ -1,10 +1,23 @@
 import Foundation
 
 enum AIScanReferenceStringKey: String {
+    case navigationTitle = "result.navigation_title"
     case originalPhoto = "result.original_photo"
     case analysisPhoto = "result.analysis_photo"
     case noSymptoms = "result.no_symptoms"
     case level = "result.level"
+    case normalHeadline = "result.normal.headline"
+    case normalSubheadline = "result.normal.subheadline"
+    case cautionHeadline = "result.caution.headline"
+    case cautionSubheadline = "result.caution.subheadline"
+    case warningHeadline = "result.warning.headline"
+    case warningSubheadline = "result.warning.subheadline"
+    case symptomDescriptionTitle = "result.section.symptom_description"
+    case relatedConditionsTitle = "result.section.related_conditions"
+    case homeCareTitle = "result.section.home_care"
+    case veterinaryCareTitle = "result.section.veterinary_care"
+    case notice = "result.notice"
+    case close = "result.close"
 }
 
 enum AIScanReferenceStrings {
@@ -51,6 +64,8 @@ enum AIScanReferenceStrings {
 
     private static func fallback(for key: AIScanReferenceStringKey) -> String {
         switch key {
+        case .navigationTitle:
+            "AI Health Check Result"
         case .originalPhoto:
             "Original photo"
         case .analysisPhoto:
@@ -59,6 +74,30 @@ enum AIScanReferenceStrings {
             "No symptoms to display"
         case .level:
             "Level"
+        case .normalHeadline:
+            "No concerning signs"
+        case .normalSubheadline:
+            "Keep up regular observation"
+        case .cautionHeadline:
+            "Signs were detected"
+        case .cautionSubheadline:
+            "Close observation is recommended"
+        case .warningHeadline:
+            "Signs were detected"
+        case .warningSubheadline:
+            "Please seek veterinary care"
+        case .symptomDescriptionTitle:
+            "What is this sign?"
+        case .relatedConditionsTitle:
+            "Related conditions and causes"
+        case .homeCareTitle:
+            "Home-care guidance"
+        case .veterinaryCareTitle:
+            "When to see a veterinarian"
+        case .notice:
+            "This service uses AI to detect signs of illness and provide alerts. For an accurate diagnosis, consult a veterinarian."
+        case .close:
+            "Close"
         }
     }
 }

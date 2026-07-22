@@ -85,8 +85,8 @@ final class SecureSplitValidationHostUITests: XCTestCase {
         ]
         app.launch()
 
-        let root = app.scrollViews["aiscan.result.root"]
-        XCTAssertTrue(root.waitForExistence(timeout: 10))
+        let close = app.buttons["aiscan.result.close"]
+        XCTAssertTrue(close.waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["aiscan.result.symptom.third-eyelid"].exists)
         XCTAssertTrue(app.buttons["aiscan.result.symptom.chemosis"].exists)
 

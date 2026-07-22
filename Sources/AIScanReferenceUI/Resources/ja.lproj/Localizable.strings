@@ -2,3 +2,16 @@
 "result.analysis_photo" = "AI分析画像";
 "result.no_symptoms" = "表示する症状はありません";
 "result.level" = "レベル";
+"result.navigation_title" = "AI健康チェック結果";
+"result.normal.headline" = "気になる症状は見られません";
+"result.normal.subheadline" = "定期的に観察してください";
+"result.caution.headline" = "症状が見られます";
+"result.caution.subheadline" = "注意深い観察が必要です";
+"result.warning.headline" = "症状が見られます";
+"result.warning.subheadline" = "早めに動物病院を受診してください";
+"result.section.symptom_description" = "この症状は何ですか";
+"result.section.related_conditions" = "関連する病気と要因";
+"result.section.home_care" = "ホームケアの注意事項";
+"result.section.veterinary_care" = "動物病院を受診する目安";
+"result.notice" = "本サービスはAIを使用して病気の兆候を検知し、お知らせします。正確な診断のため、獣医師への相談をおすすめします。";
+"result.close" = "閉じる";

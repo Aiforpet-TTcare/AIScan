@@ -62,6 +62,19 @@ try AIScanManager.showCamera(
 optional crop/heatmap URLs. Model identifiers, raw predictions, tensors,
 thresholds, local model paths, and transport payloads are not public.
 
+## Public Production UI
+
+`AIScanCameraUI` now owns the 2.2.4 camera presentation structure, including
+the flash/start prompt, part guide, album entry, progress, capture, and retry
+states. Album images are staged temporarily and sent only through
+`AISCSession.diagnoseImage`; inference and result shaping remain Core-owned.
+
+`AIScanReferenceUI` restores the result navigation, status board, timestamp,
+framed symptom tabs, original/analysis images, and detail-card layout. Optional
+`AIScanDisplayDetailSection` values contain presentation copy only. The current
+Core result does not yet supply those sections automatically, so real-data
+detail parity remains a TDD78/TDD80 release gate.
+
 ## Intentional Migration Breaks
 
 | Legacy 2.x behavior | Secure split behavior |

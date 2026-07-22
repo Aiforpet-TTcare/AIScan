@@ -194,43 +194,103 @@ private final class ValidationHomeViewController: UIViewController {
     }
 
     private func presentSampleResult() {
+        let languageCode = Locale.preferredLanguages.first
+            .map { String($0.prefix(2)).lowercased() }
+            ?? "en"
+        let copy: (
+            tear: String,
+            thirdEyelid: String,
+            chemosis: String,
+            descriptionTitle: String,
+            description: String,
+            conditionsTitle: String,
+            conditions: [String],
+            homeCareTitle: String,
+            homeCare: String,
+            cautionLabel: String,
+            clearLabel: String
+        )
+        switch languageCode {
+        case "ko":
+            copy = (
+                "유루증", "제3안검돌출증", "결막부종",
+                "이 증상은 무엇인가요",
+                "눈물이 과도하게 흘러 눈 주변이 계속 젖어 있는 상태예요. 눈 주변 털이 갈색이나 붉게 변할 수 있어요.",
+                "관련 질환 및 요인", ["각막염", "결막염", "비루관 폐색", "안검내반"],
+                "홈케어 시 주의사항", "눈 주변을 청결하고 건조하게 관리해 주세요.",
+                "주의 깊은 관찰이 필요해요", "관찰되지 않아요"
+            )
+        case "ja":
+            copy = (
+                "流涙症", "第三眼瞼突出", "結膜浮腫",
+                "この症状は何ですか",
+                "涙が多く流れ、目の周りが濡れた状態が続きます。周囲の毛が茶色や赤色に変わることがあります。",
+                "関連する病気と要因", ["角膜炎", "結膜炎", "鼻涙管閉塞", "眼瞼内反"],
+                "ホームケアの注意事項", "目の周りを清潔で乾いた状態に保ってください。",
+                "注意深い観察が必要です", "検出されませんでした"
+            )
+        default:
+            copy = (
+                "Excessive tearing", "Third-eyelid protrusion", "Conjunctival swelling",
+                "What is this sign?",
+                "Excess tears keep the area around the eye wet and may discolor the surrounding fur.",
+                "Related conditions and causes", ["Keratitis", "Conjunctivitis", "Blocked tear duct", "Entropion"],
+                "Home-care guidance", "Keep the area around the eye clean and dry.",
+                "Close observation is recommended", "Not detected"
+            )
+        }
+
         let viewModel = AIScanDisplayResultViewModel(
-            status: "관찰이 필요해요",
+            status: "CAUTION",
             diagnosisID: "device-visual-audit",
             symptoms: [
                 AIScanDisplaySymptomViewModel(
                     id: "tear",
                     code: "tear",
-                    name: "유루증",
+                    name: copy.tear,
                     abnormalLevel: 2,
-                    resultLabel: "주의 깊은 관찰이 필요해요"
+                    resultLabel: copy.cautionLabel,
+                    detailSections: [
+                        AIScanDisplayDetailSection(
+                            id: "description",
+                            kind: .symptomDescription,
+                            title: copy.descriptionTitle,
+                            lines: [copy.description]
+                        ),
+                        AIScanDisplayDetailSection(
+                            id: "conditions",
+                            kind: .relatedConditions,
+                            title: copy.conditionsTitle,
+                            lines: copy.conditions
+                        ),
+                        AIScanDisplayDetailSection(
+                            id: "home-care",
+                            kind: .homeCare,
+                            title: copy.homeCareTitle,
+                            lines: [copy.homeCare]
+                        )
+                    ]
                 ),
                 AIScanDisplaySymptomViewModel(
                     id: "third-eyelid",
                     code: "third-eyelid",
-                    name: "제3안검돌출증",
-                    resultLabel: "관찰되지 않아요"
+                    name: copy.thirdEyelid,
+                    resultLabel: copy.clearLabel
                 ),
                 AIScanDisplaySymptomViewModel(
                     id: "chemosis",
                     code: "chemosis",
-                    name: "결막부종",
-                    resultLabel: "관찰되지 않아요"
+                    name: copy.chemosis,
+                    resultLabel: copy.clearLabel
                 ),
-            ]
+            ],
+            statusStyle: .caution,
+            createdAtText: "2026. 07. 22 11:45"
         )
         let controller = UIHostingController(
             rootView: AIScanResultReferenceView(viewModel: viewModel)
         )
-        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .close,
-            primaryAction: UIAction { [weak controller] _ in
-                controller?.dismiss(animated: true)
-            }
-        )
-
-        let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.modalPresentationStyle = .fullScreen
-        present(navigationController, animated: true)
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
     }
 }

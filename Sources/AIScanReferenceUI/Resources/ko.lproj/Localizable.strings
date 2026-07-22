@@ -2,3 +2,16 @@
 "result.analysis_photo" = "AI 분석 사진";
 "result.no_symptoms" = "표시할 증상이 없습니다";
 "result.level" = "단계";
+"result.navigation_title" = "AI 건강 체크 결과";
+"result.normal.headline" = "특별한 증상이 보이지 않아요";
+"result.normal.subheadline" = "정기적으로 관찰해 주세요";
+"result.caution.headline" = "증상이 보여";
+"result.caution.subheadline" = "주의 깊은 관찰이 필요해요";
+"result.warning.headline" = "증상이 보여";
+"result.warning.subheadline" = "빠른 시일 내 동물병원에 방문해 주세요";
+"result.section.symptom_description" = "이 증상은 무엇인가요";
+"result.section.related_conditions" = "관련 질환 및 요인";
+"result.section.home_care" = "홈케어 시 주의사항";
+"result.section.veterinary_care" = "동물병원에 방문해야 할 때";
+"result.notice" = "이 서비스는 AI를 활용해 질병 징후를 감지하고 알림을 제공합니다. 정확한 진단을 위해 수의사와 상담을 권장합니다.";
+"result.close" = "닫기";
