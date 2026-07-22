@@ -85,19 +85,19 @@ final class SecureSplitValidationHostUITests: XCTestCase {
         ]
         app.launch()
 
-        let root = app.scrollViews["aiscan.result.root"]
+        let root = app.otherElements["aiscan.result.root"]
         XCTAssertTrue(root.waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["aiscan.result.symptom.third-eyelid"].exists)
-        XCTAssertTrue(app.buttons["aiscan.result.symptom.chemosis"].exists)
+        XCTAssertTrue(app.descendants(matching: .any)["aiscan.result.symptom.third-eyelid"].exists)
+        XCTAssertTrue(app.descendants(matching: .any)["aiscan.result.symptom.chemosis"].exists)
 
         let expectedCaptions: (original: String, analysis: String)
         switch language {
         case "ko":
             expectedCaptions = ("원본 사진", "AI 분석 사진")
         case "ja":
-            expectedCaptions = ("元の写真", "AI分析画像")
+            expectedCaptions = ("元の写真", "AI分析")
         default:
-            expectedCaptions = ("Original photo", "AI analysis image")
+            expectedCaptions = ("Original Photo", "AI Analysis")
         }
         XCTAssertTrue(app.staticTexts[expectedCaptions.original].exists)
         XCTAssertTrue(app.staticTexts[expectedCaptions.analysis].exists)

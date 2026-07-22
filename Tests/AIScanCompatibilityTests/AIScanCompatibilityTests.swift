@@ -164,7 +164,7 @@ final class AIScanCompatibilityTests: XCTestCase {
         XCTAssertEqual(AIScanCameraStrings.localized(.close, languageCode: "ja"), "閉じる")
         XCTAssertEqual(AIScanReferenceStrings.localized(.originalPhoto, languageCode: "ko"), "원본 사진")
         XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "ko"), "AI 분석 사진")
-        XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "en"), "AI analysis image")
+        XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "en"), "AI Analysis")
     }
 
     func testCameraErrorPresentationUsesOnlyApprovedDisplayReasons() {

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="ResultDateCell" reuseIdentifier="ResultDateCell" id="gTV-IL-0wX" customClass="AIScanResultDateCell">
+            <rect key="frame" x="0.0" y="0.0" width="373" height="34"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="373" height="34"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aoI-aq-aQN">
+                        <rect key="frame" x="103.33333333333333" y="0.0" width="166.33333333333337" height="34"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0000.00.00 오전 00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qup-yq-4Cs">
+                                <rect key="frame" x="15" y="0.0" width="136.33333333333334" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="999" constant="34" id="GoW-j0-Ih0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.53725490196078429" green="0.53725490196078429" blue="0.53725490196078429" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="qup-yq-4Cs" firstAttribute="top" secondItem="aoI-aq-aQN" secondAttribute="top" id="2UZ-Cf-wDD"/>
+                            <constraint firstAttribute="bottom" secondItem="qup-yq-4Cs" secondAttribute="bottom" id="4W0-j3-tlc"/>
+                            <constraint firstItem="qup-yq-4Cs" firstAttribute="centerX" secondItem="aoI-aq-aQN" secondAttribute="centerX" id="BfD-Zv-I3H"/>
+                            <constraint firstAttribute="trailing" secondItem="qup-yq-4Cs" secondAttribute="trailing" constant="15" id="VZT-se-lQ0"/>
+                            <constraint firstItem="qup-yq-4Cs" firstAttribute="leading" secondItem="aoI-aq-aQN" secondAttribute="leading" constant="15" id="eLZ-JX-kYC"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="aoI-aq-aQN" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="3DO-o7-xVa"/>
+                <constraint firstItem="aoI-aq-aQN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Suw-0C-baw"/>
+                <constraint firstItem="aoI-aq-aQN" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="mr0-gn-saP"/>
+                <constraint firstAttribute="bottom" secondItem="aoI-aq-aQN" secondAttribute="bottom" id="vqD-SA-To8"/>
+            </constraints>
+            <size key="customSize" width="314" height="115"/>
+            <connections>
+                <outlet property="container" destination="aoI-aq-aQN" id="PiS-EJ-ftl"/>
+                <outlet property="titleLabel" destination="qup-yq-4Cs" id="GnS-ME-fsf"/>
+            </connections>
+            <point key="canvasLocation" x="331.29770992366412" y="6.6901408450704229"/>
+        </collectionViewCell>
+    </objects>
+</document>

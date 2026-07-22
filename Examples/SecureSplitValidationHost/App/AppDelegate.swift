@@ -194,43 +194,82 @@ private final class ValidationHomeViewController: UIViewController {
     }
 
     private func presentSampleResult() {
+        let locale = Locale.preferredLanguages.first ?? "en"
+        let detailRows: [AIScanDisplayDetailRowViewModel]
+        let symptomNames: (tear: String, thirdEyelid: String, chemosis: String)
+        if locale.hasPrefix("ko") {
+            symptomNames = ("유루증", "제3안검돌출증", "결막부종")
+            detailRows = [
+                .init(
+                    text: "<b>이 증상은 무엇인가요</b><br>눈물이 과도하게 흘러 눈 주변이 계속 젖어 있는 상태예요. 눈 주변 털이 갈색이나 붉게 변할 수 있어요.",
+                    iconName: "vuesaxBoldMessageNotif"
+                ),
+                .init(
+                    text: "<b>관련 질환 및 요인</b><br>각막염<br>결막염<br>비루관 폐색<br>안검내반",
+                    iconName: "iconPageClipboardTick"
+                ),
+                .init(
+                    text: "<b>홈케어 시 주의사항</b><br>눈 주변을 깨끗하게 관리해 주세요.",
+                    iconName: "iconPageDanger"
+                )
+            ]
+        } else if locale.hasPrefix("ja") {
+            symptomNames = ("流涙症", "第三眼瞼突出", "結膜浮腫")
+            detailRows = [
+                .init(text: "<b>この症状は何ですか？</b><br>涙が多く、目の周りが濡れ続ける状態です。", iconName: "vuesaxBoldMessageNotif"),
+                .init(text: "<b>関連する疾患と要因</b><br>角膜炎<br>結膜炎<br>鼻涙管閉塞", iconName: "iconPageClipboardTick"),
+                .init(text: "<b>ホームケアの注意事項</b><br>目の周りを清潔に保ってください。", iconName: "iconPageDanger")
+            ]
+        } else {
+            symptomNames = ("Epiphora", "Third eyelid protrusion", "Chemosis")
+            detailRows = [
+                .init(text: "<b>What is this symptom?</b><br>Excess tears keep the area around the eye wet.", iconName: "vuesaxBoldMessageNotif"),
+                .init(text: "<b>Related conditions and factors</b><br>Keratitis<br>Conjunctivitis<br>Blocked tear duct", iconName: "iconPageClipboardTick"),
+                .init(text: "<b>Home-care precautions</b><br>Keep the area around the eye clean.", iconName: "iconPageDanger")
+            ]
+        }
+
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar(identifier: .gregorian)
+        dateComponents.timeZone = TimeZone(identifier: "Asia/Seoul")
+        dateComponents.year = 2026
+        dateComponents.month = 7
+        dateComponents.day = 15
+        dateComponents.hour = 10
+        dateComponents.minute = 4
+
         let viewModel = AIScanDisplayResultViewModel(
-            status: "관찰이 필요해요",
+            status: "CAUTION",
             diagnosisID: "device-visual-audit",
             symptoms: [
                 AIScanDisplaySymptomViewModel(
                     id: "tear",
                     code: "tear",
-                    name: "유루증",
+                    name: symptomNames.tear,
                     abnormalLevel: 2,
-                    resultLabel: "주의 깊은 관찰이 필요해요"
+                    resultLabel: "주의 깊은 관찰이 필요해요",
+                    detailRows: detailRows
                 ),
                 AIScanDisplaySymptomViewModel(
                     id: "third-eyelid",
                     code: "third-eyelid",
-                    name: "제3안검돌출증",
-                    resultLabel: "관찰되지 않아요"
+                    name: symptomNames.thirdEyelid,
+                    resultLabel: "관찰되지 않아요",
+                    detailRows: detailRows
                 ),
                 AIScanDisplaySymptomViewModel(
                     id: "chemosis",
                     code: "chemosis",
-                    name: "결막부종",
-                    resultLabel: "관찰되지 않아요"
+                    name: symptomNames.chemosis,
+                    resultLabel: "관찰되지 않아요",
+                    detailRows: detailRows
                 ),
-            ]
+            ],
+            analyzedAt: dateComponents.date ?? Date()
         )
-        let controller = UIHostingController(
-            rootView: AIScanResultReferenceView(viewModel: viewModel)
-        )
-        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .close,
-            primaryAction: UIAction { [weak controller] _ in
-                controller?.dismiss(animated: true)
-            }
-        )
-
-        let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.modalPresentationStyle = .fullScreen
-        present(navigationController, animated: true)
+        let controller = AIScanResultViewController.instance(viewModel: viewModel)
+        controller.onClose = { [weak controller] in controller?.dismiss(animated: true) }
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
     }
 }
