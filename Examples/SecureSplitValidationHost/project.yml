@@ -1,0 +1,65 @@
+name: SecureSplitValidationHost
+
+options:
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+
+packages:
+  AIScan:
+    path: ../..
+
+settings:
+  base:
+    SWIFT_VERSION: 5.9
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": x86_64
+
+targets:
+  SecureSplitValidationHost:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: AIScan Split QA
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations:
+          - en
+          - ko
+          - ja
+        NSCameraUsageDescription: Camera access is required to validate the AIScan capture flow.
+        UILaunchScreen: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aiforpet.aiscan.secure-split-validation
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
+    dependencies:
+      - package: AIScan
+        product: AIScan
+
+  SecureSplitValidationHostUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: UITests
+    info:
+      path: UITests/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aiforpet.aiscan.secure-split-validation-uitests
+        CODE_SIGN_STYLE: Automatic
+    dependencies:
+      - target: SecureSplitValidationHost
+
+schemes:
+  SecureSplitValidationHost:
+    build:
+      targets:
+        SecureSplitValidationHost: all
+        SecureSplitValidationHostUITests: [test]
+    test:
+      targets:
+        - SecureSplitValidationHostUITests
