@@ -32,6 +32,10 @@ Or in Xcode: **File > Add Package Dependencies** and enter the repository URL.
 
 ### CocoaPods
 
+CocoaPods is retained only as a legacy compatibility channel. New integrations
+should use Swift Package Manager; Pod validation and trunk publication do not
+block the primary SDK release.
+
 ```ruby
 pod 'AIScan', '~> 2.2.4'
 ```

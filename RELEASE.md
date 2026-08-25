@@ -4,7 +4,7 @@
 
 1. 기능 parity와 원본 UI 해시
 2. Core/UI 보안 경계
-3. iOS 13 host·Swift concurrency back-deployment, build/test와 CocoaPods lint
+3. iOS 13 host·Swift concurrency back-deployment와 SwiftPM build/test
 4. release commit/tag atomic push
 
 ## UI-only 배포 — 기본 경로
@@ -18,7 +18,13 @@ scripts/release_ui.sh 3.0.1 --publish
 
 `--publish`를 빼면 검증과 버전 metadata 준비까지만 한다.
 Ruby 도구 버전 차이로 lint 결과가 달라지지 않도록 `Gemfile`의 CocoaPods와
-Xcodeproj 버전을 사용한다. 최초 한 번 `bundle install`을 실행한다.
+Xcodeproj 버전을 고정하지만, CocoaPods는 레거시 호환 채널이며 기본 배포를
+차단하지 않는다. 기존 Pod 고객에게도 배포할 때만 아래처럼 별도로 검증·게시한다.
+
+```bash
+VALIDATE_COCOAPODS=1 PUBLISH_COCOAPODS=1 \
+  scripts/release_ui.sh 3.0.1 --publish
+```
 
 ## Core 포함 배포
 

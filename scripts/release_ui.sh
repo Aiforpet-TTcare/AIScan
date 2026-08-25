@@ -7,12 +7,18 @@ cd "$ROOT"
 VERSION="${1:-}"
 ACTION="${2:-}"
 BUNDLE_BIN="${BUNDLE_BIN:-bundle}"
+VALIDATE_COCOAPODS="${VALIDATE_COCOAPODS:-0}"
+PUBLISH_COCOAPODS="${PUBLISH_COCOAPODS:-0}"
 if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "Usage: scripts/release_ui.sh x.y.z [--publish]" >&2
   exit 1
 fi
 if [[ -n "$ACTION" && "$ACTION" != "--publish" ]]; then
   echo "Unknown option: $ACTION" >&2
+  exit 1
+fi
+if [[ "$PUBLISH_COCOAPODS" == "1" && "$VALIDATE_COCOAPODS" != "1" ]]; then
+  echo "PUBLISH_COCOAPODS=1 requires VALIDATE_COCOAPODS=1." >&2
   exit 1
 fi
 
@@ -42,7 +48,7 @@ xcodebuild test -scheme AIScan-Package \
   -destination "${IOS_SIMULATOR_DESTINATION:-platform=iOS Simulator,name=iPhone 15 Pro,OS=latest}" \
   -quiet
 
-if [[ "${SKIP_POD_LINT:-0}" != "1" ]]; then
+if [[ "$VALIDATE_COCOAPODS" == "1" ]]; then
   "$BUNDLE_BIN" check
   "$BUNDLE_BIN" exec pod lib lint AIScan.podspec --allow-warnings
 fi
@@ -70,9 +76,9 @@ git commit -m "release: AIScan $VERSION"
 git tag "$VERSION"
 git push --atomic origin "$BRANCH" "$VERSION"
 
-if [[ "${SKIP_POD_PUBLISH:-0}" != "1" ]]; then
+if [[ "$PUBLISH_COCOAPODS" == "1" ]]; then
   "$BUNDLE_BIN" exec pod spec lint AIScan.podspec --allow-warnings
   "$BUNDLE_BIN" exec pod trunk push AIScan.podspec --allow-warnings
 fi
 
-echo "Published AIScan $VERSION (UI-only; Core unchanged)."
+echo "Published AIScan $VERSION (SwiftPM primary; Core unchanged)."
