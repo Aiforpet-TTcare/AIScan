@@ -13,7 +13,7 @@
         <!--Progress View Controller-->
         <scene sceneID="uqQ-Ci-Szc">
             <objects>
-                <viewController storyboardIdentifier="TTProgressLandscapeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DD5-Dz-Fd2" customClass="TTProgressViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTProgressLandscapeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DD5-Dz-Fd2" customClass="TTProgressViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NYR-cq-Kpf">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -55,7 +55,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="1YR-U9-6g1">
                                         <rect key="frame" x="176.66666666666666" y="94.666666666666629" width="39.666666666666657" height="38"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGP-LA-tdE" customClass="CountingLabel" customModule="AIScanCameraUI" customModuleProvider="target">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGP-LA-tdE" customClass="CountingLabel">
                                                 <rect key="frame" x="0.0" y="0.0" width="21.666666666666668" height="38"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="38" id="udO-Gb-Shc"/>
@@ -145,7 +145,7 @@
         <!--Progress View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="TTProgressViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="TTProgressViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTProgressViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="TTProgressViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -195,7 +195,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="fU3-QY-TLV">
                                         <rect key="frame" x="99.999999999999986" y="349" width="39.666666666666671" height="38"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-dm-5Qj" customClass="CountingLabel" customModule="AIScanCameraUI" customModuleProvider="target">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-dm-5Qj" customClass="CountingLabel">
                                                 <rect key="frame" x="0.0" y="0.0" width="21.666666666666668" height="38"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="38" id="KGh-0c-sMQ"/>
@@ -320,7 +320,7 @@
         <!--Camera Guide View Controller-->
         <scene sceneID="QJO-X0-8hg">
             <objects>
-                <viewController storyboardIdentifier="TTCameraGuideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JE1-A9-LbX" customClass="TTCameraGuideViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTCameraGuideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JE1-A9-LbX" customClass="TTCameraGuideViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gKL-Py-AGR">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -390,7 +390,7 @@
         <!--Gallery View Controller-->
         <scene sceneID="P6B-2g-y7C">
             <objects>
-                <viewController storyboardIdentifier="TTGalleryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pga-A4-q8b" customClass="TTGalleryViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTGalleryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pga-A4-q8b" customClass="TTGalleryViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jvO-v4-6rm">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -490,7 +490,7 @@
         <!--Progress View Controller-->
         <scene sceneID="Aes-sP-3Li">
             <objects>
-                <viewController storyboardIdentifier="TTProgressDownloadViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="njF-fG-x3w" customClass="TTProgressViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTProgressDownloadViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="njF-fG-x3w" customClass="TTProgressViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nzs-Fl-aXS">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

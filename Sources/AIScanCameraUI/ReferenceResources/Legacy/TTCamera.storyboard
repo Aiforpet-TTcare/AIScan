@@ -13,7 +13,7 @@
         <!--Camera View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="CameraViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="CameraViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CameraViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="CameraViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -312,7 +312,7 @@
         <!--Camera View Controller-->
         <scene sceneID="AwD-pJ-eDb">
             <objects>
-                <viewController storyboardIdentifier="CameraJointViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Q7G-DC-hAh" customClass="CameraViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CameraJointViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Q7G-DC-hAh" customClass="CameraViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ySw-eP-buY">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -531,7 +531,7 @@
         <!--Guide Joint Lottie View Controller-->
         <scene sceneID="KuF-xb-rZa">
             <objects>
-                <viewController storyboardIdentifier="TTGuideJointLottieViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f5j-e4-6ur" customClass="TTGuideJointLottieViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTGuideJointLottieViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f5j-e4-6ur" customClass="TTGuideJointLottieViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0v9-ep-bcy">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -661,7 +661,7 @@
         <!--Overlay Eye View Controller-->
         <scene sceneID="Njd-6U-7zb">
             <objects>
-                <viewController storyboardIdentifier="TTOverlayEyeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" keyboardType="off" id="Odz-r6-ju9" customClass="TTOverlayEyeViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTOverlayEyeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" keyboardType="off" id="Odz-r6-ju9" customClass="TTOverlayEyeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VIo-WM-1CP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -743,7 +743,7 @@
         <!--Overlay Skin View Controller-->
         <scene sceneID="IvV-vo-5uU">
             <objects>
-                <viewController storyboardIdentifier="TTOverlaySkinViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="b6Q-u1-dpR" customClass="TTOverlaySkinViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTOverlaySkinViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="b6Q-u1-dpR" customClass="TTOverlaySkinViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="izD-oM-0LL">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -816,7 +816,7 @@
         <!--Overlay Tooth View Controller-->
         <scene sceneID="xKe-Mw-eYc">
             <objects>
-                <viewController storyboardIdentifier="TTOverlayToothViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BNt-Va-ldg" customClass="TTOverlayToothViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTOverlayToothViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BNt-Va-ldg" customClass="TTOverlayToothViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ehd-vn-RgT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -887,7 +887,7 @@
         <!--Overlay Joint View Controller-->
         <scene sceneID="3r6-dp-gpy">
             <objects>
-                <viewController storyboardIdentifier="TTOverlayJointViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gVe-x2-pKn" customClass="TTOverlayJointViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTOverlayJointViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gVe-x2-pKn" customClass="TTOverlayJointViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="e6E-l9-xMa">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -954,7 +954,7 @@
         <!--Preview Guide View Controller-->
         <scene sceneID="2s9-iB-APn">
             <objects>
-                <viewController storyboardIdentifier="PreviewGuideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="K46-eX-E2j" customClass="PreviewGuideViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PreviewGuideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="K46-eX-E2j" customClass="PreviewGuideViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bqp-nX-IzZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1101,7 +1101,7 @@
         <!--Preview Guide View Controller-->
         <scene sceneID="Uzw-iL-uug">
             <objects>
-                <viewController storyboardIdentifier="PreviewJointGuideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="phS-ZT-lQq" customClass="PreviewGuideViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PreviewJointGuideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="phS-ZT-lQq" customClass="PreviewGuideViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="moV-DP-pB3">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

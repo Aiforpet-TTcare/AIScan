@@ -14,7 +14,7 @@
         <!--Popup Checked Result View Controller-->
         <scene sceneID="2U8-7x-Iwy">
             <objects>
-                <viewController storyboardIdentifier="TTPopupCheckedResultViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Qko-61-gnC" customClass="TTPopupCheckedResultViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTPopupCheckedResultViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Qko-61-gnC" customClass="TTPopupCheckedResultViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5V0-Hn-WEb">
                         <rect key="frame" x="0.0" y="0.0" width="363" height="413"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -35,7 +35,7 @@
                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="TTPopupCheckedResultCell" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="TTPopupCheckedResultCell" id="2Ze-m3-ztQ" customClass="TTPopupCheckedResultCell" customModule="AIScanCameraUI" customModuleProvider="target">
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="TTPopupCheckedResultCell" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="TTPopupCheckedResultCell" id="2Ze-m3-ztQ" customClass="TTPopupCheckedResultCell">
                                                         <rect key="frame" x="0.0" y="7" width="363" height="213"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="4s7-bI-3KS">
@@ -433,7 +433,7 @@
         <!--Popup Joint Timeover View Controller-->
         <scene sceneID="sBx-og-Ebh">
             <objects>
-                <viewController storyboardIdentifier="TTPopupJointTimeoverViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="E75-rq-Ow1" customClass="TTPopupJointTimeoverViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTPopupJointTimeoverViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="E75-rq-Ow1" customClass="TTPopupJointTimeoverViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="khh-q9-bsp">
                         <rect key="frame" x="0.0" y="0.0" width="315" height="388"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -706,7 +706,7 @@
         <!--Flash Warning Alert View Controller-->
         <scene sceneID="sX3-Nq-a2U">
             <objects>
-                <viewController storyboardIdentifier="TTFlashWarningAlertViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2yZ-hM-zeF" customClass="TTFlashWarningAlertViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTFlashWarningAlertViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2yZ-hM-zeF" customClass="TTFlashWarningAlertViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IEp-ak-Vu9">
                         <rect key="frame" x="0.0" y="0.0" width="315" height="388"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1004,7 +1004,7 @@
         <!--Popup Timeover View Controller-->
         <scene sceneID="jeW-7a-hbm">
             <objects>
-                <viewController storyboardIdentifier="TTPopupTimeoverViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XD0-Qm-tTP" customClass="TTPopupTimeoverViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTPopupTimeoverViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XD0-Qm-tTP" customClass="TTPopupTimeoverViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FCI-sF-DL2">
                         <rect key="frame" x="0.0" y="0.0" width="315" height="388"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1142,7 +1142,7 @@
         <!--Guide Joint Rotation Screen View Controller-->
         <scene sceneID="zdb-PW-PlC">
             <objects>
-                <viewController storyboardIdentifier="TTGuideJointRotationScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RJ2-sE-buA" customClass="TTGuideJointRotationScreenViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTGuideJointRotationScreenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RJ2-sE-buA" customClass="TTGuideJointRotationScreenViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="amY-UT-ngX">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1221,7 +1221,7 @@
         <!--Popup Selected Skin View Controller-->
         <scene sceneID="flr-vd-7Db">
             <objects>
-                <viewController storyboardIdentifier="TTPopupSelectedSkinViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ab9-LR-Qmb" customClass="TTPopupSelectedSkinViewController" customModule="AIScanCameraUI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TTPopupSelectedSkinViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ab9-LR-Qmb" customClass="TTPopupSelectedSkinViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FVe-Dr-BWJ">
                         <rect key="frame" x="0.0" y="0.0" width="316" height="691"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

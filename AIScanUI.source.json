@@ -2,11 +2,11 @@
   "source_repository": "https://github.com/kjaylee/AIScan.git",
   "source_revision": "b30690d9be82382dc627797c06e877388d9f8d60",
   "design_baseline": "2.2.4",
-  "allowed_storyboard_change": "customModule AIScan -> AIScanCameraUI",
+  "allowed_storyboard_change": "SwiftPM runtime metadata only: remove customModule/customModuleProvider; visual XML is unchanged",
   "storyboard_sha256": {
-    "TTCamera.storyboard": "1d23cb498b804eb1f62d4ddcebe5d09ef6ec41fa50930c9e54b0ddc3d9ead19a",
-    "TTEtc.storyboard": "dca17cca862a85f69b8773aca34c349a0eea1511dfef94f3c4b73d234b33e88c",
-    "TTPopup.storyboard": "6a8107b29d90a614d07a64f02736b66c7c476a26e86bee3a09bfd28b86224180"
+    "TTCamera.storyboard": "79e586386008ff827dc7d18cda00501efe7466bfb00fba32160a54267cfc92d3",
+    "TTEtc.storyboard": "cccac5d98f24c30cb8098856750bce8538e366de804925512c764ad583e2a71f",
+    "TTPopup.storyboard": "704a065e994460ceeeea7c1a11c2961d30ca1488732373f3c15dbccdae8e264b"
   },
   "asset_tree_sha256": "ae32d261a8fa355e1089d1634b7ad903d05bef5be272e8764487c473418531af"
 }

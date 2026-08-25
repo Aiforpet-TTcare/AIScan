@@ -9,10 +9,7 @@ check_storyboard() {
   local name="$1"
   local expected="$2"
   local actual
-  actual="$({
-    sed 's/customModule="AIScanCameraUI"/customModule="AIScan"/g' \
-      "$STORYBOARD_ROOT/$name"
-  } | shasum -a 256 | awk '{print $1}')"
+  actual="$(shasum -a 256 "$STORYBOARD_ROOT/$name" | awk '{print $1}')"
   if [ "$actual" != "$expected" ]; then
     echo "$name no longer matches the original AIScan 2.2.4 design source." >&2
     exit 1
@@ -21,13 +18,13 @@ check_storyboard() {
 
 check_storyboard \
   "TTCamera.storyboard" \
-  "1d23cb498b804eb1f62d4ddcebe5d09ef6ec41fa50930c9e54b0ddc3d9ead19a"
+  "79e586386008ff827dc7d18cda00501efe7466bfb00fba32160a54267cfc92d3"
 check_storyboard \
   "TTEtc.storyboard" \
-  "dca17cca862a85f69b8773aca34c349a0eea1511dfef94f3c4b73d234b33e88c"
+  "cccac5d98f24c30cb8098856750bce8538e366de804925512c764ad583e2a71f"
 check_storyboard \
   "TTPopup.storyboard" \
-  "6a8107b29d90a614d07a64f02736b66c7c476a26e86bee3a09bfd28b86224180"
+  "704a065e994460ceeeea7c1a11c2961d30ca1488732373f3c15dbccdae8e264b"
 
 asset_hash="$({
   cd "$ASSET_ROOT"

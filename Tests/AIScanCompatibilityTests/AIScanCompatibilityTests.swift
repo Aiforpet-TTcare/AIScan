@@ -1,4 +1,5 @@
 import XCTest
+import ARKit
 import SwiftUI
 import UIKit
 import AIScan
@@ -289,7 +290,7 @@ final class AIScanCompatibilityTests: XCTestCase {
     }
 
     @MainActor
-    func testCameraChromeIsAccessibleAndFixedDarkWithoutStartingCapture() throws {
+    func testOriginalCameraStoryboardIsAccessibleWithoutStartingCapture() throws {
         let configuration = AISCConfiguration(publishableKey: "tt_pk_test_ui")
         let context = AISCScanContext()
         context.petType = .dog
@@ -300,27 +301,34 @@ final class AIScanCompatibilityTests: XCTestCase {
 
         XCTAssertEqual(camera.overrideUserInterfaceStyle, .dark)
 
-        let status = try XCTUnwrap(
-            camera.view.descendant(accessibilityIdentifier: "aiscan.camera.status") as? UILabel
-        )
         let capture = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.capture"))
         let close = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.close"))
-        let retry = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.retry"))
-        let percent = try XCTUnwrap(
-            camera.view.descendant(accessibilityIdentifier: "aiscan.camera.progress.percent") as? UILabel
-        )
 
-        XCTAssertTrue(status.adjustsFontForContentSizeCategory)
         XCTAssertEqual(capture.accessibilityLabel, AIScanCameraStrings.localized(.capture))
         XCTAssertEqual(close.accessibilityLabel, AIScanCameraStrings.localized(.close))
-        XCTAssertEqual(retry.accessibilityLabel, AIScanCameraStrings.localized(.retry))
-        XCTAssertEqual(percent.text, "0%")
         XCTAssertEqual(rgba(camera.view.backgroundColor ?? .clear), [0, 0, 0, 255])
+        XCTAssertNotNil(camera.view.descendant(ofType: ARSCNView.self))
+    }
 
-        camera.overrideUserInterfaceStyle = .light
-        XCTAssertEqual(rgba(camera.view.backgroundColor ?? .clear), [0, 0, 0, 255])
-        camera.overrideUserInterfaceStyle = .dark
-        XCTAssertEqual(rgba(camera.view.backgroundColor ?? .clear), [0, 0, 0, 255])
+    @MainActor
+    func testOriginalProgressAndRetryStoryboardsLoadAtRuntime() throws {
+        let progress = TTProgressViewController.instantiate()
+        progress.loadViewIfNeeded()
+        progress.set(progress: 0.42, animated: false)
+        let percent = try XCTUnwrap(
+            progress.view.descendant(accessibilityIdentifier: "aiscan.camera.progress.percent") as? UILabel
+        )
+        XCTAssertEqual(percent.text, "42")
+
+        let popup = TTPopupAlertViewController.instantiate(
+            title: "retry",
+            primaryTitle: "retry",
+            secondaryTitle: "close",
+            onPrimary: nil,
+            onSecondary: nil
+        )
+        popup.loadViewIfNeeded()
+        XCTAssertFalse(popup.view.subviews.isEmpty)
     }
 
     @MainActor
@@ -346,23 +354,17 @@ final class AIScanCompatibilityTests: XCTestCase {
 
     @MainActor
     func testCapturePublicUIVisualAuditArtifacts() {
-        let readyCameraLight = cameraSnapshot(style: .light, state: .ready)
-        let readyCameraDark = cameraSnapshot(style: .dark, state: .ready)
-        let errorCameraLight = cameraSnapshot(
-            style: .light,
-            state: .error(AIScanCameraStrings.localized(.permissionDenied))
-        )
-        let errorCameraDark = cameraSnapshot(
-            style: .dark,
-            state: .error(AIScanCameraStrings.localized(.permissionDenied))
-        )
+        let readyCameraLight = cameraSnapshot(style: .light)
+        let readyCameraDark = cameraSnapshot(style: .dark)
 
         XCTAssertEqual(readyCameraLight.pngData(), readyCameraDark.pngData())
-        XCTAssertEqual(errorCameraLight.pngData(), errorCameraDark.pngData())
         attach(readyCameraLight, name: "01_camera_ready_light")
         attach(readyCameraDark, name: "01_camera_ready_dark")
-        attach(errorCameraLight, name: "02_camera_error_retry_light")
-        attach(errorCameraDark, name: "02_camera_error_retry_dark")
+
+        let progress = TTProgressViewController.instantiate()
+        progress.loadViewIfNeeded()
+        progress.set(progress: 0.42, animated: false)
+        attach(renderedStandaloneImage(of: progress, style: .dark), name: "02_original_progress")
 
         for (style, suffix) in [
             (UIUserInterfaceStyle.light, "light"),
@@ -380,28 +382,15 @@ final class AIScanCompatibilityTests: XCTestCase {
     }
 
     @MainActor
-    private func cameraSnapshot(
-        style: UIUserInterfaceStyle,
-        state: AIScanCameraPresentationState
-    ) -> UIImage {
-        let host = UIViewController()
-        host.overrideUserInterfaceStyle = style
-        host.view.backgroundColor = .black
-        var chrome: AIScanCameraChromeView!
-        UITraitCollection(userInterfaceStyle: .dark).performAsCurrent {
-            chrome = AIScanCameraChromeView()
-        }
-        chrome.overrideUserInterfaceStyle = .dark
-        chrome.translatesAutoresizingMaskIntoConstraints = false
-        chrome.apply(state: state)
-        host.view.addSubview(chrome)
-        NSLayoutConstraint.activate([
-            chrome.topAnchor.constraint(equalTo: host.view.topAnchor),
-            chrome.leadingAnchor.constraint(equalTo: host.view.leadingAnchor),
-            chrome.trailingAnchor.constraint(equalTo: host.view.trailingAnchor),
-            chrome.bottomAnchor.constraint(equalTo: host.view.bottomAnchor),
-        ])
-        return renderedStandaloneImage(of: host, style: style)
+    private func cameraSnapshot(style: UIUserInterfaceStyle) -> UIImage {
+        let configuration = AISCConfiguration(publishableKey: "tt_pk_test_visual")
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .eye
+        let camera = AIScanCameraViewController(configuration: configuration, context: context)
+        camera.beginsScanningAutomatically = false
+        camera.loadViewIfNeeded()
+        return renderedStandaloneImage(of: camera, style: style)
     }
 
     @MainActor
@@ -515,5 +504,10 @@ private extension UIView {
         return subviews.lazy.compactMap {
             $0.descendant(accessibilityIdentifier: accessibilityIdentifier)
         }.first
+    }
+
+    func descendant<T: UIView>(ofType type: T.Type) -> T? {
+        if let match = self as? T { return match }
+        return subviews.lazy.compactMap { $0.descendant(ofType: type) }.first
     }
 }
