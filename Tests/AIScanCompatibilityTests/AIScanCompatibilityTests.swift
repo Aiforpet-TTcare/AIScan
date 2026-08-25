@@ -54,6 +54,52 @@ final class AIScanCompatibilityTests: XCTestCase {
         _ = CompatibilityCameraDelegate()
     }
 
+    func testDistributedCoreCompletesSamsungTTAPIRemoteContract() throws {
+        let keyURL = URL(string: "http://127.0.0.1:8123/key")!
+        let fixtureURL = URL(string: "http://127.0.0.1:8123/fixture")!
+        guard let keyData = try? Data(contentsOf: keyURL),
+              let publishableKey = String(data: keyData, encoding: .utf8),
+              publishableKey.hasPrefix("tt_pk_") else {
+            throw XCTSkip("start the local secret bridge to test the distributed Core")
+        }
+
+        let fixtureData = try Data(contentsOf: fixtureURL)
+        let localFixture = FileManager.default.temporaryDirectory
+            .appendingPathComponent("TCENTER-\(UUID().uuidString).png")
+        try fixtureData.write(to: localFixture, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: localFixture) }
+
+        let configuration = AISCConfiguration(publishableKey: publishableKey)
+        configuration.environment = .production
+        configuration.diagnosisTimeout = 65
+        configuration.diagnosisPollInterval = 1
+        let session = AISCSession(configuration: configuration)
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .teeth
+        context.analysisSubpart = "TCENTER"
+        context.petIdentifier = "ios-distributed-core-validation"
+
+        let prepared = expectation(description: "distributed Core prepared TTAPI manifest")
+        session.prepare(with: context) { error in
+            XCTAssertNil(error)
+            prepared.fulfill()
+        }
+        wait(for: [prepared], timeout: 20)
+        XCTAssertEqual(session.analysisMode.rawValue, 1)
+
+        let startedAt = Date()
+        let diagnosed = expectation(description: "distributed Core returned partner contract")
+        session.diagnoseImage(AISCImageInput(imageURL: localFixture)) { result, error in
+            XCTAssertNil(error)
+            XCTAssertEqual(result?.contractResult?.schema, "ttcare.anomaly-check.v1")
+            XCTAssertEqual(result?.contractResult?.payload["status"] as? String, "OK")
+            XCTAssertLessThan(Date().timeIntervalSince(startedAt), 65)
+            diagnosed.fulfill()
+        }
+        wait(for: [diagnosed], timeout: 70)
+    }
+
     @MainActor
     func testHighLevelManagerBuildsCameraWithoutExposingRawInference() throws {
         AIScanManager.configure(publishableKey: "tt_pk_test_compatibility")
