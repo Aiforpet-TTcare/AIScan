@@ -28,7 +28,10 @@ check_storyboard \
 
 asset_hash="$({
   cd "$ASSET_ROOT"
-  find . -type f ! -name .DS_Store -print0 \
+  # The legacy/ group contains original host-owned images that were missing
+  # from the first public split. Their completeness and runtime loading are
+  # audited separately; keep this hash pinned to the original SDK catalog.
+  find . -type f ! -name .DS_Store ! -path './legacy/*' -print0 \
     | LC_ALL=C sort -z \
     | xargs -0 shasum -a 256
 } | shasum -a 256 | awk '{print $1}')"
