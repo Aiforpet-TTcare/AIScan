@@ -21,6 +21,7 @@ public final class AIScanCameraViewController: UIViewController {
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var didBeginScanning = false
     private var didPrepareSession = false
+    private var shouldRetryCameraPermissionWhenActive = false
     private var isClosed = false
     private var isTorchEnabled = false
     var beginsScanningAutomatically = true
@@ -43,6 +44,12 @@ public final class AIScanCameraViewController: UIViewController {
         view.backgroundColor = .black
         cameraController.delegate = self
         cameraController.automaticallyCapturesReadyFrames = false
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
         installOriginalCameraUI()
         if beginsScanningAutomatically {
             if requiresSkinPositionSelection {
@@ -63,7 +70,19 @@ public final class AIScanCameraViewController: UIViewController {
         cameraController.stopRunning()
     }
 
-    deinit { cameraController.cancel() }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        cameraController.cancel()
+    }
+
+    @objc private func applicationDidBecomeActive() {
+        guard shouldRetryCameraPermissionWhenActive, !isClosed else { return }
+        shouldRetryCameraPermissionWhenActive = false
+        didPrepareSession = false
+        didBeginScanning = false
+        cameraSurface.setPreparing(true)
+        beginScanningIfNeeded()
+    }
 
     private func installOriginalCameraUI() {
         addChild(cameraSurface)
@@ -173,14 +192,38 @@ public final class AIScanCameraViewController: UIViewController {
         guard !isClosed else { return }
         cameraSurface.setPreparing(false)
         onFailure?(error)
-        let retryable = error is AIScanCameraViewControllerError
-            || (error as NSError).userInfo[AISCRetryableKey] as? Bool == true
+        let permissionDenied = error is AIScanCameraViewControllerError
+        let retryable = (error as NSError).userInfo[AISCRetryableKey] as? Bool == true
         let message = AIScanCameraStrings.displayMessage(for: error)
         dismissPresentedSurface { [weak self] in
             guard let self, !self.isClosed else { return }
             self.progressController = nil
-            retryable ? self.presentOriginalRetry(message: message) : self.presentOriginalFailure(message: message)
+            if permissionDenied {
+                self.presentOriginalPermission(message: message)
+            } else if retryable {
+                self.presentOriginalRetry(message: message)
+            } else {
+                self.presentOriginalFailure(message: message)
+            }
         }
+    }
+
+    private func presentOriginalPermission(message: String) {
+        let popup = TTPopupAlertViewController.instantiate(
+            title: message,
+            primaryTitle: AIScanCameraStrings.localized(.settings),
+            secondaryTitle: AIScanCameraStrings.localized(.close),
+            primaryAccessibilityIdentifier: "aiscan.camera.settings",
+            onPrimary: { [weak self] in self?.openCameraSettings() },
+            onSecondary: { [weak self] in self?.close() }
+        )
+        present(AIScanLegacyPopupContainer(content: popup), animated: true)
+    }
+
+    private func openCameraSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        shouldRetryCameraPermissionWhenActive = true
+        UIApplication.shared.open(url)
     }
 
     private func presentOriginalRetry(message: String) {
@@ -258,7 +301,7 @@ public final class AIScanCameraViewController: UIViewController {
         present(
             AIScanLegacyPopupContainer(
                 content: selector,
-                cardSize: CGSize(width: 316, height: 691)
+                cardWidth: 316
             ),
             animated: true
         )

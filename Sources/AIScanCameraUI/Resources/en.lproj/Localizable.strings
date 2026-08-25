@@ -6,6 +6,7 @@
 "camera.capture" = "Capture";
 "camera.close" = "Close";
 "camera.retry" = "Retry";
+"camera.settings" = "Open Settings";
 "camera.permission_denied" = "Camera permission is required to start a scan.";
 "camera.unavailable" = "Camera is unavailable. Please try again.";
 "result.title" = "AI Health Check Result";

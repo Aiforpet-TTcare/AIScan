@@ -14,6 +14,7 @@ final class TTPopupAlertViewController: UIViewController {
     private var configuredTitle: String?
     private var primaryTitle: String?
     private var secondaryTitle: String?
+    private var primaryAccessibilityIdentifier: String?
     private var onPrimary: (() -> Void)?
     private var onSecondary: (() -> Void)?
 
@@ -22,10 +23,10 @@ final class TTPopupAlertViewController: UIViewController {
         titleLabel.text = configuredTitle
         subtitleLabel.isHidden = true
         iconContainer.isHidden = true
+        view.accessibilityIdentifier = "aiscan.camera.popup"
         confirmButton.setTitle(primaryTitle, for: .normal)
-        confirmButton.accessibilityIdentifier = secondaryTitle == nil
-            ? "aiscan.camera.close"
-            : "aiscan.camera.retry"
+        confirmButton.accessibilityIdentifier = primaryAccessibilityIdentifier
+            ?? (secondaryTitle == nil ? "aiscan.camera.close" : "aiscan.camera.retry")
         confirmButton.layer.cornerRadius = 10
         confirmButton.clipsToBounds = true
         cancelButton.setTitle(secondaryTitle, for: .normal)
@@ -47,6 +48,7 @@ final class TTPopupAlertViewController: UIViewController {
         title: String,
         primaryTitle: String,
         secondaryTitle: String?,
+        primaryAccessibilityIdentifier: String? = nil,
         onPrimary: (() -> Void)?,
         onSecondary: (() -> Void)?
     ) -> TTPopupAlertViewController {
@@ -59,6 +61,7 @@ final class TTPopupAlertViewController: UIViewController {
         controller.configuredTitle = title
         controller.primaryTitle = primaryTitle
         controller.secondaryTitle = secondaryTitle
+        controller.primaryAccessibilityIdentifier = primaryAccessibilityIdentifier
         controller.onPrimary = onPrimary
         controller.onSecondary = onSecondary
         return controller
@@ -69,11 +72,11 @@ final class TTPopupAlertViewController: UIViewController {
 @MainActor
 final class AIScanLegacyPopupContainer: UIViewController {
     private let content: UIViewController
-    private let cardSize: CGSize
+    private let cardWidth: CGFloat
 
-    init(content: UIViewController, cardSize: CGSize = CGSize(width: 315, height: 388)) {
+    init(content: UIViewController, cardWidth: CGFloat = 315) {
         self.content = content
-        self.cardSize = cardSize
+        self.cardWidth = cardWidth
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
@@ -91,8 +94,7 @@ final class AIScanLegacyPopupContainer: UIViewController {
         NSLayoutConstraint.activate([
             content.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             content.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            content.view.widthAnchor.constraint(equalToConstant: cardSize.width),
-            content.view.heightAnchor.constraint(equalToConstant: cardSize.height),
+            content.view.widthAnchor.constraint(equalToConstant: cardWidth),
         ])
         content.didMove(toParent: self)
     }

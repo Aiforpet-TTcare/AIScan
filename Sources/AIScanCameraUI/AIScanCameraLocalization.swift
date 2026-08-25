@@ -10,6 +10,7 @@ enum AIScanCameraStringKey: String {
     case capture = "camera.capture"
     case close = "camera.close"
     case retry = "camera.retry"
+    case settings = "camera.settings"
     case permissionDenied = "camera.permission_denied"
     case unavailable = "camera.unavailable"
 }
@@ -89,6 +90,8 @@ enum AIScanCameraStrings {
             "Close"
         case .retry:
             "Retry"
+        case .settings:
+            "Open Settings"
         case .permissionDenied:
             "Camera permission is required to start a scan."
         case .unavailable:

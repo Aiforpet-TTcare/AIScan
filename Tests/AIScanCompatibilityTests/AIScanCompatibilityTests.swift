@@ -237,6 +237,8 @@ final class AIScanCompatibilityTests: XCTestCase {
     func testPublicUILocalizationsPreserveApprovedKoreanLabels() {
         XCTAssertEqual(AIScanCameraStrings.localized(.capture, languageCode: "ko"), "촬영")
         XCTAssertEqual(AIScanCameraStrings.localized(.retry, languageCode: "ko"), "다시 시도")
+        XCTAssertEqual(AIScanCameraStrings.localized(.settings, languageCode: "ko"), "설정 열기")
+        XCTAssertEqual(AIScanCameraStrings.localized(.settings, languageCode: "en"), "Open Settings")
         XCTAssertEqual(AIScanCameraStrings.localized(.close, languageCode: "ja"), "閉じる")
         XCTAssertEqual(AIScanReferenceStrings.localized(.originalPhoto, languageCode: "ko"), "원본 사진")
         XCTAssertEqual(AIScanReferenceStrings.localized(.analysisPhoto, languageCode: "ko"), "AI 분석 사진")

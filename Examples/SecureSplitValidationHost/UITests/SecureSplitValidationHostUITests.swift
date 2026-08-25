@@ -1,7 +1,7 @@
 import XCTest
 
 final class SecureSplitValidationHostUITests: XCTestCase {
-    func testCameraErrorRetryScreenshot() {
+    func testCameraPermissionSettingsScreenshot() {
         let app = XCUIApplication()
         app.resetAuthorizationStatus(for: .camera)
         app.launchEnvironment["AISCAN_PUBLISHABLE_KEY"] = "tt_pk_test_permission_ui"
@@ -28,17 +28,30 @@ final class SecureSplitValidationHostUITests: XCTestCase {
             app: app
         )
 
-        let retry = app.buttons["aiscan.camera.retry"]
-        XCTAssertTrue(retry.waitForExistence(timeout: 15))
+        let settings = app.buttons["aiscan.camera.settings"]
+        XCTAssertTrue(settings.waitForExistence(timeout: 15))
         XCTAssertTrue(app.buttons["aiscan.camera.close"].exists)
         XCTAssertTrue(
             app.staticTexts["Camera permission is required to start a scan."].exists
         )
+        let popup = app.descendants(matching: .any)["aiscan.camera.popup"]
+        XCTAssertTrue(popup.exists)
+        XCTAssertEqual(popup.frame.width, 315, accuracy: 1)
+        XCTAssertLessThan(popup.frame.height, 300)
 
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-        attachment.name = "device_camera_error_retry_host_light"
+        attachment.name = "device_camera_permission_settings_host_light"
         attachment.lifetime = .keepAlways
         add(attachment)
+
+        settings.tap()
+        let systemSettings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        XCTAssertTrue(systemSettings.wait(for: .runningForeground, timeout: 5))
+
+        app.activate()
+        XCTAssertTrue(
+            app.buttons["aiscan.camera.settings"].waitForExistence(timeout: 10)
+        )
     }
 
     private func dismissCameraPermission(
