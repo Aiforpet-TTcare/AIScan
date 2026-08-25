@@ -4,7 +4,7 @@
 
 1. 기능 parity와 원본 UI 해시
 2. Core/UI 보안 경계
-3. iOS build/test와 CocoaPods lint
+3. iOS 13 host·Swift concurrency back-deployment, build/test와 CocoaPods lint
 4. release commit/tag atomic push
 
 ## UI-only 배포 — 기본 경로

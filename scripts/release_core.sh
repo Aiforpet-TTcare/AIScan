@@ -43,7 +43,7 @@ SOURCE_REVISION="$(git -C "$PRIVATE_ROOT" rev-parse HEAD)"
   OUTPUT_DIR="$STAGE" \
   bash create_xcframework.sh "$VERSION"
 )
-printf '{\n  "framework": "AIScanCore",\n  "source_version": "%s",\n  "source_revision": "%s",\n  "simulator_architectures": ["arm64"]\n}\n' \
+printf '{\n  "framework": "AIScanCore",\n  "source_version": "%s",\n  "source_revision": "%s",\n  "simulator_architectures": ["arm64", "x86_64"]\n}\n' \
   "$VERSION" "$SOURCE_REVISION" > "$STAGE/AIScanCore.source.json"
 
 (
@@ -57,9 +57,19 @@ printf '{\n  "framework": "AIScanCore",\n  "source_version": "%s",\n  "source_re
 rsync -a --delete "$STAGE/AIScanCore.xcframework/" "$ROOT/AIScanCore.xcframework/"
 cp "$STAGE/AIScanCore.source.json" "$ROOT/AIScanCore.source.json"
 
+# The simulator directory name includes its architecture set, so adding x86_64
+# legitimately renames that slice. Compare the stable device headers against the
+# released API, then separately require every packaged slice to expose the same
+# headers.
+DEVICE_HEADERS="AIScanCore.xcframework/ios-arm64/AIScanCore.framework/Headers"
+SIMULATOR_HEADERS="AIScanCore.xcframework/ios-arm64_x86_64-simulator/AIScanCore.framework/Headers"
 if [[ "${ALLOW_CORE_API_CHANGE:-0}" != "1" ]] && \
-   ! git diff --quiet -- 'AIScanCore.xcframework/**/Headers/*.h'; then
+   ! git diff --quiet -- "$DEVICE_HEADERS"; then
   echo "Public Core headers changed. Use an approved major release or restore the ABI." >&2
+  exit 1
+fi
+if ! diff -rq "$DEVICE_HEADERS" "$SIMULATOR_HEADERS" >/dev/null; then
+  echo "Device and simulator Core headers differ." >&2
   exit 1
 fi
 

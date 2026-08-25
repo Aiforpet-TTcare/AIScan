@@ -1,7 +1,6 @@
 import SwiftUI
 import AIScanCore
 
-@available(iOS 15.0, *)
 public struct AIScanResultReferenceView: UIViewControllerRepresentable {
     private let viewModel: AIScanDisplayResultViewModel
     private let onClose: (() -> Void)?

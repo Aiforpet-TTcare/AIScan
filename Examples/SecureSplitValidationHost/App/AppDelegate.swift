@@ -21,6 +21,25 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 @MainActor
+private final class ValidationActionButton: UIButton {
+    var handler: (() -> Void)?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addTarget(self, action: #selector(runHandler), for: .touchUpInside)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is unavailable")
+    }
+
+    @objc private func runHandler() {
+        handler?()
+    }
+}
+
+@MainActor
 private final class ValidationHomeViewController: UIViewController {
     private let publishableKeyField = UITextField()
     private let environmentControl = UISegmentedControl(items: ["Production", "Development"])
@@ -63,9 +82,11 @@ private final class ValidationHomeViewController: UIViewController {
 
         appearanceControl.selectedSegmentIndex = 0
         appearanceControl.accessibilityIdentifier = "validation.appearance"
-        appearanceControl.addAction(UIAction { [weak self] _ in
-            self?.applySelectedAppearance()
-        }, for: .valueChanged)
+        appearanceControl.addTarget(
+            self,
+            action: #selector(appearanceDidChange),
+            for: .valueChanged
+        )
 
         let cameraButton = makeButton(
             title: "Present camera",
@@ -124,14 +145,21 @@ private final class ValidationHomeViewController: UIViewController {
         identifier: String,
         action: @escaping @MainActor () -> Void
     ) -> UIButton {
-        var configuration = UIButton.Configuration.filled()
-        configuration.title = title
-        configuration.cornerStyle = .large
-
-        let button = UIButton(configuration: configuration)
+        let button = ValidationActionButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+        button.layer.cornerRadius = 10
         button.accessibilityIdentifier = identifier
-        button.addAction(UIAction { _ in action() }, for: .touchUpInside)
+        button.handler = action
         return button
+    }
+
+    @objc private func appearanceDidChange() {
+        applySelectedAppearance()
     }
 
     private func applyLaunchAppearance() {

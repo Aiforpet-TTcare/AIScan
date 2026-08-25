@@ -304,7 +304,7 @@ private final class AIScanResultImageViewController: UIViewController {
         close.setImage(UIImage(systemName: "xmark"), for: .normal)
         close.tintColor = .white
         close.translatesAutoresizingMaskIntoConstraints = false
-        close.addAction(UIAction { [weak self] _ in self?.dismiss(animated: true) }, for: .touchUpInside)
+        close.addTarget(self, action: #selector(closeImage), for: .touchUpInside)
         view.addSubview(close)
 
         NSLayoutConstraint.activate([
@@ -320,5 +320,9 @@ private final class AIScanResultImageViewController: UIViewController {
         AIScanReferenceImageLoader.load(from: url) { [weak self] image in
             self?.imageView.image = image
         }
+    }
+
+    @objc private func closeImage() {
+        dismiss(animated: true)
     }
 }

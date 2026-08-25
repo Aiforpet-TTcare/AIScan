@@ -64,7 +64,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) and [RELEASE.md](RELEASE.md).
 
 ## Requirements
 
-- iOS 15.0+
+- iOS 13.0+
 - Swift 5.9+
 - Xcode 15+
 

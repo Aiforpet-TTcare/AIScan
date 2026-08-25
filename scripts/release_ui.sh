@@ -35,6 +35,7 @@ CORE_BEFORE="$(git hash-object AIScanCore.source.json)"
 
 scripts/audit_original_ui_fidelity.sh
 scripts/audit_distribution_boundary.sh
+scripts/audit_ios13_compatibility.sh
 xcodebuild -scheme AIScanCameraUI \
   -destination 'generic/platform=iOS Simulator' build -quiet
 xcodebuild test -scheme AIScan-Package \

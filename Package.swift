@@ -6,7 +6,7 @@ let package = Package(
     name: "AIScan",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v13)
     ],
     products: [
         // 외부 기본 제품은 source UI + Objective-C core 조합만 노출한다.

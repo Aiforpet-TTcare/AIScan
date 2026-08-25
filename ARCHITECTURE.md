@@ -45,6 +45,10 @@ UI는 소스로 배포되어 고객 앱의 Swift 컴파일러로 빌드된다.
 지원 Xcode 하한은 릴리즈 매트릭스로 검증하지만 Core와 UI를 같은 Xcode에서
 동시에 재빌드해야 하는 결합은 두지 않는다.
 
+삼성화재 계약 브랜치의 호환성 기준을 유지하기 위해 배포 하한은 iOS 13.0이다.
+Podspec/SwiftPM 선언뿐 아니라 Core device·simulator 바이너리의
+`LC_BUILD_VERSION minos`와 iOS 13 호스트 archive를 릴리즈 게이트로 검사한다.
+
 ## 버전 규칙
 
 - UI-only patch: Core public header와 `AIScanCore.source.json` 변경 금지
