@@ -11,7 +11,6 @@ typedef NS_ENUM(NSInteger, AISCErrorCode) {
     AISCErrorCodeUnknown = 1,
     AISCErrorCodeInvalidConfiguration = 100,
     AISCErrorCodeUnauthorized = 101,
-    AISCErrorCodeAttestationFailed = 102,
     AISCErrorCodeQuotaExceeded = 103,
     AISCErrorCodeNetworkUnavailable = 200,
     AISCErrorCodeRequestTimedOut = 201,
