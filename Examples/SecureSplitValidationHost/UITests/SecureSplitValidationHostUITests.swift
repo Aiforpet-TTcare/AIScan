@@ -1,6 +1,27 @@
 import XCTest
 
 final class SecureSplitValidationHostUITests: XCTestCase {
+    func testSamsungTTAPITargetButtons() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let targetIdentifiers = [
+            "dog-eye-left", "dog-eye-right",
+            "cat-eye-left", "cat-eye-right",
+            "dog-skin-ear", "dog-skin-belly", "dog-skin-foot",
+            "dog-tooth-center", "dog-tooth-left", "dog-tooth-right",
+            "cat-tooth-center", "cat-tooth-left", "cat-tooth-right",
+        ]
+
+        for identifier in targetIdentifiers {
+            XCTAssertTrue(
+                app.buttons["validation.scan.\(identifier)"].exists,
+                "Missing Samsung TTAPI target button: \(identifier)"
+            )
+        }
+        XCTAssertTrue(app.buttons["Test"].isSelected)
+    }
+
     func testCameraErrorRetryScreenshot() {
         let app = XCUIApplication()
         app.resetAuthorizationStatus(for: .camera)
