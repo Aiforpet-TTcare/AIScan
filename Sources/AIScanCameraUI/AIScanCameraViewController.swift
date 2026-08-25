@@ -20,6 +20,7 @@ public final class AIScanCameraViewController: UIViewController {
     private var progressController: TTProgressViewController?
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var didBeginScanning = false
+    private var didPrepareSession = false
     private var isClosed = false
     private var isTorchEnabled = false
     var beginsScanningAutomatically = true
@@ -126,6 +127,7 @@ public final class AIScanCameraViewController: UIViewController {
                         self.fail(error)
                         return
                     }
+                    self.didPrepareSession = true
                     self.cameraSurface.setPreparing(false)
                     self.cameraController.startRunning()
                 }
@@ -156,6 +158,11 @@ public final class AIScanCameraViewController: UIViewController {
         dismissPresentedSurface { [weak self] in
             guard let self else { return }
             self.progressController = nil
+            guard self.didPrepareSession else {
+                self.didBeginScanning = false
+                self.beginScanningIfNeeded()
+                return
+            }
             self.cameraController.reset()
             self.cameraSurface.setPreparing(false)
             self.cameraController.startRunning()
@@ -166,7 +173,8 @@ public final class AIScanCameraViewController: UIViewController {
         guard !isClosed else { return }
         cameraSurface.setPreparing(false)
         onFailure?(error)
-        let retryable = (error as NSError).userInfo[AISCRetryableKey] as? Bool == true
+        let retryable = error is AIScanCameraViewControllerError
+            || (error as NSError).userInfo[AISCRetryableKey] as? Bool == true
         let message = AIScanCameraStrings.displayMessage(for: error)
         dismissPresentedSurface { [weak self] in
             guard let self, !self.isClosed else { return }

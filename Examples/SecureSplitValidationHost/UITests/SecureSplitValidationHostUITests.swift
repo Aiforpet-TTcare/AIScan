@@ -13,7 +13,8 @@ final class SecureSplitValidationHostUITests: XCTestCase {
         ]
 
         addUIInterruptionMonitor(withDescription: "Camera permission") { alert in
-            for title in ["Don’t Allow", "Don't Allow"] where alert.buttons[title].exists {
+            for title in ["Don’t Allow", "Don't Allow", "허용 안 함"]
+                where alert.buttons[title].exists {
                 alert.buttons[title].tap()
                 return true
             }
@@ -22,16 +23,41 @@ final class SecureSplitValidationHostUITests: XCTestCase {
 
         app.launch()
         app.tap()
+        dismissCameraPermission(
+            in: XCUIApplication(bundleIdentifier: "com.apple.springboard"),
+            app: app
+        )
 
         let retry = app.buttons["aiscan.camera.retry"]
         XCTAssertTrue(retry.waitForExistence(timeout: 15))
         XCTAssertTrue(app.buttons["aiscan.camera.close"].exists)
-        XCTAssertTrue(app.staticTexts["Camera is unavailable. Please try again."].exists)
+        XCTAssertTrue(
+            app.staticTexts["Camera permission is required to start a scan."].exists
+        )
 
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = "device_camera_error_retry_host_light"
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    private func dismissCameraPermission(
+        in springboard: XCUIApplication,
+        app: XCUIApplication
+    ) {
+        for title in ["Don’t Allow", "Don't Allow", "허용 안 함"]
+            where springboard.buttons[title].waitForExistence(timeout: 1) {
+            springboard.buttons[title].tap()
+            return
+        }
+
+        // iOS 26 can expose the visible permission Alert with a null AX
+        // application. Only use the portrait iPhone coordinate while the SDK
+        // capture control is present but blocked by that system surface.
+        let capture = app.buttons["aiscan.camera.capture"]
+        if capture.exists, !capture.isHittable {
+            springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.32, dy: 0.84)).tap()
+        }
     }
 
     func testKoreanLightResultScreenshot() {

@@ -23,9 +23,13 @@ final class TTPopupAlertViewController: UIViewController {
         subtitleLabel.isHidden = true
         iconContainer.isHidden = true
         confirmButton.setTitle(primaryTitle, for: .normal)
+        confirmButton.accessibilityIdentifier = secondaryTitle == nil
+            ? "aiscan.camera.close"
+            : "aiscan.camera.retry"
         confirmButton.layer.cornerRadius = 10
         confirmButton.clipsToBounds = true
         cancelButton.setTitle(secondaryTitle, for: .normal)
+        cancelButton.accessibilityIdentifier = "aiscan.camera.close"
         cancelButton.isHidden = secondaryTitle == nil
         view.layer.cornerRadius = 33
         view.clipsToBounds = true
