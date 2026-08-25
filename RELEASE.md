@@ -13,7 +13,7 @@ Core를 재빌드하지 않는다. 공개 Swift UI, 원본 Storyboard/assets, �
 이 경로로 하루 여러 번 배포할 수 있다.
 
 ```bash
-scripts/release_ui.sh 2.2.5 --publish
+scripts/release_ui.sh 3.0.1 --publish
 ```
 
 `--publish`를 빼면 검증과 버전 metadata 준비까지만 한다.
@@ -27,7 +27,7 @@ Core는 먼저 공개 저장소의 `tmp/`에 빌드·검증되므로 실패한 �
 바이너리를 덮어쓰지 않는다.
 
 ```bash
-scripts/release_core.sh 2.3.0 /absolute/path/to/private/AIScan --publish
+ALLOW_CORE_API_CHANGE=1 scripts/release_core.sh 3.0.0 /absolute/path/to/private/AIScan --publish
 ```
 
 patch/minor에서 공개 Objective-C header 변경은 자동 차단한다. 승인된 major
@@ -40,7 +40,7 @@ patch/minor에서 공개 Objective-C header 변경은 자동 차단한다. 승�
 
 ```bash
 git revert <release-commit>
-scripts/release_ui.sh 2.2.6 --publish
+scripts/release_ui.sh 3.0.1 --publish
 ```
 
 이전 태그가 UI 소스, Core 바이너리, provenance를 함께 보존하므로 별도 수동

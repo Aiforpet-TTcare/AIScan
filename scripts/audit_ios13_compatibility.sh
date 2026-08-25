@@ -35,9 +35,13 @@ if [[ "$simulator_arm_min_os" != "$EXPECTED_MIN_OS" && "$simulator_arm_min_os" !
 fi
 
 for binary in "$DEVICE_BINARY" "$SIMULATOR_BINARY"; do
-  if otool -L "$binary" | grep -Eq '/AVFAudio\.framework/|TensorFlowLite|onnxruntime|libswift_Concurrency'; then
+  if otool -L "$binary" | grep -Eq '/AVFAudio\.framework/|/DeviceCheck\.framework/|TensorFlowLite|onnxruntime|libswift_Concurrency'; then
     echo "Core reintroduced a forbidden legacy runtime dependency: $binary" >&2
     otool -L "$binary" >&2
+    exit 1
+  fi
+  if strings "$binary" | grep -Eq 'AISCTrustVault|DeviceCheck|DCAppAttestService|attestation_failed'; then
+    echo "Removed device-attestation implementation remains in Core: $binary" >&2
     exit 1
   fi
 done

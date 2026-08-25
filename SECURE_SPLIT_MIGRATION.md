@@ -1,14 +1,14 @@
-# Secure SDK Split Migration Draft
+# AIScan 3.0 Secure Split Migration
 
-> Status: unreleased plan-branch draft. Do not use this document as release
-> guidance until the secure split passes TDD77–TDD81 and a major-version policy
-> is approved.
+AIScan 3.0 separates the private Objective-C Core binary from the public Swift
+UI while preserving the 2.2.4 camera and result design. This is the migration
+guide for SDK integrators.
 
 ## High-Level Camera Entry Point
 
 Configure the SDK once on the main actor with the publishable key issued for
-the host application. Key validation, App Attest, access-token minting, and
-manifest transport remain inside `AIScanCore`.
+the host application. Key validation, access-token minting, manifest transport,
+analysis routing, and TTAPI communication remain inside `AIScanCore`.
 
 ```swift
 import AIScan
@@ -72,17 +72,17 @@ thresholds, local model paths, and transport payloads are not public.
 | Result controller reads inference/model objects | `AIScanResultViewControlling.apply(result:)` |
 | Host re-uploads generated ZIP/model artifacts | Not available |
 | Global mutable scan options | Explicit context arguments or Core-owned policy |
+| Device-attestation error `102` | Removed; key and organization policy are server-owned |
 
 The old raw-result overloads cannot be compatibility aliases because restoring
-them would reopen the protected inference boundary. This requires an approved
-major-version migration policy before release.
+them would reopen the protected inference boundary. The major version change
+allows those APIs to be removed instead of leaking protected implementation
+details back into the public source package.
 
-## Remaining Release Gates
+## Partner contract result
 
-- Signed-manifest envelope and verification-key rotation policy
-- Short-lived content-key binding, expiry, refresh, and offline policy
-- Real encrypted-model diagnosis/upload parity on a physical device
-- Full camera/result UI, localization, accessibility, Dynamic Type, and paired
-  light/dark screenshot approval
-- Final private `develop` and public `main` synchronization and clean release
-  provenance
+When the organization manifest enables a partner contract, the completion
+contains `AIScanResult.contractResult`. Its `schema` and JSON-compatible
+`payload` are passed through without SDK-side renaming, calculation, filtering,
+or supplementation. Existing non-partner integrations continue to use
+`status`, `diagnosisID`, and `symptoms`.

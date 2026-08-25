@@ -18,7 +18,8 @@ done
 
 for forbidden in \
   TensorFlowLite OnnxRuntime rawPrediction pred_values modelPath modelKey \
-  access_token clientKeySecret attestationObject AppAttest; do
+  access_token clientKeySecret attestationObject AppAttest DeviceCheck \
+  DCAppAttestService attestation_failed; do
   if grep -R -n -F "$forbidden" "$ROOT/Sources" >/dev/null; then
     echo "Forbidden Core implementation symbol in public UI: $forbidden" >&2
     exit 1

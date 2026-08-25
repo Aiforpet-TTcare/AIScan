@@ -81,9 +81,8 @@ registration (bundle ID) it is bound to.
 | `tt_pk_test_…` | Development / testing |
 | `tt_pk_live_…` | Production |
 
-Attestation/App Attest is not part of the current SDK contract. Organization
-policy, including key-only contracted access, is resolved by the server-side
-manifest and remains Core-owned.
+Organization policy, including key-only contracted access, is resolved by the
+server-side manifest and remains Core-owned.
 
 > The publishable key is safe to ship in the app binary. It only mints
 > short-lived access tokens at runtime; it cannot be used to read or modify
@@ -93,67 +92,50 @@ manifest and remains Core-owned.
 
 ## Setup
 
-Create an `AISCConfiguration` with the publishable key and keep one
-`AISCSession` for the scan flow.
+Configure the SDK once with the publishable key.
 
 ```swift
-import AIScanCore
+import AIScan
 
-let configuration = AISCConfiguration(
-    publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"
+AIScanManager.configure(
+    publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx",
+    environment: .test
 )
-let session = AISCSession(configuration: configuration)
 ```
 
 ## Usage
 
-### Basic — Core Session
+### Camera scan
 
 ```swift
-let context = AISCScanContext()
-context.petType = .dog
-context.partType = .eye
-
-session.prepare(with: context) { error in
-    if let error { print("Prepare failed: \(error)") }
-}
-```
-
-### Frame Evaluation
-
-```swift
-guard let frameInput = session.frameInput(for: sampleBuffer, device: device) else { return }
-
-session.evaluateFrame(frameInput) { evaluation, error in
-    if let error {
-        print("Frame rejected: \(error)")
-        return
+try AIScanManager.showCamera(
+    petType: .dog,
+    partType: .eye,
+    on: self
+) { result in
+    switch result {
+    case let .success(scan):
+        if let partnerResult = scan.contractResult {
+            // Pass the contracted payload to the host app without remapping.
+            print(partnerResult.payload)
+        } else {
+            print(scan.status)
+        }
+    case let .failure(error):
+        print(error.localizedDescription)
     }
-    print("Ready to capture: \(evaluation?.readyToCapture == true)")
 }
 ```
 
-### Diagnosis Result
+### Host-owned result view
 
 ```swift
-let imageInput = AISCImageInput(pixelBuffer: pixelBuffer)
-
-session.diagnoseImage(imageInput) { result, error in
-    if let error {
-        print("Diagnosis failed: \(error)")
-        return
-    }
-    guard let result else { return }
-    print("Status: \(result.status)")
-}
-```
-
-### Reference Result View
-
-```swift
-import AIScanReferenceUI
-
-AIScanResultReferenceView(result: result)
+let camera = try AIScanManager.makeCameraViewController(
+    petType: .dog,
+    partType: .eye,
+    resultViewController: MyResultViewController()
+)
+present(camera, animated: true)
 ```
 
 ---
@@ -163,12 +145,13 @@ AIScanResultReferenceView(result: result)
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `publishableKey` | `String` | *required* | Key issued for the host app. |
-| `petType` | `AISCPetType` | *required* | `.dog` or `.cat`. |
-| `partType` | `AISCPartType` | *required* | `.eye`, `.teeth`, `.skin`, or `.joint`. |
-| `displaySubpart` | `String?` | `nil` | Display-safe selected subpart text. |
-| `userIdentifier` | `String?` | `nil` | Host app user identifier. |
-| `petIdentifier` | `String?` | `nil` | Host app pet identifier. |
-| `recordIdentifier` | `String?` | `nil` | Host app record identifier. |
+| `petType` | `PetType` | *required* | `.dog` or `.cat`. |
+| `partType` | `PartType` | *required* | `.eye`, `.teeth`, `.body`, `.ear`, or `.paws`. |
+| `analysisSubpart` | `String?` | `nil` | Contract analysis subpart, when required. |
+| `analysisPosition` | `String?` | `nil` | Contract analysis position, when required. |
+| `userId` | `String?` | `nil` | Host app user identifier. |
+| `petId` | `String?` | `nil` | Host app pet identifier. |
+| `recordId` | `String?` | `nil` | Host app record identifier. |
 | `displayMetadata` | `[String: String]?` | `nil` | Display-safe metadata only. |
 
 ---

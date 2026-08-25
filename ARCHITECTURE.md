@@ -36,6 +36,11 @@ prediction/tensor, 비공개 endpoint 조립을 넣지 않는다. UI가 받는 �
 `AISCScanContext`, `AISCFrameEvaluation`, `AISCDisplayResult`,
 `AISCContractResult.payload` 같은 승인된 DTO뿐이다.
 
+UI가 의존하는 `AISCCameraEngineControlling`은 prepare/capture/reset/cancel과
+display-safe 이벤트만 노출하는 좁은 주입 경계다. 인증, manifest 선택,
+analysis mode 결정, 전처리, 모델 실행, TTAPI 요청 순서와 재시도 상태 머신은
+공개 Swift 소스가 아니라 Core 바이너리가 소유한다.
+
 ## 4. Xcode/Swift 호환성 결합 제거
 
 Core 바이너리는 Objective-C ABI만 노출하고 Swift module/interface를 포함하지
