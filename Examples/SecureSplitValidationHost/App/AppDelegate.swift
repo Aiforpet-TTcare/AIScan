@@ -22,10 +22,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
 @MainActor
 private final class ValidationActionButton: UIButton {
-    var handler: (() -> Void)?
+    private let handler: @MainActor () -> Void
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(handler: @escaping @MainActor () -> Void) {
+        self.handler = handler
+        super.init(frame: .zero)
         addTarget(self, action: #selector(runHandler), for: .touchUpInside)
     }
 
@@ -35,7 +36,7 @@ private final class ValidationActionButton: UIButton {
     }
 
     @objc private func runHandler() {
-        handler?()
+        handler()
     }
 }
 
@@ -109,12 +110,19 @@ private final class ValidationHomeViewController: UIViewController {
         publishableKeyField.autocapitalizationType = .none
         publishableKeyField.accessibilityIdentifier = "validation.publishable-key"
         let environmentKey = ProcessInfo.processInfo.environment["AISCAN_PUBLISHABLE_KEY"]
-        publishableKeyField.text = environmentKey
+        let bundledKeyCandidate = Bundle.main.object(
+            forInfoDictionaryKey: "AIScanPublishableKey"
+        ) as? String
+        let bundledKey = bundledKeyCandidate?.hasPrefix("tt_pk_") == true
+            ? bundledKeyCandidate
+            : nil
+        let configuredKey = environmentKey ?? bundledKey
+        publishableKeyField.text = configuredKey
         NSLog(
             "AIScan QA key source=%@ prefix_ok=%@ length=%ld",
-            environmentKey == nil ? "missing" : "environment",
-            environmentKey?.hasPrefix("tt_pk_") == true ? "yes" : "no",
-            environmentKey?.count ?? 0
+            environmentKey != nil ? "environment" : (bundledKey != nil ? "bundle" : "missing"),
+            configuredKey?.hasPrefix("tt_pk_") == true ? "yes" : "no",
+            configuredKey?.count ?? 0
         )
 
         appearanceControl.selectedSegmentIndex = 0
@@ -209,7 +217,7 @@ private final class ValidationHomeViewController: UIViewController {
         identifier: String,
         action: @escaping @MainActor () -> Void
     ) -> UIButton {
-        let button = ValidationActionButton(type: .system)
+        let button = ValidationActionButton(handler: action)
         button.setTitle(title, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
@@ -218,7 +226,6 @@ private final class ValidationHomeViewController: UIViewController {
         button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
         button.layer.cornerRadius = 10
         button.accessibilityIdentifier = identifier
-        button.handler = action
         return button
     }
 
@@ -258,10 +265,18 @@ private final class ValidationHomeViewController: UIViewController {
     }
 
     private func presentCamera(option: ScanOption) {
+        NSLog("AIScan QA tapped target=%@", option.identifier)
         let key = publishableKeyField.text?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !key.isEmpty else {
             statusLabel.text = "Enter AISCAN_PUBLISHABLE_KEY in the scheme environment or field."
+            let alert = UIAlertController(
+                title: "Publishable key required",
+                message: "Enter the Samsung Fire test publishable key before starting a scan.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
             return
         }
 

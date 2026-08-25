@@ -1,6 +1,31 @@
 import XCTest
 
 final class SecureSplitValidationHostUITests: XCTestCase {
+    func testSamsungTargetButtonOpensCamera() {
+        let app = XCUIApplication()
+        app.launchEnvironment["AISCAN_PUBLISHABLE_KEY"] = "tt_pk_test_button_ui"
+        app.launch()
+
+        let button = app.buttons["validation.scan.dog-eye-left"]
+        XCTAssertTrue(button.waitForExistence(timeout: 10))
+        XCTAssertTrue(button.isHittable)
+        button.tap()
+
+        XCTAssertTrue(app.buttons["aiscan.camera.close"].waitForExistence(timeout: 10))
+    }
+
+    func testSamsungTargetButtonExplainsMissingKey() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let button = app.buttons["validation.scan.dog-eye-left"]
+        XCTAssertTrue(button.waitForExistence(timeout: 10))
+        XCTAssertTrue(button.isHittable)
+        button.tap()
+
+        XCTAssertTrue(app.alerts["Publishable key required"].waitForExistence(timeout: 5))
+    }
+
     func testCameraRemainsPortraitWhenDeviceRotates() {
         let device = XCUIDevice.shared
         defer { device.orientation = .portrait }

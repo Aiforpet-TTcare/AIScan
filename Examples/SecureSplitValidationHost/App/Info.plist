@@ -26,6 +26,8 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>AIScanPublishableKey</key>
+	<string>$(AISCAN_PUBLISHABLE_KEY)</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is required to validate the AIScan capture flow.</string>
 	<key>UILaunchScreen</key>
