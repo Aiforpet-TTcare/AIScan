@@ -101,8 +101,10 @@ public final class AIScanCameraViewController: UIViewController {
     }
 
     deinit {
-        captureAttemptTimer?.invalidate()
-        NotificationCenter.default.removeObserver(self)
+        MainActor.assumeIsolated {
+            captureAttemptTimer?.invalidate()
+            NotificationCenter.default.removeObserver(self)
+        }
         cameraController.cancel()
     }
 
