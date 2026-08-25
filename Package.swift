@@ -1,5 +1,5 @@
 // swift-tools-version: 5.9
-// tag: "3.0.2"
+// tag: "3.0.3"
 import PackageDescription
 
 let package = Package(
