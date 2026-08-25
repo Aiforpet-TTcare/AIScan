@@ -24,6 +24,12 @@ public final class AIScanCameraViewController: UIViewController {
     private var shouldRetryCameraPermissionWhenActive = false
     private var isClosed = false
     private var isTorchEnabled = false
+    private var isCaptureAttemptActive = false
+    private var captureAttemptStartedAt: Date?
+    private var captureAttemptTimer: Timer?
+    private var didPresentInitialGuidance = false
+    private var didPresentSkinPositionSelection = false
+    let captureAttemptDuration: TimeInterval = 60
     var beginsScanningAutomatically = true
 
     public init(configuration: AISCConfiguration, context: AISCScanContext) {
@@ -59,6 +65,10 @@ public final class AIScanCameraViewController: UIViewController {
         .portrait
     }
 
+    public override var prefersStatusBarHidden: Bool { true }
+
+    public override var prefersHomeIndicatorAutoHidden: Bool { true }
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -91,6 +101,7 @@ public final class AIScanCameraViewController: UIViewController {
     }
 
     deinit {
+        captureAttemptTimer?.invalidate()
         NotificationCenter.default.removeObserver(self)
         cameraController.cancel()
     }
@@ -133,14 +144,24 @@ public final class AIScanCameraViewController: UIViewController {
         previewLayer = layer
 
         cameraSurface.onCapture = { [weak self] in
-            self?.cameraSurface.setPreparing(true)
-            self?.cameraController.captureNextFrame()
+            self?.toggleCaptureAttempt()
         }
         cameraSurface.onClose = { [weak self] in self?.close() }
         cameraSurface.onFlash = { [weak self] enabled in self?.setTorch(enabled) }
-        cameraSurface.onGuide = { [weak self] in self?.showGuide() }
+        cameraSurface.onGuide = { [weak self] in self?.showGuide(automatic: false) }
         cameraSurface.onSelectPart = { [weak self] in self?.showSkinPositionSelection() }
-        cameraSurface.partSelectedContainer?.isHidden = scanContext.partType != .skin
+        cameraSurface.onZoom = { [weak self] scale in
+            do {
+                try self?.cameraController.scaleZoom(by: scale)
+            } catch {
+                guard !(error is AIScanCameraControllerError) else { return }
+                self?.fail(error)
+            }
+        }
+        cameraSurface.configureControls(
+            showsPartSelector: scanContext.partType == .skin,
+            showsGuide: scanContext.partType != .joint
+        )
         cameraSurface.setPreparing(true)
     }
 
@@ -168,16 +189,129 @@ public final class AIScanCameraViewController: UIViewController {
                     }
                     self.didPrepareSession = true
                     self.cameraSurface.setPreparing(false)
+                    self.cameraSurface.captureButton.isEnabled = true
+                    self.overlayController.setMessage(
+                        AIScanCameraStrings.localized(.startPrompt)
+                    )
                     self.cameraController.startRunning()
+                    self.presentInitialGuidanceIfNeeded()
                 }
             }
         }
+    }
+
+    private func presentInitialGuidanceIfNeeded() {
+        guard !didPresentInitialGuidance, !isClosed else { return }
+        didPresentInitialGuidance = true
+        if scanContext.partType == .skin, didPresentSkinPositionSelection {
+            return
+        }
+        guard scanContext.partType != .joint else {
+            showGuide(automatic: true)
+            return
+        }
+        if scanContext.displayMetadata?["show_flash_warning"] == "false" {
+            showGuide(automatic: true)
+            return
+        }
+        let popup = TTFlashWarningAlertViewController.instantiate(
+            showsSkinGuidance: scanContext.partType == .skin,
+            startsWithFlash: isTorchEnabled,
+            onStart: { [weak self] flashEnabled in
+                guard let self else { return }
+                if flashEnabled != self.isTorchEnabled {
+                    self.setTorch(flashEnabled)
+                }
+                self.showGuide(automatic: true)
+            }
+        )
+        present(
+            AIScanLegacyPopupContainer(
+                content: popup,
+                cardHeight: 388
+            ),
+            animated: true
+        )
+    }
+
+    private func toggleCaptureAttempt() {
+        guard didPrepareSession, presentedViewController == nil else { return }
+        if isCaptureAttemptActive {
+            cancelCaptureAttempt()
+        } else {
+            beginCaptureAttempt()
+        }
+    }
+
+    private func beginCaptureAttempt() {
+        guard !isCaptureAttemptActive else { return }
+        isCaptureAttemptActive = true
+        captureAttemptStartedAt = Date()
+        cameraController.automaticallyCapturesReadyFrames = true
+        cameraSurface.setCaptureAttempt(active: true)
+        cameraSurface.captureButton.isEnabled = true
+        startCaptureAttemptTimer()
+    }
+
+    private func cancelCaptureAttempt() {
+        cameraController.automaticallyCapturesReadyFrames = false
+        cameraController.reset()
+        finishCaptureAttemptUI()
+        overlayController.setMessage(AIScanCameraStrings.localized(.startPrompt))
+    }
+
+    private func finishCaptureAttemptUI() {
+        isCaptureAttemptActive = false
+        captureAttemptStartedAt = nil
+        cameraController.automaticallyCapturesReadyFrames = false
+        stopCaptureAttemptTimer()
+        cameraSurface.setCaptureAttempt(active: false)
+    }
+
+    private func startCaptureAttemptTimer() {
+        stopCaptureAttemptTimer()
+        let timer = Timer(timeInterval: 0.05, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in self?.updateCaptureAttemptTimer() }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        captureAttemptTimer = timer
+        updateCaptureAttemptTimer()
+    }
+
+    private func stopCaptureAttemptTimer() {
+        captureAttemptTimer?.invalidate()
+        captureAttemptTimer = nil
+    }
+
+    private func updateCaptureAttemptTimer() {
+        guard isCaptureAttemptActive, let captureAttemptStartedAt else { return }
+        let elapsed = Date().timeIntervalSince(captureAttemptStartedAt)
+        cameraSurface.setCaptureAttempt(
+            active: true,
+            progress: CGFloat(elapsed / captureAttemptDuration)
+        )
+        guard elapsed >= captureAttemptDuration else { return }
+        cameraController.reset()
+        finishCaptureAttemptUI()
+        overlayController.setMessage(AIScanCameraStrings.localized(.startPrompt))
+        let popup = TTPopupTimeoverViewController.instantiate(
+            onRetry: { [weak self] in self?.beginCaptureAttempt() },
+            onGuide: { [weak self] in self?.showGuide(automatic: false) }
+        )
+        present(
+            AIScanLegacyPopupContainer(
+                content: popup,
+                cardHeight: 263
+            ),
+            animated: true
+        )
     }
 
     private func setTorch(_ enabled: Bool) {
         do {
             try cameraController.setTorchEnabled(enabled)
             isTorchEnabled = enabled
+            cameraSurface.setFlashEnabled(enabled)
         } catch {
             cameraSurface.flashButton.isSelected = isTorchEnabled
             fail(error)
@@ -187,6 +321,7 @@ public final class AIScanCameraViewController: UIViewController {
     private func close() {
         guard !isClosed else { return }
         isClosed = true
+        stopCaptureAttemptTimer()
         cameraController.cancel()
         onClose?()
         dismiss(animated: true)
@@ -197,6 +332,7 @@ public final class AIScanCameraViewController: UIViewController {
         dismissPresentedSurface { [weak self] in
             guard let self else { return }
             self.progressController = nil
+            self.finishCaptureAttemptUI()
             guard self.didPrepareSession else {
                 self.didBeginScanning = false
                 self.beginScanningIfNeeded()
@@ -204,6 +340,10 @@ public final class AIScanCameraViewController: UIViewController {
             }
             self.cameraController.reset()
             self.cameraSurface.setPreparing(false)
+            self.cameraSurface.captureButton.isEnabled = true
+            self.overlayController.setMessage(
+                AIScanCameraStrings.localized(.startPrompt)
+            )
             self.cameraController.startRunning()
         }
     }
@@ -211,6 +351,7 @@ public final class AIScanCameraViewController: UIViewController {
     private func fail(_ error: Error) {
         guard !isClosed else { return }
         cameraSurface.setPreparing(false)
+        finishCaptureAttemptUI()
         onFailure?(error)
         let permissionDenied = error is AIScanCameraViewControllerError
         let retryable = (error as NSError).userInfo[AISCRetryableKey] as? Bool == true
@@ -230,7 +371,8 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func presentOriginalPermission(message: String) {
         let popup = TTPopupAlertViewController.instantiate(
-            title: message,
+            title: AIScanCameraStrings.localized(.notice),
+            subtitle: message,
             primaryTitle: AIScanCameraStrings.localized(.settings),
             secondaryTitle: AIScanCameraStrings.localized(.close),
             primaryAccessibilityIdentifier: "aiscan.camera.settings",
@@ -248,7 +390,8 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func presentOriginalRetry(message: String) {
         let popup = TTPopupAlertViewController.instantiate(
-            title: message,
+            title: AIScanCameraStrings.localized(.notice),
+            subtitle: message,
             primaryTitle: AIScanCameraStrings.localized(.retry),
             secondaryTitle: AIScanCameraStrings.localized(.close),
             onPrimary: { [weak self] in self?.retry() },
@@ -259,7 +402,8 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func presentOriginalFailure(message: String) {
         let popup = TTPopupAlertViewController.instantiate(
-            title: message,
+            title: AIScanCameraStrings.localized(.notice),
+            subtitle: message,
             primaryTitle: AIScanCameraStrings.localized(.close),
             secondaryTitle: nil,
             onPrimary: { [weak self] in self?.close() },
@@ -268,8 +412,16 @@ public final class AIScanCameraViewController: UIViewController {
         present(AIScanLegacyPopupContainer(content: popup), animated: true)
     }
 
-    private func showGuide() {
+    private func showGuide(automatic: Bool = false) {
         guard guideController == nil else { return }
+        if automatic, !shouldShowAutomaticGuideToday {
+            cameraSurface.startCaptureButtonAttentionAnimation()
+            overlayController.setMessage(AIScanCameraStrings.localized(.startPrompt))
+            return
+        }
+        if automatic {
+            UserDefaults.standard.set(currentGuideDate, forKey: automaticGuideDefaultsKey)
+        }
         let guide = PreviewGuideViewController.instantiate(context: scanContext)
         guideController = guide
         guide.onDismiss = { [weak self, weak guide] in
@@ -278,6 +430,10 @@ public final class AIScanCameraViewController: UIViewController {
             guide.view.removeFromSuperview()
             guide.removeFromParent()
             self.guideController = nil
+            self.overlayController.setMessage(
+                AIScanCameraStrings.localized(.startPrompt)
+            )
+            self.cameraSurface.startCaptureButtonAttentionAnimation()
         }
         addChild(guide)
         guide.view.translatesAutoresizingMaskIntoConstraints = false
@@ -297,6 +453,7 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func showSkinPositionSelection() {
         guard scanContext.partType == .skin, presentedViewController == nil else { return }
+        didPresentSkinPositionSelection = true
         cameraController.stopRunning()
         let selector = TTPopupSelectedSkinViewController.instantiate(
             onStart: { [weak self] position, flashEnabled in
@@ -306,6 +463,7 @@ public final class AIScanCameraViewController: UIViewController {
                 self.scanContext.displaySubpart = position.uppercased()
                 self.cameraSurface.partSelectedContainer?.isHidden = false
                 if flashEnabled { self.setTorch(true) }
+                self.showGuide(automatic: true)
                 if self.didBeginScanning {
                     self.cameraController.reset()
                     self.cameraController.startRunning()
@@ -342,16 +500,47 @@ public final class AIScanCameraViewController: UIViewController {
         }
         presentedViewController.dismiss(animated: true, completion: completion)
     }
+
+    private var currentGuideDate: String {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: Date())
+    }
+
+    private var automaticGuideDefaultsKey: String {
+        let pet = scanContext.petType == .cat ? "cat" : "dog"
+        let part: String
+        switch scanContext.partType {
+        case .eye: part = "eye"
+        case .teeth: part = "teeth"
+        case .skin: part = scanContext.analysisPosition ?? "skin"
+        case .joint: part = "joint"
+        default: part = "unknown"
+        }
+        return "com.aiforpet.didShowPreviewGuide.\(pet).\(part)"
+    }
+
+    private var shouldShowAutomaticGuideToday: Bool {
+        UserDefaults.standard.string(forKey: automaticGuideDefaultsKey) != currentGuideDate
+    }
 }
 
 @MainActor
 extension AIScanCameraViewController: AIScanCameraControllerDelegate {
     public func aiscanCameraController(_ controller: AIScanCameraController, didUpdate evaluation: AISCFrameEvaluation) {
-        overlayController.apply(evaluation: evaluation)
-        cameraSurface.captureButton.isEnabled = evaluation.captureAllowed
+        if isCaptureAttemptActive {
+            overlayController.apply(evaluation: evaluation)
+        } else {
+            overlayController.setMessage(AIScanCameraStrings.localized(.startPrompt))
+        }
+        cameraSurface.captureButton.isEnabled = didPrepareSession
     }
 
     public func aiscanCameraController(_ controller: AIScanCameraController, didCapture evaluation: AISCFrameEvaluation) {
+        finishCaptureAttemptUI()
         cameraSurface.flashCapture()
         cameraSurface.setPreparing(true)
         cameraController.stopRunning()

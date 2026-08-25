@@ -154,6 +154,20 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         device.videoZoomFactor = clamped
     }
 
+    public func scaleZoom(by scale: CGFloat) throws {
+        guard let device = activeDevice else {
+            throw AIScanCameraControllerError.notConfigured
+        }
+        guard scale.isFinite, scale > 0 else { return }
+        try device.lockForConfiguration()
+        defer { device.unlockForConfiguration() }
+        let requested = device.videoZoomFactor * scale
+        device.videoZoomFactor = cameraEngine.cameraZoomFactor(
+            for: requested,
+            device: device
+        )
+    }
+
     public func captureNextFrame() {
         cameraEngine.requestCapture()
     }

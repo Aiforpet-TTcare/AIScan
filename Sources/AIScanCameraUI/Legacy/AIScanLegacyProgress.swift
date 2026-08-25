@@ -153,6 +153,10 @@ final class TTProgressViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLabel.text = AIScanCameraStrings.localizedMessageKey("progress.analyzing")
+        subtitleLabel.text = AIScanCameraStrings.localizedMessageKey("progress.wait")
+        descriptionFirstLabel?.text = AIScanCameraStrings.localizedMessageKey("progress.medical.first")
+        descriptionSecondLabel?.text = AIScanCameraStrings.localizedMessageKey("progress.medical.second")
         progressLabel?.text = "0"
         progressView?.progress = 0
         progressContainer?.layer.cornerRadius = 30

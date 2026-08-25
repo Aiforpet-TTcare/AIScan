@@ -142,6 +142,97 @@ final class AIScanCameraUIStateTests: XCTestCase {
         XCTAssertFalse(camera.shouldAutorotate)
         XCTAssertEqual(camera.supportedInterfaceOrientations, .portrait)
         XCTAssertEqual(camera.preferredInterfaceOrientationForPresentation, .portrait)
+        XCTAssertEqual(camera.captureAttemptDuration, 60)
+    }
+
+    @MainActor
+    func testOriginalFlashWarningCopyAndStylingAreRestored() throws {
+        let popup = TTFlashWarningAlertViewController.instantiate(
+            showsSkinGuidance: true,
+            startsWithFlash: false,
+            onStart: { _ in }
+        )
+        popup.loadViewIfNeeded()
+
+        XCTAssertEqual(popup.titleLabel.text, AIScanCameraStrings.localized(.flashTitle))
+        XCTAssertEqual(
+            popup.subtitleLabel.text,
+            AIScanCameraStrings.localized(.flashSubtitle)
+        )
+        XCTAssertEqual(
+            popup.flashWarningLabel.text,
+            AIScanCameraStrings.localized(.flashBenefit)
+        )
+        XCTAssertTrue(popup.flashWarningLabel.attributedText?.length ?? 0 > 0)
+        XCTAssertFalse(popup.skinContainer.isHidden)
+        XCTAssertEqual(popup.confirmButton.title(for: .normal), AIScanCameraStrings.localized(.start))
+        XCTAssertEqual(
+            AIScanCameraStrings.localized(.flashTitle, languageCode: "ko"),
+            "플래시 사용을 권장해요"
+        )
+        XCTAssertEqual(
+            AIScanCameraStrings.localized(.flashSubtitle, languageCode: "ko"),
+            "일시적인 플래시 활성화가 동물에게 불편함을 유발할 순 있지만 건강상 위해를 미친다는 과학적 근거는 없어요. 불편함이 우려되면 플래시 입구에 얇은 종이를 덧대어주시면 도움이 될 수 있어요."
+        )
+    }
+
+    @MainActor
+    func testOriginalSkinSelectionCopyAndControlStatesAreRestored() {
+        let popup = TTPopupSelectedSkinViewController.instantiate(
+            onStart: { _, _ in },
+            onClose: {}
+        )
+        popup.loadViewIfNeeded()
+
+        XCTAssertEqual(popup.titleLabel.text, AIScanCameraStrings.localizedMessageKey("popup.skin.title"))
+        XCTAssertEqual(popup.earSubtitleLabel.text, AIScanCameraStrings.localizedMessageKey("popup.skin.ear_detail"))
+        XCTAssertEqual(popup.bodySubtitleLabel.text, AIScanCameraStrings.localizedMessageKey("popup.skin.body_detail"))
+        XCTAssertEqual(popup.footSubtitleLabel.text, AIScanCameraStrings.localizedMessageKey("popup.skin.foot_detail"))
+        XCTAssertTrue(
+            popup.descriptionLabel.text == AIScanCameraStrings.localized(.flashSubtitle)
+        )
+        XCTAssertTrue(
+            popup.warningLabel.text == AIScanCameraStrings.localizedMessageKey("popup.skin.warning")
+        )
+        XCTAssertFalse(popup.startButton.isEnabled)
+    }
+
+    @MainActor
+    func testOriginalCameraCaptureAndGuideSurfaceStatesAreRestored() {
+        let camera = CameraViewController.instantiate(partType: .skin)
+        camera.loadViewIfNeeded()
+        camera.configureControls(showsPartSelector: true, showsGuide: true)
+        let idleImage = camera.captureButton.image(for: .normal)
+
+        camera.setCaptureAttempt(active: true, progress: 0.5)
+        XCTAssertTrue(camera.closeButton.isHidden)
+        XCTAssertTrue(camera.flashButton.isHidden)
+        XCTAssertTrue(camera.guideButton.isHidden)
+        XCTAssertTrue(camera.partSelectedContainer?.isHidden == true)
+        XCTAssertNotEqual(camera.captureButton.image(for: .normal)?.pngData(), idleImage?.pngData())
+
+        camera.setCaptureAttempt(active: false)
+        XCTAssertFalse(camera.closeButton.isHidden)
+        XCTAssertFalse(camera.flashButton.isHidden)
+        XCTAssertFalse(camera.guideButton.isHidden)
+        XCTAssertFalse(camera.partSelectedContainer?.isHidden ?? true)
+        XCTAssertEqual(camera.captureButton.image(for: .normal)?.pngData(), idleImage?.pngData())
+    }
+
+    @MainActor
+    func testOriginalPreviewGuideCopyIsRestored() {
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .eye
+        let guide = PreviewGuideViewController.instantiate(context: context)
+        guide.loadViewIfNeeded()
+
+        XCTAssertEqual(guide.messageLabel.text, AIScanCameraStrings.localized(.startPrompt))
+        XCTAssertTrue(
+            guide.view.allLabels.contains {
+                $0.text == AIScanCameraStrings.localizedMessageKey("camera.guide.example")
+            }
+        )
     }
 
     @MainActor
@@ -277,5 +368,11 @@ private extension UIView {
         return subviews.lazy.compactMap {
             $0.descendant(accessibilityIdentifier: accessibilityIdentifier)
         }.first
+    }
+
+    var allLabels: [UILabel] {
+        var labels = self is UILabel ? [self as! UILabel] : []
+        labels.append(contentsOf: subviews.flatMap(\.allLabels))
+        return labels
     }
 }
