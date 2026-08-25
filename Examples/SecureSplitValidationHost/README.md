@@ -13,7 +13,9 @@ Open `Examples/SecureSplitValidationHost/SecureSplitValidationHost.xcodeproj`,
 select the connected iPhone, and set the Samsung Test publishable key from
 Secret Manager (`samsung-fire-ttapi-test-publishable-key`) as the
 `AISCAN_PUBLISHABLE_KEY` scheme environment variable. Never commit or print the
-real key. The app defaults to Test; switch to Live only with a Live key.
+real key. Test/Live routing is selected by the publishable key's project; both
+use the public production gateway. Do not select Core `development` for a
+remote Test key because that mode intentionally fails closed.
 
 For physical-device screenshot tests, keep the phone unlocked with Developer
 Mode and UI Automation enabled. If Xcode reports `Timed out while enabling

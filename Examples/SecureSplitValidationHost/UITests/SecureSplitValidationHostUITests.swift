@@ -19,7 +19,9 @@ final class SecureSplitValidationHostUITests: XCTestCase {
                 "Missing Samsung TTAPI target button: \(identifier)"
             )
         }
-        XCTAssertTrue(app.buttons["Test"].isSelected)
+        XCTAssertTrue(
+            app.staticTexts["validation.key-environment-notice"].exists
+        )
     }
 
     func testCameraPermissionSettingsScreenshot() {

@@ -76,7 +76,6 @@ private final class ValidationHomeViewController: UIViewController {
     ]
 
     private let publishableKeyField = UITextField()
-    private let environmentControl = UISegmentedControl(items: ["Test", "Live"])
     private let appearanceControl = UISegmentedControl(items: ["System", "Light", "Dark"])
     private let statusLabel = UILabel()
     private var didRunLaunchAction = false
@@ -110,9 +109,6 @@ private final class ValidationHomeViewController: UIViewController {
         publishableKeyField.autocapitalizationType = .none
         publishableKeyField.accessibilityIdentifier = "validation.publishable-key"
         publishableKeyField.text = ProcessInfo.processInfo.environment["AISCAN_PUBLISHABLE_KEY"]
-
-        environmentControl.selectedSegmentIndex = 0
-        environmentControl.accessibilityIdentifier = "validation.environment"
 
         appearanceControl.selectedSegmentIndex = 0
         appearanceControl.accessibilityIdentifier = "validation.appearance"
@@ -150,7 +146,7 @@ private final class ValidationHomeViewController: UIViewController {
 
         let stack = UIStackView(arrangedSubviews: [
             labelled("Appearance", control: appearanceControl),
-            labelled("Samsung environment", control: environmentControl),
+            environmentNotice(),
             publishableKeyField,
             labelled("TTAPI scan targets", control: scanStack),
             resultButton,
@@ -188,6 +184,17 @@ private final class ValidationHomeViewController: UIViewController {
         stack.axis = .vertical
         stack.spacing = 8
         return stack
+    }
+
+    private func environmentNotice() -> UILabel {
+        let label = UILabel()
+        label.text = "Samsung Test/Live routing is selected by the publishable key."
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.accessibilityIdentifier = "validation.key-environment-notice"
+        return label
     }
 
     private func makeButton(
@@ -251,10 +258,9 @@ private final class ValidationHomeViewController: UIViewController {
             return
         }
 
-        let environment: AISCEnvironment = environmentControl.selectedSegmentIndex == 0
-            ? .development
-            : .production
-        AIScanManager.configure(publishableKey: key, environment: environment)
+        // Test and Live are key/project properties on the public SDK gateway;
+        // `development` is intentionally fail-closed for remote Core traffic.
+        AIScanManager.configure(publishableKey: key, environment: .production)
         statusLabel.text = "Starting \(option.title)..."
         let startedAt = Date()
 
