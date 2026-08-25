@@ -1,6 +1,23 @@
 import XCTest
 
 final class SecureSplitValidationHostUITests: XCTestCase {
+    func testCameraRemainsPortraitWhenDeviceRotates() {
+        let device = XCUIDevice.shared
+        defer { device.orientation = .portrait }
+
+        let app = XCUIApplication()
+        app.launchEnvironment["AISCAN_PUBLISHABLE_KEY"] = "tt_pk_test_orientation_ui"
+        app.launchArguments = ["--show-camera"]
+        app.launch()
+
+        XCTAssertTrue(app.buttons["aiscan.camera.close"].waitForExistence(timeout: 10))
+        device.orientation = .landscapeLeft
+
+        let window = app.windows.firstMatch
+        XCTAssertTrue(window.waitForExistence(timeout: 5))
+        XCTAssertGreaterThan(window.frame.height, window.frame.width)
+    }
+
     func testSamsungTTAPITargetButtons() {
         let app = XCUIApplication()
         app.launch()

@@ -40,6 +40,7 @@ PREVIOUS_VERSION="$(awk -F '"' '/spec.version[[:space:]]*=/{ print $2; exit }' A
 CORE_BEFORE="$(git hash-object AIScanCore.source.json)"
 
 scripts/audit_original_ui_fidelity.sh
+scripts/audit_ui_resources.sh
 scripts/audit_distribution_boundary.sh
 scripts/audit_ios13_compatibility.sh
 xcodebuild -scheme AIScanCameraUI \

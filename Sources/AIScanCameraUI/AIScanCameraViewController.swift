@@ -49,6 +49,16 @@ public final class AIScanCameraViewController: UIViewController {
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) is unavailable") }
 
+    public override var shouldAutorotate: Bool { false }
+
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        .portrait
+    }
+
+    public override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        .portrait
+    }
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black

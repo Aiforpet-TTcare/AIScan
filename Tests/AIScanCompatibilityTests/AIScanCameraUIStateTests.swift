@@ -110,6 +110,41 @@ private final class CameraEventProbe: AIScanCameraControllerDelegate {
 
 final class AIScanCameraUIStateTests: XCTestCase {
     @MainActor
+    func testLegacyStoryboardImagesResolveFromPublicResourceBundle() {
+        let requiredImages = [
+            "001CommonNewlogo",
+            "checkResultEyeImgNo",
+            "commonToggleToggleOff",
+            "illustLoadingDog",
+        ]
+
+        for name in requiredImages {
+            XCTAssertNotNil(
+                UIImage(
+                    named: name,
+                    in: AIScanCameraResourceBundle.bundle,
+                    compatibleWith: nil
+                ),
+                "Missing original storyboard image: \(name)"
+            )
+        }
+    }
+
+    @MainActor
+    func testCameraFlowIsLockedToPortrait() {
+        let engine = MockCameraEngine()
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .eye
+        let camera = AIScanCameraViewController(cameraController: controller, context: context)
+
+        XCTAssertFalse(camera.shouldAutorotate)
+        XCTAssertEqual(camera.supportedInterfaceOrientations, .portrait)
+        XCTAssertEqual(camera.preferredInterfaceOrientationForPresentation, .portrait)
+    }
+
+    @MainActor
     func testAnimatedProgressReachesVisibleAndAccessiblePercentage() async throws {
         let progress = TTProgressViewController.instantiate()
         progress.loadViewIfNeeded()

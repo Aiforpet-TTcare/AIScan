@@ -141,6 +141,16 @@ final class TTProgressViewController: UIViewController {
 
     private lazy var dotAnimationView = DotAnimationView()
 
+    override var shouldAutorotate: Bool { false }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        .portrait
+    }
+
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        .portrait
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         progressLabel?.text = "0"
