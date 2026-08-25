@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "2.2.4")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.0")
 ]
 ```
 
@@ -37,7 +37,7 @@ should use Swift Package Manager; Pod validation and trunk publication do not
 block the primary SDK release.
 
 ```ruby
-pod 'AIScan', '~> 2.2.4'
+pod 'AIScan', '~> 3.0.0'
 ```
 
 ### Secure Core / Reference UI
@@ -54,9 +54,9 @@ Swift Package Manager products:
 CocoaPods subspecs:
 
 ```ruby
-pod 'AIScan/Core', '~> 2.2.4'
-pod 'AIScan/CameraUI', '~> 2.2.4'
-pod 'AIScan/ReferenceUI', '~> 2.2.4'
+pod 'AIScan/Core', '~> 3.0.0'
+pod 'AIScan/CameraUI', '~> 3.0.0'
+pod 'AIScan/ReferenceUI', '~> 3.0.0'
 ```
 
 `AIScanCore` is the private Objective-C ABI binary for auth, manifest, model
