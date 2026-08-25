@@ -19,6 +19,14 @@ typedef NS_ENUM(NSInteger, AISCPartType) {
     AISCPartTypeUnknown = 99,
 };
 
+/// Execution route selected by the organization/project manifest.
+/// Missing or unknown manifest values always fall back to on-device analysis.
+typedef NS_ENUM(NSInteger, AISCAnalysisMode) {
+    AISCAnalysisModeOnDevice = 0,
+    AISCAnalysisModeTTAPI = 1,
+    AISCAnalysisModeHybrid = 2,
+};
+
 typedef NS_ENUM(NSInteger, AISCFrameOrientation) {
     AISCFrameOrientationUp = 0,
     AISCFrameOrientationRight = 1,

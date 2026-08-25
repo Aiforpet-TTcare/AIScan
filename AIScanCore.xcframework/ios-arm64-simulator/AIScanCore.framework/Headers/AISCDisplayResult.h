@@ -21,16 +21,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Partner-defined response returned without SDK-side field remapping.
+/// The payload is JSON-compatible and follows the manifest response contract.
+@interface AISCContractResult : NSObject
+
+@property (nonatomic, copy, readonly) NSString *schema;
+@property (nonatomic, copy, readonly) NSDictionary<NSString *, id> *payload;
+
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithSchema:(NSString *)schema
+                        payload:(NSDictionary<NSString *, id> *)payload NS_DESIGNATED_INITIALIZER;
+
+@end
+
 @interface AISCDisplayResult : NSObject
 
 @property (nonatomic, copy, readonly) NSString *status;
 @property (nonatomic, copy, readonly, nullable) NSString *diagnosisID;
 @property (nonatomic, copy, readonly) NSArray<AISCDisplaySymptom *> *symptoms;
+@property (nonatomic, strong, readonly, nullable) AISCContractResult *contractResult;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithStatus:(NSString *)status
                    diagnosisID:(nullable NSString *)diagnosisID
-                      symptoms:(NSArray<AISCDisplaySymptom *> *)symptoms NS_DESIGNATED_INITIALIZER;
+                      symptoms:(NSArray<AISCDisplaySymptom *> *)symptoms;
+- (instancetype)initWithStatus:(NSString *)status
+                   diagnosisID:(nullable NSString *)diagnosisID
+                      symptoms:(NSArray<AISCDisplaySymptom *> *)symptoms
+                contractResult:(nullable AISCContractResult *)contractResult NS_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -14,6 +14,8 @@ typedef void (^AISCDisplayResultCompletion)(AISCDisplayResult *_Nullable result,
 
 @interface AISCSession : NSObject
 
+@property (nonatomic, assign, readonly) AISCAnalysisMode analysisMode;
+
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithConfiguration:(AISCConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 

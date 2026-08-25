@@ -158,6 +158,28 @@ final class AIScanCompatibilityTests: XCTestCase {
         )
     }
 
+    func testCoreContractResultIsConsumableFromSwift() {
+        let contractResult = AISCContractResult(
+            schema: "samsung_fire.v1",
+            payload: [
+                "status": "completed",
+                "score": 0.91,
+                "flags": ["eye", "skin"]
+            ]
+        )
+        let displayResult = AISCDisplayResult(
+            status: "completed",
+            diagnosisID: "diagnosis-id",
+            symptoms: [],
+            contractResult: contractResult
+        )
+
+        XCTAssertEqual(displayResult.contractResult?.schema, "samsung_fire.v1")
+        XCTAssertEqual(displayResult.contractResult?.payload["status"] as? String, "completed")
+        XCTAssertEqual(displayResult.contractResult?.payload["score"] as? Double, 0.91)
+        XCTAssertEqual(displayResult.contractResult?.payload["flags"] as? [String], ["eye", "skin"])
+    }
+
     func testPublicUILocalizationsPreserveApprovedKoreanLabels() {
         XCTAssertEqual(AIScanCameraStrings.localized(.capture, languageCode: "ko"), "촬영")
         XCTAssertEqual(AIScanCameraStrings.localized(.retry, languageCode: "ko"), "다시 시도")
