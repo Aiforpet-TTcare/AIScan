@@ -8,3 +8,13 @@
 "camera.retry" = "Retry";
 "camera.permission_denied" = "Camera permission is required to start a scan.";
 "camera.unavailable" = "Camera is unavailable. Please try again.";
+"result.title" = "AI Health Check Result";
+"result.status.normal" = "No Concerning Signs\nat This Time";
+"result.status.caution" = "Monitor Closely";
+"result.status.warning" = "Seek Veterinary Care\nas Soon as Possible";
+"result.original_photo" = "Original Photo";
+"result.analysis_photo" = "AI Analysis";
+"result.no_symptoms" = "No symptoms to display";
+"result.level" = "Level";
+"result.notice" = "This service uses AI to detect signs of illness and provide alerts. For an accurate diagnosis, we recommend consulting a veterinarian.";
+"common.close" = "Close";

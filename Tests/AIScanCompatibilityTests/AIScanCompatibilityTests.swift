@@ -3,7 +3,6 @@ import SwiftUI
 import UIKit
 import AIScan
 @testable import AIScanCameraUI
-@testable import AIScanReferenceUI
 
 @MainActor
 private final class CompatibilityCameraDelegate: AIScanCameraControllerDelegate {

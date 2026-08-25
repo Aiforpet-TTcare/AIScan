@@ -8,3 +8,13 @@
 "camera.retry" = "再試行";
 "camera.permission_denied" = "AI健康チェックを開始するにはカメラの許可が必要です。";
 "camera.unavailable" = "カメラを使用できません。もう一度お試しください。";
+"result.title" = "AI健康チェック結果";
+"result.status.normal" = "現時点で気になる症状は\n見られません";
+"result.status.caution" = "症状が見られるため、\n注意深く観察してください";
+"result.status.warning" = "できるだけ早く\n動物病院を受診してください";
+"result.original_photo" = "元の写真";
+"result.analysis_photo" = "AI分析";
+"result.no_symptoms" = "表示する症状はありません";
+"result.level" = "レベル";
+"result.notice" = "本サービスは、AI分析により病気の兆候を検知し、お知らせを提供します。正確な診断については、獣医師にご相談いただくことをお勧めします。";
+"common.close" = "閉じる";

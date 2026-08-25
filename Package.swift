@@ -42,13 +42,15 @@ let package = Package(
             name: "AIScanCameraUI",
             dependencies: ["AIScanCore"],
             path: "Sources/AIScanCameraUI",
-            resources: [.process("Resources")]
+            resources: [
+                .process("Resources"),
+                .process("ReferenceResources")
+            ]
         ),
         .target(
             name: "AIScanReferenceUI",
-            dependencies: ["AIScanCore"],
-            path: "Sources/AIScanReferenceUI",
-            resources: [.process("Resources")]
+            dependencies: ["AIScanCameraUI"],
+            path: "Sources/AIScanReferenceUI"
         ),
         .testTarget(
             name: "AIScanCompatibilityTests",
