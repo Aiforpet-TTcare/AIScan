@@ -27,8 +27,13 @@ By leveraging advanced machine learning algorithms, AIScan provides accurate and
   spec.subspec 'UI' do |ui|
     ui.source_files = 'Sources/AIScan/**/*.swift', 'Sources/AIScanCameraUI/**/*.swift', 'Sources/AIScanReferenceUI/**/*.swift'
     ui.resource_bundles = {
-      'AIScanCameraUIResources' => ['Sources/AIScanCameraUI/Resources/**/*'],
-      'AIScanReferenceUIResources' => ['Sources/AIScanCameraUI/ReferenceResources/**/*']
+      'AIScanCameraUIResources' => ['Sources/AIScanCameraUI/Resources/*.lproj/*.strings'],
+      'AIScanReferenceUIResources' => [
+        'Sources/AIScanCameraUI/ReferenceResources/Assets/*.xcassets',
+        'Sources/AIScanCameraUI/ReferenceResources/Legacy/*.storyboard',
+        'Sources/AIScanCameraUI/ReferenceResources/Result/*.storyboard',
+        'Sources/AIScanCameraUI/ReferenceResources/Result/*.xib'
+      ]
     }
     ui.dependency 'AIScan/Core'
   end
@@ -36,8 +41,13 @@ By leveraging advanced machine learning algorithms, AIScan provides accurate and
   spec.subspec 'CameraUI' do |ui|
     ui.source_files = 'Sources/AIScanCameraUI/**/*.swift'
     ui.resource_bundles = {
-      'AIScanCameraUIResources' => ['Sources/AIScanCameraUI/Resources/**/*'],
-      'AIScanReferenceUIResources' => ['Sources/AIScanCameraUI/ReferenceResources/**/*']
+      'AIScanCameraUIResources' => ['Sources/AIScanCameraUI/Resources/*.lproj/*.strings'],
+      'AIScanReferenceUIResources' => [
+        'Sources/AIScanCameraUI/ReferenceResources/Assets/*.xcassets',
+        'Sources/AIScanCameraUI/ReferenceResources/Legacy/*.storyboard',
+        'Sources/AIScanCameraUI/ReferenceResources/Result/*.storyboard',
+        'Sources/AIScanCameraUI/ReferenceResources/Result/*.xib'
+      ]
     }
     ui.dependency 'AIScan/Core'
   end

@@ -6,6 +6,7 @@ protocol AIScanResultItemCellDelegate: AnyObject {
     func resultItemCell(_ cell: AIScanResultItemCell, didSelectImageURL url: URL)
 }
 
+@MainActor
 enum AIScanReferenceImageLoader {
     static let cache = NSCache<NSURL, UIImage>()
 
@@ -16,9 +17,11 @@ enum AIScanReferenceImageLoader {
             return
         }
         URLSession.shared.dataTask(with: url) { data, _, _ in
-            let image = data.flatMap(UIImage.init(data:))
-            if let image { cache.setObject(image, forKey: key) }
-            DispatchQueue.main.async { completion(image) }
+            DispatchQueue.main.async {
+                let image = data.flatMap(UIImage.init(data:))
+                if let image { cache.setObject(image, forKey: key) }
+                completion(image)
+            }
         }.resume()
     }
 }

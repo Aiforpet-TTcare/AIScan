@@ -272,7 +272,11 @@ enum AIScanCameraResourceBundle {
         Bundle.module
 #else
         let containingBundle = Bundle(for: CameraViewController.self)
-        for name in ["AIScanCameraUIResources", "AIScan_AIScanCameraUI"] {
+        for name in [
+            "AIScanReferenceUIResources",
+            "AIScanCameraUIResources",
+            "AIScan_AIScanCameraUI",
+        ] {
             if let url = containingBundle.url(forResource: name, withExtension: "bundle"),
                let bundle = Bundle(url: url) {
                 return bundle

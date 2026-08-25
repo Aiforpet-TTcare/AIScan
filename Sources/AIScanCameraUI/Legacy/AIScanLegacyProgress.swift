@@ -63,7 +63,9 @@ final class CountingLabel: UILabel {
     }
 
     deinit {
-        displayLink?.invalidate()
+        MainActor.assumeIsolated {
+            displayLink?.invalidate()
+        }
     }
 }
 

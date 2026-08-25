@@ -55,9 +55,10 @@ pod 'AIScan/CameraUI', '~> 2.2.4'
 pod 'AIScan/ReferenceUI', '~> 2.2.4'
 ```
 
-`AIScanCore` is the Objective-C binary facade. `AIScanCameraUI` owns the
-AVFoundation session, preview, torch, zoom, and frame delivery. `AIScanReferenceUI`
-renders display-safe result DTOs.
+`AIScanCore` is the private Objective-C ABI binary for auth, manifest, model
+execution, preprocessing, and TTAPI transport. `AIScanCameraUI` is public Swift
+source and owns the original camera, guide, progress, and retry presentation.
+See [ARCHITECTURE.md](ARCHITECTURE.md) and [RELEASE.md](RELEASE.md).
 
 ---
 
@@ -75,10 +76,14 @@ AIScan authenticates with a **publishable key** that AI for Pet issues for your 
 Contact us to receive your key — we generate and provide it together with the app
 registration (bundle ID) it is bound to.
 
-| Key prefix | Use | App Attest |
-|---|---|---|
-| `tt_pk_test_…` | Development / testing | Not required (works in the simulator) |
-| `tt_pk_live_…` | Production | **Required** — iOS 14+ on a real device |
+| Key prefix | Use |
+|---|---|
+| `tt_pk_test_…` | Development / testing |
+| `tt_pk_live_…` | Production |
+
+Attestation/App Attest is not part of the current SDK contract. Organization
+policy, including key-only contracted access, is resolved by the server-side
+manifest and remains Core-owned.
 
 > The publishable key is safe to ship in the app binary. It only mints
 > short-lived access tokens at runtime; it cannot be used to read or modify
@@ -177,6 +182,7 @@ AIScanResultReferenceView(result: result)
 | `status` | `String` | Display status. |
 | `diagnosisID` | `String?` | Server diagnosis identifier when available. |
 | `symptoms` | `[AISCDisplaySymptom]` | Display-safe symptom rows. |
+| `contractResult` | `AISCContractResult?` | Partner payload passed through without SDK remapping. |
 
 `AISCDisplaySymptom` carries display names, levels, labels, and optional image
 URLs. It does not expose model names, raw prediction values, thresholds, or
