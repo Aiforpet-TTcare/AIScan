@@ -108,7 +108,14 @@ private final class ValidationHomeViewController: UIViewController {
         publishableKeyField.autocorrectionType = .no
         publishableKeyField.autocapitalizationType = .none
         publishableKeyField.accessibilityIdentifier = "validation.publishable-key"
-        publishableKeyField.text = ProcessInfo.processInfo.environment["AISCAN_PUBLISHABLE_KEY"]
+        let environmentKey = ProcessInfo.processInfo.environment["AISCAN_PUBLISHABLE_KEY"]
+        publishableKeyField.text = environmentKey
+        NSLog(
+            "AIScan QA key source=%@ prefix_ok=%@ length=%ld",
+            environmentKey == nil ? "missing" : "environment",
+            environmentKey?.hasPrefix("tt_pk_") == true ? "yes" : "no",
+            environmentKey?.count ?? 0
+        )
 
         appearanceControl.selectedSegmentIndex = 0
         appearanceControl.accessibilityIdentifier = "validation.appearance"
@@ -258,6 +265,12 @@ private final class ValidationHomeViewController: UIViewController {
             return
         }
 
+        NSLog(
+            "AIScan QA scan key prefix_ok=%@ length=%ld",
+            key.hasPrefix("tt_pk_") ? "yes" : "no",
+            key.count
+        )
+
         // Test and Live are key/project properties on the public SDK gateway;
         // `development` is intentionally fail-closed for remote Core traffic.
         AIScanManager.configure(publishableKey: key, environment: .production)
@@ -284,6 +297,15 @@ private final class ValidationHomeViewController: UIViewController {
                             contractStatus ?? "missing"
                         )
                     case let .failure(error):
+                        let nsError = error as NSError
+                        let reason = nsError.userInfo[AISCDisplayReasonKey] as? String
+                            ?? "missing"
+                        NSLog(
+                            "AIScan QA failure domain=%@ code=%ld reason=%@",
+                            nsError.domain,
+                            nsError.code,
+                            reason
+                        )
                         self?.statusLabel.text = String(
                             format: "%@ failed in %.2fs: %@",
                             option.title,
