@@ -22,40 +22,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
 @MainActor
 private final class ValidationHomeViewController: UIViewController {
-    private struct ScanOption {
-        let title: String
-        let identifier: String
-        let petType: PetType
-        let partType: PartType
-        let analysisSubpart: String?
-        let analysisPosition: String?
-    }
-
-    private static let defaultScanOption = ScanOption(
-        title: "DOG EYE - Right",
-        identifier: "dog-eye-right",
-        petType: .dog,
-        partType: .eye,
-        analysisSubpart: "EYER",
-        analysisPosition: nil
-    )
-
-    private static let scanOptions: [ScanOption] = [
-        .init(title: "DOG EYE - Left", identifier: "dog-eye-left", petType: .dog, partType: .eye, analysisSubpart: "EYEL", analysisPosition: nil),
-        defaultScanOption,
-        .init(title: "CAT EYE - Left", identifier: "cat-eye-left", petType: .cat, partType: .eye, analysisSubpart: "EYEL", analysisPosition: nil),
-        .init(title: "CAT EYE - Right", identifier: "cat-eye-right", petType: .cat, partType: .eye, analysisSubpart: "EYER", analysisPosition: nil),
-        .init(title: "DOG SKIN - Ear", identifier: "dog-skin-ear", petType: .dog, partType: .ear, analysisSubpart: nil, analysisPosition: "ear"),
-        .init(title: "DOG SKIN - Belly", identifier: "dog-skin-belly", petType: .dog, partType: .belly, analysisSubpart: nil, analysisPosition: "belly"),
-        .init(title: "DOG SKIN - Foot", identifier: "dog-skin-foot", petType: .dog, partType: .foot, analysisSubpart: nil, analysisPosition: "foot"),
-        .init(title: "DOG TOOTH - Center", identifier: "dog-tooth-center", petType: .dog, partType: .tooth, analysisSubpart: "TCENTER", analysisPosition: nil),
-        .init(title: "DOG TOOTH - Left", identifier: "dog-tooth-left", petType: .dog, partType: .tooth, analysisSubpart: "TLEFT", analysisPosition: nil),
-        .init(title: "DOG TOOTH - Right", identifier: "dog-tooth-right", petType: .dog, partType: .tooth, analysisSubpart: "TRIGHT", analysisPosition: nil),
-        .init(title: "CAT TOOTH - Center", identifier: "cat-tooth-center", petType: .cat, partType: .tooth, analysisSubpart: "TCENTER", analysisPosition: nil),
-        .init(title: "CAT TOOTH - Left", identifier: "cat-tooth-left", petType: .cat, partType: .tooth, analysisSubpart: "TLEFT", analysisPosition: nil),
-        .init(title: "CAT TOOTH - Right", identifier: "cat-tooth-right", petType: .cat, partType: .tooth, analysisSubpart: "TRIGHT", analysisPosition: nil),
-    ]
-
     private let publishableKeyField = UITextField()
     private let environmentControl = UISegmentedControl(items: ["Production", "Development"])
     private let appearanceControl = UISegmentedControl(items: ["System", "Light", "Dark"])
@@ -64,7 +30,7 @@ private final class ValidationHomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Samsung Fire TTAPI QA"
+        title = "Secure Split QA"
         view.backgroundColor = .systemBackground
         configureControls()
         applyLaunchAppearance()
@@ -79,7 +45,7 @@ private final class ValidationHomeViewController: UIViewController {
         if ProcessInfo.processInfo.arguments.contains("--show-result") {
             presentSampleResult()
         } else if ProcessInfo.processInfo.arguments.contains("--show-camera") {
-            presentCamera(option: Self.defaultScanOption)
+            presentCamera()
         }
     }
 
@@ -92,9 +58,6 @@ private final class ValidationHomeViewController: UIViewController {
         publishableKeyField.accessibilityIdentifier = "validation.publishable-key"
         publishableKeyField.text = ProcessInfo.processInfo.environment["AISCAN_PUBLISHABLE_KEY"]
 
-        environmentControl.removeAllSegments()
-        environmentControl.insertSegment(withTitle: "Test", at: 0, animated: false)
-        environmentControl.insertSegment(withTitle: "Live", at: 1, animated: false)
         environmentControl.selectedSegmentIndex = 0
         environmentControl.accessibilityIdentifier = "validation.environment"
 
@@ -104,18 +67,12 @@ private final class ValidationHomeViewController: UIViewController {
             self?.applySelectedAppearance()
         }, for: .valueChanged)
 
-        let scanButtons = Self.scanOptions.map { option in
-            makeButton(
-                title: option.title,
-                identifier: "validation.scan.\(option.identifier)"
-            ) { [weak self] in
-                self?.presentCamera(option: option)
-            }
+        let cameraButton = makeButton(
+            title: "Present camera",
+            identifier: "validation.show-camera"
+        ) { [weak self] in
+            self?.presentCamera()
         }
-        let scanStack = UIStackView(arrangedSubviews: scanButtons)
-        scanStack.axis = .vertical
-        scanStack.spacing = 8
-
         let resultButton = makeButton(
             title: "Show sample result",
             identifier: "validation.show-result"
@@ -132,30 +89,21 @@ private final class ValidationHomeViewController: UIViewController {
 
         let stack = UIStackView(arrangedSubviews: [
             labelled("Appearance", control: appearanceControl),
-            labelled("Samsung environment", control: environmentControl),
+            labelled("Environment", control: environmentControl),
             publishableKeyField,
-            labelled("TTAPI scan targets", control: scanStack),
+            cameraButton,
             resultButton,
             statusLabel,
         ])
         stack.axis = .vertical
         stack.spacing = 16
-        let scrollView = UIScrollView()
-        scrollView.alwaysBounceVertical = true
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
         stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollView)
-        scrollView.addSubview(stack)
+        view.addSubview(stack)
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            stack.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 24),
-            stack.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 24),
-            stack.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -24),
-            stack.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -24),
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
         ])
     }
 
@@ -217,7 +165,7 @@ private final class ValidationHomeViewController: UIViewController {
         view.window?.overrideUserInterfaceStyle = style
     }
 
-    private func presentCamera(option: ScanOption) {
+    private func presentCamera() {
         let key = publishableKeyField.text?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         guard !key.isEmpty else {
@@ -225,40 +173,19 @@ private final class ValidationHomeViewController: UIViewController {
             return
         }
 
-        let environment: AISCEnvironment = environmentControl.selectedSegmentIndex == 0
+        let environment: AISCEnvironment = environmentControl.selectedSegmentIndex == 1
             ? .development
             : .production
         AIScanManager.configure(publishableKey: key, environment: environment)
-        statusLabel.text = "Starting \(option.title)..."
-        let startedAt = Date()
 
         do {
             try AIScanManager.showCamera(
-                petType: option.petType,
-                partType: option.partType,
+                petType: .dog,
+                partType: .eye,
                 on: self,
-                analysisSubpart: option.analysisSubpart,
-                analysisPosition: option.analysisPosition,
                 petId: "secure-split-device-validation",
                 completion: { [weak self] result in
-                    let elapsed = Date().timeIntervalSince(startedAt)
-                    switch result {
-                    case let .success(scanResult):
-                        let contractStatus = scanResult.contractResult?.payload["status"] as? String
-                        self?.statusLabel.text = String(
-                            format: "%@ completed in %.2fs. contract status: %@",
-                            option.title,
-                            elapsed,
-                            contractStatus ?? "missing"
-                        )
-                    case let .failure(error):
-                        self?.statusLabel.text = String(
-                            format: "%@ failed in %.2fs: %@",
-                            option.title,
-                            elapsed,
-                            error.localizedDescription
-                        )
-                    }
+                    self?.statusLabel.text = String(describing: result)
                 }
             )
         } catch {
