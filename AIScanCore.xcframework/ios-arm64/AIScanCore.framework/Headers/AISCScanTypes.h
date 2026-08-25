@@ -39,6 +39,11 @@ typedef NS_ENUM(NSInteger, AISCFrameOrientation) {
 @property (nonatomic, assign) AISCPetType petType;
 @property (nonatomic, assign) AISCPartType partType;
 @property (nonatomic, copy, nullable) NSString *displaySubpart;
+/// Exact provider sub-part sent as analysis context. When omitted, the Core
+/// may fall back to `displaySubpart` for compatibility with existing hosts.
+@property (nonatomic, copy, nullable) NSString *analysisSubpart;
+/// Exact provider position sent as analysis context.
+@property (nonatomic, copy, nullable) NSString *analysisPosition;
 @property (nonatomic, copy, nullable) NSString *userIdentifier;
 @property (nonatomic, copy, nullable) NSString *petIdentifier;
 @property (nonatomic, copy, nullable) NSString *recordIdentifier;

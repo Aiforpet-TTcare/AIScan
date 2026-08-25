@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^AISCCompletion)(NSError *_Nullable error);
 typedef void (^AISCFrameEvaluationCompletion)(AISCFrameEvaluation *_Nullable evaluation, NSError *_Nullable error);
 typedef void (^AISCDisplayResultCompletion)(AISCDisplayResult *_Nullable result, NSError *_Nullable error);
+typedef void (^AISCDiagnosisProgress)(double normalizedProgress);
 
 @interface AISCSession : NSObject
 
@@ -23,6 +24,9 @@ typedef void (^AISCDisplayResultCompletion)(AISCDisplayResult *_Nullable result,
 - (void)evaluateFrame:(AISCFrameInput *)input completion:(AISCFrameEvaluationCompletion)completion;
 - (void)captureFrame:(AISCFrameInput *)input completion:(AISCFrameEvaluationCompletion)completion;
 - (void)diagnoseImage:(AISCImageInput *)input completion:(AISCDisplayResultCompletion)completion;
+- (void)diagnoseImage:(AISCImageInput *)input
+             progress:(nullable AISCDiagnosisProgress)progress
+           completion:(AISCDisplayResultCompletion)completion;
 - (nullable AVCaptureDevice *)cameraDeviceForPosition:(AVCaptureDevicePosition)position NS_SWIFT_NAME(cameraDevice(for:));
 - (CGFloat)cameraZoomFactorForRequestedFactor:(CGFloat)requestedFactor
                                        device:(AVCaptureDevice *)device NS_SWIFT_NAME(cameraZoomFactor(for:device:));
