@@ -10,7 +10,10 @@ protocol AIScanResultItemCellDelegate: AnyObject {
 enum AIScanReferenceImageLoader {
     static let cache = NSCache<NSURL, UIImage>()
 
-    static func load(from url: URL, completion: @escaping (UIImage?) -> Void) {
+    static func load(
+        from url: URL,
+        completion: @MainActor @Sendable @escaping (UIImage?) -> Void
+    ) {
         let key = url as NSURL
         if let image = cache.object(forKey: key) {
             completion(image)
@@ -27,6 +30,7 @@ enum AIScanReferenceImageLoader {
 }
 
 @objc(AIScanResultStatusCell)
+@MainActor
 final class AIScanResultStatusCell: UICollectionViewCell {
     static let reuseIdentifier = "ResultStatusCell"
 
@@ -40,8 +44,12 @@ final class AIScanResultStatusCell: UICollectionViewCell {
     weak var parentViewController: UIViewController?
     private var animationController: AIScanLottiePlayerController?
 
-    override func awakeFromNib() {
+    nonisolated override func awakeFromNib() {
         super.awakeFromNib()
+        MainActor.assumeIsolated { configureAfterNibLoad() }
+    }
+
+    private func configureAfterNibLoad() {
         signalContainer.layer.cornerRadius = 43
         signalContainer.layer.masksToBounds = false
         signalContainer.layer.shadowOpacity = 0.15
@@ -125,6 +133,7 @@ final class AIScanResultStatusCell: UICollectionViewCell {
 }
 
 @objc(AIScanResultTitleCell)
+@MainActor
 final class AIScanResultTitleCell: UICollectionViewCell {
     static let reuseIdentifier = "ResultTitleCell"
 
@@ -134,8 +143,12 @@ final class AIScanResultTitleCell: UICollectionViewCell {
     private let subtitleLabel = UILabel()
     private var didInstallStack = false
 
-    override func awakeFromNib() {
+    nonisolated override func awakeFromNib() {
         super.awakeFromNib()
+        MainActor.assumeIsolated { configureAfterNibLoad() }
+    }
+
+    private func configureAfterNibLoad() {
         installStackIfNeeded()
         applyTheme()
     }
@@ -205,14 +218,19 @@ final class AIScanResultTitleCell: UICollectionViewCell {
 }
 
 @objc(AIScanResultDateCell)
+@MainActor
 final class AIScanResultDateCell: UICollectionViewCell {
     static let reuseIdentifier = "ResultDateCell"
 
     @IBOutlet private weak var container: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
 
-    override func awakeFromNib() {
+    nonisolated override func awakeFromNib() {
         super.awakeFromNib()
+        MainActor.assumeIsolated { configureAfterNibLoad() }
+    }
+
+    private func configureAfterNibLoad() {
         container.layer.cornerRadius = 17
         container.layer.masksToBounds = true
         container.layer.borderWidth = 1
@@ -248,6 +266,7 @@ final class AIScanResultDateCell: UICollectionViewCell {
 }
 
 @objc(AIScanResultTabCell)
+@MainActor
 final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     static let reuseIdentifier = "ResultTabCell"
 
@@ -281,8 +300,12 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
         return view
     }()
 
-    override func awakeFromNib() {
+    nonisolated override func awakeFromNib() {
         super.awakeFromNib()
+        MainActor.assumeIsolated { configureAfterNibLoad() }
+    }
+
+    private func configureAfterNibLoad() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(collectionView)
         NSLayoutConstraint.activate([
@@ -404,6 +427,7 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
 }
 
 @objc(AIScanResultItemCell)
+@MainActor
 final class AIScanResultItemCell: UICollectionViewCell {
     static let reuseIdentifier = "ResultItemCell"
 
@@ -431,8 +455,12 @@ final class AIScanResultItemCell: UICollectionViewCell {
     private var leftRequestURL: URL?
     private var rightRequestURL: URL?
 
-    override func awakeFromNib() {
+    nonisolated override func awakeFromNib() {
         super.awakeFromNib()
+        MainActor.assumeIsolated { configureAfterNibLoad() }
+    }
+
+    private func configureAfterNibLoad() {
         contentsContainer.layer.cornerRadius = 20
         contentsContainer.layer.masksToBounds = false
         contentsContainer.layer.shadowOpacity = 0.10
@@ -623,13 +651,14 @@ final class AIScanResultItemCell: UICollectionViewCell {
 }
 
 @objc(AIScanResultNoticeCell)
+@MainActor
 final class AIScanResultNoticeCell: UICollectionViewCell {
     static let reuseIdentifier = "ResultNoticeCell"
     @IBOutlet private weak var noticeLabel: UILabel!
 
-    override func awakeFromNib() {
+    nonisolated override func awakeFromNib() {
         super.awakeFromNib()
-        applyTheme()
+        MainActor.assumeIsolated { applyTheme() }
     }
 
     func configure(text: String) {
@@ -664,6 +693,7 @@ final class AIScanResultNoticeCell: UICollectionViewCell {
 }
 
 @objc(AIScanResultSpaceCell)
+@MainActor
 final class AIScanResultSpaceCell: UICollectionViewCell {
     static let reuseIdentifier = "SpaceCell"
     var height: CGFloat = 10

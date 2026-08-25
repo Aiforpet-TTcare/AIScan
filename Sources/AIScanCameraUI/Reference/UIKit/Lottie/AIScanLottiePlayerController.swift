@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 
+@MainActor
 final class AIScanLottiePlayerController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler {
     private let lottie: AIScanResultLottie
     private let handler = "lottieHandler"
@@ -49,10 +50,13 @@ final class AIScanLottiePlayerController: UIViewController, WKNavigationDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        config.userContentController.removeScriptMessageHandler(forName: handler)
-        webView.navigationDelegate = nil
-        webView.stopLoading()
+    override func willMove(toParent parent: UIViewController?) {
+        if parent == nil, isViewLoaded {
+            config.userContentController.removeScriptMessageHandler(forName: handler)
+            webView.navigationDelegate = nil
+            webView.stopLoading()
+        }
+        super.willMove(toParent: parent)
     }
     
     override func viewDidLoad() {
@@ -308,14 +312,13 @@ var n$1=t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e)
     }
 }
 
-fileprivate class TTWeakMessageHandler : NSObject, WKScriptMessageHandler {
+@MainActor
+private final class TTWeakMessageHandler: NSObject, WKScriptMessageHandler {
     weak var delegate : WKScriptMessageHandler?
     
     init(delegate:WKScriptMessageHandler) {
+        self.delegate = delegate
         super.init()
-        DispatchQueue.main.async {
-            self.delegate = delegate
-        }
     }
     
     func userContentController(_ userContentController: WKUserContentController,
