@@ -27,7 +27,17 @@ public final class AIScanCameraViewController: UIViewController {
     var beginsScanningAutomatically = true
 
     public init(configuration: AISCConfiguration, context: AISCScanContext) {
-        cameraController = AIScanCameraController(configuration: configuration)
+        self.cameraController = AIScanCameraController(configuration: configuration)
+        self.scanContext = context
+        self.cameraSurface = CameraViewController.instantiate(partType: context.partType)
+        self.overlayController = TTOverlayViewController.instantiate(partType: context.partType)
+        super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .fullScreen
+        overrideUserInterfaceStyle = .dark
+    }
+
+    init(cameraController: AIScanCameraController, context: AISCScanContext) {
+        self.cameraController = cameraController
         scanContext = context
         cameraSurface = CameraViewController.instantiate(partType: context.partType)
         overlayController = TTOverlayViewController.instantiate(partType: context.partType)

@@ -25,6 +25,19 @@ for forbidden in \
   fi
 done
 
+CAMERA_CONTROLLER="$ROOT/Sources/AIScanCameraUI/AIScanCameraController.swift"
+for forbidden_workflow_call in \
+  AISCSession coreSession frameInput evaluateFrame captureFrame diagnoseImage AISCImageInput; do
+  if grep -n -F "$forbidden_workflow_call" "$CAMERA_CONTROLLER" >/dev/null; then
+    echo "Protected scan workflow leaked into public camera UI: $forbidden_workflow_call" >&2
+    exit 1
+  fi
+done
+if ! grep -q -F "AISCCameraEngineControlling" "$CAMERA_CONTROLLER"; then
+  echo "Public camera UI must depend on the narrow Core engine boundary." >&2
+  exit 1
+fi
+
 if [[ -d "$ROOT/AIScan.xcframework" ]]; then
   echo "Legacy Swift AIScan.xcframework must not be distributed." >&2
   exit 1

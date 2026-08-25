@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <AIScanCore/AISCCameraEngine.h>
 #import <AIScanCore/AISCConfiguration.h>
 #import <AIScanCore/AISCDisplayResult.h>
 #import <AIScanCore/AISCError.h>

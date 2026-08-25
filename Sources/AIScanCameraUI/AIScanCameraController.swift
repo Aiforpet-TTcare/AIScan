@@ -19,18 +19,19 @@ public extension AIScanCameraControllerDelegate {
 
 public final class AIScanCameraController: NSObject, @unchecked Sendable {
     public let captureSession: AVCaptureSession
-    public let coreSession: AISCSession
     @MainActor
     public weak var delegate: AIScanCameraControllerDelegate?
-    public var automaticallyCapturesReadyFrames: Bool = false
+    public var automaticallyCapturesReadyFrames: Bool = false {
+        didSet {
+            cameraEngine.automaticallyCapturesReadyFrames = automaticallyCapturesReadyFrames
+        }
+    }
 
     private let captureQueue = DispatchQueue(label: "com.aiforpet.AIScan.camera.capture")
     private let sessionQueue = DispatchQueue(label: "com.aiforpet.AIScan.camera.session")
     private let videoOutput = AVCaptureVideoDataOutput()
+    private let cameraEngine: AISCCameraEngineControlling
     private weak var activeDevice: AVCaptureDevice?
-    private var isEvaluatingFrame = false
-    private var isCaptureInProgress = false
-    private var pendingManualCapture = false
 
     public convenience init(publishableKey: String) {
         self.init(configuration: AISCConfiguration(publishableKey: publishableKey))
@@ -38,8 +39,19 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
 
     public init(configuration: AISCConfiguration) {
         self.captureSession = AVCaptureSession()
-        self.coreSession = AISCSession(configuration: configuration)
+        self.cameraEngine = AISCCameraEngine(configuration: configuration)
         super.init()
+        self.cameraEngine.delegate = self
+    }
+
+    init(
+        cameraEngine: AISCCameraEngineControlling,
+        captureSession: AVCaptureSession = AVCaptureSession()
+    ) {
+        self.captureSession = captureSession
+        self.cameraEngine = cameraEngine
+        super.init()
+        self.cameraEngine.delegate = self
     }
 
     public static func requestCameraAccess() async -> Bool {
@@ -52,13 +64,13 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
 
     public func prepare(context: AISCScanContext, completion: @escaping (Error?) -> Void) {
         let completion = AIScanUncheckedSendable(completion)
-        coreSession.prepare(with: context) { error in
+        cameraEngine.prepare(with: context) { error in
             completion.value(error)
         }
     }
 
     public func configure(position: AVCaptureDevice.Position = .back) throws {
-        guard let device = coreSession.cameraDevice(for: position) else {
+        guard let device = cameraEngine.cameraDevice(for: position) else {
             throw AIScanCameraControllerError.cameraUnavailable
         }
         let input = try AVCaptureDeviceInput(device: device)
@@ -73,7 +85,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
             throw AIScanCameraControllerError.cannotAddInput
         }
         captureSession.addInput(input)
-        guard coreSession.applyCameraSessionPolicy(
+        guard cameraEngine.applyCameraSessionPolicy(
             to: captureSession,
             device: device,
             disable4K: false
@@ -93,7 +105,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         captureSession.addOutput(videoOutput)
 
         activeDevice = device
-        coreSession.applyCameraDevicePolicy(to: device, enabled: true)
+        cameraEngine.applyCameraDevicePolicy(to: device, enabled: true)
     }
 
     public func makePreviewLayer(videoGravity: AVLayerVideoGravity = .resizeAspectFill) -> AVCaptureVideoPreviewLayer {
@@ -136,122 +148,23 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         guard let device = activeDevice else {
             throw AIScanCameraControllerError.notConfigured
         }
-        let clamped = coreSession.cameraZoomFactor(for: factor, device: device)
+        let clamped = cameraEngine.cameraZoomFactor(for: factor, device: device)
         try device.lockForConfiguration()
         defer { device.unlockForConfiguration() }
         device.videoZoomFactor = clamped
     }
 
     public func captureNextFrame() {
-        captureQueue.async { [weak self] in
-            self?.pendingManualCapture = true
-        }
+        cameraEngine.requestCapture()
     }
 
     public func reset() {
-        coreSession.reset()
-        captureQueue.async { [weak self] in
-            self?.pendingManualCapture = false
-            self?.isEvaluatingFrame = false
-            self?.isCaptureInProgress = false
-        }
+        cameraEngine.reset()
     }
 
     public func cancel() {
-        coreSession.cancel()
+        cameraEngine.cancel()
         stopRunning()
-    }
-
-    private func evaluate(sampleBuffer: CMSampleBuffer) {
-        guard !isEvaluatingFrame else { return }
-        guard let input = coreSession.frameInput(for: sampleBuffer, device: activeDevice) else { return }
-        isEvaluatingFrame = true
-
-        let sendableInput = AIScanUncheckedSendable(input)
-        coreSession.evaluateFrame(sendableInput.value) { [weak self] evaluation, error in
-            guard let self else { return }
-            self.captureQueue.async {
-                self.isEvaluatingFrame = false
-            }
-
-            if let error {
-                self.notifyFailure(error)
-                return
-            }
-            guard let evaluation else {
-                self.notifyFailure(AIScanCameraControllerError.emptyFrameEvaluation)
-                return
-            }
-            self.notifyUpdate(evaluation)
-
-            if self.automaticallyCapturesReadyFrames,
-               evaluation.captureAllowed {
-                self.requestCapture(input: sendableInput.value)
-            }
-        }
-    }
-
-    private func requestCapture(input: AISCFrameInput) {
-        captureQueue.async { [weak self] in
-            guard let self, !self.isCaptureInProgress else { return }
-            self.isCaptureInProgress = true
-            self.capture(input: input)
-        }
-    }
-
-    private func capture(input: AISCFrameInput) {
-        coreSession.captureFrame(input) { [weak self] evaluation, error in
-            guard let self else { return }
-            if let error {
-                self.finishCaptureForRetry()
-                self.notifyFailure(error)
-                return
-            }
-            guard let evaluation else {
-                self.finishCaptureForRetry()
-                self.notifyFailure(AIScanCameraControllerError.emptyCaptureEvaluation)
-                return
-            }
-            guard evaluation.captureAllowed else {
-                self.finishCaptureForRetry()
-                self.notifyUpdate(evaluation)
-                return
-            }
-            self.notifyCapture(evaluation)
-            self.diagnose(input: input)
-        }
-    }
-
-    private func diagnose(input: AISCFrameInput) {
-        guard let imageInput = AISCImageInput(pixelBuffer: input.pixelBuffer) else {
-            finishCaptureForRetry()
-            notifyFailure(AIScanCameraControllerError.cannotCreateImageInput)
-            return
-        }
-        imageInput.orientation = input.orientation
-
-        coreSession.diagnoseImage(imageInput, progress: { [weak self] progress in
-            self?.notifyDiagnosisProgress(progress)
-        }) { [weak self] result, error in
-            guard let self else { return }
-            if let error {
-                self.finishCaptureForRetry()
-                self.notifyFailure(error)
-                return
-            }
-            guard let result else {
-                self.finishCaptureForRetry()
-                self.notifyFailure(AIScanCameraControllerError.emptyDiagnosisResult)
-                return
-            }
-            self.notifyResult(result)
-        }
-    }
-
-    private func finishCaptureForRetry() {
-        captureQueue.async { [weak self] in
-            self?.isCaptureInProgress = false
-        }
     }
 
     private func notifyUpdate(_ evaluation: AISCFrameEvaluation) {
@@ -300,14 +213,29 @@ extension AIScanCameraController: AVCaptureVideoDataOutputSampleBufferDelegate {
         didOutput sampleBuffer: CMSampleBuffer,
         from connection: AVCaptureConnection
     ) {
-        if pendingManualCapture {
-            pendingManualCapture = false
-            guard let input = coreSession.frameInput(for: sampleBuffer, device: activeDevice) else { return }
-            requestCapture(input: input)
-            return
-        }
+        cameraEngine.consume(sampleBuffer, device: activeDevice)
+    }
+}
 
-        evaluate(sampleBuffer: sampleBuffer)
+extension AIScanCameraController: AISCCameraEngineDelegate {
+    public func cameraEngineDidUpdateFrameState(_ evaluation: AISCFrameEvaluation) {
+        notifyUpdate(evaluation)
+    }
+
+    public func cameraEngineDidAcceptCaptureState(_ evaluation: AISCFrameEvaluation) {
+        notifyCapture(evaluation)
+    }
+
+    public func cameraEngineDidUpdateProgress(_ normalizedProgress: Double) {
+        notifyDiagnosisProgress(normalizedProgress)
+    }
+
+    public func cameraEngineDidComplete(_ result: AISCDisplayResult) {
+        notifyResult(result)
+    }
+
+    public func cameraEngineDidFail(_ error: Error) {
+        notifyFailure(error)
     }
 }
 
