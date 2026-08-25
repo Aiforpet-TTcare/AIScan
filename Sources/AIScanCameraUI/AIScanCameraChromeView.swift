@@ -8,6 +8,7 @@ final class AIScanCameraChromeView: UIView {
 
     private let statusLabel = UILabel()
     private let progressView = UIProgressView(progressViewStyle: .default)
+    private let percentLabel = UILabel()
     private let captureButton = UIButton(type: .system)
     private let closeButton = UIButton(type: .system)
     private let retryButton = UIButton(type: .system)
@@ -47,7 +48,23 @@ final class AIScanCameraChromeView: UIView {
     }
 
     func setProgress(_ progress: Float, animated: Bool) {
-        progressView.setProgress(progress, animated: animated)
+        let normalized = min(max(progress, 0), 1)
+        progressView.setProgress(normalized, animated: animated)
+        let percentage = Int((normalized * 100).rounded())
+        let update = { [weak self] in
+            self?.percentLabel.text = "\(percentage)%"
+            self?.percentLabel.accessibilityValue = "\(percentage)%"
+        }
+        guard animated else {
+            update()
+            return
+        }
+        UIView.transition(
+            with: percentLabel,
+            duration: 0.2,
+            options: [.transitionCrossDissolve, .beginFromCurrentState, .allowUserInteraction],
+            animations: update
+        )
     }
 
     private func configureLayout() {
@@ -69,6 +86,15 @@ final class AIScanCameraChromeView: UIView {
         progressView.progressTintColor = .systemBlue
         progressView.trackTintColor = UIColor.white.withAlphaComponent(0.3)
         progressView.accessibilityIdentifier = "aiscan.camera.progress"
+
+        percentLabel.translatesAutoresizingMaskIntoConstraints = false
+        percentLabel.text = "0%"
+        percentLabel.textColor = .white
+        percentLabel.textAlignment = .center
+        percentLabel.font = .monospacedDigitSystemFont(ofSize: 15, weight: .semibold)
+        percentLabel.adjustsFontForContentSizeCategory = true
+        percentLabel.accessibilityIdentifier = "aiscan.camera.progress.percent"
+        percentLabel.accessibilityValue = "0%"
 
         var captureConfiguration = UIButton.Configuration.filled()
         captureConfiguration.image = UIImage(systemName: "camera.fill")
@@ -105,7 +131,7 @@ final class AIScanCameraChromeView: UIView {
             self?.onRetry?()
         }, for: .touchUpInside)
 
-        [guideView, statusLabel, progressView, captureButton, closeButton, retryButton]
+        [guideView, statusLabel, percentLabel, progressView, captureButton, closeButton, retryButton]
             .forEach(addSubview)
 
         NSLayoutConstraint.activate([
@@ -121,7 +147,10 @@ final class AIScanCameraChromeView: UIView {
 
             statusLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 24),
             statusLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            statusLabel.bottomAnchor.constraint(equalTo: retryButton.topAnchor, constant: -12),
+            statusLabel.bottomAnchor.constraint(equalTo: percentLabel.topAnchor, constant: -8),
+
+            percentLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            percentLabel.bottomAnchor.constraint(equalTo: retryButton.topAnchor, constant: -8),
 
             retryButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             retryButton.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -16),

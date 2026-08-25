@@ -64,6 +64,8 @@ final class AIScanCompatibilityTests: XCTestCase {
         let camera = try AIScanManager.makeCameraViewController(
             petType: .dog,
             partType: .eye,
+            analysisSubpart: "left",
+            analysisPosition: "front",
             petId: "pet-id",
             userId: "user-id",
             recordId: "record-id",
@@ -77,6 +79,8 @@ final class AIScanCompatibilityTests: XCTestCase {
         XCTAssertEqual(camera.scanContext.petIdentifier, "pet-id")
         XCTAssertEqual(camera.scanContext.userIdentifier, "user-id")
         XCTAssertEqual(camera.scanContext.recordIdentifier, "record-id")
+        XCTAssertEqual(camera.scanContext.analysisSubpart, "left")
+        XCTAssertEqual(camera.scanContext.analysisPosition, "front")
         XCTAssertEqual(camera.scanContext.displayMetadata, ["pet_name": "Bori"])
 
         let displayResult = AISCDisplayResult(
@@ -140,7 +144,7 @@ final class AIScanCompatibilityTests: XCTestCase {
         XCTAssertEqual(result.diagnosisID, "diagnosis-id")
         XCTAssertEqual(
             Mirror(reflecting: result).children.compactMap(\.label),
-            ["status", "diagnosisID", "symptoms"]
+            ["status", "diagnosisID", "symptoms", "contractResult"]
         )
         XCTAssertEqual(result.symptoms, [
             AIScanSymptom(
@@ -178,6 +182,41 @@ final class AIScanCompatibilityTests: XCTestCase {
         XCTAssertEqual(displayResult.contractResult?.payload["status"] as? String, "completed")
         XCTAssertEqual(displayResult.contractResult?.payload["score"] as? Double, 0.91)
         XCTAssertEqual(displayResult.contractResult?.payload["flags"] as? [String], ["eye", "skin"])
+
+        let result = AIScanResult(displayResult: displayResult)
+        XCTAssertEqual(result.contractResult?.schema, "samsung_fire.v1")
+        XCTAssertEqual(result.contractResult?.payload["status"] as? String, "completed")
+    }
+
+    @MainActor
+    func testContractResultBypassesBuiltInAndCustomResultPresentation() throws {
+        AIScanManager.configure(publishableKey: "tt_pk_test_contract")
+        defer { AIScanManager.clearConfiguration() }
+
+        let customResultController = CompatibilityResultViewController()
+        var completionResult: Result<AIScanResult, Error>?
+        let camera = try AIScanManager.makeCameraViewController(
+            petType: .dog,
+            partType: .eye,
+            resultViewController: customResultController,
+            completion: { completionResult = $0 }
+        )
+        let contract = AISCContractResult(
+            schema: "samsung_fire.v1",
+            payload: ["diagId": 42, "status": "SUCCESS"]
+        )
+        camera.onResult?(AISCDisplayResult(
+            status: "completed",
+            diagnosisID: "dx-42",
+            symptoms: [],
+            contractResult: contract
+        ))
+
+        XCTAssertNil(customResultController.receivedResult)
+        guard case let .success(result) = completionResult else {
+            return XCTFail("Expected contracted success result")
+        }
+        XCTAssertEqual(result.contractResult?.payload["diagId"] as? Int, 42)
     }
 
     func testPublicUILocalizationsPreserveApprovedKoreanLabels() {
@@ -253,11 +292,15 @@ final class AIScanCompatibilityTests: XCTestCase {
         let capture = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.capture"))
         let close = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.close"))
         let retry = try XCTUnwrap(camera.view.descendant(accessibilityIdentifier: "aiscan.camera.retry"))
+        let percent = try XCTUnwrap(
+            camera.view.descendant(accessibilityIdentifier: "aiscan.camera.progress.percent") as? UILabel
+        )
 
         XCTAssertTrue(status.adjustsFontForContentSizeCategory)
         XCTAssertEqual(capture.accessibilityLabel, AIScanCameraStrings.localized(.capture))
         XCTAssertEqual(close.accessibilityLabel, AIScanCameraStrings.localized(.close))
         XCTAssertEqual(retry.accessibilityLabel, AIScanCameraStrings.localized(.retry))
+        XCTAssertEqual(percent.text, "0%")
         XCTAssertEqual(rgba(camera.view.backgroundColor ?? .clear), [0, 0, 0, 255])
 
         camera.overrideUserInterfaceStyle = .light

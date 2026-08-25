@@ -41,6 +41,8 @@ public enum AIScanManager {
     public static func makeCameraViewController(
         petType: PetType,
         partType: PartType,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
         petId: String? = nil,
         userId: String? = nil,
         recordId: String? = nil,
@@ -56,6 +58,8 @@ public enum AIScanManager {
         context.petType = petType.coreValue
         context.partType = partType.coreValue
         context.displaySubpart = partType.displaySubpart
+        context.analysisSubpart = analysisSubpart ?? partType.analysisSubpart
+        context.analysisPosition = analysisPosition
         context.petIdentifier = petId
         context.userIdentifier = userId
         context.recordIdentifier = recordId
@@ -70,6 +74,11 @@ public enum AIScanManager {
         camera.onResult = { [weak camera] displayResult in
             let result = AIScanResult(displayResult: displayResult)
             guard completionGate.claim() else { return }
+
+            if result.contractResult != nil {
+                completionGate.complete(.success(result))
+                return
+            }
 
             if let resultViewController {
                 resultViewController.apply(result: result)
@@ -106,6 +115,8 @@ public enum AIScanManager {
         petType: PetType,
         partType: PartType,
         on presentingViewController: UIViewController,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
         petId: String? = nil,
         userId: String? = nil,
         recordId: String? = nil,
@@ -116,6 +127,8 @@ public enum AIScanManager {
         let camera = try makeCameraViewController(
             petType: petType,
             partType: partType,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
             petId: petId,
             userId: userId,
             recordId: recordId,
@@ -135,6 +148,8 @@ public enum AIScanManager {
         copy.teamIdentifierOverride = source.teamIdentifierOverride
         copy.resourceDirectoryURL = source.resourceDirectoryURL
         copy.requestTimeout = source.requestTimeout
+        copy.diagnosisTimeout = source.diagnosisTimeout
+        copy.diagnosisPollInterval = source.diagnosisPollInterval
         copy.callbackQueue = source.callbackQueue
         return copy
     }

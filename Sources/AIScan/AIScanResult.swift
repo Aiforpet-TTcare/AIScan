@@ -42,26 +42,53 @@ public struct AIScanSymptom: Equatable, Sendable {
 }
 
 /// Display-safe result returned by `AIScanManager`.
-public struct AIScanResult: Equatable, Sendable {
+public struct AIScanContractResult: Equatable, @unchecked Sendable {
+    public let schema: String
+    /// Exact JSON-compatible partner payload. No SDK-side field is renamed,
+    /// recalculated, filtered, or supplemented.
+    public let payload: [String: Any]
+
+    public init(schema: String, payload: [String: Any]) {
+        self.schema = schema
+        self.payload = payload
+    }
+
+    public init(contractResult: AISCContractResult) {
+        self.init(schema: contractResult.schema, payload: contractResult.payload)
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.schema == rhs.schema && NSDictionary(dictionary: lhs.payload).isEqual(to: rhs.payload)
+    }
+}
+
+/// Display-safe result returned by `AIScanManager`.
+/// `contractResult` is present only for partner contracts advertised by the
+/// manifest and is intended to be passed straight to the host application.
+public struct AIScanResult: Equatable, @unchecked Sendable {
     public let status: String
     public let diagnosisID: String?
     public let symptoms: [AIScanSymptom]
+    public let contractResult: AIScanContractResult?
 
     public init(
         status: String,
         diagnosisID: String? = nil,
-        symptoms: [AIScanSymptom] = []
+        symptoms: [AIScanSymptom] = [],
+        contractResult: AIScanContractResult? = nil
     ) {
         self.status = status
         self.diagnosisID = diagnosisID
         self.symptoms = symptoms
+        self.contractResult = contractResult
     }
 
     public init(displayResult: AISCDisplayResult) {
         self.init(
             status: displayResult.status,
             diagnosisID: displayResult.diagnosisID,
-            symptoms: displayResult.symptoms.map(AIScanSymptom.init(displaySymptom:))
+            symptoms: displayResult.symptoms.map(AIScanSymptom.init(displaySymptom:)),
+            contractResult: displayResult.contractResult.map(AIScanContractResult.init(contractResult:))
         )
     }
 }

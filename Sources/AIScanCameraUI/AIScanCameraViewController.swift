@@ -133,6 +133,7 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func retry() {
         guard !isClosed else { return }
+        chromeView.setProgress(0, animated: false)
         cameraController.reset()
         didBeginScanning = false
         beginScanningIfNeeded()
@@ -140,8 +141,24 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func fail(_ error: Error) {
         guard !isClosed else { return }
-        applyPresentationState(.error(AIScanCameraStrings.displayMessage(for: error)))
+        let message = AIScanCameraStrings.displayMessage(for: error)
+        applyPresentationState(.error(message))
         onFailure?(error)
+        let retryable = (error as NSError).userInfo[AISCRetryableKey] as? Bool == true
+        guard retryable, !(presentedViewController is UIAlertController) else { return }
+
+        let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(
+            title: AIScanCameraStrings.localized(.retry),
+            style: .default,
+            handler: { [weak self] _ in self?.retry() }
+        ))
+        alert.addAction(UIAlertAction(
+            title: AIScanCameraStrings.localized(.close),
+            style: .cancel,
+            handler: { [weak self] _ in self?.close() }
+        ))
+        present(alert, animated: true)
     }
 
     func applyPresentationState(_ state: AIScanCameraPresentationState) {
@@ -163,7 +180,15 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         _ controller: AIScanCameraController,
         didCapture evaluation: AISCFrameEvaluation
     ) {
+        chromeView.setProgress(0, animated: false)
         applyPresentationState(.analyzing)
+    }
+
+    public func aiscanCameraController(
+        _ controller: AIScanCameraController,
+        didUpdateDiagnosisProgress progress: Double
+    ) {
+        chromeView.setProgress(Float(progress), animated: true)
     }
 
     public func aiscanCameraController(
@@ -171,6 +196,17 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         didProduce result: AISCDisplayResult
     ) {
         cameraController.stopRunning()
+        chromeView.setProgress(1, animated: true)
+        if result.contractResult != nil {
+            // Contracted partners own result rendering. Keep the progress UI
+            // visible until the camera itself dismisses so there is no blank
+            // gap between progress completion and camera closure.
+            onResult?(result)
+            isClosed = true
+            cameraController.cancel()
+            dismiss(animated: true)
+            return
+        }
         applyPresentationState(.complete)
         onResult?(result)
     }

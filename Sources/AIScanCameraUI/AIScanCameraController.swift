@@ -7,11 +7,13 @@ import UIKit
 public protocol AIScanCameraControllerDelegate: AnyObject {
     func aiscanCameraController(_ controller: AIScanCameraController, didUpdate evaluation: AISCFrameEvaluation)
     func aiscanCameraController(_ controller: AIScanCameraController, didCapture evaluation: AISCFrameEvaluation)
+    func aiscanCameraController(_ controller: AIScanCameraController, didUpdateDiagnosisProgress progress: Double)
     func aiscanCameraController(_ controller: AIScanCameraController, didProduce result: AISCDisplayResult)
     func aiscanCameraController(_ controller: AIScanCameraController, didFail error: Error)
 }
 
 public extension AIScanCameraControllerDelegate {
+    func aiscanCameraController(_ controller: AIScanCameraController, didUpdateDiagnosisProgress progress: Double) {}
     func aiscanCameraController(_ controller: AIScanCameraController, didProduce result: AISCDisplayResult) {}
 }
 
@@ -226,8 +228,11 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
             notifyFailure(AIScanCameraControllerError.cannotCreateImageInput)
             return
         }
+        imageInput.orientation = input.orientation
 
-        coreSession.diagnoseImage(imageInput) { [weak self] result, error in
+        coreSession.diagnoseImage(imageInput, progress: { [weak self] progress in
+            self?.notifyDiagnosisProgress(progress)
+        }) { [weak self] result, error in
             guard let self else { return }
             if let error {
                 self.finishCaptureForRetry()
@@ -270,6 +275,13 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.delegate?.aiscanCameraController(self, didProduce: result.value)
+        }
+    }
+
+    private func notifyDiagnosisProgress(_ progress: Double) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.delegate?.aiscanCameraController(self, didUpdateDiagnosisProgress: progress)
         }
     }
 

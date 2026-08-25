@@ -115,4 +115,17 @@ extension PartType {
             nil
         }
     }
+
+    var analysisSubpart: String? {
+        switch self {
+        case .ear:
+            "ear"
+        case .belly:
+            "belly"
+        case .foot:
+            "foot"
+        case .eye, .tooth, .joint, .skin:
+            nil
+        }
+    }
 }
