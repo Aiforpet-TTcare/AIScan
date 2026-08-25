@@ -123,6 +123,21 @@ final class AIScanCompatibilityTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testSkinDetailUsesProviderPositionWithoutChangingExistingPart() throws {
+        AIScanManager.configure(publishableKey: "tt_pk_test_skin_position")
+        defer { AIScanManager.clearConfiguration() }
+
+        let camera = try AIScanManager.makeCameraViewController(
+            petType: .dog,
+            partType: .ear
+        )
+
+        XCTAssertEqual(camera.scanContext.partType, .skin)
+        XCTAssertNil(camera.scanContext.analysisSubpart)
+        XCTAssertEqual(camera.scanContext.analysisPosition, "ear")
+    }
+
     func testHighLevelResultCopiesOnlyDisplaySafeFields() {
         let symptom = AISCDisplaySymptom(
             code: "display-code",

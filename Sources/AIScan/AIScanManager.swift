@@ -58,8 +58,8 @@ public enum AIScanManager {
         context.petType = petType.coreValue
         context.partType = partType.coreValue
         context.displaySubpart = partType.displaySubpart
-        context.analysisSubpart = analysisSubpart ?? partType.analysisSubpart
-        context.analysisPosition = analysisPosition
+        context.analysisSubpart = analysisSubpart
+        context.analysisPosition = analysisPosition ?? partType.analysisPosition
         context.petIdentifier = petId
         context.userIdentifier = userId
         context.recordIdentifier = recordId

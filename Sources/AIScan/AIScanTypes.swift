@@ -116,7 +116,7 @@ extension PartType {
         }
     }
 
-    var analysisSubpart: String? {
+    var analysisPosition: String? {
         switch self {
         case .ear:
             "ear"
