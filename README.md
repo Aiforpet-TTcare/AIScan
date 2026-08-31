@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.8")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.9")
 ]
 ```
 
@@ -37,7 +37,7 @@ should use Swift Package Manager; Pod validation and trunk publication do not
 block the primary SDK release.
 
 ```ruby
-pod 'AIScan', '~> 3.0.8'
+pod 'AIScan', '~> 3.0.9'
 ```
 
 ### Single public module
