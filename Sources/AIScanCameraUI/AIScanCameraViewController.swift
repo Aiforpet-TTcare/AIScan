@@ -715,7 +715,6 @@ public final class AIScanCameraViewController: UIViewController {
                 self.cameraController.resetCaptureAttempt()
                 self.cameraSurface.setPreparing(false)
                 self.overlayController.setMessage(AIScanCameraStrings.localized(.startPrompt))
-                self.beginCaptureAttempt()
             }
         )
         transientSurfaceCoordinator.present(

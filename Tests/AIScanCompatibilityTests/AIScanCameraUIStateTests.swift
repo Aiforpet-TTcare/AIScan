@@ -1674,7 +1674,12 @@ final class AIScanCameraUIStateTests: XCTestCase {
         )
         XCTAssertEqual(
             retake.confirmButton.backgroundColor?.resolvedColor(with: darkTraits),
-            expectedPrimaryAction
+            UIColor(
+                red: 0x33 / 255,
+                green: 0x34 / 255,
+                blue: 0x44 / 255,
+                alpha: 1
+            )
         )
     }
 
@@ -3707,9 +3712,12 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
         XCTAssertEqual(engine.resetCaptureAttemptCount, 1)
         XCTAssertEqual(surfaceCoordinator.dismissPopupCount, 1)
-        XCTAssertTrue(engine.automaticallyCapturesReadyFrames)
+        XCTAssertFalse(engine.automaticallyCapturesReadyFrames)
         XCTAssertEqual(resultCount, 0)
         XCTAssertEqual(stackDismisser.callCount, 0)
+
+        camera.beginCaptureAttempt()
+        XCTAssertTrue(engine.automaticallyCapturesReadyFrames)
     }
 
     private func fontName(in label: UILabel) throws -> String {

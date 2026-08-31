@@ -246,7 +246,7 @@ final class TTPopupCheckedResultViewController: UIViewController, AIScanLegacyPo
         guideContainer.isHidden = true
         confirmButton.setTitle(AIScanCameraStrings.localized(.retakeAction), for: .normal)
         confirmButton.accessibilityIdentifier = "aiscan.camera.retake.confirm"
-        confirmButton.backgroundColor = AIScanLegacyText.primaryAction
+        confirmButton.backgroundColor = AIScanLegacyText.retakeAction
         confirmButton.setTitleColor(AIScanLegacyText.onPrimaryAction, for: .normal)
         confirmButton.layer.cornerRadius = 25
         confirmButton.clipsToBounds = true
@@ -991,6 +991,7 @@ enum AIScanLegacyText {
     static var primaryAction: UIColor {
         adaptive(light: rgb(0x333344), dark: named("AISBrandPrimary", fallback: .systemBlue))
     }
+    static var retakeAction: UIColor { rgb(0x333444) }
     static var onPrimaryAction: UIColor {
         named("AISOnBrand", fallback: .white)
     }
