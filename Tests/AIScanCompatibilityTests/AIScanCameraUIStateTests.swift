@@ -323,6 +323,8 @@ private final class MockTransientSurfaceCoordinator: AIScanTransientSurfaceCoord
         surface.loadViewIfNeeded()
         surface.view.frame = presenter.view.bounds
         surface.view.layoutIfNeeded()
+        surface.beginAppearanceTransition(true, animated: animated)
+        surface.endAppearanceTransition()
     }
 
     func dismiss(
@@ -1474,6 +1476,28 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
         XCTAssertEqual(dismisser.callCount, 1)
         XCTAssertEqual(actionCount, 1)
+    }
+
+    @MainActor
+    func testBottomRetakePopupStartsOffscreenBeforeItsFirstVisibleFrame() {
+        let popup = TTPopupCheckedResultViewController.instantiate(
+            item: AIScanRetakeGuideItem(
+                title: "Hold still",
+                wrongTitle: "Wrong",
+                rightTitle: "Right",
+                wrongImage: nil,
+                rightImage: nil
+            ),
+            onRetake: {}
+        )
+        let container = AIScanLegacyBottomPopupContainer(content: popup)
+
+        container.loadViewIfNeeded()
+        XCTAssertEqual(popup.view.transform.ty, 363, accuracy: 0.5)
+
+        container.beginAppearanceTransition(true, animated: false)
+        container.endAppearanceTransition()
+        XCTAssertEqual(popup.view.transform, .identity)
     }
 
     @MainActor

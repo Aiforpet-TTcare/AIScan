@@ -377,6 +377,7 @@ final class AIScanLegacyBottomPopupContainer: UIViewController {
     private let content: UIViewController
     private let cardHeight: CGFloat
     private let popupDismisser: AIScanLegacyPopupDismissing
+    private var didAnimatePresentation = false
 
     init(
         content: UIViewController,
@@ -418,12 +419,17 @@ final class AIScanLegacyBottomPopupContainer: UIViewController {
             content.view.heightAnchor.constraint(equalToConstant: cardHeight),
         ])
         content.didMove(toParent: self)
+        content.view.transform = CGAffineTransform(translationX: 0, y: cardHeight)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard animated else { return }
-        content.view.transform = CGAffineTransform(translationX: 0, y: cardHeight)
+        guard !didAnimatePresentation else { return }
+        didAnimatePresentation = true
+        guard animated else {
+            content.view.transform = .identity
+            return
+        }
         UIView.animate(
             withDuration: 0.3,
             delay: 0,
