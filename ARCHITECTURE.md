@@ -1,6 +1,6 @@
 # AIScan Core/UI 분리 불변 원칙
 
-분리 기준은 비공개 저장소 `feat/ttapi-contract-result`의 TTAPI 구성 버전이다.
+분리 기준은 검증된 비공개 parity baseline이다.
 분리는 기능이나 디자인을 바꾸는 작업이 아니라 빌드·보안·배포 경계를 바꾸는
 작업이다. 아래 네 조건 중 하나라도 깨지면 릴리즈할 수 없다.
 
@@ -10,7 +10,7 @@
 - 진행률과 퍼센트 애니메이션
 - timeout, retry, error 처리
 - 일반 결과와 `contract_result` callback 횟수·시점
-- 삼성화재 `contract_result.payload` 무가공 전달
+- 조직별 `contract_result.payload` 무가공 전달
 
 위 동작은 기준 버전과 동등해야 한다.
 
@@ -50,13 +50,13 @@ UI는 소스로 배포되어 고객 앱의 Swift 컴파일러로 빌드된다.
 지원 Xcode 하한은 릴리즈 매트릭스로 검증하지만 Core와 UI를 같은 Xcode에서
 동시에 재빌드해야 하는 결합은 두지 않는다.
 
-삼성화재 계약 브랜치의 호환성 기준을 유지하기 위해 배포 하한은 iOS 13.0이다.
+iOS 13 호스트 앱과의 기존 호환성 기준을 유지하기 위해 배포 하한은 iOS 13.0이다.
 Podspec/SwiftPM 선언뿐 아니라 Core device·simulator 바이너리의
 `LC_BUILD_VERSION minos`와 iOS 13 호스트 archive를 릴리즈 게이트로 검사한다.
 
 ## 버전 규칙
 
-- UI-only patch: Core public header와 `AIScanCore.source.json` 변경 금지
+- UI-only patch: Core public header와 배포 바이너리 checksum 변경 금지
 - Core-compatible patch/minor: 공개 Objective-C header 변경 금지
 - Core API 변경: 명시적으로 승인한 major release에서만 허용
 - 태그는 해당 시점의 UI 소스, Core 바이너리, provenance를 함께 고정

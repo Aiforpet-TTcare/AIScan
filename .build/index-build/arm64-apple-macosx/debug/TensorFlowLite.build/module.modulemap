@@ -1,4 +1,0 @@
-module TensorFlowLite {
-    header "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/TensorFlowLite.build/TensorFlowLite-Swift.h"
-    requires objc
-}

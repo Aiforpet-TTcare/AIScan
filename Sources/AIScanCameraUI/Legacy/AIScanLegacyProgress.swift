@@ -75,6 +75,17 @@ final class DotAnimationView: UIView {
     private let dotSize: CGFloat = 5
     private var initialized = false
 
+    private var ovalRect: CGRect {
+        let width = bounds.width * 0.8
+        let height = bounds.height * 0.5
+        return CGRect(
+            x: (bounds.width - width) / 2,
+            y: (bounds.height - height) / 2,
+            width: width,
+            height: height
+        )
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
@@ -89,31 +100,56 @@ final class DotAnimationView: UIView {
         super.layoutSubviews()
         guard !initialized, !bounds.isEmpty else { return }
         initialized = true
-        for index in 0..<dotCount {
-            let angle = (CGFloat(index) / CGFloat(dotCount)) * (.pi * 2)
-            let center = CGPoint(
-                x: bounds.midX + cos(angle) * bounds.width * 0.34,
-                y: bounds.midY + sin(angle) * bounds.height * 0.20
-            )
+        for _ in 0..<dotCount {
+            let position = randomPointInOval(ovalRect)
             let dot = CAShapeLayer()
             dot.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: dotSize, height: dotSize)).cgPath
             dot.fillColor = UIColor.white.cgColor
-            dot.frame = CGRect(x: center.x, y: center.y, width: dotSize, height: dotSize)
+            dot.frame = CGRect(x: position.x, y: position.y, width: dotSize, height: dotSize)
+            dot.opacity = 0
             layer.addSublayer(dot)
         }
         startAnimations()
     }
 
+    private func randomPointInOval(_ oval: CGRect) -> CGPoint {
+        let center = CGPoint(x: oval.midX, y: oval.midY)
+        let horizontalRadius = oval.width / 2
+        let verticalRadius = oval.height / 2
+        while true {
+            let point = CGPoint(
+                x: CGFloat.random(in: oval.minX...oval.maxX),
+                y: CGFloat.random(in: oval.minY...oval.maxY)
+            )
+            let normalizedX = (point.x - center.x) / horizontalRadius
+            let normalizedY = (point.y - center.y) / verticalRadius
+            if normalizedX * normalizedX + normalizedY * normalizedY <= 1 {
+                return point
+            }
+        }
+    }
+
     func startAnimations() {
-        layer.sublayers?.enumerated().forEach { index, layer in
+        layer.sublayers?.forEach { layer in
             guard layer.animation(forKey: "startEndFade") == nil else { return }
-            let fade = CAKeyframeAnimation(keyPath: "opacity")
-            fade.values = [0, 1, 1, 0]
-            fade.keyTimes = [0, 0.2, 0.65, 1]
-            fade.duration = 2.2
-            fade.beginTime = CACurrentMediaTime() + Double(index) * 0.08
-            fade.repeatCount = .infinity
-            layer.add(fade, forKey: "startEndFade")
+            let fadeIn = CABasicAnimation(keyPath: "opacity")
+            fadeIn.fromValue = 0
+            fadeIn.toValue = 1
+            fadeIn.duration = Double.random(in: 0.5...1)
+
+            let fadeOut = CABasicAnimation(keyPath: "opacity")
+            fadeOut.fromValue = 1
+            fadeOut.toValue = 0
+            fadeOut.duration = Double.random(in: 0.5...1)
+            fadeOut.beginTime = fadeIn.duration + Double.random(in: 1...2)
+
+            let group = CAAnimationGroup()
+            group.animations = [fadeIn, fadeOut]
+            group.duration = fadeOut.beginTime + fadeOut.duration
+            group.repeatCount = .infinity
+            group.fillMode = .forwards
+            group.isRemovedOnCompletion = false
+            layer.add(group, forKey: "startEndFade")
         }
     }
 
@@ -126,6 +162,11 @@ final class DotAnimationView: UIView {
 @MainActor
 @objc(TTProgressViewController)
 final class TTProgressViewController: UIViewController {
+    enum Kind {
+        case diagnosis
+        case download
+    }
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var progressContainer: UIView?
@@ -140,6 +181,19 @@ final class TTProgressViewController: UIViewController {
     @IBOutlet weak var diagnosisImageView: UIImageView?
 
     private lazy var dotAnimationView = DotAnimationView()
+    private lazy var downloadCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.accessibilityIdentifier = "aiscan.camera.download-progress.percent"
+        return label
+    }()
+    private var kind: Kind = .diagnosis
+    private var previewImage: UIImage?
+
+    var isDownloadProgress: Bool { kind == .download }
 
     override var shouldAutorotate: Bool { false }
 
@@ -153,12 +207,36 @@ final class TTProgressViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = AIScanCameraStrings.localizedMessageKey("progress.analyzing")
+        view.backgroundColor = .black
+        titleLabel.textColor = .white
+        subtitleLabel.textColor = .white
+        progressLabel?.textColor = .white
+        descriptionFirstLabel?.textColor = .white
+        descriptionSecondLabel?.textColor = .white
+        progressContainer?.backgroundColor = .clear
+        progressUnit?.textColor = .white
+        containerView.backgroundColor = .clear
+        titleLabel.text = AIScanCameraStrings.localizedMessageKey(
+            kind == .download ? "progress.download" : "progress.analyzing"
+        )
         subtitleLabel.text = AIScanCameraStrings.localizedMessageKey("progress.wait")
         descriptionFirstLabel?.text = AIScanCameraStrings.localizedMessageKey("progress.medical.first")
         descriptionSecondLabel?.text = AIScanCameraStrings.localizedMessageKey("progress.medical.second")
         progressLabel?.text = "0"
         progressView?.progress = 0
+        if kind == .download, let progressView {
+            containerView.addSubview(downloadCountLabel)
+            NSLayoutConstraint.activate([
+                downloadCountLabel.topAnchor.constraint(
+                    equalTo: progressView.bottomAnchor,
+                    constant: 8
+                ),
+                downloadCountLabel.centerXAnchor.constraint(equalTo: progressView.centerXAnchor),
+            ])
+            downloadCountLabel.text = "0%"
+        }
+        diagnosisImageView?.image = previewImage
+        diagnosisImageView?.accessibilityIdentifier = "aiscan.camera.progress.preview"
         progressContainer?.layer.cornerRadius = 30
         progressContainer?.clipsToBounds = true
         dotAnimationView.translatesAutoresizingMaskIntoConstraints = false
@@ -171,11 +249,13 @@ final class TTProgressViewController: UIViewController {
                 dotAnimationView.bottomAnchor.constraint(equalTo: progressContainer.bottomAnchor),
             ])
         }
-        let isKorean = Locale.preferredLanguages.first?.hasPrefix("ko") == true
+        let isKorean = AIScanCameraStrings.isKoreanUI()
         govermentIcon?.isHidden = !isKorean
         descriptionFirstLabel?.isHidden = !isKorean
         descriptionSecondLabel?.isHidden = !isKorean
-        view.accessibilityIdentifier = "aiscan.camera.progress"
+        view.accessibilityIdentifier = kind == .download
+            ? "aiscan.camera.download-progress"
+            : "aiscan.camera.progress"
         progressLabel?.accessibilityIdentifier = "aiscan.camera.progress.percent"
     }
 
@@ -196,17 +276,55 @@ final class TTProgressViewController: UIViewController {
         progressView?.setProgress(Float(normalized), animated: animated)
     }
 
+    func set(
+        downloadProgress: AIScanPreparationProgressSnapshot,
+        animated: Bool = true
+    ) {
+        set(progress: downloadProgress.normalizedProgress, animated: animated)
+        let percentage = Int((min(max(downloadProgress.normalizedProgress, 0), 1) * 100).rounded())
+        downloadCountLabel.text = "\(percentage)%"
+        downloadCountLabel.accessibilityValue = "\(percentage)%"
+        if downloadProgress.bytesPerSecond > 0 {
+            subtitleLabel.text = Self.formattedSpeed(downloadProgress.bytesPerSecond)
+        }
+    }
+
+    func set(previewImage: UIImage) {
+        self.previewImage = previewImage
+        loadViewIfNeeded()
+        diagnosisImageView?.image = previewImage
+    }
+
     @IBAction func testButton(_ sender: Any) {}
 
     static func instantiate() -> TTProgressViewController {
+        instantiate(identifier: "TTProgressViewController", kind: .diagnosis)
+    }
+
+    static func instantiateDownload() -> TTProgressViewController {
+        instantiate(identifier: "TTProgressDownloadViewController", kind: .download)
+    }
+
+    private static func instantiate(identifier: String, kind: Kind) -> TTProgressViewController {
         guard let controller = UIStoryboard(
             name: "TTEtc",
             bundle: AIScanCameraResourceBundle.bundle
-        ).instantiateViewController(withIdentifier: "TTProgressViewController") as? TTProgressViewController else {
+        ).instantiateViewController(withIdentifier: identifier) as? TTProgressViewController else {
             preconditionFailure("The original TTEtc progress scene is unavailable.")
         }
+        controller.kind = kind
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overFullScreen
         return controller
+    }
+
+    private static func formattedSpeed(_ bytesPerSecond: Double) -> String {
+        if bytesPerSecond < 1_024 {
+            return String(format: "%.0f B/s", bytesPerSecond)
+        }
+        if bytesPerSecond < 1_024 * 1_024 {
+            return String(format: "%.1f KB/s", bytesPerSecond / 1_024)
+        }
+        return String(format: "%.1f MB/s", bytesPerSecond / 1_024 / 1_024)
     }
 }

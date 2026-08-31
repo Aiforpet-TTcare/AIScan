@@ -21,9 +21,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tYf-0F-A9m" userLabel="Preview">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="622"/>
                                 <subviews>
-                                    <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s0q-mT-d00">
+                                    <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s0q-mT-d00">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="622"/>
-                                    </arscnView>
+                                    </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GA9-RH-mJ0">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="622"/>
                                     </imageView>
@@ -320,9 +320,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xo2-Nu-HSi" userLabel="Preview">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="661"/>
                                 <subviews>
-                                    <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4Y-ZM-x3n">
+                                    <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4Y-ZM-x3n">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="661"/>
-                                    </arscnView>
+                                    </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kuu-9e-pGI">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="661"/>
                                     </imageView>

@@ -10,10 +10,30 @@ public final class AIScanResultViewController: UIViewController {
     @IBOutlet private weak var collectionView: UICollectionView!
 
     public var onClose: (() -> Void)?
+    public var onExportReport: (() -> Void)? {
+        didSet {
+            guard isViewLoaded else { return }
+            updatePDFExportFooter()
+        }
+    }
 
     private var viewModel = AIScanDisplayResultViewModel(status: "NORMAL")
     private var selectedIndex = 0
     private var rows: [Row] = []
+
+    private lazy var titleSizingCell: AIScanResultTitleCell = loadSizingCell(
+        nibName: "ResultTitleCell",
+        type: AIScanResultTitleCell.self
+    )
+    private lazy var itemSizingCell: AIScanResultItemCell = loadSizingCell(
+        nibName: "ResultItemCell",
+        type: AIScanResultItemCell.self
+    )
+    private lazy var noticeSizingCell: AIScanResultNoticeCell = loadSizingCell(
+        nibName: "ResultNoticeCell",
+        type: AIScanResultNoticeCell.self
+    )
+    private lazy var skinFeatureSizingCell = AIScanSkinFeatureCell(frame: .zero)
 
     private enum Row {
         case status
@@ -22,12 +42,14 @@ public final class AIScanResultViewController: UIViewController {
         case tabs
         case item
         case notice
+        case skinFeatures
         case spacing(CGFloat)
     }
 
     public static func instance(
         viewModel: AIScanDisplayResultViewModel,
-        onClose: (() -> Void)? = nil
+        onClose: (() -> Void)? = nil,
+        onExportReport: (() -> Void)? = nil
     ) -> AIScanResultViewController {
         let storyboard = UIStoryboard(
             name: "Result",
@@ -40,6 +62,7 @@ public final class AIScanResultViewController: UIViewController {
         }
         controller.viewModel = viewModel
         controller.onClose = onClose
+        controller.onExportReport = onExportReport
         return controller
     }
 
@@ -55,6 +78,7 @@ public final class AIScanResultViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
+        updatePDFExportFooter()
         rebuildRows()
         configureHeader()
         applyTheme()
@@ -106,11 +130,55 @@ public final class AIScanResultViewController: UIViewController {
                 forCellWithReuseIdentifier: identifier
             )
         }
+        collectionView.register(
+            AIScanSkinFeatureCell.self,
+            forCellWithReuseIdentifier: AIScanSkinFeatureCell.reuseIdentifier
+        )
+        collectionView.register(
+            AIScanPDFExportFooterView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: AIScanPDFExportFooterView.reuseIdentifier
+        )
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+            layout.estimatedItemSize = .zero
             layout.minimumLineSpacing = 0
             layout.minimumInteritemSpacing = 0
         }
+    }
+
+    private func loadSizingCell<Cell: UICollectionViewCell>(
+        nibName: String,
+        type: Cell.Type
+    ) -> Cell {
+        let objects = UINib(
+            nibName: nibName,
+            bundle: AIScanReferenceStrings.resourceBundle
+        ).instantiate(withOwner: nil)
+        guard let cell = objects.compactMap({ $0 as? Cell }).first else {
+            preconditionFailure("AIScanReferenceUI \(nibName).xib is missing")
+        }
+        return cell
+    }
+
+    private func measuredSize(
+        of cell: UICollectionViewCell,
+        width: CGFloat,
+        at indexPath: IndexPath
+    ) -> CGSize {
+        cell.bounds = CGRect(x: 0, y: 0, width: width, height: cell.bounds.height)
+        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+        attributes.size = CGSize(width: width, height: max(1, cell.bounds.height))
+        return cell.preferredLayoutAttributesFitting(attributes).size
+    }
+
+    private func updatePDFExportFooter() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        layout.footerReferenceSize = onExportReport == nil
+            ? .zero
+            : CGSize(width: collectionView.bounds.width, height: 84)
+        layout.invalidateLayout()
     }
 
     private func configureHeader() {
@@ -128,22 +196,46 @@ public final class AIScanResultViewController: UIViewController {
         }
         rows.append(.item)
         rows.append(.notice)
+        if viewModel.skinFeatures != nil {
+            rows.append(.spacing(20))
+            rows.append(.skinFeatures)
+        }
     }
 
     private var selectedSymptom: AIScanDisplaySymptomViewModel {
         if let symptom = viewModel.symptoms.indices.contains(selectedIndex)
             ? viewModel.symptoms[selectedIndex]
             : viewModel.symptoms.first {
-            return symptom
+            let representativeCrop = viewModel.analyzedSymptoms.lazy.compactMap(\.cropImageURL).first
+            return AIScanDisplaySymptomViewModel(
+                id: symptom.id,
+                code: symptom.code,
+                name: symptom.name,
+                heatmapURL: symptom.heatmapURL,
+                cropImageURL: symptom.cropImageURL ?? representativeCrop,
+                abnormalLevel: symptom.abnormalLevel,
+                resultLabel: symptom.resultLabel,
+                detailRows: Array((symptom.detailRows + viewModel.resultDetails).prefix(4))
+            )
         }
-        return AIScanDisplaySymptomViewModel(
-            name: AIScanReferenceStrings.localized(.noSymptoms),
-            detailRows: [
+        let representative = viewModel.analyzedSymptoms.first
+        let representativeCrop = viewModel.analyzedSymptoms.lazy.compactMap(\.cropImageURL).first
+        let representativeHeatmap = viewModel.analyzedSymptoms.lazy.compactMap(\.heatmapURL).first
+        let rows = viewModel.resultDetails.isEmpty
+            ? [
                 AIScanDisplayDetailRowViewModel(
                     text: AIScanReferenceStrings.localized(.noSymptoms),
                     iconName: "vuesaxBoldMessageNotif"
                 )
             ]
+            : viewModel.resultDetails
+        return AIScanDisplaySymptomViewModel(
+            name: AIScanReferenceStrings.localized(.noSymptoms),
+            heatmapURL: representative?.heatmapURL ?? representativeHeatmap,
+            cropImageURL: representative?.cropImageURL ?? representativeCrop,
+            abnormalLevel: 0,
+            resultLabel: representative?.resultLabel,
+            detailRows: Array(rows.prefix(4))
         )
     }
 
@@ -152,8 +244,16 @@ public final class AIScanResultViewController: UIViewController {
         return switch viewModel.displayStatus {
         case .normal: AIScanReferenceStrings.localized(.normalHeadline)
         case .caution: AIScanReferenceStrings.localized(.cautionHeadline)
+        case .cautionQuestionnaire:
+            AIScanReferenceStrings.localized(.cautionQuestionnaireHeadline)
         case .warning: AIScanReferenceStrings.localized(.warningHeadline)
         }
+    }
+
+    private var subtitle: String? {
+        if let subtitle = viewModel.subtitle, !subtitle.isEmpty { return subtitle }
+        guard viewModel.displayStatus == .cautionQuestionnaire else { return nil }
+        return AIScanReferenceStrings.localized(.cautionQuestionnaireDescription)
     }
 
     private var analyzedAtText: String {
@@ -177,9 +277,27 @@ public final class AIScanResultViewController: UIViewController {
     }
 }
 
-extension AIScanResultViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension AIScanResultViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         rows.count
+    }
+
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter,
+              let onExportReport else {
+            return UICollectionReusableView()
+        }
+        let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: AIScanPDFExportFooterView.reuseIdentifier,
+            for: indexPath
+        ) as! AIScanPDFExportFooterView
+        footer.onTap = onExportReport
+        return footer
     }
 
     public func collectionView(
@@ -202,7 +320,11 @@ extension AIScanResultViewController: UICollectionViewDataSource, UICollectionVi
                 withReuseIdentifier: AIScanResultTitleCell.reuseIdentifier,
                 for: indexPath
             ) as! AIScanResultTitleCell
-            cell.configure(title: headline, subtitle: viewModel.subtitle)
+            cell.configure(
+                title: headline,
+                subtitle: subtitle,
+                emphasizesSubtitle: viewModel.displayStatus == .cautionQuestionnaire
+            )
             cell.accessibilityIdentifier = "aiscan.result.headline"
             return cell
 
@@ -224,10 +346,16 @@ extension AIScanResultViewController: UICollectionViewDataSource, UICollectionVi
             cell.onSelect = { [weak self] index in
                 guard let self else { return }
                 self.selectedIndex = index
-                self.collectionView.reloadItems(at: [
-                    indexPath,
-                    IndexPath(item: indexPath.item + 1, section: indexPath.section)
-                ])
+                let itemIndexPath = IndexPath(
+                    item: indexPath.item + 1,
+                    section: indexPath.section
+                )
+                if let itemCell = self.collectionView.cellForItem(
+                    at: itemIndexPath
+                ) as? AIScanResultItemCell {
+                    itemCell.configure(symptom: self.selectedSymptom)
+                }
+                self.collectionView.collectionViewLayout.invalidateLayout()
             }
             cell.accessibilityIdentifier = "aiscan.result.symptom-tabs"
             return cell
@@ -251,6 +379,17 @@ extension AIScanResultViewController: UICollectionViewDataSource, UICollectionVi
             cell.accessibilityIdentifier = "aiscan.result.notice"
             return cell
 
+        case .skinFeatures:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: AIScanSkinFeatureCell.reuseIdentifier,
+                for: indexPath
+            ) as! AIScanSkinFeatureCell
+            if let features = viewModel.skinFeatures {
+                cell.configure(features: features)
+            }
+            cell.accessibilityIdentifier = "aiscan.result.skin-features"
+            return cell
+
         case let .spacing(height):
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: AIScanResultSpaceCell.reuseIdentifier,
@@ -260,18 +399,53 @@ extension AIScanResultViewController: UICollectionViewDataSource, UICollectionVi
             return cell
         }
     }
+
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = max(
+            1,
+            collectionView.bounds.width
+                - collectionView.adjustedContentInset.left
+                - collectionView.adjustedContentInset.right
+        ).nextDown
+
+        switch rows[indexPath.item] {
+        case .status:
+            return CGSize(width: width, height: 130)
+        case .title:
+            titleSizingCell.configure(
+                title: headline,
+                subtitle: subtitle,
+                emphasizesSubtitle: viewModel.displayStatus == .cautionQuestionnaire
+            )
+            return measuredSize(of: titleSizingCell, width: width, at: indexPath)
+        case .date:
+            return CGSize(width: width, height: 34)
+        case .tabs:
+            return CGSize(width: width, height: 50)
+        case .item:
+            itemSizingCell.configureForSizing(symptom: selectedSymptom)
+            return measuredSize(of: itemSizingCell, width: width, at: indexPath)
+        case .notice:
+            noticeSizingCell.configure(
+                text: viewModel.notice ?? AIScanReferenceStrings.localized(.notice)
+            )
+            return measuredSize(of: noticeSizingCell, width: width, at: indexPath)
+        case .skinFeatures:
+            if let features = viewModel.skinFeatures {
+                skinFeatureSizingCell.configure(features: features)
+            }
+            return measuredSize(of: skinFeatureSizingCell, width: width, at: indexPath)
+        case let .spacing(height):
+            return CGSize(width: width, height: height)
+        }
+    }
 }
 
 extension AIScanResultViewController: AIScanResultItemCellDelegate {
-    func resultItemCellNeedsResize(_ cell: AIScanResultItemCell) {
-        guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        UIView.performWithoutAnimation {
-            collectionView.performBatchUpdates({
-                collectionView.reloadItems(at: [indexPath])
-            })
-        }
-    }
-
     func resultItemCell(_ cell: AIScanResultItemCell, didSelectImageURL url: URL) {
         let controller = AIScanResultImageViewController(url: url)
         controller.modalPresentationStyle = .fullScreen

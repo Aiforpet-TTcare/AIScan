@@ -13,6 +13,7 @@ enum AIScanCameraStringKey: String {
     case settings = "camera.settings"
     case permissionDenied = "camera.permission_denied"
     case unavailable = "camera.unavailable"
+    case criticalError = "camera.critical_error"
     case startPrompt = "camera.start_prompt"
     case notice = "popup.notice"
     case confirm = "popup.confirm"
@@ -25,9 +26,26 @@ enum AIScanCameraStringKey: String {
     case timeoverSubtitle = "popup.timeover.subtitle"
     case timeoverRetry = "popup.timeover.retry"
     case guide = "popup.timeover.guide"
+    case retakeTitle = "popup.retake.title"
+    case retakeWrong = "popup.retake.wrong"
+    case retakeRight = "popup.retake.right"
+    case retakeAction = "popup.retake.action"
 }
 
 enum AIScanCameraStrings {
+    /// The localization currently selected by the SDK resource bundle.
+    /// UI-only visibility rules must follow this value instead of the device
+    /// locale so a host app's per-app language override remains consistent.
+    static var currentLanguageCode: String {
+        resourceBundle.preferredLocalizations
+            .first { $0.caseInsensitiveCompare("Base") != .orderedSame }?
+            .lowercased() ?? "en"
+    }
+
+    static func isKoreanUI(languageCode: String? = nil) -> Bool {
+        (languageCode ?? currentLanguageCode).lowercased().hasPrefix("ko")
+    }
+
     static func localized(
         _ key: AIScanCameraStringKey,
         languageCode: String? = nil
@@ -42,19 +60,110 @@ enum AIScanCameraStrings {
         )
     }
 
-    static func displayMessage(for error: Error) -> String {
+    static func displayMessage(for error: Error, languageCode: String? = nil) -> String {
         if let cameraError = error as? AIScanCameraViewControllerError {
             switch cameraError {
             case .cameraPermissionDenied:
-                return localized(.permissionDenied)
+                return localized(.permissionDenied, languageCode: languageCode)
             }
         }
 
-        let approvedReason = (error as NSError).userInfo[AISCDisplayReasonKey] as? String
-        if let approvedReason, !approvedReason.isEmpty {
-            return localizedMessageKey(approvedReason)
+        let nsError = error as NSError
+        if nsError.domain == AISCErrorDomain {
+            if nsError.code == AISCErrorCode.frameRejected.rawValue,
+               let approvedReason = nsError.userInfo[AISCDisplayReasonKey] as? String,
+               !approvedReason.isEmpty {
+                return localizedMessageKey(
+                    canonicalGuidanceKey(approvedReason),
+                    languageCode: languageCode
+                )
+            }
+            return appendingCoreErrorCode(
+                localized(.criticalError, languageCode: languageCode),
+                error: error
+            )
         }
-        return localized(.unavailable)
+
+        let approvedReason = nsError.userInfo[AISCDisplayReasonKey] as? String
+        if let approvedReason, !approvedReason.isEmpty {
+            return localizedMessageKey(approvedReason, languageCode: languageCode)
+        }
+        return localized(.unavailable, languageCode: languageCode)
+    }
+
+    static func albumDisplayMessage(
+        for error: Error,
+        partType: AISCPartType,
+        analysisPosition: String?,
+        languageCode: String? = nil
+    ) -> String {
+        let nsError = error as NSError
+        guard nsError.domain == AISCErrorDomain,
+              let reason = nsError.userInfo[AISCDisplayReasonKey] as? String,
+              !reason.isEmpty else {
+            return displayMessage(for: error, languageCode: languageCode)
+        }
+
+        let key: String?
+        switch reason {
+        case "눈을 촬영해 주세요.":
+            key = "눈이 잘 보이는 사진을 선택해 주세요."
+        case "치아를 촬영해 주세요.":
+            key = "치아가 잘 보이는 사진을 선택해 주세요."
+        case "초점을 잘 맞춰 주세요.", "hold_still":
+            key = "초점이 잘 맞는 선명한 사진을 선택해 주세요."
+        case "더 가까이에서 촬영해 주세요", "move_closer":
+            key = "피사체가 더 크게 나온 사진을 선택해 주세요."
+        case "더 멀리서 촬영해 주세요", "move_farther":
+            key = "피사체가 눈에 다 들어오는 사진을 선택해 주세요."
+        case "귀를 촬영해 주세요.", "몸통을 촬영해 주세요.",
+             "발을 촬영해 주세요.", "피부를 촬영해 주세요.":
+            key = albumSkinSelectionKey(
+                partType: partType,
+                analysisPosition: analysisPosition
+            )
+        case "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요.":
+            key = reason
+        default:
+            key = nil
+        }
+
+        guard let key else {
+            return displayMessage(for: error, languageCode: languageCode)
+        }
+        return localizedMessageKey(key, languageCode: languageCode)
+    }
+
+    private static func albumSkinSelectionKey(
+        partType: AISCPartType,
+        analysisPosition: String?
+    ) -> String {
+        guard partType == .skin else {
+            return "피부가 잘 보이는 사진을 선택해 주세요."
+        }
+        switch analysisPosition?.lowercased() {
+        case "ear":
+            return "귀가 잘 보이는 사진을 선택해 주세요."
+        case "belly", "body":
+            return "몸통이 잘 보이는 사진을 선택해 주세요."
+        case "foot", "paw", "paws":
+            return "발이 잘 보이는 사진을 선택해 주세요."
+        default:
+            return "피부가 잘 보이는 사진을 선택해 주세요."
+        }
+    }
+
+    private static func canonicalGuidanceKey(_ reason: String) -> String {
+        switch reason {
+        case "더 가까이에서 촬영해 주세요":
+            "move_closer"
+        case "더 멀리서 촬영해 주세요":
+            "move_farther"
+        case "초점을 잘 맞춰 주세요.":
+            "hold_still"
+        default:
+            reason
+        }
     }
 
     static func localizedMessageKey(_ key: String, languageCode: String? = nil) -> String {
@@ -94,6 +203,12 @@ enum AIScanCameraStrings {
 #endif
     }
 
+    private static func appendingCoreErrorCode(_ message: String, error: Error) -> String {
+        let nsError = error as NSError
+        guard nsError.domain == AISCErrorDomain else { return message }
+        return "\(message)\n[AISC-\(nsError.code)]"
+    }
+
     private static func fallback(for key: AIScanCameraStringKey) -> String {
         switch key {
         case .preparing:
@@ -118,6 +233,8 @@ enum AIScanCameraStrings {
             "Camera permission is required to start a scan."
         case .unavailable:
             "Camera is unavailable. Please try again."
+        case .criticalError:
+            "A temporary error occurred. Please try again."
         case .startPrompt:
             "Press the button to start AI Scan."
         case .notice:
@@ -142,6 +259,14 @@ enum AIScanCameraStrings {
             "Try again"
         case .guide:
             "User guide"
+        case .retakeTitle:
+            "The captured image is difficult to analyze"
+        case .retakeWrong:
+            "Avoid this"
+        case .retakeRight:
+            "Capture like this"
+        case .retakeAction:
+            "Would you like to try again?"
         }
     }
 }

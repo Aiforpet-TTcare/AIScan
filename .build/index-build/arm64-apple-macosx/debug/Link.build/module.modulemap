@@ -1,4 +1,0 @@
-module Link {
-    header "/Users/kjaylee/workspace/Lib/AIScan-iOS/.build/index-build/arm64-apple-macosx/debug/Link.build/Link-Swift.h"
-    requires objc
-}

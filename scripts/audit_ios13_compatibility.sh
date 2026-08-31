@@ -9,6 +9,7 @@ CORE="$ROOT/AIScanCore.xcframework"
 DEVICE_BINARY="$CORE/ios-arm64/AIScanCore.framework/AIScanCore"
 SIMULATOR_BINARY="$CORE/ios-arm64_x86_64-simulator/AIScanCore.framework/AIScanCore"
 DERIVED_DATA="$ROOT/tmp/ios13-compatibility-derived-data"
+HOST_STAGE="$ROOT/tmp/ios13-compatibility-host"
 
 if ! grep -Fq '.iOS(.v13)' Package.swift || \
    ! grep -Fq 'spec.platform     = :ios, "13.0"' AIScan.podspec; then
@@ -46,16 +47,20 @@ for binary in "$DEVICE_BINARY" "$SIMULATOR_BINARY"; do
   fi
 done
 
-if [[ "$DERIVED_DATA" != "$ROOT"/tmp/ios13-compatibility-* ]]; then
-  echo "Unsafe derived-data path: $DERIVED_DATA" >&2
+if [[ "$DERIVED_DATA" != "$ROOT"/tmp/ios13-compatibility-* || \
+      "$HOST_STAGE" != "$ROOT"/tmp/ios13-compatibility-* ]]; then
+  echo "Unsafe iOS 13 audit path." >&2
   exit 1
 fi
 rm -rf "$DERIVED_DATA"
-trap 'rm -rf "$DERIVED_DATA"' EXIT
+rm -rf "$HOST_STAGE"
+trap 'rm -rf "$DERIVED_DATA" "$HOST_STAGE"' EXIT
+
+ruby "$ROOT/scripts/create_ios13_compatibility_host.rb" "$HOST_STAGE" "$ROOT"
 
 TMPDIR="$ROOT/tmp" xcodebuild -quiet \
-  -project Examples/SecureSplitValidationHost/SecureSplitValidationHost.xcodeproj \
-  -scheme SecureSplitValidationHost \
+  -project "$HOST_STAGE/AIScanCompatibilityHost.xcodeproj" \
+  -scheme AIScanCompatibilityHost \
   -configuration Release \
   -destination 'generic/platform=iOS' \
   -derivedDataPath "$DERIVED_DATA" \
@@ -64,8 +69,8 @@ TMPDIR="$ROOT/tmp" xcodebuild -quiet \
   IPHONEOS_DEPLOYMENT_TARGET="$EXPECTED_MIN_OS" \
   build
 
-APP="$DERIVED_DATA/Build/Products/Release-iphoneos/SecureSplitValidationHost.app"
-APP_BINARY="$APP/SecureSplitValidationHost"
+APP="$DERIVED_DATA/Build/Products/Release-iphoneos/AIScanCompatibilityHost.app"
+APP_BINARY="$APP/AIScanCompatibilityHost"
 app_min_os="$(xcrun vtool -show-build "$APP_BINARY" | awk '$1 == "minos" { print $2; exit }')"
 if [[ "$app_min_os" != "$EXPECTED_MIN_OS" ]]; then
   echo "Validation host minimum is $app_min_os, expected $EXPECTED_MIN_OS." >&2

@@ -1,5 +1,5 @@
 // swift-tools-version: 5.9
-// tag: "3.0.3"
+// tag: "3.0.6"
 import PackageDescription
 
 let package = Package(
@@ -9,22 +9,10 @@ let package = Package(
         .iOS(.v13)
     ],
     products: [
-        // 외부 기본 제품은 source UI + Objective-C core 조합만 노출한다.
+        // Consumers integrate one facade product and `import AIScan` only.
         .library(
             name: "AIScan",
             targets: ["AIScan"]
-        ),
-        .library(
-            name: "AIScanCore",
-            targets: ["AIScanCore"]
-        ),
-        .library(
-            name: "AIScanCameraUI",
-            targets: ["AIScanCameraUI"]
-        ),
-        .library(
-            name: "AIScanReferenceUI",
-            targets: ["AIScanReferenceUI"]
         )
     ],
     dependencies: [],
@@ -43,6 +31,7 @@ let package = Package(
             dependencies: ["AIScanCore"],
             path: "Sources/AIScanCameraUI",
             resources: [
+                .process("PrivacyInfo.xcprivacy"),
                 .process("Resources"),
                 .process("ReferenceResources")
             ]

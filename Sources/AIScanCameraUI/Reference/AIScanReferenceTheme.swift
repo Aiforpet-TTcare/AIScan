@@ -8,10 +8,16 @@ enum AIScanReferenceTheme {
     }
     static var textPrimary: UIColor { adaptive(light: rgb(0x191919), dark: .label) }
     static var textSecondary: UIColor { adaptive(light: rgb(0x717171), dark: .secondaryLabel) }
+    static var textTertiary: UIColor { adaptive(light: rgb(0x999999), dark: .tertiaryLabel) }
     static var bodyText: UIColor { adaptive(light: rgb(0x535353), dark: .secondaryLabel) }
     static var dateText: UIColor { adaptive(light: rgb(0x898989), dark: .secondaryLabel) }
     static var noticeText: UIColor { adaptive(light: rgb(0xB4B4B4), dark: .tertiaryLabel) }
     static var divider: UIColor { adaptive(light: rgb(0xEDEDED), dark: .separator) }
+    static var controlBorder: UIColor { adaptive(light: rgb(0xEBEDF0), dark: .separator) }
+    static var albumUnselectedAction: UIColor {
+        adaptive(light: rgb(0x173DB0).withAlphaComponent(0.5), dark: brandPrimary)
+    }
+    static var warning: UIColor { adaptive(light: .red, dark: .systemRed) }
     static var shadow: UIColor { adaptive(light: .black, dark: .black) }
     static var skinSpacer: UIColor { adaptive(light: rgb(0xF4F4F4), dark: .tertiarySystemBackground) }
     static var brandPrimary: UIColor { named("AISBrandPrimary", fallback: .systemBlue) }
@@ -40,6 +46,15 @@ enum AIScanReferenceTheme {
     }
     static var analysisCaptionText: UIColor {
         adaptive(light: .white, dark: onBrand)
+    }
+    static var exportAction: UIColor {
+        adaptive(light: rgb(0x06ACC7), dark: brandPrimary)
+    }
+    static var skeletonBase: UIColor {
+        adaptive(light: rgb(0xE9E9E9), dark: .tertiarySystemBackground)
+    }
+    static var skeletonHighlight: UIColor {
+        adaptive(light: .white, dark: .separator)
     }
 
     static func resolvedCGColor(_ color: UIColor, traits: UITraitCollection) -> CGColor {

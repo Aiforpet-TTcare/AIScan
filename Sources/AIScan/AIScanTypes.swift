@@ -1,5 +1,22 @@
 import AIScanCore
 
+/// AIScan service environment exposed without leaking Core implementation types.
+public enum AIScanEnvironment: Sendable {
+    case production
+    case development
+}
+
+extension AIScanEnvironment {
+    var coreValue: AISCEnvironment {
+        switch self {
+        case .production:
+            .production
+        case .development:
+            .development
+        }
+    }
+}
+
 /// 반려동물 종류를 지정하는 공개 호환 타입입니다.
 public enum PetType: String, Sendable {
     case dog
@@ -16,7 +33,6 @@ public enum PartType: Hashable, Sendable {
     case belly
     case foot
     case tooth
-    case joint
     case skin
 
     public var key: String {
@@ -27,8 +43,6 @@ public enum PartType: Hashable, Sendable {
             "TOOTH"
         case .ear, .belly, .foot, .skin:
             "SKIN"
-        case .joint:
-            "JOINT"
         }
     }
 
@@ -38,8 +52,6 @@ public enum PartType: Hashable, Sendable {
             "eye"
         case .tooth:
             "teeth"
-        case .joint:
-            "joint"
         case .ear, .belly, .foot, .skin:
             "skin"
         }
@@ -57,8 +69,6 @@ public enum PartType: Hashable, Sendable {
             "FOOT"
         case .tooth:
             "TEETH"
-        case .joint:
-            "JOINT"
         }
     }
 
@@ -76,8 +86,6 @@ public enum PartType: Hashable, Sendable {
             "SKIN"
         case .foot:
             "FOOT"
-        case .joint:
-            "JOINT"
         }
     }
 }
@@ -100,8 +108,6 @@ extension PartType {
             .eye
         case .tooth:
             .teeth
-        case .joint:
-            .joint
         case .ear, .belly, .foot, .skin:
             .skin
         }
@@ -111,7 +117,7 @@ extension PartType {
         switch self {
         case .ear, .belly, .foot, .skin:
             detailKey
-        case .eye, .tooth, .joint:
+        case .eye, .tooth:
             nil
         }
     }
@@ -124,7 +130,7 @@ extension PartType {
             "belly"
         case .foot:
             "foot"
-        case .eye, .tooth, .joint, .skin:
+        case .eye, .tooth, .skin:
             nil
         }
     }

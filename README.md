@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.3")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.6")
 ]
 ```
 
@@ -37,31 +37,20 @@ should use Swift Package Manager; Pod validation and trunk publication do not
 block the primary SDK release.
 
 ```ruby
-pod 'AIScan', '~> 3.0.3'
+pod 'AIScan', '~> 3.0.6'
 ```
 
-### Secure Core / Reference UI
+### Single public module
 
-Swift Package Manager products:
+Swift Package Manager product:
 
 ```swift
 .product(name: "AIScan", package: "AIScan")
-.product(name: "AIScanCore", package: "AIScan")
-.product(name: "AIScanCameraUI", package: "AIScan")
-.product(name: "AIScanReferenceUI", package: "AIScan")
 ```
 
-CocoaPods subspecs:
-
-```ruby
-pod 'AIScan/Core', '~> 3.0.3'
-pod 'AIScan/CameraUI', '~> 3.0.3'
-pod 'AIScan/ReferenceUI', '~> 3.0.3'
-```
-
-`AIScanCore` is the private Objective-C ABI binary for auth, manifest, model
-execution, preprocessing, and TTAPI transport. `AIScanCameraUI` is public Swift
-source and owns the original camera, guide, progress, and retry presentation.
+Consumer code uses only `import AIScan`. The public Swift UI surface is available
+through that facade; the Objective-C Core is neither a separate product nor
+re-exported.
 See [ARCHITECTURE.md](ARCHITECTURE.md) and [RELEASE.md](RELEASE.md).
 
 ---
@@ -103,9 +92,12 @@ import AIScan
 
 AIScanManager.configure(
     publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx",
-    environment: .test
+    environment: .production
 )
 ```
+
+The public gateway is always `.production`; the `tt_pk_test_…` or
+`tt_pk_live_…` key prefix selects the registered Test or Live app environment.
 
 ## Usage
 
@@ -115,7 +107,11 @@ AIScanManager.configure(
 try AIScanManager.showCamera(
     petType: .dog,
     partType: .eye,
-    on: self
+    on: self,
+    petName: "Bori",
+    petBreedName: "Maltese",
+    enableResultView: true,
+    enablePdfShare: true
 ) { result in
     switch result {
     case let .success(scan):
@@ -137,6 +133,7 @@ try AIScanManager.showCamera(
 let camera = try AIScanManager.makeCameraViewController(
     petType: .dog,
     partType: .eye,
+    enableResultView: true,
     resultViewController: MyResultViewController()
 )
 present(camera, animated: true)
@@ -155,31 +152,58 @@ present(camera, animated: true)
 | `analysisPosition` | `String?` | `nil` | Contract analysis position, when required. |
 | `userId` | `String?` | `nil` | Host app user identifier. |
 | `petId` | `String?` | `nil` | Host app pet identifier. |
+| `petName` | `String?` | `nil` | Name printed on the optional screening report. |
+| `petBreedName` | `String?` | `nil` | Breed printed on the report cover. |
+| `petBirthday` | `String?` | `nil` | Birthday printed on the report cover. |
+| `petGender` | `String?` | `nil` | Gender printed on the report cover. |
 | `recordId` | `String?` | `nil` | Host app record identifier. |
 | `displayMetadata` | `[String: String]?` | `nil` | Display-safe metadata only. |
+| `enablesQuestionnaire` | `Bool` | `false` | Presents the SDK questionnaire when enabled. |
+| `allowsAlbum` | `Bool` | `false` | Shows the photo-library entry when enabled. |
+| `enableResultView` | `Bool` | `false` | Presents the built-in result UI when explicitly enabled, independently of whether `contractResult` is also delivered. The default receives only the completion callback. |
+| `enablePdfShare` | `Bool` | `true` | Shows the original result-footer action, generates the A4 report, then opens the system share sheet. |
+
+### Privacy manifest
+
+AIScan ships privacy manifests for both the public Swift UI resources and every
+Core XCFramework slice. The SDK declares no tracking. For app functionality it
+may transmit the selected/captured pet image, a host-supplied user identifier,
+and host-supplied scan content such as pet, record, and questionnaire values.
+Host apps remain responsible for matching their App Store privacy answers and
+privacy notice to the identifiers and optional metadata they choose to provide.
+
+`AIScanManager.onPDFExported` receives the protected local PDF URL on the main
+actor before the share sheet opens. `AIScanManager.lastExportedPDFURL` retains
+the most recently generated URL for the current process.
 
 ---
 
 ## Result Data
 
-`AISCDisplayResult` intentionally exposes only display-safe fields.
+`AIScanResult` intentionally exposes only callback-safe fields.
 
 | Field | Type | Description |
 |---|---|---|
 | `status` | `String` | Display status. |
 | `diagnosisID` | `String?` | Server diagnosis identifier when available. |
-| `symptoms` | `[AISCDisplaySymptom]` | Display-safe symptom rows. |
-| `contractResult` | `AISCContractResult?` | Partner payload passed through without SDK remapping. |
+| `symptoms` | `[AIScanSymptom]` | Display-safe symptom rows. |
+| `contractResult` | `AIScanContractResult?` | Partner payload passed through without SDK remapping. |
 
-`AISCDisplaySymptom` carries display names, levels, labels, and optional image
+`AIScanSymptom` carries display names, levels, labels, and optional image
 URLs. It does not expose model names, raw prediction values, thresholds, or
 network schema fields.
+
+`contractResult` is always forwarded through the completion callback when the
+server supplies one. Its presence does not control questionnaire presentation
+or `enableResultView`; hosts that show partner JSON should do so with a separate
+app-level option.
 
 ---
 
 ## Error Handling
 
-Core callbacks deliver `NSError` values from `AISCErrorDomain`.
+Failures are delivered as `Error`; use `localizedDescription` for display and
+cast to `NSError` only when the host needs the stable numeric code.
 
 | Code prefix | Meaning | User-facing guidance |
 |---|---|---|

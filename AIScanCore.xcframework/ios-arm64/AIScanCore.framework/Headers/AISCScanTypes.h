@@ -34,6 +34,39 @@ typedef NS_ENUM(NSInteger, AISCFrameOrientation) {
     AISCFrameOrientationLeft = 3,
 };
 
+/// One display-safe questionnaire prompt. Network URLs, catalog structure,
+/// and response rules remain private to Core.
+@interface AISCQuestionnairePrompt : NSObject
+
+@property (nonatomic, copy, readonly) NSString *identifier;
+@property (nonatomic, copy, readonly) NSString *text;
+
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithIdentifier:(NSString *)identifier
+                              text:(NSString *)text NS_DESIGNATED_INITIALIZER;
+
+@end
+
+@interface AISCQuestionnaire : NSObject
+
+@property (nonatomic, copy, readonly) NSArray<AISCQuestionnairePrompt *> *prompts;
+
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithPrompts:(NSArray<AISCQuestionnairePrompt *> *)prompts NS_DESIGNATED_INITIALIZER;
+
+@end
+
+@interface AISCQuestionnaireAnswer : NSObject
+
+@property (nonatomic, strong, readonly) AISCQuestionnairePrompt *prompt;
+@property (nonatomic, assign, readonly) BOOL positive;
+
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithPrompt:(AISCQuestionnairePrompt *)prompt
+                       positive:(BOOL)positive NS_DESIGNATED_INITIALIZER;
+
+@end
+
 @interface AISCScanContext : NSObject
 
 @property (nonatomic, assign) AISCPetType petType;
@@ -48,6 +81,8 @@ typedef NS_ENUM(NSInteger, AISCFrameOrientation) {
 @property (nonatomic, copy, nullable) NSString *petIdentifier;
 @property (nonatomic, copy, nullable) NSString *recordIdentifier;
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *displayMetadata;
+/// High-level UI opts in by default; direct Core clients stay unchanged.
+@property (nonatomic, assign) BOOL questionnaireEnabled;
 
 @end
 
@@ -64,11 +99,17 @@ typedef NS_ENUM(NSInteger, AISCFrameOrientation) {
 
 @end
 
+typedef NS_ENUM(NSInteger, AISCImageUploadEncoding) {
+    AISCImageUploadEncodingJPEG = 0,
+    AISCImageUploadEncodingLosslessPNG = 1,
+};
+
 @interface AISCImageInput : NSObject
 
 @property (nonatomic, assign, readonly, nullable) CVPixelBufferRef pixelBuffer;
 @property (nonatomic, strong, readonly, nullable) NSURL *imageURL;
 @property (nonatomic, assign) AISCFrameOrientation orientation;
+@property (nonatomic, assign) AISCImageUploadEncoding uploadEncoding;
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *displayMetadata;
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -10,7 +10,7 @@ import WebKit
 
 @MainActor
 final class AIScanLottiePlayerController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler {
-    private let lottie: AIScanResultLottie
+    nonisolated private let lottie: any AIScanLottieAsset
     private let handler = "lottieHandler"
     private let config = WKWebViewConfiguration()
     lazy var webView: WKWebView = {
@@ -40,7 +40,7 @@ final class AIScanLottiePlayerController: UIViewController, WKNavigationDelegate
     
     var completion: (() -> Void)?
     
-    init(lottie: AIScanResultLottie, completion: (() -> Void)? = nil) {
+    init(lottie: any AIScanLottieAsset, completion: (() -> Void)? = nil) {
         self.lottie = lottie
         super.init(nibName: nil, bundle: nil)
         self.completion = completion
@@ -237,7 +237,7 @@ var n$1=t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e)
         DispatchQueue.global(qos: .userInitiated).async {
             guard let jsonString = self.lottie.jsonString else {
                 DispatchQueue.main.async {
-                    assertionFailure("Missing result animation JSON")
+                    assertionFailure("Missing Lottie animation JSON")
                 }
                 return
             }
@@ -270,45 +270,48 @@ var n$1=t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e)
     }
     
     func playAnimation() {
-        webView.evaluateJavaScript("window.postMessage({ command: 'play' }, '*');") { result, error in
-            if let error = error {
-                print("playAnimation JavaScript 실행 오류: \(error.localizedDescription)")
-            }
-        }
+        evaluateJavaScript("window.postMessage({ command: 'play' }, '*')", operation: "playAnimation")
     }
     
     func stopAnimation() {
-        webView.evaluateJavaScript("window.postMessage({ command: 'stop' }, '*');") { result, error in
-            if let error = error {
-                print("stopAnimation JavaScript 실행 오류: \(error.localizedDescription)")
-            }
-        }
+        evaluateJavaScript("window.postMessage({ command: 'stop' }, '*')", operation: "stopAnimation")
     }
     
     func loadAnimation(jsonString: String) {
-        let escapedJsonString = jsonString.replacingOccurrences(of: "\"", with: "\\\"")
-        webView.evaluateJavaScript("window.postMessage({ command: 'load', animationData: \"\(escapedJsonString)\" }, '*');") { result, error in
-            if let error = error {
-                print("loadAnimation JavaScript 실행 오류: \(error.localizedDescription)")
-                print("loadAnimation JavaScript 실행 오류: \(error)")
-            }
+        let payload: [String: Any] = [
+            "command": "load",
+            "animationData": jsonString,
+        ]
+        guard JSONSerialization.isValidJSONObject(payload),
+              let data = try? JSONSerialization.data(withJSONObject: payload),
+              let encodedPayload = String(data: data, encoding: .utf8) else {
+            assertionFailure("Unable to encode Lottie JavaScript payload")
+            return
         }
+        evaluateJavaScript(
+            "window.postMessage(\(encodedPayload), '*')",
+            operation: "loadAnimation"
+        )
     }
     
     func setAnimationSpeed(speed: Double) {
-        webView.evaluateJavaScript("window.postMessage({ command: 'setSpeed', speed: \(speed) }, '*');") { result, error in
-            if let error = error {
-                print("setAnimationSpeed JavaScript 실행 오류: \(error.localizedDescription)")
-            }
-        }
+        evaluateJavaScript(
+            "window.postMessage({ command: 'setSpeed', speed: \(speed) }, '*')",
+            operation: "setAnimationSpeed"
+        )
     }
     
     func setAnimationLoop(loop: Bool) {
-        webView.evaluateJavaScript("window.postMessage({ command: 'setLoop', loop: \(loop) }, '*');") { result, error in
-            if let error = error {
-                print("setAnimationLoop JavaScript 실행 오류: \(error.localizedDescription)")
-            }
-        }
+        evaluateJavaScript(
+            "window.postMessage({ command: 'setLoop', loop: \(loop) }, '*')",
+            operation: "setAnimationLoop"
+        )
+    }
+
+    private func evaluateJavaScript(_ script: String, operation _: String) {
+        // Rendering failure is intentionally silent. Core owns scan lifecycle
+        // observation; the source-distributed renderer only updates visuals.
+        webView.evaluateJavaScript("\(script); true", completionHandler: nil)
     }
 }
 
@@ -330,7 +333,10 @@ private final class TTWeakMessageHandler: NSObject, WKScriptMessageHandler {
 
 
 extension AIScanLottiePlayerController {
-    static func instance(lottie: AIScanResultLottie, completion: (() -> Void)? = nil) -> AIScanLottiePlayerController {
+    static func instance(
+        lottie: any AIScanLottieAsset,
+        completion: (() -> Void)? = nil
+    ) -> AIScanLottiePlayerController {
         AIScanLottiePlayerController(lottie: lottie, completion: completion)
     }
 }

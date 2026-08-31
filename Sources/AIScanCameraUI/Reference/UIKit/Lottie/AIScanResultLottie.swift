@@ -1,6 +1,13 @@
 import CoreGraphics
 
-enum AIScanResultLottie {
+protocol AIScanLottieAsset: Sendable {
+    var jsonString: String? { get }
+    var loop: Bool { get }
+    var autoPlay: Bool { get }
+    var size: CGSize { get }
+}
+
+enum AIScanResultLottie: AIScanLottieAsset {
     case normal
     case caution
     case warning

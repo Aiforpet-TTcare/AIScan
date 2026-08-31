@@ -1,8 +1,15 @@
 import UIKit
+@preconcurrency import AIScanCore
+
+extension UICollectionViewLayoutAttributes {
+    var aiscanResultFittedWidth: CGFloat {
+        guard size.width > 0 else { return 0 }
+        return size.width.nextDown
+    }
+}
 
 @MainActor
 protocol AIScanResultItemCellDelegate: AnyObject {
-    func resultItemCellNeedsResize(_ cell: AIScanResultItemCell)
     func resultItemCell(_ cell: AIScanResultItemCell, didSelectImageURL url: URL)
 }
 
@@ -19,13 +26,13 @@ enum AIScanReferenceImageLoader {
             completion(image)
             return
         }
-        URLSession.shared.dataTask(with: url) { data, _, _ in
+        AISCDisplayAssetLoader.loadData(from: url) { data, _ in
             DispatchQueue.main.async {
                 let image = data.flatMap(UIImage.init(data:))
                 if let image { cache.setObject(image, forKey: key) }
                 completion(image)
             }
-        }.resume()
+        }
     }
 }
 
@@ -72,6 +79,9 @@ final class AIScanResultStatusCell: UICollectionViewCell {
         case .caution:
             target = cautionContainer
             animation = .caution
+        case .cautionQuestionnaire:
+            target = cautionContainer
+            animation = .caution
         case .warning:
             target = warningContainer
             animation = .warning
@@ -92,7 +102,7 @@ final class AIScanResultStatusCell: UICollectionViewCell {
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.size = CGSize(width: UIScreen.main.bounds.width, height: 130)
+        layoutAttributes.size = CGSize(width: layoutAttributes.aiscanResultFittedWidth, height: 130)
         return layoutAttributes
     }
 
@@ -153,13 +163,25 @@ final class AIScanResultTitleCell: UICollectionViewCell {
         applyTheme()
     }
 
-    func configure(title: String, subtitle: String?) {
+    func configure(title: String, subtitle: String?, emphasizesSubtitle: Bool = false) {
         installStackIfNeeded()
         titleLabel.text = title
-        titleLabel.numberOfLines = 0
-        titleLabel.textAlignment = .center
-        titleLabel.font = .boldSystemFont(ofSize: 22)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        paragraph.lineBreakMode = .byWordWrapping
+        paragraph.lineHeightMultiple = 1.2
+        titleLabel.attributedText = NSAttributedString(
+            string: title,
+            attributes: [
+                .font: titleLabel.font as Any,
+                .foregroundColor: AIScanReferenceTheme.textPrimary,
+                .paragraphStyle: paragraph,
+            ]
+        )
         subtitleLabel.text = subtitle
+        subtitleLabel.font = emphasizesSubtitle
+            ? .boldSystemFont(ofSize: 14)
+            : .systemFont(ofSize: 14)
         subtitleLabel.isHidden = subtitle?.isEmpty != false
         applyTheme()
     }
@@ -174,7 +196,10 @@ final class AIScanResultTitleCell: UICollectionViewCell {
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         setNeedsLayout()
         layoutIfNeeded()
-        let target = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+        let target = CGSize(
+            width: layoutAttributes.aiscanResultFittedWidth,
+            height: UIView.layoutFittingCompressedSize.height
+        )
         let size = contentView.systemLayoutSizeFitting(
             target,
             withHorizontalFittingPriority: .required,
@@ -249,7 +274,7 @@ final class AIScanResultDateCell: UICollectionViewCell {
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.size = CGSize(width: UIScreen.main.bounds.width, height: 34)
+        layoutAttributes.size = CGSize(width: layoutAttributes.aiscanResultFittedWidth, height: 34)
         return layoutAttributes
     }
 
@@ -274,6 +299,8 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
 
     var onSelect: ((Int) -> Void)?
     private var items: [AIScanDisplaySymptomViewModel] = []
+    private let fallbackItems = (0..<5).map { "Item \($0)" }
+    private var isConfigured = false
     private var selectedIndex = 0
     private let baseHeight: CGFloat = 40
     private let horizontalPadding: CGFloat = 24
@@ -318,6 +345,7 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
     }
 
     func configure(items: [AIScanDisplaySymptomViewModel], selectedIndex: Int) {
+        isConfigured = true
         self.items = items
         self.selectedIndex = min(max(0, selectedIndex), max(0, items.count - 1))
         collectionView.reloadData()
@@ -339,13 +367,21 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
         }
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        items = []
+        isConfigured = false
+        selectedIndex = 0
+        collectionView.setContentOffset(.zero, animated: false)
+    }
+
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.size = CGSize(width: UIScreen.main.bounds.width, height: 50)
+        layoutAttributes.size = CGSize(width: layoutAttributes.aiscanResultFittedWidth, height: 50)
         return layoutAttributes
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        items.count
+        isConfigured ? items.count : fallbackItems.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -357,7 +393,7 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
             label = UILabel()
             label.tag = 1001
             label.textAlignment = .center
-            label.layer.cornerRadius = 13.5
+            label.layer.cornerRadius = 13
             label.layer.masksToBounds = true
             label.translatesAutoresizingMaskIntoConstraints = false
             cell.contentView.addSubview(label)
@@ -368,13 +404,14 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
                 label.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
             ])
         }
-        let item = items[indexPath.item]
-        label.text = item.name ?? item.resultLabel ?? item.code ?? "-"
-        applyAppearance(label, selected: indexPath.item == selectedIndex)
+        let item = isConfigured ? items[indexPath.item] : nil
+        label.text = item?.name ?? item?.resultLabel ?? item?.code ?? fallbackItems[indexPath.item]
+        let isSelected = isConfigured && indexPath.item == selectedIndex
+        applyAppearance(label, selected: isSelected)
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = label.text
-        cell.accessibilityIdentifier = "aiscan.result.symptom.\(item.id)"
-        cell.accessibilityTraits = indexPath.item == selectedIndex ? [.button, .selected] : [.button]
+        cell.accessibilityIdentifier = item.map { "aiscan.result.symptom.\($0.id)" }
+        cell.accessibilityTraits = isSelected ? [.button, .selected] : [.button]
         return cell
     }
 
@@ -390,6 +427,9 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
+        guard isConfigured else {
+            return CGSize(width: 120, height: baseHeight)
+        }
         let text = items[indexPath.item].name ?? items[indexPath.item].resultLabel ?? items[indexPath.item].code ?? "-"
         let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 14, weight: .medium)]).width
         return CGSize(width: ceil(max(minimumWidth, width + horizontalPadding)), height: baseHeight)
@@ -400,14 +440,15 @@ final class AIScanResultTabCell: UICollectionViewCell, UICollectionViewDataSourc
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        let widths = items.indices.reduce(CGFloat.zero) { result, index in
+        let count = self.collectionView(collectionView, numberOfItemsInSection: section)
+        let widths = (0..<count).reduce(CGFloat.zero) { result, index in
             result + self.collectionView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForItemAt: IndexPath(item: index, section: section)
             ).width
         }
-        let contentWidth = widths + CGFloat(max(0, items.count - 1)) * spacing
+        let contentWidth = widths + CGFloat(max(0, count - 1)) * spacing
         let centeredInset = (collectionView.bounds.width - contentWidth) / 2
         let inset = max(sidePadding, centeredInset)
         return UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
@@ -451,7 +492,6 @@ final class AIScanResultItemCell: UICollectionViewCell {
     weak var delegate: AIScanResultItemCellDelegate?
     private var symptom: AIScanDisplaySymptomViewModel?
     private var calculatedHeight: CGFloat = 477
-    private var lastNotifiedHeight: CGFloat = -1
     private var leftRequestURL: URL?
     private var rightRequestURL: URL?
 
@@ -472,24 +512,48 @@ final class AIScanResultItemCell: UICollectionViewCell {
         rightTitleContainer.layer.masksToBounds = true
         leftImageView.layer.cornerRadius = 34
         rightImageView.layer.cornerRadius = 34
-        leftImageView.clipsToBounds = true
-        rightImageView.clipsToBounds = true
-        leftImageView.contentMode = .scaleAspectFill
-        rightImageView.contentMode = .scaleAspectFill
         leftTitleLabel.text = AIScanReferenceStrings.localized(.originalPhoto)
         rightTitleLabel.text = AIScanReferenceStrings.localized(.analysisPhoto)
         applyTheme()
+
+        // Preserve the original self-sizing behavior. Required horizontal IB
+        // constraints otherwise conflict with UICollectionView's temporary
+        // encapsulated width while the cell is first measured.
+        for constraint in contentView.constraints where
+            constraint.firstAttribute != .width &&
+            constraint.firstAttribute != .height &&
+            constraint.priority == .required {
+            constraint.priority = UILayoutPriority(999)
+        }
     }
 
     func configure(symptom: AIScanDisplaySymptomViewModel) {
+        configure(symptom: symptom, loadsImages: true)
+    }
+
+    func configureForSizing(symptom: AIScanDisplaySymptomViewModel) {
+        configure(symptom: symptom, loadsImages: false)
+    }
+
+    private func configure(
+        symptom: AIScanDisplaySymptomViewModel,
+        loadsImages: Bool
+    ) {
         self.symptom = symptom
-        bindImage(symptom.cropImageURL, to: leftImageView, request: \Self.leftRequestURL)
-        bindImage(symptom.heatmapURL ?? symptom.cropImageURL, to: rightImageView, request: \Self.rightRequestURL)
+        if loadsImages {
+            bindImage(symptom.cropImageURL, to: leftImageView, request: \Self.leftRequestURL)
+            bindImage(symptom.heatmapURL ?? symptom.cropImageURL, to: rightImageView, request: \Self.rightRequestURL)
+        }
 
         let labels = [firstLabel, secondLabel, thirdLabel, fourthLabel]
         let constraints = [firstHeightConstraint, secondHeightConstraint, thirdHeightConstraint, fourthHeightConstraint]
+        let originalOrdinalIcons = [
+            "vuesaxBoldMessageNotif",
+            "iconPageClipboardTick",
+            "iconPageDanger",
+            "iconPageHospital"
+        ]
         let rows = Array(symptom.detailRows.prefix(4))
-        var textHeight: CGFloat = 0
         for index in labels.indices {
             guard index < rows.count else {
                 labels[index]?.attributedText = nil
@@ -501,27 +565,15 @@ final class AIScanResultItemCell: UICollectionViewCell {
             let label = labels[index]!
             label.isHidden = false
             label.font = .systemFont(ofSize: 14)
-            label.attributedText = attributedText(for: row)
-            let measured = ceil(label.sizeThatFits(
-                CGSize(width: max(0, UIScreen.main.bounds.width - 90), height: .greatestFiniteMagnitude)
-            ).height)
-            constraints[index]?.constant = measured
-            textHeight += measured
+            label.attributedText = attributedText(
+                for: row,
+                fallbackIconName: originalOrdinalIcons[index]
+            )
+            constraints[index]?.constant = 0
         }
-        calculatedHeight = 297 + textHeight + CGFloat(max(0, rows.count - 1)) * 12
+        updateCalculatedHeight(for: max(bounds.width, 1))
         setNeedsLayout()
         layoutIfNeeded()
-        if abs(calculatedHeight - lastNotifiedHeight) > 0.5 {
-            lastNotifiedHeight = calculatedHeight
-            // UICollectionView is still constructing its visible-item layout while
-            // cellForItem(at:) calls configure. Mutating that layout synchronously
-            // corrupts UIKit's internal sizing arrays. The original result UI also
-            // publishes its height change on the next main run-loop turn.
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                self.delegate?.resultItemCellNeedsResize(self)
-            }
-        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -533,8 +585,30 @@ final class AIScanResultItemCell: UICollectionViewCell {
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.size = CGSize(width: UIScreen.main.bounds.width, height: calculatedHeight)
+        let width = layoutAttributes.aiscanResultFittedWidth
+        updateCalculatedHeight(for: width)
+        layoutAttributes.size = CGSize(width: width, height: calculatedHeight)
         return layoutAttributes
+    }
+
+    private func updateCalculatedHeight(for width: CGFloat) {
+        let labels = [firstLabel, secondLabel, thirdLabel, fourthLabel]
+        let constraints = [firstHeightConstraint, secondHeightConstraint, thirdHeightConstraint, fourthHeightConstraint]
+        var textHeight: CGFloat = 0
+        var visibleCount = 0
+        for index in labels.indices {
+            guard let label = labels[index], !label.isHidden else {
+                constraints[index]?.constant = 0
+                continue
+            }
+            let measured = ceil(label.sizeThatFits(
+                CGSize(width: max(0, width - 90), height: .greatestFiniteMagnitude)
+            ).height)
+            constraints[index]?.constant = measured
+            textHeight += measured
+            visibleCount += 1
+        }
+        calculatedHeight = 297 + textHeight + CGFloat(max(0, visibleCount - 1)) * 12
     }
 
     @IBAction private func didTapLeftButton(_ sender: Any) {
@@ -563,32 +637,16 @@ final class AIScanResultItemCell: UICollectionViewCell {
         }
     }
 
-    private func attributedText(for row: AIScanDisplayDetailRowViewModel) -> NSAttributedString {
+    private func attributedText(
+        for row: AIScanDisplayDetailRowViewModel,
+        fallbackIconName: String
+    ) -> NSAttributedString {
         let font = UIFont.systemFont(ofSize: 14)
-        let parsed: NSMutableAttributedString
-        if let data = "<style>body{font-family:'\(font.fontName)';font-size:\(font.pointSize)px;}</style>\(row.text)".data(using: .utf8),
-           let value = try? NSMutableAttributedString(
-               data: data,
-               options: [
-                   .documentType: NSAttributedString.DocumentType.html,
-                   .characterEncoding: String.Encoding.utf8.rawValue
-               ],
-               documentAttributes: nil
-           ) {
-            parsed = value
-        } else {
-            parsed = NSMutableAttributedString(string: row.text)
-        }
-        parsed.addAttribute(
-            .foregroundColor,
-            value: AIScanReferenceTheme.bodyText,
-            range: NSRange(location: 0, length: parsed.length)
-        )
+        let parsed = lightweightAttributedText(from: row.text, baseFont: font)
 
         let result = NSMutableAttributedString()
-        if let iconName = row.iconName,
-           let image = UIImage(
-               named: iconName,
+        if let image = UIImage(
+               named: row.iconName ?? fallbackIconName,
                in: AIScanReferenceStrings.resourceBundle,
                compatibleWith: traitCollection
            ) {
@@ -605,26 +663,98 @@ final class AIScanResultItemCell: UICollectionViewCell {
         }
         result.append(parsed)
 
-        // Preserve the paragraph ranges produced by the HTML parser. Replacing
-        // them with one global style makes every line after <br> lose the
-        // original hanging indent and visibly shifts body text to the left.
         let indent: CGFloat = 24
-        result.enumerateAttribute(
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.firstLineHeadIndent = 0
+        paragraph.headIndent = indent
+        paragraph.tabStops = [
+            NSTextTab(textAlignment: .left, location: indent, options: [:])
+        ]
+        paragraph.defaultTabInterval = indent
+        paragraph.lineBreakMode = .byWordWrapping
+        result.addAttribute(
             .paragraphStyle,
-            in: NSRange(location: 0, length: result.length)
-        ) { value, range, _ in
-            let paragraph = (value as? NSParagraphStyle)?.mutableCopy()
-                as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
-            paragraph.firstLineHeadIndent = range.location == 0 ? 0 : indent
-            paragraph.headIndent = indent
-            paragraph.tabStops = [
-                NSTextTab(textAlignment: .left, location: indent, options: [:])
-            ]
-            paragraph.defaultTabInterval = indent
-            paragraph.lineBreakMode = .byWordWrapping
-            result.addAttribute(.paragraphStyle, value: paragraph, range: range)
+            value: paragraph,
+            range: NSRange(location: 0, length: result.length)
+        )
+        return result
+    }
+
+    private func lightweightAttributedText(
+        from html: String,
+        baseFont: UIFont
+    ) -> NSMutableAttributedString {
+        let result = NSMutableAttributedString()
+        var cursor = html.startIndex
+        var boldDepth = 0
+
+        while cursor < html.endIndex {
+            guard let open = html[cursor...].firstIndex(of: "<"),
+                  let close = html[open...].firstIndex(of: ">") else {
+                appendText(
+                    String(html[cursor...]),
+                    bold: boldDepth > 0,
+                    baseFont: baseFont,
+                    to: result
+                )
+                break
+            }
+            appendText(
+                String(html[cursor..<open]),
+                bold: boldDepth > 0,
+                baseFont: baseFont,
+                to: result
+            )
+            let tag = html[html.index(after: open)..<close]
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+            switch tag {
+            case "b", "strong":
+                boldDepth += 1
+            case "/b", "/strong":
+                boldDepth = max(0, boldDepth - 1)
+            case "br", "br/", "br /", "/p", "/li":
+                if result.string.last != "\n" {
+                    appendText("\n", bold: false, baseFont: baseFont, to: result)
+                }
+            case "li":
+                if !result.string.isEmpty, result.string.last != "\n" {
+                    appendText("\n", bold: false, baseFont: baseFont, to: result)
+                }
+                appendText("• ", bold: boldDepth > 0, baseFont: baseFont, to: result)
+            default:
+                break
+            }
+            cursor = html.index(after: close)
+        }
+
+        while result.string.last == "\n" {
+            result.deleteCharacters(in: NSRange(location: result.length - 1, length: 1))
         }
         return result
+    }
+
+    private func appendText(
+        _ text: String,
+        bold: Bool,
+        baseFont: UIFont,
+        to result: NSMutableAttributedString
+    ) {
+        guard !text.isEmpty else { return }
+        let decoded = text
+            .replacingOccurrences(of: "&nbsp;", with: " ")
+            .replacingOccurrences(of: "&amp;", with: "&")
+            .replacingOccurrences(of: "&lt;", with: "<")
+            .replacingOccurrences(of: "&gt;", with: ">")
+            .replacingOccurrences(of: "&quot;", with: "\"")
+            .replacingOccurrences(of: "&#39;", with: "'")
+        result.append(NSAttributedString(
+            string: decoded,
+            attributes: [
+                .font: bold ? UIFont.boldSystemFont(ofSize: baseFont.pointSize) : baseFont,
+                .foregroundColor: AIScanReferenceTheme.bodyText,
+            ]
+        ))
     }
 
     private func applyTheme() {
@@ -646,6 +776,14 @@ final class AIScanResultItemCell: UICollectionViewCell {
         rightTitleLabel.textColor = AIScanReferenceTheme.analysisCaptionText
         [firstLabel, secondLabel, thirdLabel, fourthLabel].forEach {
             $0?.textColor = AIScanReferenceTheme.bodyText
+            guard let attributedText = $0?.attributedText else { return }
+            let mutable = NSMutableAttributedString(attributedString: attributedText)
+            mutable.addAttribute(
+                .foregroundColor,
+                value: AIScanReferenceTheme.bodyText,
+                range: NSRange(location: 0, length: mutable.length)
+            )
+            $0?.attributedText = mutable
         }
     }
 }
@@ -675,7 +813,10 @@ final class AIScanResultNoticeCell: UICollectionViewCell {
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         setNeedsLayout()
         layoutIfNeeded()
-        let target = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+        let target = CGSize(
+            width: layoutAttributes.aiscanResultFittedWidth,
+            height: UIView.layoutFittingCompressedSize.height
+        )
         let size = contentView.systemLayoutSizeFitting(
             target,
             withHorizontalFittingPriority: .required,
@@ -699,7 +840,7 @@ final class AIScanResultSpaceCell: UICollectionViewCell {
     var height: CGFloat = 10
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.size = CGSize(width: UIScreen.main.bounds.width, height: height)
+        layoutAttributes.size = CGSize(width: layoutAttributes.aiscanResultFittedWidth, height: height)
         return layoutAttributes
     }
 }

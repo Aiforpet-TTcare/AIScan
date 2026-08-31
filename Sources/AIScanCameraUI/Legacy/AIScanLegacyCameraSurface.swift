@@ -1,4 +1,4 @@
-import ARKit
+import AudioToolbox
 import UIKit
 @preconcurrency import AIScanCore
 
@@ -23,7 +23,7 @@ final class CameraViewController: UIViewController {
     @IBOutlet weak var debugImageView: UIImageView?
     @IBOutlet weak var pauseIconContainer: UIView?
     @IBOutlet weak var guideContainer: UIStackView!
-    @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var sceneView: UIView!
     @IBOutlet weak var partSelectedBackgroundView: UIView?
     @IBOutlet weak var partSelectedContainer: UIView?
 
@@ -32,21 +32,44 @@ final class CameraViewController: UIViewController {
     var onFlash: ((Bool) -> Void)?
     var onGuide: (() -> Void)?
     var onSelectPart: (() -> Void)?
+    var onAlbum: (() -> Void)?
     var onZoom: ((CGFloat) -> Void)?
 
-    private let captureProgressLayer = CAShapeLayer()
+    private let fanProgressView = TTFanProgressView()
     private var captureAttentionView: UIImageView?
     private var showsPartSelector = false
     private var showsGuideControl = true
+    private var showsAlbumControl = false
+    private var isPreparing = true
+    private var isCaptureDebouncing = false
+    private var isFlashAvailable = true
+    private var isCaptureAttemptActive = false
     private var idleCaptureImage: UIImage?
+    var playSystemSound: (SystemSoundID) -> Void = { AudioServicesPlaySystemSound($0) }
+    var generateImpactFeedback: (UIImpactFeedbackGenerator.FeedbackStyle) -> Void = {
+        UIImpactFeedbackGenerator(style: $0).impactOccurred()
+    }
+    var generateNotificationFeedback: (UINotificationFeedbackGenerator.FeedbackType) -> Void = {
+        UINotificationFeedbackGenerator().notificationOccurred($0)
+    }
     private lazy var recordingCaptureImage = Self.gradientImage(
-        size: CGSize(width: 74, height: 74),
+        size: CGSize(width: 80, height: 80),
         colors: [
             UIColor(red: 248 / 255, green: 122 / 255, blue: 165 / 255, alpha: 1),
             UIColor(red: 247 / 255, green: 111 / 255, blue: 79 / 255, alpha: 1),
             UIColor(red: 248 / 255, green: 212 / 255, blue: 59 / 255, alpha: 1),
         ]
     )
+    private(set) lazy var albumButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(bundledImage("album_button_icon"), for: .normal)
+        button.accessibilityLabel = AIScanCameraStrings.localizedMessageKey("camera.album")
+        button.accessibilityIdentifier = "aiscan.camera.album"
+        button.isHidden = true
+        button.addTarget(self, action: #selector(didTapAlbumButton), for: .touchUpInside)
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +78,13 @@ final class CameraViewController: UIViewController {
         sceneView.isHidden = true
         effectView.alpha = 0
         pauseIconContainer?.isHidden = true
+        pauseIcons?.forEach { $0.layer.cornerRadius = 1.5 }
+        optionActivityIndicator?.color = UIColor(
+            red: 247 / 255,
+            green: 111 / 255,
+            blue: 79 / 255,
+            alpha: 1
+        )
         optionActivityIndicator?.stopAnimating()
         partSelectedBackgroundView?.layer.cornerRadius = 16
         partSelectedBackgroundView?.clipsToBounds = true
@@ -62,18 +92,12 @@ final class CameraViewController: UIViewController {
         flashButton.setImage(bundledImage("flash_off_circle"), for: .normal)
         flashButton.setImage(bundledImage("flash_on_circle"), for: .selected)
         idleCaptureImage = captureButton.image(for: .normal)
-        captureProgressLayer.fillColor = UIColor.clear.cgColor
-        captureProgressLayer.strokeColor = UIColor(
-            red: 248 / 255,
-            green: 122 / 255,
-            blue: 165 / 255,
-            alpha: 1
-        ).cgColor
-        captureProgressLayer.lineWidth = 5
-        captureProgressLayer.lineCap = .round
-        captureProgressLayer.strokeEnd = 0
-        captureProgressLayer.isHidden = true
-        captureButtonContainer.layer.addSublayer(captureProgressLayer)
+        captureButton.layer.masksToBounds = true
+        fanProgressView.frame = captureButtonContainer.bounds
+        fanProgressView.setProgress(to: 0)
+        fanProgressView.isHidden = true
+        fanProgressView.accessibilityIdentifier = "aiscan.camera.capture.fan-progress"
+        captureButtonContainer.addSubview(fanProgressView)
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
         view.addGestureRecognizer(pinch)
         captureButton.accessibilityLabel = AIScanCameraStrings.localized(.capture)
@@ -84,28 +108,34 @@ final class CameraViewController: UIViewController {
         flashButton.accessibilityIdentifier = "aiscan.camera.flash"
         guideButton.accessibilityLabel = AIScanCameraStrings.localized(.guide)
         guideButton.accessibilityIdentifier = "aiscan.camera.guide"
+        applyLocalizedCopy()
         partSelectedContainer?.accessibilityIdentifier = "aiscan.camera.skin-part"
+        view.addSubview(albumButton)
+        NSLayoutConstraint.activate([
+            albumButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 44),
+            albumButton.centerYAnchor.constraint(equalTo: captureButtonContainer.centerYAnchor),
+            albumButton.widthAnchor.constraint(equalToConstant: 44),
+            albumButton.heightAnchor.constraint(equalToConstant: 44),
+        ])
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         captureButton.layer.cornerRadius = captureButton.bounds.width / 2
         captureButtonContainer.layer.cornerRadius = captureButtonContainer.bounds.width / 2
-        let inset = captureProgressLayer.lineWidth / 2
-        captureProgressLayer.frame = captureButtonContainer.bounds
-        captureProgressLayer.path = UIBezierPath(
-            ovalIn: captureButtonContainer.bounds.insetBy(dx: inset, dy: inset)
-        ).cgPath
+        fanProgressView.frame = captureButtonContainer.bounds
         roundBottomCorners(preview)
         roundBottomCorners(overlayView)
     }
 
     @IBAction func capture(_ sender: Any) {
-        captureButton.isEnabled = false
+        guard captureButton.isEnabled else { return }
+        isCaptureDebouncing = true
+        updateControlAvailability()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            self?.captureButton.isEnabled = true
+            self?.isCaptureDebouncing = false
+            self?.updateControlAvailability()
         }
-        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         onCapture?()
     }
 
@@ -115,6 +145,7 @@ final class CameraViewController: UIViewController {
     }
 
     @IBAction func didTapFlashButton(_ sender: UIButton) {
+        guard sender.isEnabled else { return }
         sender.isSelected.toggle()
         UISelectionFeedbackGenerator().selectionChanged()
         onFlash?(sender.isSelected)
@@ -129,6 +160,12 @@ final class CameraViewController: UIViewController {
         onSelectPart?()
     }
 
+    @objc private func didTapAlbumButton() {
+        guard albumButton.isEnabled else { return }
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        onAlbum?()
+    }
+
     @objc private func handlePinch(_ gesture: UIPinchGestureRecognizer) {
         guard gesture.state == .changed else { return }
         onZoom?(gesture.scale)
@@ -136,7 +173,8 @@ final class CameraViewController: UIViewController {
     }
 
     func setPreparing(_ preparing: Bool) {
-        captureButton.isEnabled = !preparing
+        isPreparing = preparing
+        updateControlAvailability()
         if preparing {
             optionActivityIndicator?.startAnimating()
         } else {
@@ -144,16 +182,43 @@ final class CameraViewController: UIViewController {
         }
     }
 
-    func configureControls(showsPartSelector: Bool, showsGuide: Bool) {
+    func setPreparationIndicatorAnimating(_ animating: Bool) {
+        if animating {
+            optionActivityIndicator?.startAnimating()
+        } else {
+            optionActivityIndicator?.stopAnimating()
+        }
+    }
+
+    func configureControls(
+        showsPartSelector: Bool,
+        showsGuide: Bool,
+        showsAlbum: Bool = false
+    ) {
         self.showsPartSelector = showsPartSelector
         showsGuideControl = showsGuide
+        showsAlbumControl = showsAlbum
         partSelectedContainer?.isHidden = !showsPartSelector
         guideButton.isHidden = !showsGuide
         guideContainer.isHidden = !showsGuide
+        albumButton.isHidden = !showsAlbum
+    }
+
+    func applyLocalizedCopy(languageCode: String? = nil) {
+        let guideTitle = AIScanCameraStrings.localized(.guide, languageCode: languageCode)
+        guideContainer.allDescendantLabels.forEach { $0.text = guideTitle }
     }
 
     func setFlashEnabled(_ enabled: Bool) {
         flashButton.isSelected = enabled
+    }
+
+    func setFlashAvailable(_ available: Bool) {
+        isFlashAvailable = available
+        if !available {
+            flashButton.isSelected = false
+        }
+        updateControlAvailability()
     }
 
     func startCaptureButtonAttentionAnimation() {
@@ -192,29 +257,47 @@ final class CameraViewController: UIViewController {
     }
 
     func flashCapture() {
+        playSystemSound(1118)
         effectView.alpha = 1
         UIView.animate(
             withDuration: 0.3,
             delay: 0,
             options: [.curveEaseInOut, .beginFromCurrentState],
             animations: { [weak self] in self?.effectView.alpha = 0 },
-            completion: nil
+            completion: { [weak self] _ in
+                self?.effectView.alpha = 0
+                self?.generateNotificationFeedback(.success)
+            }
         )
     }
 
     func setCaptureAttempt(active: Bool, progress: CGFloat = 0) {
+        if active != isCaptureAttemptActive {
+            isCaptureAttemptActive = active
+            if active {
+                playSystemSound(1117)
+            }
+            generateImpactFeedback(.heavy)
+        }
         if active {
             stopCaptureButtonAttentionAnimation()
         }
-        captureProgressLayer.isHidden = !active
-        captureProgressLayer.strokeEnd = min(max(progress, 0), 1)
+        fanProgressView.isHidden = !active
+        fanProgressView.setProgress(to: active ? progress : 0)
         closeButton.isHidden = active
         flashButton.isHidden = active
         guideButton.isHidden = active || !showsGuideControl
         guideContainer.isHidden = active || !showsGuideControl
         partSelectedContainer?.isHidden = active || !showsPartSelector
+        albumButton.isHidden = active || !showsAlbumControl
         pauseIconContainer?.isHidden = true
         captureButton.setImage(active ? recordingCaptureImage : idleCaptureImage, for: .normal)
+    }
+
+    private func updateControlAvailability() {
+        captureButton.isEnabled = !isPreparing && !isCaptureDebouncing
+        flashButton.isEnabled = !isPreparing && isFlashAvailable
+        albumButton.isEnabled = !isPreparing
     }
 
     private func roundBottomCorners(_ target: UIView) {
@@ -236,6 +319,8 @@ final class CameraViewController: UIViewController {
     private static func gradientImage(size: CGSize, colors: [UIColor]) -> UIImage? {
         guard size.width > 0, size.height > 0, !colors.isEmpty else { return nil }
         return UIGraphicsImageRenderer(size: size).image { context in
+            context.cgContext.addEllipse(in: CGRect(origin: .zero, size: size))
+            context.cgContext.clip()
             let colorSpace = CGColorSpaceCreateDeviceRGB()
             guard let gradient = CGGradient(
                 colorsSpace: colorSpace,
@@ -244,24 +329,82 @@ final class CameraViewController: UIViewController {
             ) else { return }
             context.cgContext.drawLinearGradient(
                 gradient,
-                start: CGPoint(x: 0, y: 0),
-                end: CGPoint(x: size.width, y: size.height),
+                start: CGPoint(x: 0, y: size.height / 2),
+                end: CGPoint(x: size.width, y: size.height / 2),
                 options: []
             )
         }
     }
 
     static func instantiate(partType: AISCPartType) -> CameraViewController {
-        let identifier = partType == .joint
-            ? "CameraJointViewController"
-            : "CameraViewController"
         guard let controller = UIStoryboard(
             name: "TTCamera",
             bundle: AIScanCameraResourceBundle.bundle
-        ).instantiateViewController(withIdentifier: identifier) as? CameraViewController else {
+        ).instantiateViewController(withIdentifier: "CameraViewController") as? CameraViewController else {
             preconditionFailure("The original TTCamera storyboard is unavailable.")
         }
         return controller
+    }
+}
+
+/// Original AIScan 2.2.4 fan-shaped capture progress view.
+@MainActor
+final class TTFanProgressView: UIView {
+    private let progressLayer = CAShapeLayer()
+
+    private(set) var progress: CGFloat = 0
+    var renderedStrokeEnd: CGFloat { progressLayer.strokeEnd }
+
+    var progressColor = UIColor(white: 0, alpha: 1) {
+        didSet {
+            progressLayer.strokeColor = progressColor.cgColor
+            progressLayer.strokeEnd = 0
+        }
+    }
+
+    var lineWidth: CGFloat = 0 {
+        didSet { configureLayers() }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configureView()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        configureLayers()
+    }
+
+    private func configureView() {
+        layer.addSublayer(progressLayer)
+        backgroundColor = .clear
+        isUserInteractionEnabled = false
+    }
+
+    private func configureLayers() {
+        let radius = bounds.width / 4 - 2
+        let circularPath = UIBezierPath(
+            arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
+            radius: radius,
+            startAngle: 3 * .pi / 2,
+            endAngle: -.pi / 2,
+            clockwise: false
+        )
+        progressLayer.path = circularPath.cgPath
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.strokeColor = progressColor.cgColor
+        progressLayer.lineWidth = radius * 2
+    }
+
+    func setProgress(to progress: CGFloat) {
+        self.progress = min(max(progress, 0), 1)
+        progressLayer.strokeEnd = 1 - self.progress
     }
 }
 
@@ -272,31 +415,114 @@ class TTOverlayViewController: UIViewController {
     @IBOutlet weak var messageContainer: UIView!
     @IBOutlet weak var messageLabel: UILabel!
 
+    private var roundedFocusMaskView: CameraRoundedFocusMaskView?
+    private var currentMessage: String?
+    private static let messageTransitionKey = "aiscan.guidance.crossfade"
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = .black
         view.isUserInteractionEnabled = false
-        messageLabel.text = AIScanCameraStrings.localized(.scanning)
+        messageLabel.text = nil
+        messageLabel.isHidden = false
+        messageLabel.alpha = 0
+        messageContainer.isHidden = false
+        installOriginalRoundedFocusMaskIfNeeded()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard let focusContainer, let roundedFocusMaskView else { return }
+        roundedFocusMaskView.holeSize = focusContainer.bounds.size
+        roundedFocusMaskView.holeCenter = roundedFocusMaskView.convert(
+            focusContainer.center,
+            from: focusContainer.superview
+        )
+        roundedFocusMaskView.setNeedsLayout()
+        roundedFocusMaskView.layoutIfNeeded()
     }
 
     func apply(evaluation: AISCFrameEvaluation) {
-        let message = evaluation.displayMessageKey.flatMap { key in
-            NSLocalizedString(
-                key,
-                tableName: "Localizable",
-                bundle: AIScanCameraResourceBundle.bundle,
-                value: key,
-                comment: ""
-            )
-        }
-        messageLabel.text = message ?? (evaluation.captureAllowed
-            ? AIScanCameraStrings.localized(.ready)
-            : AIScanCameraStrings.localized(.scanning))
-        focusImageView?.alpha = evaluation.captureAllowed ? 1 : 0.72
+        setMessage(Self.guidanceMessage(for: evaluation))
     }
 
-    func setMessage(_ message: String) {
+    func setMessage(_ message: String?, animated: Bool = true) {
+        guard message != currentMessage else { return }
+        currentMessage = message
+        messageContainer.isHidden = false
+        messageLabel.isHidden = false
+        messageLabel.layer.removeAnimation(forKey: Self.messageTransitionKey)
+        if animated {
+            messageLabel.layer.add(
+                Self.makeMessageTransition(),
+                forKey: Self.messageTransitionKey
+            )
+        }
         messageLabel.text = message
+        messageLabel.alpha = message == nil ? 0 : 1
+    }
+
+    static func makeMessageTransition() -> CATransition {
+        let transition = CATransition()
+        transition.duration = 0.16
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        transition.type = .fade
+        return transition
+    }
+
+    func setCameraActive(_ active: Bool, animated: Bool = true) {
+        view.layer.removeAllAnimations()
+        if active {
+            view.backgroundColor = .black
+        }
+        let update: () -> Void = { [weak self] in
+            self?.view.backgroundColor = active ? .clear : .black
+        }
+        guard animated else {
+            update()
+            return
+        }
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.beginFromCurrentState, .curveEaseInOut],
+            animations: update
+        )
+    }
+
+    private func installOriginalRoundedFocusMaskIfNeeded() {
+        guard focusContainer != nil else { return }
+        let focusMask = CameraRoundedFocusMaskView()
+        focusMask.accessibilityIdentifier = "aiscan.camera.rounded-focus-mask"
+        focusMask.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(focusMask, at: 0)
+        NSLayoutConstraint.activate([
+            focusMask.topAnchor.constraint(equalTo: view.topAnchor),
+            focusMask.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            focusMask.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            focusMask.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
+        ])
+        view.clipsToBounds = true
+        roundedFocusMaskView = focusMask
+    }
+
+    private static func guidanceMessage(for evaluation: AISCFrameEvaluation) -> String? {
+        let key: String
+        switch evaluation.guidanceCode {
+        case .moveCloser:
+            key = "move_closer"
+        case .moveFarther:
+            key = "move_farther"
+        case .holdStill:
+            key = "hold_still"
+        case .adjustAngle:
+            key = "adjust_angle"
+        case .improveLighting:
+            key = "improve_lighting"
+        default:
+            return nil
+        }
+        return AIScanCameraStrings.localizedMessageKey(key)
     }
 
     static func instantiate(partType: AISCPartType) -> TTOverlayViewController {
@@ -308,8 +534,6 @@ class TTOverlayViewController: UIViewController {
             identifier = "TTOverlayToothViewController"
         case .skin:
             identifier = "TTOverlaySkinViewController"
-        case .joint:
-            identifier = "TTOverlayJointViewController"
         default:
             identifier = "TTOverlaySkinViewController"
         }
@@ -334,11 +558,6 @@ final class TTOverlaySkinViewController: TTOverlayViewController {}
 @MainActor @objc(TTOverlayToothViewController)
 final class TTOverlayToothViewController: TTOverlayViewController {}
 
-@MainActor @objc(TTOverlayJointViewController)
-final class TTOverlayJointViewController: TTOverlayViewController {
-    @IBOutlet weak var guideContainer: UIView?
-}
-
 /// Runtime adapter for the original preview-guide scene in TTCamera.
 @MainActor
 @objc(PreviewGuideViewController)
@@ -356,22 +575,25 @@ final class PreviewGuideViewController: UIViewController {
     @IBOutlet weak var exampleView: UIView?
 
     var onDismiss: (() -> Void)?
-    private var guideImages: [UIImage] = []
-    private var guideIndex = 0
-    private var isAnimating = false
-    private let dotAnimationView = CameraGuideDotAnimationView()
-    private let holeView = CameraGuideHoleView()
-    private var automaticDismissWorkItem: DispatchWorkItem?
+    private var guideLottie: AIScanGuideLottie?
+    private var lottiePlayer: AIScanLottiePlayerController?
+    private var didFinish = false
+    private let holeView = CameraRoundedFocusMaskView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.accessibilityIdentifier = "aiscan.camera.guide-preview"
         exampleView?.layer.cornerRadius = 15
         exampleView?.clipsToBounds = true
         messageLabel.text = AIScanCameraStrings.localized(.startPrompt)
-        setLocalizedExampleText(in: view)
+        applyLocalizedCopy()
         exampleView?.isHidden = true
-        focusEyeIcon?.isHidden = false
-        guideImageView.image = guideImages.first
+        // The original 2.2.4 guide starts with this storyboard-only eye icon
+        // hidden. Eye guidance is rendered by its own Lottie; keeping the
+        // outlet visible leaks an eye mark into skin and tooth guides for one
+        // frame before their media is installed.
+        focusEyeIcon?.isHidden = true
+        installOriginalGuideMedia()
         holeView.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(holeView, at: 1)
         NSLayoutConstraint.activate([
@@ -380,84 +602,27 @@ final class PreviewGuideViewController: UIViewController {
             holeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             holeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        dotAnimationView.translatesAutoresizingMaskIntoConstraints = false
-        focusContainer?.addSubview(dotAnimationView)
-        if let focusContainer {
-            NSLayoutConstraint.activate([
-                dotAnimationView.topAnchor.constraint(equalTo: focusContainer.topAnchor),
-                dotAnimationView.leadingAnchor.constraint(equalTo: focusContainer.leadingAnchor),
-                dotAnimationView.trailingAnchor.constraint(equalTo: focusContainer.trailingAnchor),
-                dotAnimationView.bottomAnchor.constraint(equalTo: focusContainer.bottomAnchor),
-            ])
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        isAnimating = true
+        guard !didFinish else { return }
         configureHole()
         exampleView?.isHidden = false
-        animateNextGuideImage()
-        let workItem = DispatchWorkItem { [weak self] in self?.finishGuide() }
-        automaticDismissWorkItem = workItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6, execute: workItem)
+        lottiePlayer?.playAnimation()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        isAnimating = false
-        automaticDismissWorkItem?.cancel()
-        guideImageView.layer.removeAllAnimations()
-        dotAnimationView.stopAnimations()
+        lottiePlayer?.stopAnimation()
     }
 
     @IBAction func tap(_ sender: Any) {
         finishGuide()
     }
 
-    private func animateNextGuideImage() {
-        guard isAnimating, guideImages.count > 1 else { return }
-        guideImageView.transform = .identity
-        guideImageView.alpha = 1
-        focusEyeIcon?.alpha = 1
-        dotAnimationView.alpha = 0
-        UIView.animateKeyframes(
-            withDuration: 5,
-            delay: 0,
-            options: [.calculationModeCubic, .allowUserInteraction],
-            animations: { [weak self] in
-                guard let self else { return }
-                UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.05) {
-                    let scale = CGAffineTransform(scaleX: 1.16, y: 1.16)
-                    let shift = CGAffineTransform(
-                        translationX: 0,
-                        y: self.guideImageView.frame.height * 0.04
-                    )
-                    self.guideImageView.transform = scale.concatenating(shift)
-                }
-                UIView.addKeyframe(withRelativeStartTime: 0.15, relativeDuration: 0.05) {
-                    self.focusEyeIcon?.alpha = 0
-                }
-                UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0) {
-                    self.dotAnimationView.alpha = 1
-                    self.dotAnimationView.startAnimations()
-                }
-                UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.1) {
-                    self.dotAnimationView.alpha = 0
-                }
-                UIView.addKeyframe(withRelativeStartTime: 0.9, relativeDuration: 0.05) {
-                    self.guideImageView.alpha = 0
-                }
-                UIView.addKeyframe(withRelativeStartTime: 0.95, relativeDuration: 0.05) {
-                    self.guideIndex = (self.guideIndex + 1) % self.guideImages.count
-                    self.guideImageView.image = self.guideImages[self.guideIndex]
-                    self.guideImageView.alpha = 1
-                }
-            },
-            completion: { [weak self] _ in
-                Task { @MainActor [weak self] in self?.animateNextGuideImage() }
-            }
-        )
+    func dismissGuide() {
+        finishGuide()
     }
 
     private func configureHole() {
@@ -468,44 +633,61 @@ final class PreviewGuideViewController: UIViewController {
     }
 
     private func finishGuide() {
-        guard isAnimating else { return }
-        isAnimating = false
-        automaticDismissWorkItem?.cancel()
-        guideImageView.layer.removeAllAnimations()
-        dotAnimationView.stopAnimations()
+        guard !didFinish else { return }
+        didFinish = true
+        lottiePlayer?.stopAnimation()
         onDismiss?()
     }
 
-    private func setLocalizedExampleText(in root: UIView) {
-        for label in root.allDescendantLabels
-            where label.text == "촬영 예시 화면입니다." || label.text == "Example capture screen." {
-            label.text = AIScanCameraStrings.localizedMessageKey("camera.guide.example")
+    private func installOriginalGuideMedia() {
+        guard let guideLottie else { return }
+        let player = AIScanLottiePlayerController.instance(lottie: guideLottie) { [weak self] in
+            self?.finishGuide()
+        }
+        install(player)
+        lottiePlayer = player
+    }
+
+    private func install(_ controller: UIViewController) {
+        addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(controller.view, at: 0)
+        NSLayoutConstraint.activate([
+            controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+            controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        controller.didMove(toParent: self)
+    }
+
+    func applyLocalizedCopy(languageCode: String? = nil) {
+        for label in view.allDescendantLabels {
+            switch label.text {
+            case "잘 보고 따라해주세요", "Follow our demo tutorial", "よく見て従ってください":
+                label.text = AIScanCameraStrings.localizedMessageKey(
+                    "camera.guide.follow",
+                    languageCode: languageCode
+                )
+            case "촬영 예시 화면입니다.", "Example capture screen.", "撮影例です。":
+                label.text = AIScanCameraStrings.localizedMessageKey(
+                    "camera.guide.example",
+                    languageCode: languageCode
+                )
+            default:
+                break
+            }
         }
     }
 
     static func instantiate(context: AISCScanContext) -> PreviewGuideViewController {
-        let identifier = context.partType == .joint
-            ? "PreviewJointGuideViewController"
-            : "PreviewGuideViewController"
         guard let controller = UIStoryboard(
             name: "TTCamera",
             bundle: AIScanCameraResourceBundle.bundle
-        ).instantiateViewController(withIdentifier: identifier) as? PreviewGuideViewController else {
+        ).instantiateViewController(withIdentifier: "PreviewGuideViewController") as? PreviewGuideViewController else {
             preconditionFailure("The original TTCamera guide scene is unavailable.")
         }
-        let prefix: String
-        switch (context.petType, context.partType, context.analysisPosition) {
-        case (.cat, .eye, _): prefix = "cat_eye"
-        case (.cat, .teeth, _): prefix = "cat_teeth"
-        case (_, .eye, _): prefix = "dog_eye"
-        case (_, .teeth, _): prefix = "dog_teeth"
-        case (_, .skin, "ear"): prefix = "dog_ear"
-        case (_, .skin, "foot"): prefix = "dog_paw"
-        default: prefix = "dog_body"
-        }
-        controller.guideImages = [1, 2].compactMap {
-            UIImage(named: "\(prefix)\($0)", in: AIScanCameraResourceBundle.bundle, compatibleWith: nil)
-        }
+        controller.guideLottie = AIScanGuideLottie(context: context)
         return controller
     }
 }
@@ -519,48 +701,7 @@ private extension UIView {
 }
 
 @MainActor
-private final class CameraGuideDotAnimationView: UIView {
-    private var initialized = false
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard !initialized, !bounds.isEmpty else { return }
-        initialized = true
-        let oval = bounds.insetBy(dx: bounds.width * 0.1, dy: bounds.height * 0.25)
-        for _ in 0..<20 {
-            let dot = CAShapeLayer()
-            dot.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 5, height: 5)).cgPath
-            dot.fillColor = UIColor.white.cgColor
-            dot.frame = CGRect(
-                x: CGFloat.random(in: oval.minX...oval.maxX),
-                y: CGFloat.random(in: oval.minY...oval.maxY),
-                width: 5,
-                height: 5
-            )
-            dot.opacity = 0
-            layer.addSublayer(dot)
-        }
-    }
-
-    func startAnimations() {
-        layer.sublayers?.forEach { dot in
-            guard dot.animation(forKey: "startEndFade") == nil else { return }
-            let animation = CAKeyframeAnimation(keyPath: "opacity")
-            animation.values = [0, 1, 1, 0]
-            animation.keyTimes = [0, 0.2, 0.7, 1]
-            animation.duration = Double.random(in: 2...4)
-            animation.repeatCount = .infinity
-            dot.add(animation, forKey: "startEndFade")
-        }
-    }
-
-    func stopAnimations() {
-        layer.sublayers?.forEach { $0.removeAnimation(forKey: "startEndFade") }
-    }
-}
-
-@MainActor
-private final class CameraGuideHoleView: UIView {
+private final class CameraRoundedFocusMaskView: UIView {
     var holeSize: CGSize? { didSet { setNeedsLayout() } }
     var holeCenter: CGPoint? { didSet { setNeedsLayout() } }
 
@@ -595,6 +736,7 @@ private final class CameraGuideHoleView: UIView {
         ))
         path.usesEvenOddFillRule = true
         let mask = CAShapeLayer()
+        mask.frame = bounds
         mask.path = path.cgPath
         mask.fillRule = .evenOdd
         layer.mask = mask

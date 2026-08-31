@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 import AIScanCore
 #if SWIFT_PACKAGE
-import AIScanCameraUI
+@_spi(AIScanLifecycle) import AIScanCameraUI
 import AIScanReferenceUI
 #endif
 
@@ -10,21 +10,21 @@ import AIScanReferenceUI
 @MainActor
 public enum AIScanManager {
     private static var configurationTemplate: AISCConfiguration?
+    private static let pdfExportCoordinator = AIScanPDFExportCoordinator()
+
+    /// Called on the main actor after a report has been generated successfully.
+    public static var onPDFExported: ((URL) -> Void)?
+    public private(set) static var lastExportedPDFURL: URL?
 
     /// Configures the process-wide default used by `showCamera`.
     ///
     /// Publishable-key validation and authentication remain Core-owned.
     public static func configure(
         publishableKey: String,
-        environment: AISCEnvironment = .production
+        environment: AIScanEnvironment = .production
     ) {
         let configuration = AISCConfiguration(publishableKey: publishableKey)
-        configuration.environment = environment
-        configure(configuration: configuration)
-    }
-
-    /// Configures the process-wide default from a Core configuration template.
-    public static func configure(configuration: AISCConfiguration) {
+        configuration.environment = environment.coreValue
         configurationTemplate = copyConfiguration(configuration)
     }
 
@@ -44,12 +44,20 @@ public enum AIScanManager {
         analysisSubpart: String? = nil,
         analysisPosition: String? = nil,
         petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
         userId: String? = nil,
         recordId: String? = nil,
         displayMetadata: [String: String]? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
         completion: ((Result<AIScanResult, Error>) -> Void)? = nil
-    ) throws -> AIScanCameraViewController {
+    ) throws -> UIViewController {
         guard let configurationTemplate else {
             throw AIScanManagerError.notConfigured
         }
@@ -64,32 +72,93 @@ public enum AIScanManager {
         context.userIdentifier = userId
         context.recordIdentifier = recordId
         context.displayMetadata = displayMetadata
+        context.questionnaireEnabled = enablesQuestionnaire
 
         let camera = AIScanCameraViewController(
             configuration: copyConfiguration(configurationTemplate),
-            context: context
+            context: context,
+            allowsAlbum: allowsAlbum
         )
         let completionGate = AIScanManagerCompletionGate(completion: completion)
 
         camera.onResult = { [weak camera] displayResult in
-            let result = AIScanResult(displayResult: displayResult)
+            let displayViewModel = AIScanDisplayResultViewModel(result: displayResult)
+            let result = AIScanResult(
+                legacyDisplayResult: displayResult,
+                petType: petType,
+                partType: partType,
+                subPart: Self.legacyResultSubPart(context: context),
+                petId: petId,
+                userId: userId,
+                title: displayViewModel.legacyCallbackTitle,
+                questionnaireDescription: displayViewModel.legacyQuestionnaireDescription
+            )
             guard completionGate.claim() else { return }
 
-            if result.contractResult != nil {
-                completionGate.complete(.success(result))
+            guard enableResultView else {
+                guard let camera else {
+                    completionGate.complete(.success(result))
+                    return
+                }
+                camera.dismissCompletedScan {
+                    completionGate.complete(.success(result))
+                }
                 return
             }
 
             if let resultViewController {
                 resultViewController.apply(result: result)
+                resultViewController.modalPresentationStyle = .fullScreen
                 if camera?.viewIfLoaded?.window != nil {
-                    camera?.present(resultViewController, animated: true)
+                    camera?.present(resultViewController, animated: true) {
+                        camera?.resultDidBecomeVisible()
+                    }
                 }
             } else {
-                let referenceView = AIScanResultReferenceView(result: displayResult)
+                let reportInput = AIScanPDFReportInput(
+                    viewModel: displayViewModel,
+                    petType: petType.rawValue.uppercased(),
+                    part: partType.key,
+                    subpart: partType.detailKey,
+                    petName: petName ?? "",
+                    petDetail: AIScanPDFPetDetailFormatter.make(
+                        petType: petType.rawValue,
+                        petName: petName,
+                        petBreedName: petBreedName,
+                        petBirthday: petBirthday,
+                        petGender: petGender
+                    )
+                )
+                let exportAction: (() -> Void)? = enablePdfShare ? { [weak camera] in
+                    guard let camera else { return }
+                    Task { @MainActor in
+                        switch await pdfExportCoordinator.generate(reportInput) {
+                        case let .success(url):
+                            lastExportedPDFURL = url
+                            onPDFExported?(url)
+                            if AIScanPDFSharePresenter.present(fileURL: url, from: camera) {
+                                camera.resultDidShare()
+                            }
+                        case let .failure(error):
+                            if error as? AIScanPDFReportError != .exportInProgress {
+                                AIScanPDFSharePresenter.showFailure(from: camera)
+                            }
+                        }
+                    }
+                } : nil
+                let referenceView = AIScanResultReferenceView(
+                    viewModel: displayViewModel,
+                    onClose: { [weak camera] in
+                        camera?.dismissCompletedScan()
+                    },
+                    onExportReport: exportAction
+                )
                 let resultController = UIHostingController(rootView: referenceView)
+                resultController.modalPresentationStyle = .fullScreen
                 if camera?.viewIfLoaded?.window != nil {
-                    camera?.present(resultController, animated: true)
+                    camera?.present(resultController, animated: true) {
+                        camera?.resultDidBecomeVisible()
+                    }
                 }
             }
             completionGate.complete(.success(result))
@@ -109,6 +178,14 @@ public enum AIScanManager {
         return camera
     }
 
+    private static func legacyResultSubPart(context: AISCScanContext) -> String? {
+        let value = context.analysisSubpart
+            ?? context.displaySubpart
+            ?? context.analysisPosition
+        guard let value, !value.isEmpty else { return nil }
+        return value.uppercased()
+    }
+
     /// Presents the secure camera from a host-owned view controller.
     @discardableResult
     public static func showCamera(
@@ -118,9 +195,17 @@ public enum AIScanManager {
         analysisSubpart: String? = nil,
         analysisPosition: String? = nil,
         petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
         userId: String? = nil,
         recordId: String? = nil,
         displayMetadata: [String: String]? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
         completion: ((Result<AIScanResult, Error>) -> Void)? = nil
     ) throws -> UIViewController {
@@ -130,9 +215,17 @@ public enum AIScanManager {
             analysisSubpart: analysisSubpart,
             analysisPosition: analysisPosition,
             petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
             userId: userId,
             recordId: recordId,
             displayMetadata: displayMetadata,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
             resultViewController: resultViewController,
             completion: completion
         )
@@ -143,14 +236,6 @@ public enum AIScanManager {
     private static func copyConfiguration(_ source: AISCConfiguration) -> AISCConfiguration {
         let copy = AISCConfiguration(publishableKey: source.publishableKey)
         copy.environment = source.environment
-        copy.bundleIdentifierOverride = source.bundleIdentifierOverride
-        copy.appVersionOverride = source.appVersionOverride
-        copy.teamIdentifierOverride = source.teamIdentifierOverride
-        copy.resourceDirectoryURL = source.resourceDirectoryURL
-        copy.requestTimeout = source.requestTimeout
-        copy.diagnosisTimeout = source.diagnosisTimeout
-        copy.diagnosisPollInterval = source.diagnosisPollInterval
-        copy.callbackQueue = source.callbackQueue
         return copy
     }
 }

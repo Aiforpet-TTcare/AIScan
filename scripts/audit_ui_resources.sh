@@ -22,4 +22,16 @@ if [[ -n "$missing" ]]; then
   exit 1
 fi
 
+placeholder="$CATALOG/legacy/checkResultEyeImgNo.imageset/checkResultEyeImgNo.pdf"
+placeholder_hash="$(shasum -a 256 "$placeholder" | awk '{print $1}')"
+if [[ "$placeholder_hash" != "6eb90948484c66cdc9f2006c69e6bcc5a4f1c91385c4f1da1804e07a4fc8c5f9" ]]; then
+  echo "Result placeholder no longer matches the original host artwork." >&2
+  exit 1
+fi
+
+if ! shasum -a 256 -c "$ROOT/scripts/pdf-resource-sha256.txt" >/dev/null; then
+  echo "PDF resources no longer match the reviewed original report assets." >&2
+  exit 1
+fi
+
 echo "AIScanCameraUI storyboard/XIB resource audit passed."
