@@ -152,8 +152,8 @@ server-selected analysis and response contract.
 ```swift
 func handle(_ result: AIScanResult) {
     if let contract = result.contractResult {
-        // Partner contract: preserve the exact schema and JSON-compatible payload.
-        sendPartnerPayload(schema: contract.schema, payload: contract.payload)
+        // Partner contract: pass the direct JSON-compatible payload unchanged.
+        sendPartnerPayload(contract)
         return
     }
 

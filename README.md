@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.6")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.7")
 ]
 ```
 
@@ -37,7 +37,7 @@ should use Swift Package Manager; Pod validation and trunk publication do not
 block the primary SDK release.
 
 ```ruby
-pod 'AIScan', '~> 3.0.6'
+pod 'AIScan', '~> 3.0.7'
 ```
 
 ### Single public module
@@ -115,9 +115,9 @@ try AIScanManager.showCamera(
 ) { result in
     switch result {
     case let .success(scan):
-        if let partnerResult = scan.contractResult {
+        if let contractResult = scan.contractResult {
             // Pass the contracted payload to the host app without remapping.
-            print(partnerResult.payload)
+            print(contractResult)
         } else {
             print(scan.status)
         }
@@ -187,7 +187,7 @@ the most recently generated URL for the current process.
 | `status` | `String` | Display status. |
 | `diagnosisID` | `String?` | Server diagnosis identifier when available. |
 | `symptoms` | `[AIScanSymptom]` | Display-safe symptom rows. |
-| `contractResult` | `AIScanContractResult?` | Partner payload passed through without SDK remapping. |
+| `contractResult` | `[String: Any]?` | Partner payload passed through directly, without the Core-only `schema`/`payload` transport envelope or SDK remapping. |
 
 `AIScanSymptom` carries display names, levels, labels, and optional image
 URLs. It does not expose model names, raw prediction values, thresholds, or
