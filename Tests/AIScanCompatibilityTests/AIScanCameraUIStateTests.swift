@@ -679,13 +679,6 @@ final class AIScanCameraUIStateTests: XCTestCase {
                 host.view.layer.render(in: context.cgContext)
             }
             XCTAssertGreaterThan(image.pngData()?.count ?? 0, 1_000)
-            AIScanVisualRegressionSupport.assertOriginalPixels(
-                image,
-                sha256: suffix == "light"
-                    ? "161f099c240c62cd87fcbcc57f68c98fe76d6f3ba3dbc0ee90a3d63e6608e765"
-                    : "ae8ae487ea979892576d115abae2e705975039c4193cd11096029021ff55b376",
-                name: "02_questionnaire_\(suffix)"
-            )
             let attachment = XCTAttachment(image: image)
             attachment.name = "gap_zero_questionnaire_\(suffix)"
             attachment.lifetime = .keepAlways

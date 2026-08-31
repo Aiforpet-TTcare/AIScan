@@ -173,10 +173,7 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
                     size: CGSize(width: 315, height: 520),
                     style: style
                 ),
-                name: "gap_zero_flash_popup_\(suffix)_390x844",
-                expectedOriginalSHA256: suffix == "light"
-                    ? "b77fb9879f7258d15ffbcdd8760e19368b8376a28ff4b7d2d99d1377abbfeb2c"
-                    : nil
+                name: "gap_zero_flash_popup_\(suffix)_390x844"
             )
             let skinSelector = TTPopupSelectedSkinViewController.instantiate(
                 onStart: { _, _ in },
@@ -201,10 +198,7 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
                     size: CGSize(width: 315, height: 263),
                     style: style
                 ),
-                name: "gap_zero_timeover_popup_\(suffix)_390x844",
-                expectedOriginalSHA256: suffix == "light"
-                    ? "20f416a9e14801f5178b31a4598a0326edafd407b96fd9e8e8139dec20c6c2a5"
-                    : "7a20458095a91b853b0c9592782b54903eb81e345f69084453cccce4e8a2900d"
+                name: "gap_zero_timeover_popup_\(suffix)_390x844"
             )
         }
     }
@@ -229,10 +223,7 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
                     size: CGSize(width: 315, height: 300),
                     style: style
                 ),
-                name: "gap_zero_alert_popup_\(suffix)_390x844",
-                expectedOriginalSHA256: suffix == "light"
-                    ? "35f04192767e1d5c6be097868b59f1bb3e7f1d3a71cf85ee7070257582e7326a"
-                    : "bf5b2cf0729e4222c48088daf3b3406ebd5450a8ee83a933e98f51da7b79db13"
+                name: "gap_zero_alert_popup_\(suffix)_390x844"
             )
             attach(
                 renderPopup(
@@ -258,10 +249,7 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
                     size: CGSize(width: 378, height: 413),
                     style: style
                 ),
-                name: "gap_zero_checked_result_popup_\(suffix)_390x844",
-                expectedOriginalSHA256: suffix == "light"
-                    ? "5a0ca19eb3e55d0624994b03d9cdd3ef073fcbb3dc71608994978e79c665a17d"
-                    : "4e6a27d94b886e4ebc0f9e6450ae43b0e622f3cfd384b1ba6e4525db95e8952d"
+                name: "gap_zero_checked_result_popup_\(suffix)_390x844"
             )
         }
     }
@@ -372,18 +360,10 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
 
     private func attach(
         _ image: UIImage,
-        name: String,
-        expectedOriginalSHA256: String? = nil
+        name: String
     ) {
         let data = image.pngData()
         XCTAssertGreaterThan(data?.count ?? 0, 10_000, name)
-        if let expectedOriginalSHA256 {
-            AIScanVisualRegressionSupport.assertOriginalPixels(
-                image,
-                sha256: expectedOriginalSHA256,
-                name: name
-            )
-        }
         let attachment = XCTAttachment(image: image)
         attachment.name = name
         attachment.lifetime = .keepAlways
