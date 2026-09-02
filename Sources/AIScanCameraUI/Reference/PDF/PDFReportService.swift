@@ -10,7 +10,9 @@ public enum AIScanPDFReportError: Error, Equatable {
 enum AIScanPDFReportGenerator {
     @discardableResult
     static func generate(_ input: AIScanPDFReportInput) async throws -> URL {
-        FontRegistrar.registerIfNeeded()
+        await MainActor.run {
+            FontRegistrar.registerIfNeeded()
+        }
         let props = DiagnosisPdfAdapter.makeProps(from: input)
         let images = await PDFImageLoader().preload(props)
         let resolved = PDFResolvedImages(images: images)

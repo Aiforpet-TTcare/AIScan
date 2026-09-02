@@ -12,19 +12,18 @@
 import UIKit
 import CoreText
 
+@MainActor
 enum FontRegistrar {
 
     /// Logical Pretendard family name once registered (PostScript family).
     static let familyName = "Pretendard"
 
     private static var didRegister = false
-    private static let lock = NSLock()
 
     /// Lazily registers the three Pretendard weights. Safe to call repeatedly;
-    /// registration happens only once. Must run before the first PDF render.
+    /// registration happens only once on the main actor. Must run before the
+    /// first PDF render.
     static func registerIfNeeded() {
-        lock.lock()
-        defer { lock.unlock() }
         guard !didRegister else { return }
         didRegister = true
 

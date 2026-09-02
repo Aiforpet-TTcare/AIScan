@@ -19,7 +19,7 @@
 
 import Foundation
 
-struct ScreeningMessageStore {
+struct ScreeningMessageStore: @unchecked Sendable {
 
     /// petType -> part -> section -> locale -> (symptomCode -> text)
     private typealias CodeMap = [String: [String: [String: [String: String]]]]

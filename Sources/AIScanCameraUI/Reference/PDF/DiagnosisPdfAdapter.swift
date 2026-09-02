@@ -1,7 +1,9 @@
 import Foundation
 
 @_spi(AIScanLifecycle)
-public struct AIScanPDFReportInput {
+/// Immutable value snapshot passed from the main-actor result UI to the
+/// asynchronous PDF renderer.
+public struct AIScanPDFReportInput: @unchecked Sendable {
     let viewModel: AIScanDisplayResultViewModel
     let petType: String
     let part: String

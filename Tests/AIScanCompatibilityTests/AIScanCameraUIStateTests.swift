@@ -339,6 +339,7 @@ private final class MockTransientSurfaceCoordinator: AIScanTransientSurfaceCoord
 
 final class AIScanCameraUIStateTests: XCTestCase {
     @available(iOS 14, *)
+    @MainActor
     func testAlbumLoaderPreservesOriginalFilePixelDimensions() throws {
         let renderer = UIGraphicsImageRenderer(
             size: CGSize(width: 640, height: 480),

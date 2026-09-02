@@ -14,7 +14,7 @@ enum AIScanAlbumImageLoader {
 
     nonisolated static func loadFullResolutionImage(
         from provider: NSItemProvider,
-        completion: @escaping (UIImage?) -> Void
+        completion: @escaping @MainActor @Sendable (UIImage?) -> Void
     ) {
         let imageType = provider.registeredTypeIdentifiers.first {
             UTType($0)?.conforms(to: .image) == true
@@ -25,17 +25,18 @@ enum AIScanAlbumImageLoader {
             if let url,
                let data = try? Data(contentsOf: url, options: .mappedIfSafe),
                let image = UIImage(data: data) {
-                completion(image)
+                Task { @MainActor in completion(image) }
                 return
             }
 
             let provider = providerBox.value
             guard provider.canLoadObject(ofClass: UIImage.self) else {
-                completion(nil)
+                Task { @MainActor in completion(nil) }
                 return
             }
             provider.loadObject(ofClass: UIImage.self) { object, _ in
-                completion(object as? UIImage)
+                let image = object as? UIImage
+                Task { @MainActor in completion(image) }
             }
         }
     }
@@ -473,38 +474,34 @@ final class AIScanAlbumSelectionViewController: UIViewController {
 }
 
 @available(iOS 14, *)
-extension AIScanAlbumSelectionViewController: PHPickerViewControllerDelegate {
-    nonisolated func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+extension AIScanAlbumSelectionViewController: @preconcurrency PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         guard let provider = results.first?.itemProvider else {
-            Task { @MainActor in picker.dismiss(animated: true) }
+            picker.dismiss(animated: true)
             return
         }
         AIScanAlbumImageLoader.loadFullResolutionImage(from: provider) { [weak self, weak picker] image in
             guard let image else {
-                Task { @MainActor in picker?.dismiss(animated: true) }
+                picker?.dismiss(animated: true)
                 return
             }
-            Task { @MainActor in
-                picker?.dismiss(animated: true)
-                self?.applySelectedImage(image)
-            }
+            picker?.dismiss(animated: true)
+            self?.applySelectedImage(image)
         }
     }
 }
 
-extension AIScanAlbumSelectionViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    nonisolated func imagePickerController(
+extension AIScanAlbumSelectionViewController: @preconcurrency UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
         let image = info[.originalImage] as? UIImage
-        Task { @MainActor [weak self, weak picker] in
-            picker?.dismiss(animated: true)
-            if let image { self?.applySelectedImage(image) }
-        }
+        picker.dismiss(animated: true)
+        if let image { applySelectedImage(image) }
     }
 
-    nonisolated func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        Task { @MainActor in picker.dismiss(animated: true) }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
     }
 }
