@@ -87,8 +87,7 @@ final class AIScanPDFReportTests: XCTestCase {
 
     func testHighLevelFacadeCarriesOriginalPDFOptions() throws {
         AIScanManager.configure(
-            publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx",
-            environment: .production
+            publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"
         )
         defer { AIScanManager.clearConfiguration() }
 
@@ -118,8 +117,7 @@ final class AIScanPDFReportTests: XCTestCase {
 
     func testHighLevelFacadeCanReturnResultWithoutPresentingAResultView() throws {
         AIScanManager.configure(
-            publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx",
-            environment: .production
+            publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"
         )
         defer { AIScanManager.clearConfiguration() }
 

@@ -19,9 +19,15 @@ public enum AIScanManager {
     /// Configures the process-wide default used by `showCamera`.
     ///
     /// Publishable-key validation and authentication remain Core-owned.
+    public static func configure(publishableKey: String) {
+        configure(publishableKey: publishableKey, environment: .production)
+    }
+
+    /// Configures a non-public service environment for internal validation.
+    @_spi(AIScanDevelopment)
     public static func configure(
         publishableKey: String,
-        environment: AIScanEnvironment = .production
+        environment: AIScanEnvironment
     ) {
         let configuration = AISCConfiguration(publishableKey: publishableKey)
         configuration.environment = environment.coreValue

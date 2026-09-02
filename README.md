@@ -37,7 +37,9 @@ should use Swift Package Manager; Pod validation and trunk publication do not
 block the primary SDK release.
 
 ```ruby
-pod 'AIScan', '~> 3.0.9'
+pod 'AIScan',
+    :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
+    :tag => '3.0.9'
 ```
 
 ### Single public module
@@ -91,13 +93,12 @@ Configure the SDK once with the publishable key.
 import AIScan
 
 AIScanManager.configure(
-    publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx",
-    environment: .production
+    publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"
 )
 ```
 
-The public gateway is always `.production`; the `tt_pk_test_…` or
-`tt_pk_live_…` key prefix selects the registered Test or Live app environment.
+The `tt_pk_test_…` or `tt_pk_live_…` key prefix selects the registered Test or
+Live app environment. Partner apps do not select a service endpoint.
 
 ## Usage
 
