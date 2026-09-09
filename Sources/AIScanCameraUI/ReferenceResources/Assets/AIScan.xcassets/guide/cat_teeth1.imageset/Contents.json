@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cat_teeth1.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

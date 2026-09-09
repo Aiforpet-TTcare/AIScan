@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="ResultNoticeCell" reuseIdentifier="ResultNoticeCell" id="gTV-IL-0wX" customClass="AIScanResultNoticeCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="173"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="173"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6N1-dy-Po8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="173"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="본 서비스는 AI가 분석을 통해 질병 증상을 감지해 알림을 제공하며, 정확한 진단은 수의사 상담을 권장합니다." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyR-Pw-2oY">
+                                <rect key="frame" x="44" y="10" width="308" height="113"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="#B4B4B4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="commonIconPageAlertIcon" translatesAutoresizingMaskIntoConstraints="NO" id="UZC-Vb-6pC">
+                                <rect key="frame" x="26" y="9.3333333333333357" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="7Xf-iN-4dY"/>
+                                    <constraint firstAttribute="width" constant="16" id="g1W-OA-01K"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="UZC-Vb-6pC" firstAttribute="firstBaseline" secondItem="jyR-Pw-2oY" secondAttribute="firstBaseline" constant="-13" id="1q4-2g-0Xr"/>
+                            <constraint firstItem="UZC-Vb-6pC" firstAttribute="leading" secondItem="6N1-dy-Po8" secondAttribute="leading" constant="26" id="KLV-6o-bdP"/>
+                            <constraint firstItem="jyR-Pw-2oY" firstAttribute="leading" secondItem="6N1-dy-Po8" secondAttribute="leading" constant="44" id="NbM-c9-MbZ"/>
+                            <constraint firstItem="jyR-Pw-2oY" firstAttribute="top" secondItem="6N1-dy-Po8" secondAttribute="top" constant="10" id="R33-7z-dBH"/>
+                            <constraint firstAttribute="bottom" secondItem="jyR-Pw-2oY" secondAttribute="bottom" priority="999" constant="50" id="e42-H4-39E"/>
+                            <constraint firstAttribute="trailing" secondItem="jyR-Pw-2oY" secondAttribute="trailing" priority="999" constant="23" id="xO0-iX-FuP"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="6N1-dy-Po8" secondAttribute="bottom" id="5eJ-4U-l2I"/>
+                <constraint firstAttribute="trailing" secondItem="6N1-dy-Po8" secondAttribute="trailing" id="im9-Af-BJp"/>
+                <constraint firstItem="6N1-dy-Po8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="pWf-LN-dIS"/>
+                <constraint firstItem="6N1-dy-Po8" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qMI-WD-sFW"/>
+            </constraints>
+            <size key="customSize" width="273" height="126"/>
+            <connections>
+                <outlet property="noticeLabel" destination="jyR-Pw-2oY" id="jQk-BF-L2a"/>
+            </connections>
+            <point key="canvasLocation" x="196.18320610687022" y="15.140845070422536"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="commonIconPageAlertIcon" width="16" height="16"/>
+        <namedColor name="#B4B4B4">
+            <color red="0.70588235294117652" green="0.70588235294117652" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
