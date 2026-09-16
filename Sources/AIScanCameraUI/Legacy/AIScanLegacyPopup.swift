@@ -246,7 +246,7 @@ final class TTPopupCheckedResultViewController: UIViewController, AIScanLegacyPo
         guideContainer.isHidden = true
         confirmButton.setTitle(AIScanCameraStrings.localized(.retakeAction), for: .normal)
         confirmButton.accessibilityIdentifier = "aiscan.camera.retake.confirm"
-        confirmButton.backgroundColor = AIScanLegacyText.retakeAction
+        confirmButton.backgroundColor = AIScanLegacyText.primaryAction
         confirmButton.setTitleColor(AIScanLegacyText.onPrimaryAction, for: .normal)
         confirmButton.layer.cornerRadius = 25
         confirmButton.clipsToBounds = true
@@ -377,7 +377,6 @@ final class AIScanLegacyBottomPopupContainer: UIViewController {
     private let content: UIViewController
     private let cardHeight: CGFloat
     private let popupDismisser: AIScanLegacyPopupDismissing
-    private var didAnimatePresentation = false
 
     init(
         content: UIViewController,
@@ -419,17 +418,12 @@ final class AIScanLegacyBottomPopupContainer: UIViewController {
             content.view.heightAnchor.constraint(equalToConstant: cardHeight),
         ])
         content.didMove(toParent: self)
-        content.view.transform = CGAffineTransform(translationX: 0, y: cardHeight)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard !didAnimatePresentation else { return }
-        didAnimatePresentation = true
-        guard animated else {
-            content.view.transform = .identity
-            return
-        }
+        guard animated else { return }
+        content.view.transform = CGAffineTransform(translationX: 0, y: cardHeight)
         UIView.animate(
             withDuration: 0.3,
             delay: 0,
@@ -997,7 +991,6 @@ enum AIScanLegacyText {
     static var primaryAction: UIColor {
         adaptive(light: rgb(0x333344), dark: named("AISBrandPrimary", fallback: .systemBlue))
     }
-    static var retakeAction: UIColor { rgb(0x333444) }
     static var onPrimaryAction: UIColor {
         named("AISOnBrand", fallback: .white)
     }

@@ -38,7 +38,6 @@ public_paths=(
   Gemfile.lock
   AIScanCore.xcframework
   Sources
-  Tests/AIScanCompatibilityTests/AIScanContractResultTests.swift
   Tests/AIScanCompatibilityTests/AIScanDisplayAssetBoundaryTests.swift
   Tests/AIScanCompatibilityTests/AIScanFivePartVisualMatrixTests.swift
   Tests/AIScanCompatibilityTests/AIScanResultOriginalVisualParityTests.swift

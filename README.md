@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.9")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.10")
 ]
 ```
 
@@ -116,9 +116,9 @@ try AIScanManager.showCamera(
 ) { result in
     switch result {
     case let .success(scan):
-        if let contractResult = scan.contractResult {
+        if let partnerResult = scan.contractResult {
             // Pass the contracted payload to the host app without remapping.
-            print(contractResult)
+            print(partnerResult.payload)
         } else {
             print(scan.status)
         }
@@ -188,7 +188,7 @@ the most recently generated URL for the current process.
 | `status` | `String` | Display status. |
 | `diagnosisID` | `String?` | Server diagnosis identifier when available. |
 | `symptoms` | `[AIScanSymptom]` | Display-safe symptom rows. |
-| `contractResult` | `[String: Any]?` | Partner payload passed through directly, without the Core-only `schema`/`payload` transport envelope or SDK remapping. |
+| `contractResult` | `AIScanContractResult?` | Partner payload passed through without SDK remapping. |
 
 `AIScanSymptom` carries display names, levels, labels, and optional image
 URLs. It does not expose model names, raw prediction values, thresholds, or

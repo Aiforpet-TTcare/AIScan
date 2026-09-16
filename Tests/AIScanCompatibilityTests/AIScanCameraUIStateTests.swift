@@ -323,8 +323,6 @@ private final class MockTransientSurfaceCoordinator: AIScanTransientSurfaceCoord
         surface.loadViewIfNeeded()
         surface.view.frame = presenter.view.bounds
         surface.view.layoutIfNeeded()
-        surface.beginAppearanceTransition(true, animated: animated)
-        surface.endAppearanceTransition()
     }
 
     func dismiss(
@@ -682,6 +680,13 @@ final class AIScanCameraUIStateTests: XCTestCase {
                 host.view.layer.render(in: context.cgContext)
             }
             XCTAssertGreaterThan(image.pngData()?.count ?? 0, 1_000)
+            AIScanVisualRegressionSupport.assertOriginalPixels(
+                image,
+                sha256: suffix == "light"
+                    ? "161f099c240c62cd87fcbcc57f68c98fe76d6f3ba3dbc0ee90a3d63e6608e765"
+                    : "ae8ae487ea979892576d115abae2e705975039c4193cd11096029021ff55b376",
+                name: "02_questionnaire_\(suffix)"
+            )
             let attachment = XCTAttachment(image: image)
             attachment.name = "gap_zero_questionnaire_\(suffix)"
             attachment.lifetime = .keepAlways
@@ -1480,28 +1485,6 @@ final class AIScanCameraUIStateTests: XCTestCase {
     }
 
     @MainActor
-    func testBottomRetakePopupStartsOffscreenBeforeItsFirstVisibleFrame() {
-        let popup = TTPopupCheckedResultViewController.instantiate(
-            item: AIScanRetakeGuideItem(
-                title: "Hold still",
-                wrongTitle: "Wrong",
-                rightTitle: "Right",
-                wrongImage: nil,
-                rightImage: nil
-            ),
-            onRetake: {}
-        )
-        let container = AIScanLegacyBottomPopupContainer(content: popup)
-
-        container.loadViewIfNeeded()
-        XCTAssertEqual(popup.view.transform.ty, 363, accuracy: 0.5)
-
-        container.beginAppearanceTransition(true, animated: false)
-        container.endAppearanceTransition()
-        XCTAssertEqual(popup.view.transform, .identity)
-    }
-
-    @MainActor
     func testPopupCardKeepsSafeMarginsOnAnIPhoneSEWidth() {
         let popup = TTPopupAlertViewController.instantiate(
             title: "Notice",
@@ -1692,12 +1675,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
         )
         XCTAssertEqual(
             retake.confirmButton.backgroundColor?.resolvedColor(with: darkTraits),
-            UIColor(
-                red: 0x33 / 255,
-                green: 0x34 / 255,
-                blue: 0x44 / 255,
-                alpha: 1
-            )
+            expectedPrimaryAction
         )
     }
 
@@ -3730,12 +3708,9 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
         XCTAssertEqual(engine.resetCaptureAttemptCount, 1)
         XCTAssertEqual(surfaceCoordinator.dismissPopupCount, 1)
-        XCTAssertFalse(engine.automaticallyCapturesReadyFrames)
+        XCTAssertTrue(engine.automaticallyCapturesReadyFrames)
         XCTAssertEqual(resultCount, 0)
         XCTAssertEqual(stackDismisser.callCount, 0)
-
-        camera.beginCaptureAttempt()
-        XCTAssertTrue(engine.automaticallyCapturesReadyFrames)
     }
 
     private func fontName(in label: UILabel) throws -> String {

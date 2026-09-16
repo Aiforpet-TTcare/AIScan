@@ -146,15 +146,51 @@ public struct OnDeviceResponse: Codable, Equatable, Sendable {
     }
 }
 
+public struct AIScanContractResult: Codable, Equatable, @unchecked Sendable {
+    public let schema: String
+    /// Exact JSON-compatible partner payload. No SDK-side field is renamed,
+    /// recalculated, filtered, or supplemented.
+    public let payload: [String: Any]
+
+    public init(schema: String, payload: [String: Any]) {
+        self.schema = schema
+        self.payload = payload
+    }
+
+    init(contractResult: AISCContractResult) {
+        self.init(schema: contractResult.schema, payload: contractResult.payload)
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.schema == rhs.schema && NSDictionary(dictionary: lhs.payload).isEqual(to: rhs.payload)
+    }
+
+    private enum CodingKeys: String, CodingKey { case schema, payload }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        schema = try container.decode(String.self, forKey: .schema)
+        payload = try container.decode([String: AIScanJSONValue].self, forKey: .payload)
+            .mapValues(\.foundationValue)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(schema, forKey: .schema)
+        try container.encode(
+            payload.mapValues { AIScanJSONValue(foundationValue: $0) },
+            forKey: .payload
+        )
+    }
+}
+
 /// Result returned by `AIScanManager`. On-device fields retain the original
 /// customer JSON contract; compact display fields remain convenience values.
-public struct AIScanResult: Codable, @unchecked Sendable {
+public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     public let status: String
     public let diagnosisID: String?
     public let symptoms: [AIScanSymptom]
-    /// Exact partner callback payload. The Core-only `schema`/`payload`
-    /// transport envelope is never exposed to host applications.
-    public let contractResult: [String: Any]?
+    public let contractResult: AIScanContractResult?
 
     public let petType: String?
     public let part: String?
@@ -169,7 +205,7 @@ public struct AIScanResult: Codable, @unchecked Sendable {
         status: String,
         diagnosisID: String? = nil,
         symptoms: [AIScanSymptom] = [],
-        contractResult: [String: Any]? = nil,
+        contractResult: AIScanContractResult? = nil,
         petType: String? = nil,
         part: String? = nil,
         createdAt: Int? = nil,
@@ -196,10 +232,10 @@ public struct AIScanResult: Codable, @unchecked Sendable {
     /// Compact display-only conversion retained for source compatibility.
     init(displayResult: AISCDisplayResult) {
         self.init(
-            status: (displayResult.contractResult?.payload["status"] as? String) ?? displayResult.status,
+            status: displayResult.status,
             diagnosisID: displayResult.diagnosisID,
             symptoms: displayResult.symptoms.map(AIScanSymptom.init(displaySymptom:)),
-            contractResult: displayResult.contractResult?.payload
+            contractResult: displayResult.contractResult.map(AIScanContractResult.init(contractResult:))
         )
     }
 
@@ -258,11 +294,6 @@ public struct AIScanResult: Codable, @unchecked Sendable {
 
     /// Exact JSON string used by the original string-completion API.
     public var jsonString: String? {
-        if let contractResult,
-           JSONSerialization.isValidJSONObject(contractResult),
-           let data = try? JSONSerialization.data(withJSONObject: contractResult) {
-            return String(data: data, encoding: .utf8)
-        }
         guard let data = try? JSONEncoder().encode(self) else { return nil }
         return String(data: data, encoding: .utf8)
     }
@@ -287,9 +318,6 @@ public struct AIScanResult: Codable, @unchecked Sendable {
     }
 
     public init(from decoder: Decoder) throws {
-        let directPayload = try? decoder.singleValueContainer()
-            .decode([String: AIScanJSONValue].self)
-            .mapValues(\.foundationValue)
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let response = try container.decodeIfPresent(OnDeviceResponse.self, forKey: .response)
         let compactSymptoms = try container.decodeIfPresent([AIScanSymptom].self, forKey: .symptoms)
@@ -299,10 +327,7 @@ public struct AIScanResult: Codable, @unchecked Sendable {
             status: try container.decodeIfPresent(String.self, forKey: .status) ?? "",
             diagnosisID: try container.decodeIfPresent(String.self, forKey: .diagnosisID),
             symptoms: compactSymptoms,
-            contractResult: try container.decodeIfPresent(
-                [String: AIScanJSONValue].self,
-                forKey: .contractResult
-            )?.mapValues(\.foundationValue) ?? Self.directContractPayload(directPayload),
+            contractResult: try container.decodeIfPresent(AIScanContractResult.self, forKey: .contractResult),
             petType: try container.decodeIfPresent(String.self, forKey: .petType),
             part: try container.decodeIfPresent(String.self, forKey: .part),
             createdAt: try container.decodeIfPresent(Int.self, forKey: .createdAt),
@@ -315,11 +340,6 @@ public struct AIScanResult: Codable, @unchecked Sendable {
     }
 
     public func encode(to encoder: Encoder) throws {
-        if let contractResult {
-            var container = encoder.singleValueContainer()
-            try container.encode(contractResult.mapValues { AIScanJSONValue(foundationValue: $0) })
-            return
-        }
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(status, forKey: .status)
         if response != nil || petType != nil || part != nil {
@@ -335,43 +355,7 @@ public struct AIScanResult: Codable, @unchecked Sendable {
         }
         try container.encodeIfPresent(diagnosisID, forKey: .diagnosisID)
         try container.encode(symptoms, forKey: .symptoms)
-    }
-
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.status == rhs.status
-            && lhs.diagnosisID == rhs.diagnosisID
-            && lhs.symptoms == rhs.symptoms
-            && dictionariesEqual(lhs.contractResult, rhs.contractResult)
-            && lhs.petType == rhs.petType
-            && lhs.part == rhs.part
-            && lhs.createdAt == rhs.createdAt
-            && lhs.questions == rhs.questions
-            && lhs.response == rhs.response
-            && lhs.userId == rhs.userId
-            && lhs.petId == rhs.petId
-            && lhs.subPart == rhs.subPart
-    }
-
-    private static func directContractPayload(_ value: [String: Any]?) -> [String: Any]? {
-        guard let value,
-              value["contract_result"] == nil,
-              value["status"] is String else {
-            return nil
-        }
-        let success = value["diagId"] != nil
-        let pendingOrRetry = value["recordId"] is String
-            && value["vendorId"] is String && value["result"] != nil
-        let error = value["status"] as? String == "ERROR"
-            && value["errorCode"] is String && value["statusCode"] is NSNumber
-        return success || pendingOrRetry || error ? value : nil
-    }
-
-    private static func dictionariesEqual(_ lhs: [String: Any]?, _ rhs: [String: Any]?) -> Bool {
-        switch (lhs, rhs) {
-        case (nil, nil): true
-        case let (lhs?, rhs?): NSDictionary(dictionary: lhs).isEqual(to: rhs)
-        default: false
-        }
+        try container.encodeIfPresent(contractResult, forKey: .contractResult)
     }
 
     private static func legacyAnalyzedDate(_ date: Date) -> String {
@@ -419,15 +403,13 @@ private extension PartType {
 }
 
 private enum AIScanJSONValue: Codable {
-    case string(String), integer(Int64), number(Double), bool(Bool)
+    case string(String), number(Double), bool(Bool)
     case object([String: AIScanJSONValue]), array([AIScanJSONValue]), null
 
     init(foundationValue: Any) {
         switch foundationValue {
         case let value as String: self = .string(value)
         case let value as NSNumber where CFGetTypeID(value) == CFBooleanGetTypeID(): self = .bool(value.boolValue)
-        case let value as NSNumber where ["c", "s", "i", "l", "q"].contains(String(cString: value.objCType)):
-            self = .integer(value.int64Value)
         case let value as NSNumber: self = .number(value.doubleValue)
         case let value as [String: Any]: self = .object(value.mapValues(AIScanJSONValue.init(foundationValue:)))
         case let value as [Any]: self = .array(value.map(AIScanJSONValue.init(foundationValue:)))
@@ -438,7 +420,6 @@ private enum AIScanJSONValue: Codable {
     var foundationValue: Any {
         switch self {
         case let .string(value): value
-        case let .integer(value): NSNumber(value: value)
         case let .number(value): value
         case let .bool(value): value
         case let .object(value): value.mapValues(\.foundationValue)
@@ -451,7 +432,6 @@ private enum AIScanJSONValue: Codable {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() { self = .null }
         else if let value = try? container.decode(Bool.self) { self = .bool(value) }
-        else if let value = try? container.decode(Int64.self) { self = .integer(value) }
         else if let value = try? container.decode(Double.self) { self = .number(value) }
         else if let value = try? container.decode(String.self) { self = .string(value) }
         else if let value = try? container.decode([String: AIScanJSONValue].self) { self = .object(value) }
@@ -462,7 +442,6 @@ private enum AIScanJSONValue: Codable {
         var container = encoder.singleValueContainer()
         switch self {
         case let .string(value): try container.encode(value)
-        case let .integer(value): try container.encode(value)
         case let .number(value): try container.encode(value)
         case let .bool(value): try container.encode(value)
         case let .object(value): try container.encode(value)
