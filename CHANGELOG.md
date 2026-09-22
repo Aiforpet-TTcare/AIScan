@@ -2,6 +2,16 @@
 
 ## 3.0.13
 
+### Fixes
+
+- Decide the outcome of a server diagnosis from `sdk_result.status` alone. A
+  failed diagnosis (`ERROR`) is now reported as a non-retryable failure with no
+  result — the original service answered the same case with HTTP 500 — instead
+  of a successful result carrying the partner error DTO. `RETRY` drives the
+  in-camera retake regardless of the partner payload, and a missing required
+  contract is no longer offered for retry. The partner payload is never
+  interpreted by the SDK. Core rebuilt from the 3.0.13 source.
+
 ### Added
 
 - Restore the original `(String?, Error?)` completion on `showCamera` and

@@ -66,27 +66,16 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         XCTAssertNil(object["payload"])
     }
 
-    func testServerErrorContractDeliversNilLikeTheOriginalHTTP500() throws {
+    func testServerErrorDeliversNilLikeTheOriginalHTTP500() throws {
         var received: (result: String?, error: Error?)?
         let camera = try makeCamera { received = ($0, $1) }
 
-        // The gateway answers a failed diagnosis with HTTP 200 and the same
-        // error DTO the original service sent as HTTP 500.
-        camera.onResult?(AISCDisplayResult(
-            status: "failed",
-            diagnosisID: "dx-error",
-            symptoms: [],
-            contractResult: AISCContractResult(
-                schema: "ttcare.anomaly-check.v1",
-                payload: [
-                    "status": "ERROR",
-                    "code": 500,
-                    "statusCode": 500,
-                    "errorCode": "E00001",
-                    "message": "diagnosis internal server error",
-                    "error": "diagnosis process failed.",
-                ]
-            )
+        // Core reports a failed diagnosis (sdk_result.status ERROR) as a
+        // non-retryable failure; the partner error DTO never becomes a result.
+        camera.onFailure?(NSError(
+            domain: AISCErrorDomain,
+            code: AISCErrorCode.serverUnavailable.rawValue,
+            userInfo: [AISCDisplayReasonKey: "UPSTREAM_FAILED", AISCRetryableKey: false]
         ))
 
         let callback = try XCTUnwrap(received)

@@ -338,13 +338,9 @@ public enum AIScanManager {
     ) -> (Result<AIScanResult, Error>) -> Void {
         { result in
             switch result {
-            case let .success(scan) where !scan.isContractError:
+            case let .success(scan):
                 completion(scan.jsonString, nil)
-            case .success, .failure:
-                // The original service answered a failed diagnosis with HTTP 500,
-                // so 1.x/2.x hosts only ever saw `nil`. The gateway now returns
-                // the same error DTO as a 200 contract payload; keep it out of
-                // the legacy callback.
+            case .failure:
                 completion(nil, nil)
             }
         }
