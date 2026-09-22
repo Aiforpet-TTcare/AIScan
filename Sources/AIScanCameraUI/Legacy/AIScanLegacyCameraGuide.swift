@@ -136,8 +136,8 @@ final class TTCameraGuideViewController: UIViewController {
     }
 
     @IBAction private func close(_ sender: Any? = nil) {
-        // Resume the prepared camera before the full-screen dismissal reveals
-        // it, so slower devices never expose a stopped/frozen preview frame.
+        // Notify the camera that the guide is closing. The camera resumes
+        // when its view becomes visible, respecting background and scan state.
         notifyDismissal()
         dismiss(animated: true)
     }

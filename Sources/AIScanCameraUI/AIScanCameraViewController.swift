@@ -166,6 +166,8 @@ public final class AIScanCameraViewController: UIViewController {
     private var didPrepareSession = false
     private var shouldRetryCameraPermissionWhenActive = false
     private var isCameraSessionRunning = false
+    private var isCameraViewHidden = false
+    private var shouldResumeCameraAfterAppearance = false
     private var shouldResumeCameraAfterForeground = false
     private var isApplicationInBackground = false
     private var isClosed = false
@@ -281,6 +283,13 @@ public final class AIScanCameraViewController: UIViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        isCameraViewHidden = false
+        if shouldResumeCameraAfterAppearance {
+            shouldResumeCameraAfterAppearance = false
+            if didPrepareSession {
+                startCameraSession()
+            }
+        }
         guard beginsScanningAutomatically,
               requiresSkinPositionSelection,
               !didPresentSkinPositionSelection else { return }
@@ -294,6 +303,13 @@ public final class AIScanCameraViewController: UIViewController {
 
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        isCameraViewHidden = true
+        if isCameraSessionRunning, didPrepareSession, canRunLiveCamera {
+            shouldResumeCameraAfterAppearance = true
+            if captureAttemptState.isActive {
+                cancelCaptureAttempt()
+            }
+        }
         stopCameraSession()
     }
 
@@ -591,10 +607,21 @@ public final class AIScanCameraViewController: UIViewController {
         }
     }
 
+    private var canRunLiveCamera: Bool {
+        !isClosed
+            && captureAttemptState.phase != .diagnosing
+            && captureAttemptState.phase != .completed
+            && albumController == nil
+    }
+
     private func startCameraSession() {
-        guard !isClosed else { return }
+        guard canRunLiveCamera else { return }
         guard !isApplicationInBackground else {
             shouldResumeCameraAfterForeground = didPrepareSession
+            return
+        }
+        guard !isCameraViewHidden else {
+            shouldResumeCameraAfterAppearance = didPrepareSession
             return
         }
         guard !isCameraSessionRunning else { return }

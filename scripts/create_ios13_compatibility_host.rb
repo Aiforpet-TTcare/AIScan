@@ -31,7 +31,15 @@ File.write(
             self.window = window
 
             Task { @MainActor in
-                _ = AIScanManager.self
+                let configure: (String, AIScanEnvironment) -> Void = AIScanManager.configure
+                let configureWithKey: (String) -> Void = AIScanManager.configure
+                _ = (configure, configureWithKey)
+                let payload: [String: Any] = ["diagId": 42, "status": "OK", "details": []]
+                let result = AIScanResult(status: "OK", contractResult: payload)
+                let directPayload: [String: Any]? = result.contractResult
+                precondition(directPayload?["diagId"] as? Int == 42)
+                precondition(result.jsonObject?["diagId"] as? Int == 42)
+                precondition(result.jsonObject?["contract_result"] == nil)
             }
             return true
         }

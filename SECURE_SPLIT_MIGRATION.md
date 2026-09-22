@@ -34,7 +34,7 @@ and add only the official repository:
 dependencies: [
     .package(
         url: "https://github.com/Aiforpet-TTcare/AIScan.git",
-        exact: "<ANNOUNCED_3_X_VERSION>"
+        exact: "3.0.12"
     )
 ]
 ```
@@ -47,12 +47,14 @@ For CocoaPods compatibility:
 
 ```ruby
 target 'YourTargetName' do
-  pod 'AIScan', '<ANNOUNCED_3_X_VERSION>'
+  pod 'AIScan',
+      :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
+      :tag => '3.0.12'
 end
 ```
 
-After changing the version, reset package caches and resolve packages again,
-or run `pod update AIScan --repo-update`, then clean DerivedData.
+These examples target 3.0.12; use them after its release tag is published.
+After changing the version, resolve packages again or run `pod update AIScan`.
 
 ## 2. Replace initialization
 
@@ -75,9 +77,11 @@ func configureAIScan() {
 }
 ```
 
-`import AIScan` is the only import required by a host application. Omit the
-environment argument in normal integrations. Test and Live routing is selected
-by the issued key and its server-side project registration.
+`import AIScan` is the only import required by a host application. The default
+service environment is `.production`. Existing integrations can retain
+`configure(publishableKey:environment:)` with `.production` or `.development`.
+Use the service environment specified for your integration; Test/Live key
+registration and service environment are separate configuration concerns.
 
 Do not restore the removed auth JSON, client secret, team-ID override, bundle-ID
 override, or App Attest code in the host app.
@@ -124,7 +128,11 @@ func startEyeScan(from viewController: UIViewController) {
 
 Call all UI entry points on the main actor. Applications that own a custom
 container may use `makeCameraViewController(...)` and present the returned view
-controller themselves.
+controller themselves. Create a fresh controller for every new scan after a
+completed or cancelled flow. Do not retain and re-present the previous camera
+controller. In-flow retry uses the existing controller and starts a new capture
+attempt. Temporary full-screen presentation pauses the camera; returning resumes
+only an eligible live flow, without restarting diagnosis or terminal flows.
 
 ### Part names
 
@@ -151,9 +159,9 @@ server-selected analysis and response contract.
 
 ```swift
 func handle(_ result: AIScanResult) {
-    if let contract = result.contractResult {
-        // Partner contract: preserve the exact schema and JSON-compatible payload.
-        sendPartnerPayload(schema: contract.schema, payload: contract.payload)
+    if let payload = result.contractResult {
+        // Partner contract: forward the original JSON-compatible dictionary.
+        sendPartnerPayload(payload)
         return
     }
 
@@ -173,6 +181,47 @@ not public.
 
 `result.string` and `result.jsonString` remain available when an existing host
 must forward JSON, but new Swift integrations should use typed fields.
+
+### Upgrading from 3.0.9, 3.0.10, or 3.0.11
+
+3.0.12 restores the 3.0.9 partner contract: `contractResult` is `[String: Any]?`,
+and `string`, `jsonString`, and `JSONEncoder` serialize the direct partner payload.
+No SDK `schema`/`payload` wrapper is added. Ordinary on-device JSON retains its
+legacy fields.
+
+The 3.0.10/3.0.11 `contractResult` property used `AIScanContractResult?`. Code
+written against that wrapper must use the separate `typedContractResult`
+accessor in 3.0.12:
+
+```swift
+if let contract = result.typedContractResult {
+    sendPartnerPayload(schema: contract.schema, payload: contract.payload)
+}
+```
+
+This accessor is available when the result carries schema metadata. A result
+constructed with only a dictionary has no schema metadata, so its typed accessor
+is `nil`. Direct partner JSON does not preserve transport schema metadata.
+
+Structured construction remains available with a **nonoptional** value:
+
+```swift
+let contract = AIScanContractResult(schema: "HOST_SCHEMA", payload: payload)
+let result = AIScanResult(status: "ok", typedContractResult: contract)
+// The contractResult: label also accepts a nonoptional AIScanContractResult.
+```
+
+Unwrap an optional `AIScanContractResult` before using the structured initializer.
+The dictionary initializer still accepts `contractResult: nil` without ambiguity.
+Review any 3.0.10/3.0.11 code that parsed an SDK-added wrapper and update it to
+consume the direct payload. This is not source compatibility for both previous
+property types: dictionary clients keep their access pattern; wrapper clients
+must migrate their property reads.
+
+3.0.12 also includes guide resources in CocoaPods, skips unavailable guide
+animations safely, retains automatic capture restart on retry, and corrects the
+on-device questionnaire timeout calculation after slow uploads. These changes
+do not introduce a new network feature or change the partner payload schema.
 
 ### Result and questionnaire switches are independent
 
@@ -214,6 +263,11 @@ device:
    the ordinary result behavior of other organizations.
 7. Camera permission denial opens Settings; guide close resumes the camera.
 8. iOS 13, the oldest supported device OS, and the current iOS release both pass.
+9. First scan, in-flow retry, and a second scan with a fresh controller complete
+   without duplicate callbacks. Temporary full-screen coverage resumes only a
+   live camera flow.
+10. Partner dictionary/JSON forwarding matches the existing host contract;
+    wrapper clients use `typedContractResult` where needed.
 
 ## 7. Rollout and rollback
 
@@ -226,6 +280,6 @@ Do not reuse or move an existing tag.
 
 ## Release note for SDK maintainers
 
-The 3.x public tag must be produced from the one-commit clean release staging
-flow described in `RELEASE.md`. A private development branch or its history is
-not a distributable artifact.
+Follow the reviewed public-branch release flow in [RELEASE.md](RELEASE.md).
+Preserve the public repository's history and publish a fresh immutable version
+tag. Development-only source and history are not distributable artifacts.

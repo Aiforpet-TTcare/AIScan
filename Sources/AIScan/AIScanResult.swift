@@ -190,7 +190,18 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     public let status: String
     public let diagnosisID: String?
     public let symptoms: [AIScanSymptom]
-    public let contractResult: AIScanContractResult?
+    /// Exact partner callback payload. The `schema`/`payload` transport
+    /// envelope is never inserted into callback JSON.
+    public let contractResult: [String: Any]?
+
+    /// Optional transport metadata for hosts that opt into the structured API.
+    /// Callback JSON always remains the direct `contractResult` dictionary.
+    public var typedContractResult: AIScanContractResult? {
+        guard let contractSchema, let contractResult else { return nil }
+        return AIScanContractResult(schema: contractSchema, payload: contractResult)
+    }
+
+    private var contractSchema: String?
 
     public let petType: String?
     public let part: String?
@@ -205,7 +216,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         status: String,
         diagnosisID: String? = nil,
         symptoms: [AIScanSymptom] = [],
-        contractResult: AIScanContractResult? = nil,
+        contractResult: [String: Any]? = nil,
         petType: String? = nil,
         part: String? = nil,
         createdAt: Int? = nil,
@@ -219,6 +230,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         self.diagnosisID = diagnosisID
         self.symptoms = symptoms
         self.contractResult = contractResult
+        self.contractSchema = nil
         self.petType = petType
         self.part = part
         self.createdAt = createdAt
@@ -229,14 +241,63 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         self.subPart = subPart
     }
 
+    /// Creates a result with opt-in schema metadata while preserving legacy JSON.
+    public init(
+        status: String,
+        diagnosisID: String? = nil,
+        symptoms: [AIScanSymptom] = [],
+        typedContractResult: AIScanContractResult
+    ) {
+        self.init(
+            status: status,
+            diagnosisID: diagnosisID,
+            symptoms: symptoms,
+            contractResult: typedContractResult
+        )
+    }
+
+    /// Retains structured construction introduced in 3.0.10. The nonoptional
+    /// argument keeps legacy dictionary and explicit `nil` calls unambiguous.
+    public init(
+        status: String,
+        diagnosisID: String? = nil,
+        symptoms: [AIScanSymptom] = [],
+        contractResult: AIScanContractResult,
+        petType: String? = nil,
+        part: String? = nil,
+        createdAt: Int? = nil,
+        questions: [OnDeviceQuestion]? = nil,
+        response: OnDeviceResponse? = nil,
+        userId: String? = nil,
+        petId: String? = nil,
+        subPart: String? = nil
+    ) {
+        self.init(
+            status: status,
+            diagnosisID: diagnosisID,
+            symptoms: symptoms,
+            contractResult: contractResult.payload,
+            petType: petType,
+            part: part,
+            createdAt: createdAt,
+            questions: questions,
+            response: response,
+            userId: userId,
+            petId: petId,
+            subPart: subPart
+        )
+        contractSchema = contractResult.schema
+    }
+
     /// Compact display-only conversion retained for source compatibility.
     init(displayResult: AISCDisplayResult) {
         self.init(
             status: displayResult.status,
             diagnosisID: displayResult.diagnosisID,
             symptoms: displayResult.symptoms.map(AIScanSymptom.init(displaySymptom:)),
-            contractResult: displayResult.contractResult.map(AIScanContractResult.init(contractResult:))
+            contractResult: displayResult.contractResult?.payload
         )
+        contractSchema = displayResult.contractResult?.schema
     }
 
     init(
@@ -294,6 +355,11 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
 
     /// Exact JSON string used by the original string-completion API.
     public var jsonString: String? {
+        if let contractResult,
+           JSONSerialization.isValidJSONObject(contractResult),
+           let data = try? JSONSerialization.data(withJSONObject: contractResult) {
+            return String(data: data, encoding: .utf8)
+        }
         guard let data = try? JSONEncoder().encode(self) else { return nil }
         return String(data: data, encoding: .utf8)
     }
@@ -318,7 +384,25 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     }
 
     public init(from decoder: Decoder) throws {
+        let directPayload = try? decoder.singleValueContainer()
+            .decode([String: AIScanJSONValue].self)
+            .mapValues(\.foundationValue)
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let decodedContract = try container.decodeIfPresent(
+            [String: AIScanJSONValue].self,
+            forKey: .contractResult
+        )?.mapValues(\.foundationValue)
+        // Accept the persisted 3.0.10/11 envelope without changing direct
+        // payloads or dictionaries containing additional partner fields.
+        let wrappedContract: AIScanContractResult?
+        if let decodedContract,
+           Set(decodedContract.keys) == Set(["schema", "payload"]),
+           let schema = decodedContract["schema"] as? String,
+           let payload = decodedContract["payload"] as? [String: Any] {
+            wrappedContract = AIScanContractResult(schema: schema, payload: payload)
+        } else {
+            wrappedContract = nil
+        }
         let response = try container.decodeIfPresent(OnDeviceResponse.self, forKey: .response)
         let compactSymptoms = try container.decodeIfPresent([AIScanSymptom].self, forKey: .symptoms)
             ?? response?.symptoms?.filter { ($0.abnormLevel ?? 0) > 0 }.map(AIScanSymptom.init(onDeviceSymptom:))
@@ -327,7 +411,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
             status: try container.decodeIfPresent(String.self, forKey: .status) ?? "",
             diagnosisID: try container.decodeIfPresent(String.self, forKey: .diagnosisID),
             symptoms: compactSymptoms,
-            contractResult: try container.decodeIfPresent(AIScanContractResult.self, forKey: .contractResult),
+            contractResult: wrappedContract?.payload ?? decodedContract ?? Self.directContractPayload(directPayload),
             petType: try container.decodeIfPresent(String.self, forKey: .petType),
             part: try container.decodeIfPresent(String.self, forKey: .part),
             createdAt: try container.decodeIfPresent(Int.self, forKey: .createdAt),
@@ -337,9 +421,15 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
             petId: try container.decodeIfPresent(String.self, forKey: .petId),
             subPart: try container.decodeIfPresent(String.self, forKey: .subPart)
         )
+        contractSchema = wrappedContract?.schema
     }
 
     public func encode(to encoder: Encoder) throws {
+        if let contractResult {
+            var container = encoder.singleValueContainer()
+            try container.encode(contractResult.mapValues { AIScanJSONValue(foundationValue: $0) })
+            return
+        }
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(status, forKey: .status)
         if response != nil || petType != nil || part != nil {
@@ -355,7 +445,39 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         }
         try container.encodeIfPresent(diagnosisID, forKey: .diagnosisID)
         try container.encode(symptoms, forKey: .symptoms)
-        try container.encodeIfPresent(contractResult, forKey: .contractResult)
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.status == rhs.status
+            && lhs.diagnosisID == rhs.diagnosisID
+            && lhs.symptoms == rhs.symptoms
+            && dictionariesEqual(lhs.contractResult, rhs.contractResult)
+            && lhs.petType == rhs.petType
+            && lhs.part == rhs.part
+            && lhs.createdAt == rhs.createdAt
+            && lhs.questions == rhs.questions
+            && lhs.response == rhs.response
+            && lhs.userId == rhs.userId
+            && lhs.petId == rhs.petId
+            && lhs.subPart == rhs.subPart
+    }
+
+    private static func directContractPayload(_ value: [String: Any]?) -> [String: Any]? {
+        guard let value,
+              value["contract_result"] == nil,
+              value["diagId"] != nil,
+              value["status"] != nil else {
+            return nil
+        }
+        return value
+    }
+
+    private static func dictionariesEqual(_ lhs: [String: Any]?, _ rhs: [String: Any]?) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil): true
+        case let (lhs?, rhs?): NSDictionary(dictionary: lhs).isEqual(to: rhs)
+        default: false
+        }
     }
 
     private static func legacyAnalyzedDate(_ date: Date) -> String {

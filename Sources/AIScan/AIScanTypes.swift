@@ -1,7 +1,6 @@
 import AIScanCore
 
-/// AIScan service environment reserved for internal validation.
-@_spi(AIScanDevelopment)
+/// Service environment used when configuring AIScan.
 public enum AIScanEnvironment: Sendable {
     case production
     case development

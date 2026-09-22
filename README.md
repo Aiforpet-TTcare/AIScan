@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", from: "3.0.10")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.12")
 ]
 ```
 
@@ -32,14 +32,13 @@ Or in Xcode: **File > Add Package Dependencies** and enter the repository URL.
 
 ### CocoaPods
 
-CocoaPods is retained only as a legacy compatibility channel. New integrations
-should use Swift Package Manager; Pod validation and trunk publication do not
-block the primary SDK release.
+CocoaPods remains a compatibility channel. New integrations should use Swift
+Package Manager. Both installation paths must include the SDK's guide resources.
 
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.0.9'
+    :tag => '3.0.12'
 ```
 
 ### Single public module
@@ -53,7 +52,9 @@ Swift Package Manager product:
 Consumer code uses only `import AIScan`. The public Swift UI surface is available
 through that facade; the Objective-C Core is neither a separate product nor
 re-exported.
-See [ARCHITECTURE.md](ARCHITECTURE.md) and [RELEASE.md](RELEASE.md).
+See [ARCHITECTURE.md](ARCHITECTURE.md), [migration guidance](SECURE_SPLIT_MIGRATION.md),
+[CHANGELOG.md](CHANGELOG.md), and [RELEASE.md](RELEASE.md). Use a version only after
+its release tag is published; examples on a release branch describe the candidate.
 
 ---
 
@@ -97,8 +98,11 @@ AIScanManager.configure(
 )
 ```
 
-The `tt_pk_test_…` or `tt_pk_live_…` key prefix selects the registered Test or
-Live app environment. Partner apps do not select a service endpoint.
+The publishable key identifies the registered Test or Live app. The single-argument
+configuration uses the production service. Existing integrations can explicitly
+select the service environment with
+`AIScanManager.configure(publishableKey: key, environment: .production)` or
+`.development`; use the environment specified for your integration.
 
 ## Usage
 
@@ -118,7 +122,7 @@ try AIScanManager.showCamera(
     case let .success(scan):
         if let partnerResult = scan.contractResult {
             // Pass the contracted payload to the host app without remapping.
-            print(partnerResult.payload)
+            print(partnerResult)
         } else {
             print(scan.status)
         }
@@ -140,6 +144,18 @@ let camera = try AIScanManager.makeCameraViewController(
 present(camera, animated: true)
 ```
 
+### Repeated scans
+
+Call `showCamera(...)` or `makeCameraViewController(...)` for each new scan.
+Present a fresh controller after the previous scan has closed; do not cache and
+re-present a completed or cancelled controller. The SDK's in-flow retry action
+starts another capture attempt without requiring a new controller.
+
+A temporary full-screen presentation can pause the live camera. On return, the
+SDK resumes an eligible camera flow without restarting a closed, completed,
+cancelled, or diagnosing scan. Missing or unreadable guide animation resources
+are skipped so they do not terminate the app or permanently block capture.
+
 ---
 
 ## Configuration Options
@@ -148,7 +164,7 @@ present(camera, animated: true)
 |-----------|------|---------|-------------|
 | `publishableKey` | `String` | *required* | Key issued for the host app. |
 | `petType` | `PetType` | *required* | `.dog` or `.cat`. |
-| `partType` | `PartType` | *required* | `.eye`, `.teeth`, `.body`, `.ear`, or `.paws`. |
+| `partType` | `PartType` | *required* | `.eye`, `.tooth`, `.skin`, `.ear`, `.belly`, or `.foot`. |
 | `analysisSubpart` | `String?` | `nil` | Contract analysis subpart, when required. |
 | `analysisPosition` | `String?` | `nil` | Contract analysis position, when required. |
 | `userId` | `String?` | `nil` | Host app user identifier. |
@@ -188,7 +204,8 @@ the most recently generated URL for the current process.
 | `status` | `String` | Display status. |
 | `diagnosisID` | `String?` | Server diagnosis identifier when available. |
 | `symptoms` | `[AIScanSymptom]` | Display-safe symptom rows. |
-| `contractResult` | `AIScanContractResult?` | Partner payload passed through without SDK remapping. |
+| `contractResult` | `[String: Any]?` | Original partner payload dictionary, compatible with 3.0.9. |
+| `typedContractResult` | `AIScanContractResult?` | Opt-in schema and payload view when schema metadata is available. |
 
 `AIScanSymptom` carries display names, levels, labels, and optional image
 URLs. It does not expose model names, raw prediction values, thresholds, or
@@ -198,6 +215,17 @@ network schema fields.
 server supplies one. Its presence does not control questionnaire presentation
 or `enableResultView`; hosts that show partner JSON should do so with a separate
 app-level option.
+
+For partner results, `string`, `jsonString`, and `JSONEncoder` output the payload
+directly, without adding a `schema`/`payload` envelope. Ordinary on-device results
+retain the legacy `petType`, `part`, `createdAt`, `questions`, `response`, `userId`,
+`petId`, and `subPart` fields.
+
+If your 3.0.10/3.0.11 integration accesses `contractResult.schema` or
+`contractResult.payload`, change those accesses to `typedContractResult`. The
+`contractResult` property is a dictionary again in 3.0.12. See the
+[3.0.12 upgrade notes](SECURE_SPLIT_MIGRATION.md#upgrading-from-309-3010-or-3011)
+for typed construction and serialization details.
 
 ---
 

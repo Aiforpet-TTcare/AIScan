@@ -744,22 +744,36 @@ private final class CameraRoundedFocusMaskView: UIView {
 }
 
 enum AIScanCameraResourceBundle {
-    static let bundle: Bundle = {
+    static let bundles: [Bundle] = {
+        let containers = [Bundle(for: CameraViewController.self), Bundle.main]
 #if SWIFT_PACKAGE
-        Bundle.module
+        return [Bundle.module] + resourceBundles(in: containers)
 #else
-        let containingBundle = Bundle(for: CameraViewController.self)
+        return resourceBundles(in: containers)
+#endif
+    }()
+
+    // Storyboards and asset catalogs live in the reference bundle for CocoaPods.
+    static var bundle: Bundle { bundles[0] }
+
+    static func resourceBundles(in containers: [Bundle]) -> [Bundle] {
+        var result: [Bundle] = []
         for name in [
             "AIScanReferenceUIResources",
             "AIScanCameraUIResources",
             "AIScan_AIScanCameraUI",
         ] {
-            if let url = containingBundle.url(forResource: name, withExtension: "bundle"),
-               let bundle = Bundle(url: url) {
-                return bundle
+            for container in containers {
+                if let url = container.url(forResource: name, withExtension: "bundle"),
+                   let bundle = Bundle(url: url),
+                   !result.contains(where: { $0.bundleURL == bundle.bundleURL }) {
+                    result.append(bundle)
+                }
             }
         }
-        return containingBundle
-#endif
-    }()
+        for container in containers where !result.contains(where: { $0.bundleURL == container.bundleURL }) {
+            result.append(container)
+        }
+        return result
+    }
 }

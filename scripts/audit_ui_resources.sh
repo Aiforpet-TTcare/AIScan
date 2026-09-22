@@ -34,4 +34,6 @@ if ! shasum -a 256 -c "$ROOT/scripts/pdf-resource-sha256.txt" >/dev/null; then
   exit 1
 fi
 
+ruby "$ROOT/scripts/audit_guide_resources.rb"
+
 echo "AIScanCameraUI storyboard/XIB resource audit passed."
