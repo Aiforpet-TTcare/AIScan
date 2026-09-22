@@ -138,7 +138,7 @@ completes and `nil` otherwise — including a failed diagnosis, which the
 original service answered with HTTP 500 and the gateway now returns as an
 `ERROR` contract payload. `error` is always `nil`, exactly as in 1.x/2.x.
 Retake is handled inside the camera and never reaches the host. Use the
-`Result` completion above when the failure reason or the error DTO matters.
+`Result` completion above when the failure reason matters.
 
 ```swift
 try AIScanManager.showCamera(petType: .dog, partType: .eye, on: self) { result, error in

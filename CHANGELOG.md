@@ -24,6 +24,15 @@
   retake stays inside the camera. The `Result<AIScanResult, Error>` completion
   is unchanged and remains the way to observe the failure reason.
 
+### Validation
+
+- 173 public tests passed on the reference iPhone 17 Pro / iOS 26.2 simulator.
+- Static and dynamic CocoaPods consumers passed installed-resource checks,
+  playback of all seven guide animations, and legacy completion checks.
+- iOS 13 device-target compatibility build, CocoaPods lint, and release-tree,
+  resource, privacy, public-header, and distribution audits passed.
+- Physical-device acceptance in customer host apps remains outstanding.
+
 ## 3.0.12
 
 ### Fixes
