@@ -34,6 +34,7 @@ public_paths=(
   RELEASE.md
   SECURE_SPLIT_MIGRATION.md
   ARCHITECTURE.md
+  CHANGELOG.md
   Gemfile
   Gemfile.lock
   AIScanCore.xcframework
@@ -48,6 +49,9 @@ public_paths=(
   Tests/AIScanCompatibilityTests/AIScanCameraUIStateTests.swift
   Tests/AIScanCompatibilityTests/AIScanPDFReportTests.swift
   Tests/AIScanCompatibilityTests/AIScanLocalizationParityTests.swift
+  Tests/AIScanCompatibilityTests/AIScanContractResultTests.swift
+  Tests/AIScanCompatibilityTests/AIScanGuideResourceTests.swift
+  Tests/AIScanCompatibilityTests/PublicSourceCompatibilityTests.swift
   scripts/aiscancore-public-symbols.txt
   scripts/audit_distribution_boundary.sh
   scripts/audit_ios13_compatibility.sh
@@ -57,6 +61,7 @@ public_paths=(
   scripts/audit_publishable_keys.sh
   scripts/audit_public_release_tree.sh
   scripts/audit_ui_resources.sh
+  scripts/audit_guide_resources.rb
   scripts/create_ios13_compatibility_host.rb
   scripts/pdf-resource-sha256.txt
   scripts/resolve_ios_simulator_destination.sh

@@ -23,8 +23,7 @@ public enum AIScanManager {
         configure(publishableKey: publishableKey, environment: .production)
     }
 
-    /// Configures a non-public service environment for internal validation.
-    @_spi(AIScanDevelopment)
+    /// Configures the service environment for the process-wide default.
     public static func configure(
         publishableKey: String,
         environment: AIScanEnvironment

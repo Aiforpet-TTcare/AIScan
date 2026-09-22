@@ -2965,6 +2965,11 @@ final class AIScanCameraUIStateTests: XCTestCase {
         guide.loadViewIfNeeded()
 
         _ = guide.perform(NSSelectorFromString("close:"), with: nil)
+        // Complete the matching full-screen dismissal: the camera must remain
+        // stopped while hidden, then resume when UIKit reveals it again.
+        XCTAssertEqual(engine.startRunningCount, 1)
+        camera.beginAppearanceTransition(true, animated: false)
+        camera.endAppearanceTransition()
         for _ in 0..<40 where engine.startRunningCount < 2 {
             try await Task.sleep(nanoseconds: 50_000_000)
         }
@@ -3670,6 +3675,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
         let popup = try XCTUnwrap(
             popupContainer.children.first as? TTPopupCheckedResultViewController
         )
+        popupContainer.viewDidAppear(false)
         popupContainer.view.layoutIfNeeded()
         XCTAssertEqual(resultCount, 0)
         XCTAssertEqual(failureCount, 0)
@@ -3774,5 +3780,181 @@ private extension UIView {
         var labels = self is UILabel ? [self as! UILabel] : []
         labels.append(contentsOf: subviews.flatMap(\.allLabels))
         return labels
+    }
+}
+
+
+extension AIScanCameraUIStateTests {
+    @MainActor
+    private func makePreparedReentryCamera() async throws -> (
+        AIScanCameraViewController, AIScanCameraController, MockCameraEngine, UIWindow
+    ) {
+        let engine = MockCameraEngine()
+        engine.emitsPreparationProgress = false
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .eye
+        context.displayMetadata = ["show_flash_warning": "false"]
+        let camera = AIScanCameraViewController(
+            cameraController: controller,
+            context: context,
+            stackDismisser: MockCameraStackDismisser(),
+            transientSurfaceCoordinator: MockTransientSurfaceCoordinator()
+        )
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        window.rootViewController = camera
+        window.makeKeyAndVisible()
+        camera.loadViewIfNeeded()
+        for _ in 0..<20 where engine.startRunningCount == 0 {
+            try await Task.sleep(nanoseconds: 50_000_000)
+        }
+        XCTAssertEqual(engine.startRunningCount, 1)
+        return (camera, controller, engine, window)
+    }
+
+    @MainActor
+    func testTemporaryCameraDisappearanceResumesOnceAndCancelsPendingCapture() async throws {
+        let (camera, _, engine, window) = try await makePreparedReentryCamera()
+        defer { window.isHidden = true }
+        camera.beginCaptureAttempt()
+        camera.viewWillDisappear(false)
+        XCTAssertFalse(engine.automaticallyCapturesReadyFrames)
+        XCTAssertEqual(engine.resetCaptureAttemptCount, 1)
+        camera.viewDidAppear(false)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, 2)
+        camera.beginCaptureAttempt()
+        XCTAssertTrue(engine.automaticallyCapturesReadyFrames)
+    }
+
+    @MainActor
+    func testForegroundWhileCameraIsHiddenDefersResumeUntilAppearance() async throws {
+        let (camera, _, engine, window) = try await makePreparedReentryCamera()
+        defer { window.isHidden = true }
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        camera.viewWillDisappear(false)
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        XCTAssertEqual(engine.startRunningCount, 1)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, 2)
+    }
+
+    @MainActor
+    func testAppearanceInBackgroundDefersResumeUntilForeground() async throws {
+        let (camera, _, engine, window) = try await makePreparedReentryCamera()
+        defer { window.isHidden = true }
+        camera.viewWillDisappear(false)
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, 1)
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        XCTAssertEqual(engine.startRunningCount, 2)
+    }
+
+    @MainActor
+    func testCameraAppearanceNeverResumesDiagnosisCompletionOrClosedFlow() async throws {
+        let (camera, controller, engine, window) = try await makePreparedReentryCamera()
+        defer { window.isHidden = true }
+        camera.beginCaptureAttempt()
+        camera.viewWillDisappear(false)
+        camera.viewDidAppear(false)
+        camera.beginCaptureAttempt()
+        camera.aiscanCameraController(controller, didCapture: makeEvaluation(captureAllowed: true))
+        let startsBeforeDiagnosis = engine.startRunningCount
+        camera.viewWillDisappear(false)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, startsBeforeDiagnosis)
+        camera.aiscanCameraController(controller, didProduce: AISCDisplayResult(
+            status: "completed", diagnosisID: "reentry-completed", symptoms: []
+        ))
+        camera.viewWillDisappear(false)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, startsBeforeDiagnosis)
+        camera.dismissCompletedScan()
+        camera.viewWillDisappear(false)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, startsBeforeDiagnosis)
+    }
+
+    @MainActor
+    func testFreshCameraAfterCompletedScanPreparesAndCapturesAgain() async throws {
+        let (first, firstController, firstEngine, firstWindow) = try await makePreparedReentryCamera()
+        first.beginCaptureAttempt()
+        first.aiscanCameraController(firstController, didCapture: makeEvaluation(captureAllowed: true))
+        first.aiscanCameraController(firstController, didProduce: AISCDisplayResult(
+            status: "completed", diagnosisID: "first-scan", symptoms: []
+        ))
+        first.dismissCompletedScan()
+        firstWindow.isHidden = true
+        let (second, secondController, secondEngine, secondWindow) = try await makePreparedReentryCamera()
+        defer { secondWindow.isHidden = true }
+        XCTAssertEqual(firstEngine.cancelCount, 1)
+        XCTAssertEqual(secondEngine.preparedContexts.count, 1)
+        var results = 0
+        second.onResult = { _ in results += 1 }
+        second.beginCaptureAttempt()
+        XCTAssertTrue(secondEngine.automaticallyCapturesReadyFrames)
+        second.aiscanCameraController(secondController, didCapture: makeEvaluation(captureAllowed: true))
+        second.aiscanCameraController(secondController, didProduce: AISCDisplayResult(
+            status: "completed", diagnosisID: "second-scan", symptoms: []
+        ))
+        XCTAssertEqual(results, 1)
+    }
+
+    @MainActor
+    func testCameraAppearanceDoesNotStartSessionWhileAlbumIsOpen() async throws {
+        let (camera, _, engine, window) = try await makePreparedReentryCamera()
+        defer { window.isHidden = true }
+        let surface = try XCTUnwrap(camera.children.compactMap { $0 as? CameraViewController }.first)
+        surface.children.compactMap { $0 as? PreviewGuideViewController }.first?.dismissGuide()
+        camera.showAlbumSelection()
+        XCTAssertEqual(engine.albumOpenCount, 1)
+        camera.viewWillDisappear(false)
+        camera.viewDidAppear(false)
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        XCTAssertEqual(engine.startRunningCount, 1)
+    }
+
+    @MainActor
+    func testPreparationFinishingWhileHiddenWaitsForCameraAppearance() async throws {
+        let engine = MockCameraEngine()
+        engine.emitsPreparationProgress = false
+        engine.completesPreparationImmediately = false
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .eye
+        context.displayMetadata = ["show_flash_warning": "false"]
+        let camera = AIScanCameraViewController(cameraController: controller, context: context)
+        camera.loadViewIfNeeded()
+        for _ in 0..<20 where engine.preparedContexts.isEmpty {
+            try await Task.sleep(nanoseconds: 50_000_000)
+        }
+        XCTAssertEqual(engine.preparedContexts.count, 1)
+        camera.viewWillDisappear(false)
+        engine.completePendingPreparation()
+        for _ in 0..<20 where engine.configuredPositions.isEmpty {
+            try await Task.sleep(nanoseconds: 50_000_000)
+        }
+        XCTAssertEqual(engine.configuredPositions, [.back])
+        XCTAssertEqual(engine.startRunningCount, 0)
+        camera.viewDidAppear(false)
+        XCTAssertEqual(engine.startRunningCount, 1)
+    }
+
+    @MainActor
+    func testBottomPopupStartsOffscreenAndPresentsOnlyOnce() {
+        let content = UIViewController()
+        let popup = AIScanLegacyBottomPopupContainer(content: content, cardHeight: 363)
+        popup.loadViewIfNeeded()
+        XCTAssertEqual(content.view.transform.ty, 363)
+        popup.viewDidAppear(false)
+        XCTAssertEqual(content.view.transform, .identity)
+        // A later appearance must not replay entrance or overwrite an in-flight dismissal.
+        content.view.transform = CGAffineTransform(translationX: 0, y: 123)
+        popup.viewDidAppear(true)
+        XCTAssertEqual(content.view.transform.ty, 123)
     }
 }

@@ -2,7 +2,7 @@ import CoreGraphics
 import Foundation
 @preconcurrency import AIScanCore
 
-enum AIScanGuideLottie: String, AIScanLottieAsset {
+enum AIScanGuideLottie: String, CaseIterable, AIScanLottieAsset {
     case dogEye = "guideDogEye"
     case dogBody = "guideDogBody"
     case dogEar = "guideDogEar"
@@ -25,13 +25,20 @@ enum AIScanGuideLottie: String, AIScanLottieAsset {
     }
 
     var jsonString: String? {
-        guard let url = AIScanCameraResourceBundle.bundle.url(
-            forResource: rawValue,
-            withExtension: "json"
-        ) else {
-            return nil
+        jsonString(in: AIScanCameraResourceBundle.bundles)
+    }
+
+    func jsonString(in bundles: [Bundle]) -> String? {
+        for bundle in bundles {
+            // Processed resources are flat; manual framework copies may retain folders.
+            for directory in [nil, "GuideMedia", "ReferenceResources/GuideMedia"] as [String?] {
+                if let url = bundle.url(forResource: rawValue, withExtension: "json", subdirectory: directory),
+                   let json = try? String(contentsOf: url, encoding: .utf8) {
+                    return json
+                }
+            }
         }
-        return try? String(contentsOf: url, encoding: .utf8)
+        return nil
     }
 
     var loop: Bool { false }
