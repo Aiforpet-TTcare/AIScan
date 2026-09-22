@@ -238,6 +238,114 @@ public enum AIScanManager {
         return camera
     }
 
+    /// Original `(String?, Error?)` completion, kept byte-for-byte compatible
+    /// with 1.x/2.x hosts that branch only on whether `result` is `nil`.
+    /// `result` is the exact partner payload JSON (`AIScanResult.jsonString`)
+    /// when a scan completes and `nil` otherwise; retake is handled inside the
+    /// camera and never reaches this callback. `error` is always `nil`, as it
+    /// was in 1.x/2.x. Hosts that need the failure reason use the
+    /// `Result<AIScanResult, Error>` completion instead.
+    public static func makeCameraViewController(
+        petType: PetType,
+        partType: PartType,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
+        petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
+        userId: String? = nil,
+        recordId: String? = nil,
+        displayMetadata: [String: String]? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
+        resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) throws -> UIViewController {
+        try makeCameraViewController(
+            petType: petType,
+            partType: partType,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
+            petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
+            userId: userId,
+            recordId: recordId,
+            displayMetadata: displayMetadata,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
+            resultViewController: resultViewController,
+            completion: legacyStringCompletion(completion)
+        )
+    }
+
+    /// `showCamera` counterpart of the `(String?, Error?)` completion above.
+    @discardableResult
+    public static func showCamera(
+        petType: PetType,
+        partType: PartType,
+        on presentingViewController: UIViewController,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
+        petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
+        userId: String? = nil,
+        recordId: String? = nil,
+        displayMetadata: [String: String]? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
+        resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) throws -> UIViewController {
+        try showCamera(
+            petType: petType,
+            partType: partType,
+            on: presentingViewController,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
+            petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
+            userId: userId,
+            recordId: recordId,
+            displayMetadata: displayMetadata,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
+            resultViewController: resultViewController,
+            completion: legacyStringCompletion(completion)
+        )
+    }
+
+    private static func legacyStringCompletion(
+        _ completion: @escaping (String?, Error?) -> Void
+    ) -> (Result<AIScanResult, Error>) -> Void {
+        { result in
+            switch result {
+            case let .success(scan):
+                completion(scan.jsonString, nil)
+            case .failure:
+                completion(nil, nil)
+            }
+        }
+    }
+
     private static func copyConfiguration(_ source: AISCConfiguration) -> AISCConfiguration {
         let copy = AISCConfiguration(publishableKey: source.publishableKey)
         copy.environment = source.environment

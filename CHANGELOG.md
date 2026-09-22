@@ -1,5 +1,38 @@
 # Changelog
 
+## 3.0.13
+
+### Fixes
+
+- Decide the outcome of a server diagnosis from `sdk_result.status` alone. A
+  failed diagnosis (`ERROR`) is now reported as a non-retryable failure with no
+  result — the original service answered the same case with HTTP 500 — instead
+  of a successful result carrying the partner error DTO. `RETRY` drives the
+  in-camera retake regardless of the partner payload, and a missing required
+  contract is no longer offered for retry. The partner payload is never
+  interpreted by the SDK. Core rebuilt from the 3.0.13 source.
+
+### Added
+
+- Restore the original `(String?, Error?)` completion on `showCamera` and
+  `makeCameraViewController` for hosts that branch only on a `nil` result, as
+  1.x/2.x integrations do. `result` is the direct partner payload JSON
+  (`AIScanResult.jsonString`) when a scan completes and `nil` when the flow ends
+  without one — including a failed diagnosis, which the original service
+  answered with HTTP 500 and the gateway now returns as an `ERROR` contract
+  payload — and `error` is always `nil` exactly as 1.x/2.x delivered it;
+  retake stays inside the camera. The `Result<AIScanResult, Error>` completion
+  is unchanged and remains the way to observe the failure reason.
+
+### Validation
+
+- 173 public tests passed on the reference iPhone 17 Pro / iOS 26.2 simulator.
+- Static and dynamic CocoaPods consumers passed installed-resource checks,
+  playback of all seven guide animations, and legacy completion checks.
+- iOS 13 device-target compatibility build, CocoaPods lint, and release-tree,
+  resource, privacy, public-header, and distribution audits passed.
+- Physical-device acceptance in customer host apps remains outstanding.
+
 ## 3.0.12
 
 ### Fixes
