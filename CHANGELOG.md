@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.0.13
+
+### Added
+
+- Restore the original `(String?, Error?)` completion on `showCamera` and
+  `makeCameraViewController` for hosts that branch only on a `nil` result, as
+  1.x/2.x integrations do. `result` is the direct partner payload JSON
+  (`AIScanResult.jsonString`) when a scan completes and `nil` when the flow ends
+  without one — including a failed diagnosis, which the original service
+  answered with HTTP 500 and the gateway now returns as an `ERROR` contract
+  payload — and `error` is always `nil` exactly as 1.x/2.x delivered it;
+  retake stays inside the camera. The `Result<AIScanResult, Error>` completion
+  is unchanged and remains the way to observe the failure reason.
+
 ## 3.0.12
 
 ### Fixes

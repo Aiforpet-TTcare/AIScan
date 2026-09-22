@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.12")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.13")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.0.12'
+    :tag => '3.0.13'
 ```
 
 ### Single public module
@@ -129,6 +129,24 @@ try AIScanManager.showCamera(
     case let .failure(error):
         print(error.localizedDescription)
     }
+}
+```
+
+Hosts written against the 1.x/2.x `(String?, Error?)` completion can keep that
+closure unchanged. `result` is the direct partner payload JSON when a scan
+completes and `nil` otherwise — including a failed diagnosis, which the
+original service answered with HTTP 500 and the gateway now returns as an
+`ERROR` contract payload. `error` is always `nil`, exactly as in 1.x/2.x.
+Retake is handled inside the camera and never reaches the host. Use the
+`Result` completion above when the failure reason or the error DTO matters.
+
+```swift
+try AIScanManager.showCamera(petType: .dog, partType: .eye, on: self) { result, error in
+    guard let result else {
+        // Cancelled or failed; `error` is nil as in 1.x/2.x.
+        return
+    }
+    deliver(resultJSON: result)
 }
 ```
 

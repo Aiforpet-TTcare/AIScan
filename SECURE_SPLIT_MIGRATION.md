@@ -34,7 +34,7 @@ and add only the official repository:
 dependencies: [
     .package(
         url: "https://github.com/Aiforpet-TTcare/AIScan.git",
-        exact: "3.0.12"
+        exact: "3.0.13"
     )
 ]
 ```
@@ -49,11 +49,11 @@ For CocoaPods compatibility:
 target 'YourTargetName' do
   pod 'AIScan',
       :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-      :tag => '3.0.12'
+      :tag => '3.0.13'
 end
 ```
 
-These examples target 3.0.12; use them after its release tag is published.
+These examples target 3.0.13; use them after its release tag is published.
 After changing the version, resolve packages again or run `pod update AIScan`.
 
 ## 2. Replace initialization

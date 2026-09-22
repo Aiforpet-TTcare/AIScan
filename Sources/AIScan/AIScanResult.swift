@@ -367,6 +367,12 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     /// Original `AIScanResult.string` callback surface retained for existing hosts.
     public var string: String? { jsonString }
 
+    /// True when the partner payload is the service's failed-diagnosis DTO
+    /// (`status: "ERROR"`), which the original service delivered as HTTP 500.
+    var isContractError: Bool {
+        (contractResult?["status"] as? String)?.uppercased() == "ERROR"
+    }
+
     public var jsonObject: [String: Any]? {
         guard let jsonString,
               let value = try? JSONSerialization.jsonObject(with: Data(jsonString.utf8)) else {
