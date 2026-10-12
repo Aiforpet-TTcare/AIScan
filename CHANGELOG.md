@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.0.14 (unreleased candidate)
+
+- Inspect album file metadata before image conversion. Display source width,
+  height and bits per pixel; show failures in red with readable reasons.
+- Require at least 1200×1200 pixels for skin, 900×900 for eyes and 1400×1400
+  for teeth, with at least 24 source bits per pixel. Unavailable source metadata
+  is rejected instead of treating decoded BGRA storage as original color depth.
+- Measure eye/teeth subjects in upright original pixels before resizing. Both
+  axes must reach 270 pixels for eyes or 400 pixels for teeth. TTAPI performs
+  this detection-only check before upload; provider diagnosis remains unchanged.
+- Keep analysis disabled while checking, discard obsolete photo checks, and
+  scroll the quality panel on small displays. Add English, Korean and Japanese
+  quality messages. Camera capture thresholds and final callback formats remain
+  unchanged.
+
+This candidate has not been published. Existing 3.0.13 tags are unchanged.
+
 ## 3.0.13
 
 ### Fixes

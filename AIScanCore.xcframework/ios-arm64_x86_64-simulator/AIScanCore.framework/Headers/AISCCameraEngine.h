@@ -66,6 +66,8 @@ typedef void (^AISCCameraPermissionCompletion)(BOOL granted);
 @optional
 - (void)beginCaptureAttempt NS_SWIFT_NAME(beginCaptureAttempt());
 - (void)captureAttemptTimedOut NS_SWIFT_NAME(captureAttemptTimedOut());
+- (void)measurePhotoSubjectInImage:(CIImage *)image
+                       completion:(AISCPhotoMeasurementCompletion)completion NS_SWIFT_NAME(measurePhotoSubject(in:completion:));
 @required
 - (void)diagnosePhotoImage:(CIImage *)image NS_SWIFT_NAME(diagnosePhoto(_:));
 - (void)diagnosePhotoInput:(AISCImageInput *)input NS_SWIFT_NAME(diagnosePhoto(_:));

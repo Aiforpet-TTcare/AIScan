@@ -47,6 +47,7 @@ public_paths=(
   Tests/AIScanCompatibilityTests/AIScanLifecyclePerformanceTests.swift
   Tests/AIScanCompatibilityTests/AIScanCameraGuidanceParityTests.swift
   Tests/AIScanCompatibilityTests/AIScanCameraUIStateTests.swift
+  Tests/AIScanCompatibilityTests/AIScanAlbumQualityTests.swift
   Tests/AIScanCompatibilityTests/AIScanPDFReportTests.swift
   Tests/AIScanCompatibilityTests/AIScanLocalizationParityTests.swift
   Tests/AIScanCompatibilityTests/AIScanContractResultTests.swift

@@ -1,5 +1,6 @@
 import AVFoundation
 import CoreImage
+import ImageIO
 import SwiftUI
 import UIKit
 import WebKit
@@ -11,7 +12,7 @@ import AIScan
 private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
     weak var delegate: AISCCameraEngineDelegate?
     var automaticallyCapturesReadyFrames = false
-    var analysisMode: AISCAnalysisMode { .onDevice }
+    var analysisMode: AISCAnalysisMode = .onDevice
     let captureSession = AVCaptureSession()
 
     private(set) var preparedContexts: [AISCScanContext] = []
@@ -32,6 +33,8 @@ private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
     private(set) var captureRequestCount = 0
     private(set) var diagnosedPhotoInputs: [AISCImageInput] = []
     private(set) var diagnosedPhotoImages: [CIImage] = []
+    private(set) var measuredPhotoImages: [CIImage] = []
+    var measuredSubjectSize = CGSize(width: 270, height: 270)
     private(set) var submittedQuestionnaireAnswers: [[AISCQuestionnaireAnswer]] = []
     private(set) var resetCaptureAttemptCount = 0
     private(set) var resetCount = 0
@@ -140,6 +143,11 @@ private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
 
     func diagnosePhoto(_ image: CIImage) {
         diagnosedPhotoImages.append(image)
+    }
+
+    func measurePhotoSubject(in image: CIImage, completion: @escaping (CGSize, Error?) -> Void) {
+        measuredPhotoImages.append(image)
+        completion(measuredSubjectSize, nil)
     }
 
     func submitQuestionnaireAnswers(_ answers: [AISCQuestionnaireAnswer]) {
@@ -336,6 +344,46 @@ private final class MockTransientSurfaceCoordinator: AIScanTransientSurfaceCoord
 }
 
 final class AIScanCameraUIStateTests: XCTestCase {
+    @MainActor
+    func testTTAPIAlbumQualityAdapterMeasuresBeforeDiagnosisInUprightPixels() throws {
+        let engine = MockCameraEngine()
+        engine.analysisMode = AISCAnalysisMode(rawValue: 1)! // AISCAnalysisModeTTAPI
+        engine.measuredSubjectSize = CGSize(width: 270, height: 269)
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 1600), format: format).image {
+            UIColor.brown.setFill(); $0.fill(CGRect(x: 0, y: 0, width: 1200, height: 1600))
+        }
+        let data = NSMutableData()
+        let destination = try XCTUnwrap(CGImageDestinationCreateWithData(data, "public.jpeg" as CFString, 1, nil))
+        CGImageDestinationAddImage(destination, try XCTUnwrap(image.cgImage), [kCGImagePropertyOrientation: 6] as CFDictionary)
+        XCTAssertTrue(CGImageDestinationFinalize(destination))
+        let photo = try XCTUnwrap(AIScanAlbumPhoto(data: data as Data))
+        var result: AIScanAlbumQualityReport?
+        controller.inspectAlbumPhoto(photo, part: .eye) { result = $0 }
+        let report = try XCTUnwrap(result)
+        XCTAssertFalse(report.isValid)
+        XCTAssertEqual(engine.measuredPhotoImages.count, 1)
+        XCTAssertEqual(engine.measuredPhotoImages.first?.extent.size, CGSize(width: 1600, height: 1200))
+        XCTAssertTrue(engine.diagnosedPhotoImages.isEmpty)
+        XCTAssertTrue(engine.diagnosedPhotoInputs.isEmpty)
+    }
+
+    @MainActor
+    func testAlbumOriginalQualityRejectDoesNotRunDetectionOrDiagnosis() throws {
+        let engine = MockCameraEngine()
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 899, height: 900), format: format).image { _ in }
+        let photo = try XCTUnwrap(AIScanAlbumPhoto(data: try XCTUnwrap(image.jpegData(compressionQuality: 0.9))))
+        var result: AIScanAlbumQualityReport?
+        controller.inspectAlbumPhoto(photo, part: .eye) { result = $0 }
+        XCTAssertFalse(try XCTUnwrap(result).isValid)
+        XCTAssertTrue(engine.measuredPhotoImages.isEmpty)
+        XCTAssertTrue(engine.diagnosedPhotoImages.isEmpty)
+    }
     @available(iOS 14, *)
     @MainActor
     func testAlbumLoaderPreservesOriginalFilePixelDimensions() throws {
@@ -2442,7 +2490,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
     @MainActor
     func testAlbumValidationKeepsTheSelectedActionAppearanceWhileWorkRuns() async throws {
         let album = AIScanAlbumSelectionViewController(
-            allowsPositionSelection: false,
+            allowsPositionSelection: true,
             initialPosition: nil
         )
         album.loadViewIfNeeded()
@@ -2452,12 +2500,13 @@ final class AIScanCameraUIStateTests: XCTestCase {
         let analyzeLabel = try XCTUnwrap(album.view.descendant(
             accessibilityIdentifier: "aiscan.album.analyze.label"
         ) as? UILabel)
-        let picker = UIImagePickerController()
 
-        album.imagePickerController(
-            picker,
-            didFinishPickingMediaWithInfo: [.originalImage: UIImage()]
-        )
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let source = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 1200), format: format).jpegData(withCompressionQuality: 0.9) {
+            UIColor.brown.setFill(); $0.fill(CGRect(x: 0, y: 0, width: 1200, height: 1200))
+        }
+        album.applySelectedPhoto(try XCTUnwrap(AIScanAlbumPhoto(data: source)))
         for _ in 0..<20 where !analyze.isEnabled {
             try await Task.sleep(nanoseconds: 10_000_000)
         }
@@ -2537,20 +2586,18 @@ final class AIScanCameraUIStateTests: XCTestCase {
         )
         let picker = UIImagePickerController()
         let selectedImage = UIGraphicsImageRenderer(
-            size: CGSize(width: 160, height: 160)
+            size: CGSize(width: 1200, height: 1200)
         ).image { context in
             UIColor.systemPink.setFill()
-            context.fill(CGRect(x: 0, y: 0, width: 160, height: 160))
+            context.fill(CGRect(x: 0, y: 0, width: 1200, height: 1200))
         }
-        resolvedAlbum.imagePickerController(
-            picker,
-            didFinishPickingMediaWithInfo: [.originalImage: selectedImage]
-        )
+        resolvedAlbum.applySelectedPhoto(try XCTUnwrap(AIScanAlbumPhoto(data: try XCTUnwrap(selectedImage.jpegData(compressionQuality: 0.9)))))
         for _ in 0..<30 where resolvedAlbum.view.descendant(
             accessibilityIdentifier: "aiscan.album.preview"
         )?.isHidden != false {
             try await Task.sleep(nanoseconds: 50_000_000)
         }
+        resolvedAlbum.applySelectedPhoto(try XCTUnwrap(AIScanAlbumPhoto(data: try XCTUnwrap(selectedImage.jpegData(compressionQuality: 0.9)))))
         resolvedAlbum.setAnalyzing(true)
         resolvedAlbum.onAnalyze?(selectedImage, "belly")
         for _ in 0..<20 where engine.diagnosedPhotoImages.isEmpty {
@@ -2647,11 +2694,12 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
         let resolvedAlbum = try XCTUnwrap(album)
         let selectedImage = UIGraphicsImageRenderer(
-            size: CGSize(width: 160, height: 160)
+            size: CGSize(width: 1200, height: 1200)
         ).image { context in
             UIColor.systemPink.setFill()
-            context.fill(CGRect(x: 0, y: 0, width: 160, height: 160))
+            context.fill(CGRect(x: 0, y: 0, width: 1200, height: 1200))
         }
+        resolvedAlbum.applySelectedPhoto(try XCTUnwrap(AIScanAlbumPhoto(data: try XCTUnwrap(selectedImage.jpegData(compressionQuality: 0.9)))))
         resolvedAlbum.setAnalyzing(true)
         resolvedAlbum.onAnalyze?(selectedImage, "belly")
         XCTAssertEqual(engine.diagnosedPhotoImages.count, 1)

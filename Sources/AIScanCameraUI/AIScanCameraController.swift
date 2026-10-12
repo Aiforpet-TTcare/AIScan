@@ -203,6 +203,31 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
                 ]
             )
         }
+        cameraEngine.diagnosePhoto(try uprightPhotoImage(image))
+    }
+
+    func inspectAlbumPhoto(
+        _ photo: AIScanAlbumPhoto,
+        part: AISCPartType,
+        completion: @escaping (AIScanAlbumQualityReport) -> Void
+    ) {
+        let report = AIScanAlbumQualityReport(metadata: photo.metadata, part: part)
+        guard report.originalIsValid, report.requiresDetection else { completion(report); return }
+        guard let measure = cameraEngine.measurePhotoSubject else {
+            completion(report.measured(nil, issue: "detect"))
+            return
+        }
+        do {
+            let image = try uprightPhotoImage(photo.image)
+            measure(image) { size, error in
+                completion(report.measured(error == nil ? size : nil, issue: error == nil ? nil : "detect"))
+            }
+        } catch {
+            completion(report.measured(nil, issue: "detect"))
+        }
+    }
+
+    private func uprightPhotoImage(_ image: UIImage) throws -> CIImage {
         let sourceImage: CIImage
         if let cgImage = image.cgImage {
             sourceImage = CIImage(cgImage: cgImage)
@@ -223,8 +248,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         case .left: exifOrientation = 8
         @unknown default: exifOrientation = 1
         }
-        let coreImage = sourceImage.oriented(forExifOrientation: exifOrientation)
-        cameraEngine.diagnosePhoto(coreImage)
+        return sourceImage.oriented(forExifOrientation: exifOrientation)
     }
 
     public func resetCaptureAttempt() {

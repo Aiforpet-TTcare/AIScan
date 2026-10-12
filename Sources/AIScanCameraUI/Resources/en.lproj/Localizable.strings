@@ -96,3 +96,19 @@
 "result.skin_roughness" = "Roughness";
 "pdf.export_button" = "Share PDF report";
 "common.close" = "Close";
+
+/* Album source quality */
+"album.quality.width" = "Original image width";
+"album.quality.height" = "Original image height";
+"album.quality.bits" = "Bits per pixel";
+"album.quality.detect_width" = "Detected area width";
+"album.quality.detect_height" = "Detected area height";
+"album.quality.unknown_value" = "Unavailable";
+"album.quality.resolution" = "Image resolution is too low";
+"album.quality.bits_reason" = "Insufficient image color information";
+"album.quality.unknown" = "Original image information could not be read";
+"album.quality.distance" = "The eye or teeth were photographed too far away";
+"album.quality.detect" = "The requested area could not be detected";
+"album.quality.checking" = "Checking image quality";
+"album.quality.load_failed" = "Unable to read the selected photo";
+"album.quality.not_checked" = "Not measured";
