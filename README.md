@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.13")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.14")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.0.13'
+    :tag => '3.0.14'
 ```
 
 ### Single public module
@@ -283,9 +283,9 @@ Please refer to the service documentation for more details.
 ## Contact
 
 For your publishable key or any other questions, visit [AI for Pet](https://www.aiforpet.com/).
-## Album image quality (3.0.14 candidate)
+## Album image quality (3.0.14)
 
-This feature is not published yet. With `allowsAlbum: true`, the SDK checks the
+With `allowsAlbum: true`, the SDK checks the
 selected image before starting analysis. It displays source pixel dimensions,
 bits per pixel and, for eyes/teeth, the detected subject dimensions. Failed
 values and reasons appear in red and the analysis action stays disabled.
@@ -302,4 +302,3 @@ refer to upright original pixels, before crop expansion or resizing. TTAPI also
 performs the detection-only quality check before uploading; the final callback
 format is unchanged. Passing these minimum checks continues the existing
 analysis flow and does not guarantee a successful diagnosis.
-

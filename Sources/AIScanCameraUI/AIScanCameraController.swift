@@ -217,13 +217,16 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
             completion(report.measured(nil, issue: "detect"))
             return
         }
+        // Core's measurement completion is dispatched to the main queue.
+        // Match the existing prepare adapters at the ObjC @Sendable boundary.
+        let completion = AIScanUncheckedSendable(completion)
         do {
             let image = try uprightPhotoImage(photo.image)
             measure(image) { size, error in
-                completion(report.measured(error == nil ? size : nil, issue: error == nil ? nil : "detect"))
+                completion.value(report.measured(error == nil ? size : nil, issue: error == nil ? nil : "detect"))
             }
         } catch {
-            completion(report.measured(nil, issue: "detect"))
+            completion.value(report.measured(nil, issue: "detect"))
         }
     }
 

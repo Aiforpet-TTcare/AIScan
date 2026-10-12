@@ -180,6 +180,23 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertFalse(AIScanAlbumQualityReport(metadata: unknown.metadata, part: .skin).isValid)
     }
 
+    func testApplePNGPrefixDoesNotShiftTheSourceBitDepthReading() throws {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let source = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 1200), format: format).pngData {
+            UIColor.brown.setFill(); $0.fill(CGRect(x: 0, y: 0, width: 1200, height: 1200))
+        }
+        // Apple's PNG optimizer inserts CgBI before IHDR. No animal photo is embedded.
+        let prefix = Data([0, 0, 0, 4, 67, 103, 66, 73, 80, 0, 32, 6, 44, 184, 119, 102])
+        var data = Data(source.prefix(8))
+        data.append(prefix)
+        data.append(source.dropFirst(8))
+        let metadata = try XCTUnwrap(AIScanAlbumMetadata(data: data))
+        XCTAssertEqual(metadata.width, 1200)
+        XCTAssertEqual(metadata.height, 1200)
+        XCTAssertGreaterThanOrEqual(try XCTUnwrap(metadata.bitsPerPixel), 24)
+    }
+
     func testSkinDoesNotRequireSubjectDetection() {
         let metadata = AIScanAlbumMetadata(width: 1200, height: 1200, bitsPerPixel: 24)
         XCTAssertTrue(AIScanAlbumQualityReport(metadata: metadata, part: .skin).isValid)

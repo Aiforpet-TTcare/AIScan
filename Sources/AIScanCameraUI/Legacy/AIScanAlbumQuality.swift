@@ -21,8 +21,9 @@ struct AIScanAlbumMetadata: Sendable {
         self.width = width
         self.height = height
         if data.count >= 29, Array(data.prefix(8)) == [137, 80, 78, 71, 13, 10, 26, 10] {
-            let depth = Int(data[data.startIndex + 24])
-            let colorType = data[data.startIndex + 25]
+            guard let header = Self.pngHeader(data) else { bitsPerPixel = nil; return }
+            let depth = header.depth
+            let colorType = header.colorType
             // Indexed pixels store palette indexes, not 24-bit RGB samples.
             let channels: Int?
             switch colorType {
@@ -45,6 +46,23 @@ struct AIScanAlbumMetadata: Sendable {
         } else {
             bitsPerPixel = nil
         }
+    }
+
+    private static func pngHeader(_ data: Data) -> (depth: Int, colorType: UInt8)? {
+        var offset = 8
+        while offset <= data.count - 12 {
+            let start = data.startIndex + offset
+            let length = (0..<4).reduce(0) { ($0 << 8) | Int(data[start + $1]) }
+            guard length <= data.count - offset - 12 else { return nil }
+            if Array(data[(start + 4)..<(start + 8)]) == [73, 72, 68, 82] { // IHDR
+                guard length == 13 else { return nil }
+                let depth = Int(data[start + 16])
+                guard [1, 2, 4, 8, 16].contains(depth) else { return nil }
+                return (depth, data[start + 17])
+            }
+            offset += length + 12
+        }
+        return nil
     }
 }
 
@@ -69,8 +87,8 @@ struct AIScanAlbumPhoto: @unchecked Sendable {
     }
 }
 
-struct AIScanAlbumQualityReport {
-    struct Row {
+struct AIScanAlbumQualityReport: Sendable {
+    struct Row: Sendable {
         let key: String
         let value: Int?
         let minimum: Int
