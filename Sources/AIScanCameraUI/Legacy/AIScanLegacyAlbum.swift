@@ -1,6 +1,7 @@
 import PhotosUI
 import UIKit
 import UniformTypeIdentifiers
+import AIScanCore
 
 @available(iOS 14, *)
 enum AIScanAlbumImageLoader {
@@ -16,6 +17,13 @@ enum AIScanAlbumImageLoader {
         from provider: NSItemProvider,
         completion: @escaping @MainActor @Sendable (UIImage?) -> Void
     ) {
+        loadPhoto(from: provider) { completion($0?.image) }
+    }
+
+    nonisolated static func loadPhoto(
+        from provider: NSItemProvider,
+        completion: @escaping @MainActor @Sendable (AIScanAlbumPhoto?) -> Void
+    ) {
         let imageType = provider.registeredTypeIdentifiers.first {
             UTType($0)?.conforms(to: .image) == true
         } ?? UTType.image.identifier
@@ -24,8 +32,8 @@ enum AIScanAlbumImageLoader {
         provider.loadFileRepresentation(forTypeIdentifier: imageType) { url, _ in
             if let url,
                let data = try? Data(contentsOf: url, options: .mappedIfSafe),
-               let image = UIImage(data: data) {
-                Task { @MainActor in completion(image) }
+               let photo = AIScanAlbumPhoto(data: data) {
+                Task { @MainActor in completion(photo) }
                 return
             }
 
@@ -36,7 +44,8 @@ enum AIScanAlbumImageLoader {
             }
             provider.loadObject(ofClass: UIImage.self) { object, _ in
                 let image = object as? UIImage
-                Task { @MainActor in completion(image) }
+                let photo = image.map { AIScanAlbumPhoto(image: $0) }
+                Task { @MainActor in completion(photo) }
             }
         }
     }
@@ -46,13 +55,23 @@ enum AIScanAlbumImageLoader {
 final class AIScanAlbumSelectionViewController: UIViewController {
     var onClose: (() -> Void)?
     var onAnalyze: ((UIImage, String?) -> Void)?
+    var onInspect: ((AIScanAlbumPhoto, @escaping (AIScanAlbumQualityReport) -> Void) -> Void)?
+    private(set) var qualityReport: AIScanAlbumQualityReport?
+    private(set) var selectedPhoto: AIScanAlbumPhoto?
 
     private let allowsPositionSelection: Bool
     private var selectedPosition: String?
     private var selectedImage: UIImage?
+    private let partType: AISCPartType
+    private let qualityStack = UIStackView()
+    private var inspectionGeneration = 0
+    private var isInspecting = false
+    private var isClosed = false
     private let contentStack = UIStackView()
+    private let contentScrollView = UIScrollView()
     private let areaStack = UIStackView()
     private let photoCard = UIView()
+    private var photoHeightConstraint: NSLayoutConstraint?
     private let photoImageView = UIImageView()
     private let emptyStack = UIStackView()
     private let emptyIconBackground = UIView()
@@ -68,8 +87,9 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private var areaButtons: [String: UIButton] = [:]
     private var isAnalyzing = false
 
-    init(allowsPositionSelection: Bool, initialPosition: String?) {
+    init(allowsPositionSelection: Bool, initialPosition: String?, partType: AISCPartType? = nil) {
         self.allowsPositionSelection = allowsPositionSelection
+        self.partType = partType ?? (allowsPositionSelection ? .skin : .eye)
         selectedPosition = Self.canonicalPosition(initialPosition)
             ?? (allowsPositionSelection ? "belly" : initialPosition)
         super.init(nibName: nil, bundle: nil)
@@ -89,6 +109,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updatePreviewHeight()
         if selectPhotoButton.bounds.width.isFinite,
            selectPhotoButton.bounds.height.isFinite,
            selectPhotoButton.bounds.width > 1,
@@ -190,12 +211,20 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         contentStack.translatesAutoresizingMaskIntoConstraints = false
         contentStack.axis = .vertical
         contentStack.spacing = 16
-        view.addSubview(contentStack)
+        contentScrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentScrollView)
+        contentScrollView.addSubview(contentStack)
         NSLayoutConstraint.activate([
-            contentStack.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 16),
-            contentStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            contentStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            contentStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            contentScrollView.topAnchor.constraint(equalTo: closeButton.bottomAnchor),
+            contentScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            contentStack.topAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.topAnchor, constant: 16),
+            contentStack.leadingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.leadingAnchor, constant: 20),
+            contentStack.trailingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.trailingAnchor, constant: -20),
+            contentStack.bottomAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.bottomAnchor, constant: -20),
+            contentStack.widthAnchor.constraint(equalTo: contentScrollView.frameLayoutGuide.widthAnchor, constant: -40),
+            contentStack.heightAnchor.constraint(greaterThanOrEqualTo: contentScrollView.frameLayoutGuide.heightAnchor, constant: -36),
         ])
     }
 
@@ -247,11 +276,19 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         buildPhotoCard()
         contentStack.addArrangedSubview(photoCard)
         let photoHeight = photoCard.heightAnchor.constraint(equalToConstant: 380)
+        photoHeightConstraint = photoHeight
         photoHeight.priority = .defaultHigh
         photoHeight.isActive = true
 
         buildValidationRow()
         contentStack.addArrangedSubview(validationRow)
+
+        qualityStack.axis = .vertical
+        qualityStack.spacing = 5
+        qualityStack.setContentCompressionResistancePriority(.required, for: .vertical)
+        qualityStack.accessibilityIdentifier = "aiscan.album.quality"
+        qualityStack.isHidden = true
+        contentStack.addArrangedSubview(qualityStack)
 
         let spacer = UIView()
         spacer.setContentHuggingPriority(.defaultLow, for: .vertical)
@@ -393,12 +430,18 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         photoImageView.image = selectedImage
         photoImageView.isHidden = selectedImage == nil
         emptyStack.isHidden = selectedImage != nil
-        analyzeButton.isEnabled = selectedImage != nil && !isAnalyzing
+        updatePreviewHeight()
+        analyzeButton.isEnabled = qualityReport?.isValid == true && !isAnalyzing && !isInspecting && !isClosed
         updateAnalyzeButtonStyle()
     }
 
+    private func updatePreviewHeight() {
+        let height: CGFloat = selectedImage == nil ? 380 : min(380, max(160, view.bounds.height * 0.3))
+        if photoHeightConstraint?.constant != height { photoHeightConstraint?.constant = height }
+    }
+
     private func updateAnalyzeButtonStyle() {
-        let hasSelectedImage = selectedImage != nil
+        let hasSelectedImage = qualityReport?.isValid == true && !isInspecting && !isClosed
         analyzeBackgroundLayer.fillColor = AIScanReferenceTheme.resolvedCGColor(
             hasSelectedImage ? AIScanReferenceTheme.brandPrimary : AIScanReferenceTheme.disabledSurface,
             traits: traitCollection
@@ -424,6 +467,9 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     @objc private func closeTapped() {
+        isClosed = true
+        inspectionGeneration += 1
+        updateSelectionUI()
         onClose?()
     }
 
@@ -450,17 +496,72 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     @objc private func analyzeTapped() {
-        guard let selectedImage, analyzeButton.isEnabled else { return }
+        guard let selectedImage, analyzeButton.isEnabled, qualityReport?.isValid == true else { return }
         setValidationMessage(nil)
         setAnalyzing(true)
         onAnalyze?(selectedImage, selectedPosition)
     }
 
-    private func applySelectedImage(_ image: UIImage) {
-        selectedImage = image
+    func applySelectedPhoto(_ photo: AIScanAlbumPhoto) {
+        inspectionGeneration += 1
+        let generation = inspectionGeneration
+        selectedPhoto = photo
+        selectedImage = photo.image
+        let report = AIScanAlbumQualityReport(metadata: photo.metadata, part: partType)
+        qualityReport = report
         isAnalyzing = false
+        isInspecting = report.originalIsValid && report.requiresDetection
         setValidationMessage(nil)
+        renderQuality()
         updateSelectionUI()
+        guard isInspecting else { return }
+        guard let onInspect else {
+            finishInspection(report.measured(nil, issue: "detect"), generation: generation)
+            return
+        }
+        onInspect(photo) { [weak self] result in
+            self?.finishInspection(result, generation: generation)
+        }
+    }
+
+    private func finishInspection(_ report: AIScanAlbumQualityReport, generation: Int) {
+        guard generation == inspectionGeneration, !isClosed else { return }
+        qualityReport = report
+        isInspecting = false
+        renderQuality()
+        updateSelectionUI()
+    }
+
+    private func beginLoadingPhoto() -> Int {
+        inspectionGeneration += 1
+        isInspecting = true
+        qualityReport = nil
+        selectedPhoto = nil
+        selectedImage = nil
+        renderQuality()
+        updateSelectionUI()
+        return inspectionGeneration
+    }
+
+    private func renderQuality() {
+        qualityStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        guard let report = qualityReport else { qualityStack.isHidden = true; return }
+        qualityStack.isHidden = false
+        for row in report.originalRows + report.detectionRows {
+            let label = UILabel()
+            label.numberOfLines = 0
+            label.font = .systemFont(ofSize: 13)
+            label.accessibilityIdentifier = "aiscan.album.quality.\(row.key)"
+            let title = AIScanCameraStrings.localizedMessageKey("album.quality.\(row.key)")
+            let value = row.value.map { "\($0) \(row.key == "bits" ? "bpp" : "px")" }
+                ?? AIScanCameraStrings.localizedMessageKey("album.quality.unknown_value")
+            let pending = row.key.hasPrefix("detect_") && isInspecting
+            let issue = pending ? "checking" : row.issue
+            let reason = issue.map { AIScanCameraStrings.localizedMessageKey("album.quality.\($0)") }
+            label.text = "\(title): \(value)" + (reason.map { " (\($0))" } ?? "")
+            label.textColor = row.passes || pending || row.issue == "not_checked" ? AIScanReferenceTheme.textSecondary : .systemRed
+            qualityStack.addArrangedSubview(label)
+        }
     }
 
     private static func canonicalPosition(_ position: String?) -> String? {
@@ -480,13 +581,18 @@ extension AIScanAlbumSelectionViewController: @preconcurrency PHPickerViewContro
             picker.dismiss(animated: true)
             return
         }
-        AIScanAlbumImageLoader.loadFullResolutionImage(from: provider) { [weak self, weak picker] image in
-            guard let image else {
+        let generation = beginLoadingPhoto()
+        AIScanAlbumImageLoader.loadPhoto(from: provider) { [weak self, weak picker] photo in
+            guard let self, generation == self.inspectionGeneration else { return }
+            guard let photo else {
                 picker?.dismiss(animated: true)
+                self.isInspecting = false
+                self.updateSelectionUI()
+                self.setValidationMessage(AIScanCameraStrings.localizedMessageKey("album.quality.load_failed"))
                 return
             }
             picker?.dismiss(animated: true)
-            self?.applySelectedImage(image)
+            self.applySelectedPhoto(photo)
         }
     }
 }
@@ -498,7 +604,12 @@ extension AIScanAlbumSelectionViewController: @preconcurrency UIImagePickerContr
     ) {
         let image = info[.originalImage] as? UIImage
         picker.dismiss(animated: true)
-        if let image { applySelectedImage(image) }
+        if let url = info[.imageURL] as? URL,
+           let data = try? Data(contentsOf: url), let photo = AIScanAlbumPhoto(data: data) {
+            applySelectedPhoto(photo)
+        } else if let image {
+            applySelectedPhoto(AIScanAlbumPhoto(image: image))
+        }
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

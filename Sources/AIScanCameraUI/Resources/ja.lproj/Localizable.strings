@@ -96,3 +96,19 @@
 "common.close" = "閉じる";
 "questionnaire.no" = "いいえ";
 "questionnaire.yes" = "はい";
+
+/* Album source quality */
+"album.quality.width" = "元画像の幅";
+"album.quality.height" = "元画像の高さ";
+"album.quality.bits" = "ピクセルあたりのビット数";
+"album.quality.detect_width" = "検出領域の幅";
+"album.quality.detect_height" = "検出領域の高さ";
+"album.quality.unknown_value" = "確認できません";
+"album.quality.resolution" = "画像の解像度が低すぎます";
+"album.quality.bits_reason" = "解析に必要な画像情報が不足しています";
+"album.quality.unknown" = "元画像の情報を確認できません";
+"album.quality.distance" = "目や歯が遠すぎます";
+"album.quality.detect" = "検査する部位を検出できません";
+"album.quality.checking" = "画像品質を確認中";
+"album.quality.load_failed" = "選択した写真を読み込めません";
+"album.quality.not_checked" = "未測定";

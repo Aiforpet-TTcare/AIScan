@@ -96,3 +96,19 @@
 "result.skin_roughness" = "Strävhet";
 "pdf.export_button" = "Dela PDF-rapport";
 "common.close" = "Stäng";
+
+/* Album source quality */
+"album.quality.width" = "Originalbildens bredd";
+"album.quality.height" = "Originalbildens höjd";
+"album.quality.bits" = "Bitar per pixel";
+"album.quality.detect_width" = "Detekterat områdes bredd";
+"album.quality.detect_height" = "Detekterat områdes höjd";
+"album.quality.unknown_value" = "Ej tillgängligt";
+"album.quality.resolution" = "Bildens upplösning är för låg";
+"album.quality.bits_reason" = "Otillräcklig färginformation för analys";
+"album.quality.unknown" = "Originalbildens information kunde inte läsas";
+"album.quality.distance" = "Ögonen eller tänderna fotograferades på för långt avstånd";
+"album.quality.detect" = "Kroppsdelen kunde inte detekteras";
+"album.quality.checking" = "Kontrollerar bildkvaliteten";
+"album.quality.load_failed" = "Det valda fotot kunde inte läsas";
+"album.quality.not_checked" = "Inte mätt ännu";

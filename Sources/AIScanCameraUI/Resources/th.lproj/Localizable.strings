@@ -96,3 +96,19 @@
 "result.skin_roughness" = "ความหยาบกร้าน";
 "pdf.export_button" = "แชร์รายงาน PDF";
 "common.close" = "ปิด";
+
+/* Album source quality */
+"album.quality.width" = "ความกว้างภาพต้นฉบับ";
+"album.quality.height" = "ความสูงภาพต้นฉบับ";
+"album.quality.bits" = "จำนวนบิตต่อพิกเซล";
+"album.quality.detect_width" = "ความกว้างบริเวณที่ตรวจพบ";
+"album.quality.detect_height" = "ความสูงบริเวณที่ตรวจพบ";
+"album.quality.unknown_value" = "ไม่มีข้อมูล";
+"album.quality.resolution" = "ความละเอียดของภาพต่ำเกินไป";
+"album.quality.bits_reason" = "ข้อมูลสีของภาพไม่เพียงพอสำหรับการวิเคราะห์";
+"album.quality.unknown" = "ไม่สามารถอ่านข้อมูลภาพต้นฉบับได้";
+"album.quality.distance" = "ถ่ายภาพดวงตาหรือฟันจากระยะไกลเกินไป";
+"album.quality.detect" = "ไม่สามารถตรวจพบบริเวณที่ต้องการตรวจ";
+"album.quality.checking" = "กำลังตรวจสอบคุณภาพของภาพ";
+"album.quality.load_failed" = "ไม่สามารถอ่านรูปภาพที่เลือกได้";
+"album.quality.not_checked" = "ยังไม่ได้วัด";

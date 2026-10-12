@@ -923,8 +923,13 @@ public final class AIScanCameraViewController: UIViewController {
         cameraController.albumDidOpen()
         let album = AIScanAlbumSelectionViewController(
             allowsPositionSelection: allowsSkinPositionSelection,
-            initialPosition: scanContext.analysisPosition
+            initialPosition: scanContext.analysisPosition,
+            partType: scanContext.partType
         )
+        album.onInspect = { [weak self] photo, completion in
+            guard let self, !self.isClosed else { return }
+            self.cameraController.inspectAlbumPhoto(photo, part: self.scanContext.partType, completion: completion)
+        }
         albumController = album
         isAlbumSelectionPresented = true
         isAlbumTransitioningToProgress = false
@@ -943,6 +948,7 @@ public final class AIScanCameraViewController: UIViewController {
         }
         album.onAnalyze = { [weak self, weak album] image, position in
             guard let self, let album, !self.isClosed else { return }
+            guard album.qualityReport?.isValid == true else { album.setAnalyzing(false); return }
             guard self.captureAttemptState.begin(at: self.monotonicTime()),
                   self.captureAttemptState.markDiagnosing() else {
                 album.setAnalyzing(false)

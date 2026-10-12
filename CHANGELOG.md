@@ -1,5 +1,37 @@
 # Changelog
 
+## 3.0.14
+
+- Inspect album file metadata before image conversion. Display source width,
+  height and bits per pixel; show failures in red with readable reasons.
+- Require at least 1200×1200 pixels for skin, 900×900 for eyes and 1400×1400
+  for teeth, with at least 24 source bits per pixel. Unavailable source metadata
+  is rejected instead of treating decoded BGRA storage as original color depth.
+- Measure eye/teeth subjects in upright original pixels before resizing. Both
+  axes must reach 270 pixels for eyes or 400 pixels for teeth. TTAPI performs
+  this detection-only check before upload; provider diagnosis remains unchanged.
+- Keep analysis disabled while checking, discard obsolete photo checks, and
+  scroll the quality panel on small displays. Add English, Korean and Japanese
+  quality messages. Camera capture thresholds and final callback formats remain
+  unchanged.
+
+- Support Apple's PNG header prefix when reading source bit depth. Match the
+  existing thread-safe Core completion adapters so CocoaPods Swift 6 consumers
+  compile the album inspection path.
+
+### Validation
+
+- 190 public tests and 81 Core tests passed. Swift 6 CocoaPods validation passed.
+- Actual local dog/cat eye and teeth images and a dog belly image completed
+  TTAPI analysis with the existing direct payload contract. Three low-resolution
+  images were rejected before analysis. Ear/paw images passed the new source
+  checks and the provider requested retakes through the existing SDK mechanism.
+- iOS 13 device-target compatibility and public artifact audits passed.
+- The same 12-image acceptance run completed on a physical iPhone 17 Pro
+  running iOS 26.6.2: five TTAPI successes, two provider retakes and three
+  original-quality rejections, with no application errors. Installed CocoaPods
+  consumer tests passed, including playback of all seven guides.
+
 ## 3.0.13
 
 ### Fixes

@@ -18,6 +18,7 @@ typedef void (^AISCPreparationDetailedProgress)(double normalizedProgress,
                                                  int64_t totalBytes,
                                                  double bytesPerSecond);
 typedef void (^AISCPhotoAccepted)(AISCImageInput *acceptedInput);
+typedef void (^AISCPhotoMeasurementCompletion)(CGSize originalSubjectSize, NSError *_Nullable error);
 
 @interface AISCSession : NSObject
 
@@ -44,6 +45,7 @@ typedef void (^AISCPhotoAccepted)(AISCImageInput *acceptedInput);
              accepted:(nullable AISCPhotoAccepted)accepted
              progress:(nullable AISCDiagnosisProgress)progress
            completion:(AISCDisplayResultCompletion)completion;
+- (void)measurePhotoSubject:(AISCImageInput *)input completion:(AISCPhotoMeasurementCompletion)completion;
 - (nullable AVCaptureDevice *)cameraDeviceForPosition:(AVCaptureDevicePosition)position NS_SWIFT_NAME(cameraDevice(for:));
 - (CGFloat)cameraZoomFactorForRequestedFactor:(CGFloat)requestedFactor
                                        device:(AVCaptureDevice *)device NS_SWIFT_NAME(cameraZoomFactor(for:device:));
