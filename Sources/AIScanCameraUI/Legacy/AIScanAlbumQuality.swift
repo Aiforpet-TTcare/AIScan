@@ -100,6 +100,7 @@ struct AIScanAlbumQualityReport: Sendable {
     let part: AISCPartType
     var detectedSize: CGSize?
     var detectionIssue: String?
+    var inspectionError: NSError?
 
     init(metadata: AIScanAlbumMetadata, part: AISCPartType) {
         self.metadata = metadata
@@ -128,10 +129,11 @@ struct AIScanAlbumQualityReport: Sendable {
         ]
     }
 
-    func measured(_ size: CGSize?, issue: String? = nil) -> Self {
+    func measured(_ size: CGSize?, issue: String? = nil, error: NSError? = nil) -> Self {
         var report = self
         report.detectedSize = size
         report.detectionIssue = issue
+        report.inspectionError = error
         return report
     }
 

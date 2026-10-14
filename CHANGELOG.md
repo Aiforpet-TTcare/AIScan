@@ -1,5 +1,24 @@
 # Changelog
 
+## 3.0.16
+
+- Explain album photo failures in everyday language, with a clear next step,
+  across all six UI languages. Show this guidance before the quality measurements.
+- Keep internal error numbers and untranslated provider reasons out of user-facing
+  messages. Diagnostic errors and callback data remain available to host code.
+- Preserve photo-inspection service errors so connection problems do not ask users
+  to replace a valid photo. Offer a retry with the same selected photo.
+- Keep the existing quality thresholds, original measurements, Core binaries and
+  polygon callback payloads unchanged.
+
+### Validation
+
+- 198 public SDK tests passed, covering actionable failures, body-part-specific guidance,
+  service-error preservation, same-photo retry and all six localization packs.
+- Installed CocoaPods consumer tests, all seven guide animations, iOS 13
+  compatibility and public distribution audits passed.
+- Core binaries are unchanged from the verified 3.0.15 release.
+
 ## 3.0.15
 
 - Preserve the SDK verdict when a TTAPI diagnosis ends as failed. Native quality

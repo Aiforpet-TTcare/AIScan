@@ -73,22 +73,45 @@ enum AIScanCameraStrings {
             if nsError.code == AISCErrorCode.frameRejected.rawValue,
                let approvedReason = nsError.userInfo[AISCDisplayReasonKey] as? String,
                !approvedReason.isEmpty {
-                return localizedMessageKey(
-                    canonicalGuidanceKey(approvedReason),
-                    languageCode: languageCode
+                let guidance = localizedBundle(languageCode: languageCode).localizedString(
+                    forKey: canonicalGuidanceKey(approvedReason),
+                    value: "__AISC_GUIDANCE_MISSING__", table: "Localizable"
                 )
+                if guidance != "__AISC_GUIDANCE_MISSING__" { return guidance }
             }
-            return appendingCoreErrorCode(
-                localizedMessageKey(coreErrorMessageKey(nsError.code), languageCode: languageCode),
-                error: error
-            )
+            return localizedMessageKey(coreErrorMessageKey(nsError.code), languageCode: languageCode)
         }
 
-        let approvedReason = nsError.userInfo[AISCDisplayReasonKey] as? String
-        if let approvedReason, !approvedReason.isEmpty {
-            return localizedMessageKey(approvedReason, languageCode: languageCode)
-        }
+        // Keep unexpected provider text and diagnostics out of user-facing UI.
         return localized(.unavailable, languageCode: languageCode)
+    }
+
+    static func albumQualityFailureMessage(
+        for report: AIScanAlbumQualityReport,
+        isInspecting: Bool,
+        analysisPosition: String?,
+        languageCode: String? = nil
+    ) -> String? {
+        let key: String
+        if report.originalRows.contains(where: { $0.issue == "resolution" }) {
+            key = "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."
+        } else if !report.originalIsValid {
+            key = report.metadata.bitsPerPixel == nil ? "album.quality.unknown" : "photo.color_quality"
+        } else if isInspecting || report.isValid {
+            return nil
+        } else if let error = report.inspectionError {
+            return albumDisplayMessage(for: error, partType: report.part,
+                analysisPosition: analysisPosition, languageCode: languageCode)
+        } else if report.detectedSize != nil && report.detectionIssue == nil {
+            key = albumFramingKey(partType: report.part, larger: true)
+        } else {
+            switch report.part {
+            case .eye: key = "눈이 잘 보이는 사진을 선택해 주세요."
+            case .teeth: key = "치아가 잘 보이는 사진을 선택해 주세요."
+            default: key = albumSkinSelectionKey(partType: report.part, analysisPosition: analysisPosition)
+            }
+        }
+        return localizedMessageKey(key, languageCode: languageCode)
     }
 
     private static func coreErrorMessageKey(_ code: Int) -> String {
@@ -101,7 +124,7 @@ enum AIScanCameraStrings {
         case 202: "error.server"
         case 300...304, 500: "error.analysis"
         case 305: "error.questionnaire"
-        case 400, 402: "error.input"
+        case 400...402: "error.input"
         case 403: "error.busy"
         case 404: "error.cancelled"
         case 501: "error.result"
@@ -155,6 +178,9 @@ enum AIScanCameraStrings {
         languageCode: String? = nil
     ) -> String {
         let nsError = error as NSError
+        guard nsError.domain == AISCErrorDomain else {
+            return localizedMessageKey("error.analysis", languageCode: languageCode)
+        }
         guard nsError.domain == AISCErrorDomain,
               let reason = nsError.userInfo[AISCDisplayReasonKey] as? String,
               !reason.isEmpty else {
@@ -269,12 +295,6 @@ enum AIScanCameraStrings {
         }
         return containingBundle
 #endif
-    }
-
-    private static func appendingCoreErrorCode(_ message: String, error: Error) -> String {
-        let nsError = error as NSError
-        guard nsError.domain == AISCErrorDomain else { return message }
-        return "\(message)\n[AISC-\(nsError.code)]"
     }
 
     private static func fallback(for key: AIScanCameraStringKey) -> String {

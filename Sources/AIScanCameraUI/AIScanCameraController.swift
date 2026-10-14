@@ -223,10 +223,11 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         do {
             let image = try uprightPhotoImage(photo.image)
             measure(image) { size, error in
-                completion.value(report.measured(error == nil ? size : nil, issue: error == nil ? nil : "detect"))
+                completion.value(report.measured(error == nil ? size : nil,
+                    issue: error == nil ? nil : "detect", error: error as NSError?))
             }
         } catch {
-            completion.value(report.measured(nil, issue: "detect"))
+            completion.value(report.measured(nil, issue: "detect", error: error as NSError))
         }
     }
 

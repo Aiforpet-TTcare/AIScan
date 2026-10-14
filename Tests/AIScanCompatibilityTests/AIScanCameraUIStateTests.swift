@@ -35,6 +35,7 @@ private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
     private(set) var diagnosedPhotoImages: [CIImage] = []
     private(set) var measuredPhotoImages: [CIImage] = []
     var measuredSubjectSize = CGSize(width: 270, height: 270)
+    var measuredSubjectError: Error?
     private(set) var submittedQuestionnaireAnswers: [[AISCQuestionnaireAnswer]] = []
     private(set) var resetCaptureAttemptCount = 0
     private(set) var resetCount = 0
@@ -147,7 +148,7 @@ private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
 
     func measurePhotoSubject(in image: CIImage, completion: @escaping (CGSize, Error?) -> Void) {
         measuredPhotoImages.append(image)
-        completion(measuredSubjectSize, nil)
+        completion(measuredSubjectSize, measuredSubjectError)
     }
 
     func submitQuestionnaireAnswers(_ answers: [AISCQuestionnaireAnswer]) {
@@ -384,6 +385,25 @@ final class AIScanCameraUIStateTests: XCTestCase {
         XCTAssertTrue(engine.measuredPhotoImages.isEmpty)
         XCTAssertTrue(engine.diagnosedPhotoImages.isEmpty)
     }
+
+    @MainActor
+    func testAlbumInspectionRetainsServiceErrorsForUserGuidance() throws {
+        let engine = MockCameraEngine()
+        engine.measuredSubjectError = NSError(domain: AISCErrorDomain, code: 200)
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let data = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 1200), format: format).jpegData(withCompressionQuality: 0.9) {
+            UIColor.brown.setFill(); $0.fill(CGRect(x: 0, y: 0, width: 1200, height: 1200))
+        }
+        let photo = try XCTUnwrap(AIScanAlbumPhoto(data: data))
+        var report: AIScanAlbumQualityReport?
+        controller.inspectAlbumPhoto(photo, part: .eye) { report = $0 }
+        XCTAssertEqual(try XCTUnwrap(report).inspectionError?.code, 200)
+        XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: try XCTUnwrap(report),
+            isInspecting: false, analysisPosition: nil, languageCode: "ko"),
+            "인터넷 연결이 원활하지 않아요. 연결을 확인한 뒤 다시 시도해 주세요.")
+    }
     @available(iOS 14, *)
     @MainActor
     func testAlbumLoaderPreservesOriginalFilePixelDimensions() throws {
@@ -446,8 +466,8 @@ final class AIScanCameraUIStateTests: XCTestCase {
 
     func testTTAPIAlbumQualityFailuresOfferAnotherPhotoAndServiceFailuresDoNotBlameThePhoto() {
         let expected = [
-            "PRE_IMAGE_RESOLUTION_TOO_LOW": "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요.",
-            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "사진의 색상 정보가 부족해요. 원본 사진을 선택해 주세요.",
+            "PRE_IMAGE_RESOLUTION_TOO_LOW": "사진이 너무 작아요. 더 큰 원본 사진을 선택해 주세요.",
+            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "이 사진으로는 검사하기 어려워요. 다른 원본 사진을 선택해 주세요.",
             "PRE_EYE_DETECT_BBOX_TOO_SMALL": "눈이 더 크게 나온 사진을 선택해 주세요.",
             "PRE_TOOTH_DETECT_BBOX_TOO_SMALL": "치아가 더 크게 나온 사진을 선택해 주세요."
         ]
@@ -458,7 +478,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
         XCTAssertEqual(AIScanCameraStrings.retakeMessage(for: "model_unavailable",
             partType: .eye, analysisPosition: nil, isAlbum: true, languageCode: "ko"),
-            "분석을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.")
+            "검사를 마치지 못했어요. 잠시 후 다시 시도해 주세요.")
         XCTAssertEqual(AIScanCameraStrings.retakeMessage(for: "PRE_EYE_DETECT_BBOX_TOO_SMALL",
             partType: .eye, analysisPosition: nil, isAlbum: false, languageCode: "ko"),
             "더 가까이에서 촬영해 주세요")
@@ -473,12 +493,12 @@ final class AIScanCameraUIStateTests: XCTestCase {
                 let error = NSError(domain: AISCErrorDomain, code: code)
                 let message = AIScanCameraStrings.displayMessage(for: error, languageCode: language)
                 XCTAssertFalse(message.hasPrefix("error."))
-                XCTAssertTrue(message.contains("[AISC-\(code)]"))
+                XCTAssertFalse(message.contains("AISC-"), "Internal diagnostics belong in the error object, not the UI.")
             }
         }
         let input = NSError(domain: AISCErrorDomain, code: AISCErrorCode.invalidInput.rawValue)
         XCTAssertEqual(AIScanCameraStrings.displayMessage(for: input, languageCode: "ko"),
-            "사진 또는 검사 정보를 확인할 수 없어요. 다시 시도해 주세요.\n[AISC-400]")
+            "검사를 진행하지 못했어요. 다시 시도해 주세요.")
     }
 
     func testAlbumFrameRejectedShowsActionableGuidanceInsteadOfCriticalError() {

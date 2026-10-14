@@ -44,7 +44,7 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "Välj ett tydligt och välfokuserat foto.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "Välj ett tydligt foto av tänderna.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "Välj ett tydligt foto av huden.";
-"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "Upplösningen är för låg. Försök med en skarpare bild.";
+"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "Fotot är för litet för att se detaljerna tydligt. Välj ett större originalfoto.";
 "popup.notice" = "Meddelande";
 "popup.confirm" = "Bekräfta";
 "popup.flash.title" = "Vi rekommenderar att du använder blixt";
@@ -102,30 +102,30 @@
 "album.quality.detect_width" = "Detekterat områdes bredd";
 "album.quality.detect_height" = "Detekterat områdes höjd";
 "album.quality.unknown_value" = "Ej tillgängligt";
-"album.quality.resolution" = "Bildens upplösning är för låg";
-"album.quality.bits_reason" = "Otillräcklig färginformation för analys";
-"album.quality.unknown" = "Originalbildens information kunde inte läsas";
-"album.quality.distance" = "Ögonen eller tänderna fotograferades på för långt avstånd";
-"album.quality.detect" = "Kroppsdelen kunde inte detekteras";
-"album.quality.checking" = "Kontrollerar bildkvaliteten";
-"album.quality.load_failed" = "Det valda fotot kunde inte läsas";
-"album.quality.not_checked" = "Inte mätt ännu";
+"album.quality.resolution" = "Välj ett större originalfoto.";
+"album.quality.bits_reason" = "Välj ett annat originalfoto.";
+"album.quality.unknown" = "Vi kunde inte kontrollera fotot. Välj ett annat originalfoto.";
+"album.quality.distance" = "Välj ett foto där området syns på närmare håll.";
+"album.quality.detect" = "Välj ett foto där området du vill kontrollera syns tydligt.";
+"album.quality.checking" = "Kontrollerar ditt foto…";
+"album.quality.load_failed" = "Vi kunde inte öppna fotot. Välj ett annat foto.";
+"album.quality.not_checked" = "Fotot har inte kontrollerats ännu.";
 
 // Scan failure guidance
-"error.configuration" = "AI Health Check kunde inte startas. Kontakta supporten för appen du använder.";
-"error.authorization" = "Åtkomst till AI Health Check kunde inte kontrolleras. Kontakta supporten för appen du använder.";
-"error.quota" = "Gränsen för skanningsförfrågningar har överskridits. Försök igen senare.";
-"error.network" = "Kontrollera din nätverksanslutning och försök igen.";
-"error.timeout" = "Skanningsförfrågan tog för lång tid. Försök igen.";
-"error.server" = "Ett fel uppstod på skanningsservern. Försök igen senare.";
-"error.analysis" = "Analysen kunde inte behandlas. Försök igen senare.";
-"error.questionnaire" = "Frågeformuläret kunde inte laddas. Försök igen.";
-"error.input" = "Fotot eller skanningsinformationen kunde inte kontrolleras. Försök igen.";
-"error.busy" = "En skanning pågår redan. Vänta tills den är klar.";
-"error.cancelled" = "Skanningen avbröts.";
-"error.result" = "Skanningsresultatet kunde inte behandlas. Försök igen.";
-"error.upload" = "Fotot kunde inte laddas upp. Försök igen.";
-"photo.color_quality" = "Fotot har otillräcklig färginformation. Välj originalfotot.";
+"error.configuration" = "Det går inte att starta kontrollen just nu. Kontakta appens support om problemet kvarstår.";
+"error.authorization" = "Du kan inte använda kontrollen just nu. Kontakta appens support.";
+"error.quota" = "Du kan inte starta en ny kontroll just nu. Försök igen senare.";
+"error.network" = "Internetanslutningen är instabil. Kontrollera anslutningen och försök igen.";
+"error.timeout" = "Kontrollen tar längre tid än väntat. Försök igen om en stund.";
+"error.server" = "Vi kunde inte slutföra kontrollen. Försök igen om en stund.";
+"error.analysis" = "Vi kunde inte slutföra kontrollen. Försök igen om en stund.";
+"error.questionnaire" = "Vi kunde inte läsa in frågeformuläret. Försök igen.";
+"error.input" = "Vi kunde inte fortsätta kontrollen. Försök igen.";
+"error.busy" = "En kontroll pågår. Vänta en stund.";
+"error.cancelled" = "Kontrollen avbröts.";
+"error.result" = "Vi kunde inte läsa in resultatet. Försök igen.";
+"error.upload" = "Vi kunde inte skicka fotot. Försök igen.";
+"photo.color_quality" = "Det här fotot kan inte användas för kontrollen. Välj ett annat originalfoto.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "Välj ett foto där ögat syns större.";

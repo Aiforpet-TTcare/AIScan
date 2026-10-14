@@ -42,7 +42,7 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "초점이 잘 맞는 선명한 사진을 선택해 주세요.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "치아가 잘 보이는 사진을 선택해 주세요.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "피부가 잘 보이는 사진을 선택해 주세요.";
-"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요.";
+"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "사진이 너무 작아요. 더 큰 원본 사진을 선택해 주세요.";
 "popup.notice" = "알려드려요";
 "popup.confirm" = "확인";
 "popup.flash.title" = "플래시 사용을 권장해요";
@@ -102,30 +102,30 @@
 "album.quality.detect_width" = "검출 영역 가로";
 "album.quality.detect_height" = "검출 영역 세로";
 "album.quality.unknown_value" = "미확인";
-"album.quality.resolution" = "이미지 해상도가 너무 낮음";
-"album.quality.bits_reason" = "분석에 필요한 이미지 정보가 부족";
-"album.quality.unknown" = "원본 이미지 정보를 확인할 수 없음";
-"album.quality.distance" = "눈/치아가 너무 멀리서 촬영되었음";
-"album.quality.detect" = "검사할 부위를 검출할 수 없음";
-"album.quality.checking" = "이미지 품질 확인 중";
-"album.quality.load_failed" = "선택한 사진을 읽을 수 없음";
-"album.quality.not_checked" = "아직 측정하지 않음";
+"album.quality.resolution" = "더 큰 원본 사진을 선택해 주세요.";
+"album.quality.bits_reason" = "다른 원본 사진을 선택해 주세요.";
+"album.quality.unknown" = "사진을 확인하지 못했어요. 다른 원본 사진을 선택해 주세요.";
+"album.quality.distance" = "검사할 부위가 더 크게 나온 사진을 선택해 주세요.";
+"album.quality.detect" = "검사할 부위가 잘 보이는 사진을 선택해 주세요.";
+"album.quality.checking" = "사진을 확인하고 있어요.";
+"album.quality.load_failed" = "사진을 불러오지 못했어요. 다른 사진을 선택해 주세요.";
+"album.quality.not_checked" = "아직 사진을 확인하지 않았어요.";
 
 // Scan failure guidance
-"error.configuration" = "AI 건강 체크를 시작할 수 없어요. 이용 중인 앱의 고객센터에 문의해 주세요.";
-"error.authorization" = "AI 건강 체크 이용 권한을 확인할 수 없어요. 이용 중인 앱의 고객센터에 문의해 주세요.";
-"error.quota" = "검사 요청 한도를 초과했습니다. 잠시 후 다시 시도해 주세요.";
-"error.network" = "네트워크 연결을 확인한 후 다시 시도해 주세요.";
-"error.timeout" = "검사 응답 시간이 초과되었습니다. 다시 시도해 주세요.";
-"error.server" = "검사 서버에 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
-"error.analysis" = "분석을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.";
-"error.questionnaire" = "문진을 불러올 수 없습니다. 다시 시도해 주세요.";
-"error.input" = "사진 또는 검사 정보를 확인할 수 없어요. 다시 시도해 주세요.";
-"error.busy" = "검사가 진행 중입니다. 완료 후 다시 시도해 주세요.";
-"error.cancelled" = "검사가 취소되었습니다.";
-"error.result" = "검사 결과를 처리할 수 없습니다. 다시 시도해 주세요.";
-"error.upload" = "사진을 업로드하지 못했어요. 다시 시도해 주세요.";
-"photo.color_quality" = "사진의 색상 정보가 부족해요. 원본 사진을 선택해 주세요.";
+"error.configuration" = "지금은 검사를 시작할 수 없어요. 계속되면 이용 중인 앱의 고객센터에 문의해 주세요.";
+"error.authorization" = "지금은 검사를 이용할 수 없어요. 이용 중인 앱의 고객센터에 문의해 주세요.";
+"error.quota" = "지금은 검사를 더 진행할 수 없어요. 잠시 후 다시 시도해 주세요.";
+"error.network" = "인터넷 연결이 원활하지 않아요. 연결을 확인한 뒤 다시 시도해 주세요.";
+"error.timeout" = "검사가 예상보다 오래 걸리고 있어요. 잠시 후 다시 시도해 주세요.";
+"error.server" = "검사를 마치지 못했어요. 잠시 후 다시 시도해 주세요.";
+"error.analysis" = "검사를 마치지 못했어요. 잠시 후 다시 시도해 주세요.";
+"error.questionnaire" = "문진을 불러오지 못했어요. 다시 시도해 주세요.";
+"error.input" = "검사를 진행하지 못했어요. 다시 시도해 주세요.";
+"error.busy" = "검사 중이에요. 잠시만 기다려 주세요.";
+"error.cancelled" = "검사가 취소됐어요.";
+"error.result" = "검사 결과를 불러오지 못했어요. 다시 시도해 주세요.";
+"error.upload" = "사진을 보내지 못했어요. 다시 시도해 주세요.";
+"photo.color_quality" = "이 사진으로는 검사하기 어려워요. 다른 원본 사진을 선택해 주세요.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "눈이 더 크게 나온 사진을 선택해 주세요.";

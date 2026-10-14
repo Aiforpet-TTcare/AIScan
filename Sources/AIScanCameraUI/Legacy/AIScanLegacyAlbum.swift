@@ -78,6 +78,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private let emptyIconBackgroundLayer = CAShapeLayer()
     private let validationRow = UIStackView()
     private let validationLabel = UILabel()
+    private let inspectionRetryButton = UIButton(type: .system)
     private let selectPhotoButton = UIButton(type: .system)
     private let dashedBorderLayer = CAShapeLayer()
     private let photoBorderLayer = CAShapeLayer()
@@ -166,6 +167,8 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         if let message {
             let paragraph = NSMutableParagraphStyle()
             paragraph.lineSpacing = 4
+            paragraph.lineBreakMode = .byWordWrapping
+            if #available(iOS 14.0, *) { paragraph.lineBreakStrategy = .hangulWordPriority }
             validationLabel.attributedText = NSAttributedString(
                 string: message,
                 attributes: [
@@ -282,6 +285,17 @@ final class AIScanAlbumSelectionViewController: UIViewController {
 
         buildValidationRow()
         contentStack.addArrangedSubview(validationRow)
+
+        inspectionRetryButton.setTitle(AIScanCameraStrings.localized(.retry), for: .normal)
+        inspectionRetryButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        inspectionRetryButton.backgroundColor = AIScanReferenceTheme.brandTint
+        inspectionRetryButton.setTitleColor(AIScanReferenceTheme.albumUnselectedAction, for: .normal)
+        inspectionRetryButton.layer.cornerRadius = 12
+        inspectionRetryButton.accessibilityIdentifier = "aiscan.album.retry-inspection"
+        inspectionRetryButton.addTarget(self, action: #selector(retryInspectionTapped), for: .touchUpInside)
+        inspectionRetryButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        inspectionRetryButton.isHidden = true
+        contentStack.addArrangedSubview(inspectionRetryButton)
 
         qualityStack.axis = .vertical
         qualityStack.spacing = 5
@@ -407,6 +421,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         validationLabel.font = .systemFont(ofSize: 17, weight: .bold)
         validationLabel.textColor = AIScanReferenceTheme.warning
         validationLabel.numberOfLines = 0
+        validationLabel.accessibilityIdentifier = "aiscan.album.validation.message"
         validationRow.axis = .horizontal
         validationRow.alignment = .top
         validationRow.spacing = 6
@@ -430,6 +445,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         photoImageView.image = selectedImage
         photoImageView.isHidden = selectedImage == nil
         emptyStack.isHidden = selectedImage != nil
+        inspectionRetryButton.isHidden = qualityReport?.inspectionError == nil || isInspecting || isAnalyzing || isClosed
         updatePreviewHeight()
         analyzeButton.isEnabled = qualityReport?.isValid == true && !isAnalyzing && !isInspecting && !isClosed
         updateAnalyzeButtonStyle()
@@ -502,6 +518,12 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         onAnalyze?(selectedImage, selectedPosition)
     }
 
+    @objc private func retryInspectionTapped() {
+        guard let selectedPhoto, qualityReport?.inspectionError != nil,
+              !isInspecting, !isAnalyzing, !isClosed else { return }
+        applySelectedPhoto(selectedPhoto)
+    }
+
     func applySelectedPhoto(_ photo: AIScanAlbumPhoto) {
         inspectionGeneration += 1
         let generation = inspectionGeneration
@@ -545,7 +567,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
 
     private func renderQuality() {
         qualityStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        guard let report = qualityReport else { qualityStack.isHidden = true; return }
+        guard let report = qualityReport else {
+            qualityStack.isHidden = true
+            setValidationMessage(nil)
+            return
+        }
+        setValidationMessage(AIScanCameraStrings.albumQualityFailureMessage(
+            for: report, isInspecting: isInspecting, analysisPosition: selectedPosition
+        ))
         qualityStack.isHidden = false
         for row in report.originalRows + report.detectionRows {
             let label = UILabel()
@@ -557,7 +586,8 @@ final class AIScanAlbumSelectionViewController: UIViewController {
                 ?? AIScanCameraStrings.localizedMessageKey("album.quality.unknown_value")
             let pending = row.key.hasPrefix("detect_") && isInspecting
             let issue = pending ? "checking" : row.issue
-            let reason = issue.map { AIScanCameraStrings.localizedMessageKey("album.quality.\($0)") }
+            let reason = report.inspectionError != nil && row.key.hasPrefix("detect_")
+                ? nil : issue.map { AIScanCameraStrings.localizedMessageKey("album.quality.\($0)") }
             label.text = "\(title): \(value)" + (reason.map { " (\($0))" } ?? "")
             label.textColor = row.passes || pending || row.issue == "not_checked" ? AIScanReferenceTheme.textSecondary : .systemRed
             qualityStack.addArrangedSubview(label)
