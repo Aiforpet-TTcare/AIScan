@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.1
+
+- Fill the fixed diagnosis-progress photo frame with a centered crop for every image ratio.
+- Apply terminal multi-photo progress immediately before returning the aggregate callback.
+
+
 ## 3.1.0
 
 - Add optional `enableMultiMode` (default `false`) for one to four camera/album photos.

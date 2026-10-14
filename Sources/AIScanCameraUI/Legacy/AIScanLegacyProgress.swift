@@ -236,6 +236,8 @@ final class TTProgressViewController: UIViewController {
             downloadCountLabel.text = "0%"
         }
         diagnosisImageView?.image = previewImage
+        diagnosisImageView?.contentMode = .scaleAspectFill
+        diagnosisImageView?.clipsToBounds = true
         diagnosisImageView?.accessibilityIdentifier = "aiscan.camera.progress.preview"
         progressContainer?.layer.cornerRadius = 30
         progressContainer?.clipsToBounds = true

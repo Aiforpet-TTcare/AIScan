@@ -1239,7 +1239,7 @@ public final class AIScanCameraViewController: UIViewController {
             self.removeQuestionnaire()
             self.multiQuestionnaireCompletion = nil
             _ = self.captureAttemptState.markCompleted()
-            self.progressController?.set(progress: 1, animated: true)
+            self.progressController?.set(progress: 1, animated: false)
             self.dismissPresentedSurface { [weak self] in
                 guard let self, !self.isClosed else { return }
                 self.progressController = nil
