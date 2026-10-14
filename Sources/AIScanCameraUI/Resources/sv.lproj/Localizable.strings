@@ -112,3 +112,19 @@
 "album.quality.checking" = "Kontrollerar bildkvaliteten";
 "album.quality.load_failed" = "Det valda fotot kunde inte läsas";
 "album.quality.not_checked" = "Inte mätt ännu";
+
+// Scan failure guidance
+"error.configuration" = "Skanningsinställningarna är inte tillgängliga. Kontakta appens administratör.";
+"error.authorization" = "Åtkomst till skanningen kunde inte godkännas. Kontakta appens administratör.";
+"error.quota" = "Gränsen för skanningsförfrågningar har överskridits. Försök igen senare.";
+"error.network" = "Kontrollera din nätverksanslutning och försök igen.";
+"error.timeout" = "Skanningsförfrågan tog för lång tid. Försök igen.";
+"error.server" = "Ett fel uppstod på skanningsservern. Försök igen senare.";
+"error.analysis" = "Analysen kunde inte behandlas. Försök igen senare.";
+"error.questionnaire" = "Frågeformuläret kunde inte laddas. Försök igen.";
+"error.input" = "Fotot eller skanningsförfrågan kunde inte behandlas. Försök med ett annat foto.";
+"error.busy" = "En skanning pågår redan. Vänta tills den är klar.";
+"error.cancelled" = "Skanningen avbröts.";
+"error.result" = "Skanningsresultatet kunde inte behandlas. Försök igen.";
+"error.upload" = "Fotot kunde inte laddas upp. Kontrollera din nätverksanslutning och försök igen.";
+"photo.color_quality" = "Välj ett originalfoto i färg med tillräcklig färginformation.";

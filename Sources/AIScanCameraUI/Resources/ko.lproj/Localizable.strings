@@ -112,3 +112,19 @@
 "album.quality.checking" = "이미지 품질 확인 중";
 "album.quality.load_failed" = "선택한 사진을 읽을 수 없음";
 "album.quality.not_checked" = "아직 측정하지 않음";
+
+// Scan failure guidance
+"error.configuration" = "검사 설정을 확인할 수 없습니다. 앱 관리자에게 문의해 주세요.";
+"error.authorization" = "검사 접근 권한을 확인할 수 없습니다. 앱 관리자에게 문의해 주세요.";
+"error.quota" = "검사 요청 한도를 초과했습니다. 잠시 후 다시 시도해 주세요.";
+"error.network" = "네트워크 연결을 확인한 후 다시 시도해 주세요.";
+"error.timeout" = "검사 응답 시간이 초과되었습니다. 다시 시도해 주세요.";
+"error.server" = "검사 서버에 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+"error.analysis" = "분석을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.";
+"error.questionnaire" = "문진을 불러올 수 없습니다. 다시 시도해 주세요.";
+"error.input" = "사진 또는 검사 요청을 처리할 수 없습니다. 다른 사진으로 다시 시도해 주세요.";
+"error.busy" = "검사가 진행 중입니다. 완료 후 다시 시도해 주세요.";
+"error.cancelled" = "검사가 취소되었습니다.";
+"error.result" = "검사 결과를 처리할 수 없습니다. 다시 시도해 주세요.";
+"error.upload" = "사진 업로드에 실패했습니다. 네트워크 연결을 확인한 후 다시 시도해 주세요.";
+"photo.color_quality" = "색상 정보가 충분한 원본 컬러 사진을 선택해 주세요.";

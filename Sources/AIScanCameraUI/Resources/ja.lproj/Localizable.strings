@@ -112,3 +112,19 @@
 "album.quality.checking" = "画像品質を確認中";
 "album.quality.load_failed" = "選択した写真を読み込めません";
 "album.quality.not_checked" = "未測定";
+
+// Scan failure guidance
+"error.configuration" = "検査設定を確認できません。アプリ管理者にお問い合わせください。";
+"error.authorization" = "検査のアクセス権限を確認できません。アプリ管理者にお問い合わせください。";
+"error.quota" = "検査リクエストの上限を超えました。しばらくしてから再試行してください。";
+"error.network" = "ネットワーク接続を確認して再試行してください。";
+"error.timeout" = "検査の応答がタイムアウトしました。再試行してください。";
+"error.server" = "検査サーバーでエラーが発生しました。しばらくしてから再試行してください。";
+"error.analysis" = "分析を処理できません。しばらくしてから再試行してください。";
+"error.questionnaire" = "問診を読み込めません。再試行してください。";
+"error.input" = "写真または検査リクエストを処理できません。別の写真で再試行してください。";
+"error.busy" = "検査中です。完了するまでお待ちください。";
+"error.cancelled" = "検査がキャンセルされました。";
+"error.result" = "検査結果を処理できません。再試行してください。";
+"error.upload" = "写真のアップロードに失敗しました。ネットワーク接続を確認して再試行してください。";
+"photo.color_quality" = "十分な色情報を持つ元のカラー写真を選択してください。";

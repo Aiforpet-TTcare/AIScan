@@ -112,3 +112,19 @@
 "album.quality.checking" = "Checking image quality";
 "album.quality.load_failed" = "Unable to read the selected photo";
 "album.quality.not_checked" = "Not measured";
+
+// Scan failure guidance
+"error.configuration" = "Scan configuration is unavailable. Please contact the app administrator.";
+"error.authorization" = "Scan access could not be authorized. Please contact the app administrator.";
+"error.quota" = "The scan request limit was exceeded. Please try again later.";
+"error.network" = "Please check your network connection and try again.";
+"error.timeout" = "The scan request timed out. Please try again.";
+"error.server" = "The scan server encountered an error. Please try again later.";
+"error.analysis" = "Analysis could not be processed. Please try again later.";
+"error.questionnaire" = "The questionnaire could not be loaded. Please try again.";
+"error.input" = "The photo or scan request could not be processed. Please try another photo.";
+"error.busy" = "A scan is already in progress. Please wait for it to finish.";
+"error.cancelled" = "The scan was cancelled.";
+"error.result" = "The scan result could not be processed. Please try again.";
+"error.upload" = "Photo upload failed. Please check your network connection and try again.";
+"photo.color_quality" = "Please select an original color photo with sufficient color information.";

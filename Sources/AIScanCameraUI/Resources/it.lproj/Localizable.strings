@@ -112,3 +112,19 @@
 "album.quality.checking" = "Verifica della qualità in corso";
 "album.quality.load_failed" = "Impossibile leggere la foto selezionata";
 "album.quality.not_checked" = "Non ancora misurato";
+
+// Scan failure guidance
+"error.configuration" = "Configurazione della scansione non disponibile. Contatta l’amministratore dell’app.";
+"error.authorization" = "Impossibile autorizzare l’accesso alla scansione. Contatta l’amministratore dell’app.";
+"error.quota" = "Limite di richieste di scansione superato. Riprova più tardi.";
+"error.network" = "Controlla la connessione di rete e riprova.";
+"error.timeout" = "La richiesta di scansione è scaduta. Riprova.";
+"error.server" = "Si è verificato un errore del server di scansione. Riprova più tardi.";
+"error.analysis" = "Impossibile elaborare l’analisi. Riprova più tardi.";
+"error.questionnaire" = "Impossibile caricare il questionario. Riprova.";
+"error.input" = "Impossibile elaborare la foto o la richiesta di scansione. Prova un’altra foto.";
+"error.busy" = "Una scansione è già in corso. Attendi che termini.";
+"error.cancelled" = "La scansione è stata annullata.";
+"error.result" = "Impossibile elaborare il risultato della scansione. Riprova.";
+"error.upload" = "Caricamento della foto non riuscito. Controlla la connessione di rete e riprova.";
+"photo.color_quality" = "Seleziona una foto originale a colori con informazioni cromatiche sufficienti.";

@@ -112,6 +112,30 @@ final class AIScanContractResultTests: XCTestCase {
         XCTAssertNotNil(result.jsonObject?["response"])
     }
 
+    func testPolygonsSurviveEveryAppCallbackJSONSurfaceForBothContracts() throws {
+        let polygons = [[12.25, 23.5, 35.75, 23.5, 35.75, 47.125], [1, 2, 3, 4]]
+        let cases: [(String, [String: Any])] = [
+            ("ttcare.native.v1", ["status": "SUCCESS", "response": ["symptoms": [["code": "opacity", "polygons": polygons]]]]),
+            ("ttcare.anomaly-check.v1", ["status": "OK", "diagId": 9007199254740991 as Int64,
+                "details": [["code": "opacity", "positions": [["positionCode": "EYEL", "polygons": polygons]]]]])
+        ]
+        for (schema, payload) in cases {
+            let result = AIScanResult(status: "completed", typedContractResult: AIScanContractResult(schema: schema, payload: payload))
+            var surfaces = [try XCTUnwrap(result.contractResult), try XCTUnwrap(result.jsonObject)]
+            for string in [result.string, result.jsonString] {
+                surfaces.append(try XCTUnwrap(JSONSerialization.jsonObject(with: Data(try XCTUnwrap(string).utf8)) as? [String: Any]))
+            }
+            surfaces.append(try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(result)) as? [String: Any]))
+            for surface in surfaces {
+                XCTAssertTrue(NSDictionary(dictionary: surface).isEqual(to: payload), schema)
+            }
+        }
+        let noPolygons: [String: Any] = ["status": "SUCCESS", "response": ["symptoms": [["code": "opacity"]]]]
+        let result = AIScanResult(status: "completed", contractResult: noPolygons)
+        XCTAssertTrue(NSDictionary(dictionary: try XCTUnwrap(result.jsonObject)).isEqual(to: noPolygons))
+        XCTAssertFalse(try XCTUnwrap(result.string).contains("polygons"))
+    }
+
     private func assertPayload(_ actual: [String: Any], file: StaticString = #filePath, line: UInt = #line) {
         XCTAssertTrue(NSDictionary(dictionary: actual).isEqual(to: payload), file: file, line: line)
         XCTAssertNil(actual["contract_result"], file: file, line: line)

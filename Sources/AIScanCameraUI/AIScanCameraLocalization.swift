@@ -79,7 +79,7 @@ enum AIScanCameraStrings {
                 )
             }
             return appendingCoreErrorCode(
-                localized(.criticalError, languageCode: languageCode),
+                localizedMessageKey(coreErrorMessageKey(nsError.code), languageCode: languageCode),
                 error: error
             )
         }
@@ -89,6 +89,63 @@ enum AIScanCameraStrings {
             return localizedMessageKey(approvedReason, languageCode: languageCode)
         }
         return localized(.unavailable, languageCode: languageCode)
+    }
+
+    private static func coreErrorMessageKey(_ code: Int) -> String {
+        switch code {
+        case 100, 102, 104: "error.configuration"
+        case 101: "error.authorization"
+        case 103: "error.quota"
+        case 200: "error.network"
+        case 201: "error.timeout"
+        case 202: "error.server"
+        case 300...304, 500: "error.analysis"
+        case 305: "error.questionnaire"
+        case 400, 402: "error.input"
+        case 403: "error.busy"
+        case 404: "error.cancelled"
+        case 501: "error.result"
+        case 502: "error.upload"
+        default: "camera.critical_error"
+        }
+    }
+
+    static func retakeMessage(
+        for reasonCode: String?,
+        partType: AISCPartType,
+        analysisPosition: String?,
+        isAlbum: Bool,
+        languageCode: String? = nil
+    ) -> String {
+        let code = reasonCode?.uppercased() ?? ""
+        let key: String
+        switch code {
+        case "MODEL_UNAVAILABLE": key = "error.analysis"
+        case "SERVER_UNAVAILABLE": key = "error.server"
+        case "INVALID_INPUT": key = "error.input"
+        case "UNAUTHORIZED": key = "error.authorization"
+        case "QUOTA_EXCEEDED": key = "error.quota"
+        case "POSTPROCESS_FAILED": key = "error.result"
+        case "PRE_IMAGE_RESOLUTION_TOO_LOW":
+            key = "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."
+        case "PRE_IMAGE_BIT_DEPTH_TOO_LOW": key = "photo.color_quality"
+        default:
+            if code.contains("BBOX_TOO_SMALL") || code.contains("TOO_FAR") {
+                key = isAlbum ? "피사체가 더 크게 나온 사진을 선택해 주세요." : "move_closer"
+            } else if code.contains("BBOX_TOO_LARGE") || code.contains("TOO_CLOSE") {
+                key = isAlbum ? "피사체가 눈에 다 들어오는 사진을 선택해 주세요." : "move_farther"
+            } else if code.contains("BLUR") || code.contains("SCORE_LOW") {
+                key = isAlbum ? "초점이 잘 맞는 선명한 사진을 선택해 주세요." : "hold_still"
+            } else if code.contains("CLASSIFICATION_MISMATCH") || code.contains("DETECT_EMPTY") {
+                switch partType {
+                case .eye: key = isAlbum ? "눈이 잘 보이는 사진을 선택해 주세요." : "눈을 촬영해 주세요."
+                case .teeth: key = isAlbum ? "치아가 잘 보이는 사진을 선택해 주세요." : "치아를 촬영해 주세요."
+                case .skin: key = isAlbum ? albumSkinSelectionKey(partType: partType, analysisPosition: analysisPosition) : "피부를 촬영해 주세요."
+                default: key = "popup.retake.title"
+                }
+            } else { key = "popup.retake.title" }
+        }
+        return localizedMessageKey(key, languageCode: languageCode)
     }
 
     static func albumDisplayMessage(

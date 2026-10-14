@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.0.15
+
+- Preserve the SDK verdict when a TTAPI diagnosis ends as failed. Native quality
+  rejections now reach the retry flow instead of becoming AISC-202 server errors.
+- Give album users photo-selection guidance for resolution, color depth, subject
+  size, blur and missing subjects. Separate service/model retry guidance from
+  photo-quality rejections, including PREPROCESS model failures.
+- Report invalid HTTP requests as AISC-400, preserving the HTTP status. Provide
+  localized messages for network, timeout, configuration, authorization, upload
+  and analysis failures in all six UI languages.
+- Preserve native and partner polygons across dictionary, string and Codable
+  result surfaces. Existing callback payloads without polygons stay unchanged.
+
+### Candidate validation
+
+- 85 Core tests and 192 public tests passed, including native quality failures,
+  all 58 reference error classifications and exact polygon JSON preservation.
+- CocoaPods consumer tests passed, including runtime playback of all seven
+  guides. Device-target iOS 13 compatibility and public artifact audits passed.
+- Live host acceptance with a polygon-enabled project remains outstanding.
+  This candidate is not a published release.
+
 ## 3.0.14
 
 - Inspect album file metadata before image conversion. Display source width,
