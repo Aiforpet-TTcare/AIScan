@@ -61,6 +61,7 @@ enum AIScanCameraStrings {
     }
 
     static func displayMessage(for error: Error, languageCode: String? = nil) -> String {
+        if error is AIScanMultiPhotoError { return localizedMessageKey("multi.requires_ttapi", languageCode: languageCode) }
         if let cameraError = error as? AIScanCameraViewControllerError {
             switch cameraError {
             case .cameraPermissionDenied:

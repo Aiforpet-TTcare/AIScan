@@ -465,7 +465,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     private static func directContractPayload(_ value: [String: Any]?) -> [String: Any]? {
         guard let value,
               value["contract_result"] == nil,
-              value["diagId"] != nil,
+              value["diagId"] != nil || (value["mode"] as? String == "multi" && value["results"] is [[String: Any]]),
               value["status"] != nil else {
             return nil
         }

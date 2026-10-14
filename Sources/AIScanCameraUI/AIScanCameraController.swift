@@ -14,6 +14,7 @@ public protocol AIScanCameraControllerDelegate: AnyObject {
     func aiscanCameraController(_ controller: AIScanCameraController, didUpdate evaluation: AISCFrameEvaluation)
     func aiscanCameraController(_ controller: AIScanCameraController, didCapture evaluation: AISCFrameEvaluation)
     func aiscanCameraController(_ controller: AIScanCameraController, didCapturePreview image: UIImage)
+    func aiscanCameraController(_ controller: AIScanCameraController, didCollect input: AISCImageInput, preview: UIImage)
     func aiscanCameraController(_ controller: AIScanCameraController, didUpdateDiagnosisProgress progress: Double)
     func aiscanCameraController(_ controller: AIScanCameraController, didRequest questionnaire: AISCQuestionnaire)
     func aiscanCameraController(_ controller: AIScanCameraController, didProduce result: AISCDisplayResult)
@@ -21,6 +22,7 @@ public protocol AIScanCameraControllerDelegate: AnyObject {
 }
 
 public extension AIScanCameraControllerDelegate {
+    func aiscanCameraController(_ controller: AIScanCameraController, didCollect input: AISCImageInput, preview: UIImage) {}
     func aiscanCameraController(_ controller: AIScanCameraController, didCapturePreview image: UIImage) {}
     func aiscanCameraController(_ controller: AIScanCameraController, didUpdateDiagnosisProgress progress: Double) {}
     func aiscanCameraController(_ controller: AIScanCameraController, didRequest questionnaire: AISCQuestionnaire) {}
@@ -206,6 +208,33 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         cameraEngine.diagnosePhoto(try uprightPhotoImage(image))
     }
 
+    func setPhotoCollectionEnabled(_ enabled: Bool) {
+        cameraEngine.setPhotoCollectionEnabled?(enabled)
+    }
+
+    func makePhotoInput(_ image: UIImage) throws -> AISCImageInput {
+        guard let makeInput = cameraEngine.photoInput,
+              let input = makeInput(try uprightPhotoImage(image)) else {
+            throw AIScanCameraControllerError.cannotCreateImageInput
+        }
+        return input
+    }
+
+    func uploadPhoto(_ input: AISCImageInput, progress: @escaping (Double) -> Void,
+                     completion: @escaping (AISCUploadedPhoto?, Error?) -> Void) {
+        guard let upload = cameraEngine.uploadPhoto else {
+            completion(nil, AIScanCameraControllerError.cannotCreateImageInput)
+            return
+        }
+        let progress = AIScanUncheckedSendable(progress)
+        let completion = AIScanUncheckedSendable(completion)
+        upload(input, { progress.value($0) }, { completion.value($0, $1) })
+    }
+
+    func diagnoseUploadedPhoto(_ photo: AISCUploadedPhoto) {
+        cameraEngine.diagnoseUploadedPhoto?(photo)
+    }
+
     func inspectAlbumPhoto(
         _ photo: AIScanAlbumPhoto,
         part: AISCPartType,
@@ -309,6 +338,17 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
                 self,
                 didCapturePreview: renderedImage.value
             )
+        }
+    }
+
+    public func cameraEngineDidCollectImageInput(_ input: AISCImageInput) {
+        guard let pixels = input.pixelBuffer else { return }
+        let image = CIImage(cvPixelBuffer: pixels)
+        guard let cgImage = Self.previewRenderer.createCGImage(image, from: image.extent) else { return }
+        let value = AIScanUncheckedSendable((input, UIImage(cgImage: cgImage)))
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.delegate?.aiscanCameraController(self, didCollect: value.value.0, preview: value.value.1)
         }
     }
 

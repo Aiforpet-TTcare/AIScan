@@ -14,7 +14,7 @@ final class AIScanLocalizationParityTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertEqual(english.count, 131) // Original 98 + 14 quality + 14 failures - 2 generic + 7 album guidance keys.
+        XCTAssertEqual(english.count, 151) // 131 existing keys + 20 multi-photo keys.
         for language in supportedLanguages {
             let localized = try stringsDictionary(
                 table: "Localizable",

@@ -135,3 +135,25 @@
 "album.subject.skin.larger" = "Seleziona una foto in cui la pelle sia più grande.";
 "album.subject.skin.full" = "Seleziona una foto in cui si veda l’intera area della pelle da controllare.";
 "album.retake" = "La foto selezionata è difficile da analizzare. Seleziona un’altra foto.";
+
+/* Multiple-photo capture and analysis */
+"multi.review" = "Controlla le foto";
+"multi.check_photos" = "Controlla le tue foto";
+"multi.count" = "Foto %d/4";
+"multi.results" = "Mostra risultati (%d)";
+"multi.add_more" = "Scatta altre foto";
+"multi.add_photo" = "Aggiungi foto";
+"multi.photo" = "Foto %d";
+"multi.remove" = "Rimuovi";
+"multi.camera" = "Scatta foto";
+"multi.album" = "Scegli dall’album";
+"multi.cancel" = "Annulla";
+"multi.ready" = "Foto pronta";
+"multi.preparing" = "Preparazione foto…";
+"multi.upload_failed" = "Impossibile preparare la foto. Rimuovila e aggiungila di nuovo.";
+"multi.progress" = "Foto %d/%d · %d completate";
+"multi.result_title" = "Risultati delle foto";
+"multi.failed" = "Analisi non riuscita";
+"multi.retake" = "Scatta di nuovo";
+"multi.complete" = "Completata";
+"multi.requires_ttapi" = "L’analisi di più foto non è disponibile. Analizza una foto alla volta.";

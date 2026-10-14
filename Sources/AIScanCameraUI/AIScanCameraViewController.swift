@@ -141,6 +141,8 @@ public final class AIScanCameraViewController: UIViewController {
     public let scanContext: AISCScanContext
 
     public var onResult: ((AISCDisplayResult) -> Void)?
+    public var onMultiResults: (([AIScanMultiPhotoOutcome]) -> Void)?
+    public let enableMultiMode: Bool
     public var onFailure: ((Error) -> Void)?
     public var onClose: (() -> Void)?
 
@@ -151,6 +153,12 @@ public final class AIScanCameraViewController: UIViewController {
     private let settingsOpener: @MainActor () -> Void
     private let allowsSkinPositionSelection: Bool
     private let allowsAlbum: Bool
+    private var multiCoordinator: AIScanMultiPhotoCoordinator?
+    private var multiReviewController: AIScanMultiPhotoReviewViewController?
+    private var multiPreviewTimer: Timer?
+    private var multiPreviewIndex = 0
+    private var multiQuestionnaireCompletion: (([AISCQuestionnaireAnswer]) -> Void)?
+    private let multiReviewButton = UIButton(type: .system)
     private var guideController: PreviewGuideViewController?
     private var progressController: TTProgressViewController?
     private var questionnaireController: UIViewController?
@@ -186,13 +194,16 @@ public final class AIScanCameraViewController: UIViewController {
     public convenience init(
         configuration: AISCConfiguration,
         context: AISCScanContext,
-        allowsAlbum: Bool = true
+        allowsAlbum: Bool = true,
+        enableMultiMode: Bool = false
     ) {
         self.init(
             cameraController: AIScanCameraController(configuration: configuration),
             context: context,
             stackDismisser: AIScanUIKitCameraStackDismisser(),
-            allowsAlbum: allowsAlbum
+            allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
+            multiPhotoControllerFactory: { AIScanCameraController(configuration: configuration) }
         )
     }
 
@@ -210,6 +221,8 @@ public final class AIScanCameraViewController: UIViewController {
         stackDismisser: AIScanCameraStackDismissing,
         transientSurfaceCoordinator: AIScanTransientSurfaceCoordinating? = nil,
         allowsAlbum: Bool = true,
+        enableMultiMode: Bool = false,
+        multiPhotoControllerFactory: (() -> AIScanCameraController)? = nil,
         settingsOpener: @escaping @MainActor () -> Void = {
             guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
             UIApplication.shared.open(url)
@@ -227,10 +240,15 @@ public final class AIScanCameraViewController: UIViewController {
         allowsSkinPositionSelection = context.partType == .skin
             && context.analysisPosition == nil
         self.allowsAlbum = allowsAlbum
+        self.enableMultiMode = enableMultiMode
+        if enableMultiMode, let multiPhotoControllerFactory {
+            multiCoordinator = AIScanMultiPhotoCoordinator(makeController: multiPhotoControllerFactory)
+        }
         self.monotonicTime = monotonicTime
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         overrideUserInterfaceStyle = .dark
+        configureMultiModeCallbacks()
     }
 
     @available(*, unavailable)
@@ -255,6 +273,7 @@ public final class AIScanCameraViewController: UIViewController {
         view.backgroundColor = .black
         cameraController.delegate = self
         cameraController.automaticallyCapturesReadyFrames = false
+        cameraController.setPhotoCollectionEnabled(enableMultiMode)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationDidBecomeActive),
@@ -274,6 +293,7 @@ public final class AIScanCameraViewController: UIViewController {
             object: nil
         )
         installOriginalCameraUI()
+        installMultiReviewButton()
         if beginsScanningAutomatically {
             if !requiresSkinPositionSelection {
                 beginScanningIfNeeded()
@@ -316,6 +336,8 @@ public final class AIScanCameraViewController: UIViewController {
     deinit {
         MainActor.assumeIsolated {
             captureAttemptTimer?.invalidate()
+            multiPreviewTimer?.invalidate()
+            multiCoordinator?.cancel()
             NotificationCenter.default.removeObserver(self)
         }
         cameraController.cancel()
@@ -460,6 +482,10 @@ public final class AIScanCameraViewController: UIViewController {
     }
 
     private func finishPreparationFlow() {
+        if enableMultiMode, cameraController.analysisMode != AISCAnalysisMode(rawValue: 1) {
+            fail(AIScanMultiPhotoError.requiresTTAPI)
+            return
+        }
         didPrepareSession = true
         let showsSkinGuide = shouldShowSkinGuideAfterPreparation
         shouldShowSkinGuideAfterPreparation = false
@@ -525,6 +551,7 @@ public final class AIScanCameraViewController: UIViewController {
     }
 
     func beginCaptureAttempt() {
+        if enableMultiMode, multiCoordinator?.canAdd != true { showMultiReview(); return }
         guard captureAttemptState.begin(at: monotonicTime()) else { return }
         capturedPreviewImage = nil
         cameraController.beginCaptureAttempt()
@@ -639,6 +666,10 @@ public final class AIScanCameraViewController: UIViewController {
     private func close() {
         guard !isClosed else { return }
         isClosed = true
+        multiPreviewTimer?.invalidate()
+        multiPreviewTimer = nil
+        multiCoordinator?.cancel()
+        multiQuestionnaireCompletion = nil
         removeQuestionnaire()
         pendingQuestionnaire = nil
         captureAttemptState.cancel()
@@ -909,6 +940,7 @@ public final class AIScanCameraViewController: UIViewController {
     }
 
     func showAlbumSelection() {
+        if enableMultiMode, multiCoordinator?.canAdd != true { showMultiReview(); return }
         guard allowsAlbum,
               didPrepareSession,
               !captureAttemptState.isActive,
@@ -938,12 +970,23 @@ public final class AIScanCameraViewController: UIViewController {
             album.dismiss(animated: true) { [weak self] in
                 guard let self, !self.isClosed else { return }
                 self.albumController = nil
-                self.startCameraSession()
+                if self.enableMultiMode, self.multiCoordinator?.items.isEmpty == false {
+                    self.showMultiReview()
+                } else { self.startCameraSession() }
+            }
+        }
+        if enableMultiMode {
+            album.onValidatedPhoto = { [weak self, weak album] image, position in
+                self?.collectAlbumPhoto(image, position: position, album: album)
             }
         }
         album.onAnalyze = { [weak self, weak album] image, position in
             guard let self, let album, !self.isClosed else { return }
             guard album.qualityReport?.isValid == true else { album.setAnalyzing(false); return }
+            if self.enableMultiMode {
+                self.collectAlbumPhoto(image, position: position, album: album)
+                return
+            }
             guard self.captureAttemptState.begin(at: self.monotonicTime()),
                   self.captureAttemptState.markDiagnosing() else {
                 album.setAnalyzing(false)
@@ -1105,7 +1148,10 @@ public final class AIScanCameraViewController: UIViewController {
         ) { [weak self] answers in
             guard let self, !self.isClosed else { return }
             self.removeQuestionnaire()
-            self.cameraController.submitQuestionnaireAnswers(answers)
+            if let finish = self.multiQuestionnaireCompletion {
+                self.multiQuestionnaireCompletion = nil
+                finish(answers)
+            } else { self.cameraController.submitQuestionnaireAnswers(answers) }
         }
         let host = UIHostingController(
             rootView: AIScanQuestionnaireView(viewModel: viewModel)
@@ -1162,6 +1208,10 @@ public final class AIScanCameraViewController: UIViewController {
             return
         }
         isClosed = true
+        multiPreviewTimer?.invalidate()
+        multiPreviewTimer = nil
+        multiCoordinator?.cancel()
+        multiQuestionnaireCompletion = nil
         removeQuestionnaire()
         pendingQuestionnaire = nil
         captureAttemptState.cancel()
@@ -1173,6 +1223,145 @@ public final class AIScanCameraViewController: UIViewController {
             self?.progressController = nil
             completion?()
         }
+    }
+
+    private func configureMultiModeCallbacks() {
+        multiCoordinator?.onChange = { [weak self] in self?.updateMultiPhotoUI() }
+        multiCoordinator?.onQuestionnaire = { [weak self] questionnaire, completion in
+            guard let self, !self.isClosed else { return }
+            self.multiQuestionnaireCompletion = completion
+            self.showQuestionnaire(questionnaire)
+        }
+        multiCoordinator?.onComplete = { [weak self] outcomes in
+            guard let self, !self.isClosed else { return }
+            self.multiPreviewTimer?.invalidate()
+            self.multiPreviewTimer = nil
+            self.removeQuestionnaire()
+            self.multiQuestionnaireCompletion = nil
+            _ = self.captureAttemptState.markCompleted()
+            self.progressController?.set(progress: 1, animated: true)
+            self.dismissPresentedSurface { [weak self] in
+                guard let self, !self.isClosed else { return }
+                self.progressController = nil
+                self.onMultiResults?(outcomes)
+            }
+        }
+    }
+
+    private func installMultiReviewButton() {
+        guard enableMultiMode else { return }
+        multiReviewButton.translatesAutoresizingMaskIntoConstraints = false
+        multiReviewButton.setTitleColor(AIScanReferenceTheme.onBrand, for: .normal)
+        multiReviewButton.backgroundColor = AIScanReferenceTheme.brandPrimary
+        multiReviewButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+        multiReviewButton.layer.cornerRadius = 18
+        multiReviewButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+        multiReviewButton.accessibilityIdentifier = "aiscan.multi.open_review"
+        multiReviewButton.addTarget(self, action: #selector(multiReviewTapped), for: .touchUpInside)
+        view.addSubview(multiReviewButton)
+        NSLayoutConstraint.activate([
+            multiReviewButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            multiReviewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 64),
+            multiReviewButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+        ])
+        updateMultiPhotoUI()
+    }
+
+    private func updateMultiPhotoUI() {
+        guard let coordinator = multiCoordinator else { return }
+        multiReviewController?.refresh(coordinator.items)
+        multiReviewButton.isHidden = coordinator.items.isEmpty || coordinator.isAnalyzing
+        multiReviewButton.setTitle(String(format: AIScanCameraStrings.localizedMessageKey("multi.count"), coordinator.items.count), for: .normal)
+        if coordinator.isAnalyzing {
+            progressController?.set(progress: coordinator.progress, animated: true)
+            updateMultiProgressPhoto()
+        }
+    }
+
+    @objc private func multiReviewTapped() { showMultiReview() }
+
+    private func showMultiReview() {
+        guard let coordinator = multiCoordinator, !isClosed, !coordinator.isAnalyzing,
+              presentedViewController == nil else { return }
+        stopCaptureAttemptUI()
+        captureAttemptState.cancel()
+        cameraController.resetCaptureAttempt()
+        stopCameraSession()
+        cameraSurface.setPreparing(false)
+        let review = AIScanMultiPhotoReviewViewController(allowsAlbum: allowsAlbum)
+        review.refresh(coordinator.items)
+        review.onRemove = { [weak coordinator] id in coordinator?.remove(id: id) }
+        review.onBack = { [weak self] in self?.resumeMultiCollection(openAlbum: false) }
+        review.onCamera = { [weak self] in self?.resumeMultiCollection(openAlbum: false) }
+        review.onAlbum = { [weak self] in self?.resumeMultiCollection(openAlbum: true) }
+        review.onAnalyze = { [weak self] in self?.beginMultiAnalysis() }
+        multiReviewController = review
+        present(review, animated: true)
+    }
+
+    private func resumeMultiCollection(openAlbum: Bool) {
+        dismissPresentedSurface { [weak self] in
+            guard let self, !self.isClosed else { return }
+            self.multiReviewController = nil
+            self.captureAttemptState.prepareForRetry()
+            if openAlbum { self.showAlbumSelection() }
+            else { self.startCameraSession() }
+        }
+    }
+
+    private func collectAlbumPhoto(_ image: UIImage, position: String?, album: AIScanAlbumSelectionViewController?) {
+        guard let album, let coordinator = multiCoordinator, coordinator.canAdd, !isClosed,
+              album.qualityReport?.isValid == true else { return }
+        let context = AIScanMultiPhotoCoordinator.copyContext(scanContext)
+        if let position {
+            context.analysisPosition = position
+            context.analysisSubpart = nil
+            context.displaySubpart = position.uppercased()
+        }
+        do {
+            let input = try cameraController.makePhotoInput(image)
+            guard coordinator.append(input: input, preview: image, context: context) else { return }
+        } catch {
+            album.setAnalyzing(false)
+            album.setValidationMessage(AIScanCameraStrings.displayMessage(for: error))
+            return
+        }
+        isAlbumSelectionPresented = false
+        album.dismiss(animated: true) { [weak self] in
+            guard let self, !self.isClosed else { return }
+            self.albumController = nil
+            self.showMultiReview()
+        }
+    }
+
+    private func beginMultiAnalysis() {
+        guard let coordinator = multiCoordinator, !coordinator.items.isEmpty,
+              !coordinator.isAnalyzing, !isClosed else { return }
+        dismissPresentedSurface { [weak self] in
+            guard let self, !self.isClosed else { return }
+            self.multiReviewController = nil
+            self.captureAttemptState.prepareForRetry()
+            _ = self.captureAttemptState.begin(at: self.monotonicTime())
+            _ = self.captureAttemptState.markDiagnosing()
+            self.multiPreviewIndex = 0
+            let progress = self.showProgressIfNeeded()
+            progress.set(previewImage: coordinator.items[0].preview)
+            self.multiPreviewTimer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { [weak self] _ in
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    self.multiPreviewIndex += 1
+                    self.updateMultiProgressPhoto()
+                }
+            }
+            coordinator.analyze()
+        }
+    }
+
+    private func updateMultiProgressPhoto() {
+        guard let coordinator = multiCoordinator, !coordinator.items.isEmpty, let progressController else { return }
+        let index = multiPreviewIndex % coordinator.items.count
+        progressController.set(previewImage: coordinator.items[index].preview)
+        progressController.subtitleLabel.text = String(format: AIScanCameraStrings.localizedMessageKey("multi.progress"), index + 1, coordinator.items.count, coordinator.completedCount)
     }
 
     private var automaticGuideDefaultsKey: String {
@@ -1208,7 +1397,14 @@ extension AIScanCameraViewController: AIScanCameraControllerDelegate {
         cameraSurface.flashCapture()
         cameraSurface.setPreparing(true)
         stopCameraSession()
-        showProgressIfNeeded().set(progress: 0, animated: false)
+        if !enableMultiMode { showProgressIfNeeded().set(progress: 0, animated: false) }
+    }
+
+    public func aiscanCameraController(_ controller: AIScanCameraController, didCollect input: AISCImageInput, preview: UIImage) {
+        guard enableMultiMode, !isClosed, captureAttemptState.phase == .diagnosing,
+              let coordinator = multiCoordinator, coordinator.canAdd else { return }
+        _ = coordinator.append(input: input, preview: preview, context: scanContext)
+        showMultiReview()
     }
 
     public func aiscanCameraController(

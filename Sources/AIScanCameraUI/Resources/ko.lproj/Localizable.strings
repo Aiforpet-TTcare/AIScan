@@ -135,3 +135,25 @@
 "album.subject.skin.larger" = "피부가 더 크게 나온 사진을 선택해 주세요.";
 "album.subject.skin.full" = "피부를 확인할 부위 전체가 보이는 사진을 선택해 주세요.";
 "album.retake" = "선택한 사진을 분석하기 어려워요. 다른 사진을 선택해 주세요.";
+
+/* Multiple-photo capture and analysis */
+"multi.review" = "사진 확인";
+"multi.check_photos" = "사진을 확인해 주세요";
+"multi.count" = "사진 %d/4장";
+"multi.results" = "결과 확인하기 (%d장)";
+"multi.add_more" = "사진 더 찍기";
+"multi.add_photo" = "사진 추가";
+"multi.photo" = "사진 %d";
+"multi.remove" = "제외";
+"multi.camera" = "사진 촬영";
+"multi.album" = "앨범에서 선택";
+"multi.cancel" = "취소";
+"multi.ready" = "사진 준비 완료";
+"multi.preparing" = "사진 준비 중…";
+"multi.upload_failed" = "사진을 준비하지 못했어요. 제외한 뒤 다시 추가해 주세요.";
+"multi.progress" = "사진 %d/%d · 완료 %d장";
+"multi.result_title" = "사진별 분석 결과";
+"multi.failed" = "분석 실패";
+"multi.retake" = "다시 촬영";
+"multi.complete" = "완료";
+"multi.requires_ttapi" = "여러 사진을 함께 분석할 수 없습니다. 한 장씩 분석해 주세요.";

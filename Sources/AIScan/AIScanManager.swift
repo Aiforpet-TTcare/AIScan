@@ -58,6 +58,7 @@ public enum AIScanManager {
         displayMetadata: [String: String]? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
         enableResultView: Bool = false,
         enablePdfShare: Bool = true,
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
@@ -82,7 +83,8 @@ public enum AIScanManager {
         let camera = AIScanCameraViewController(
             configuration: copyConfiguration(configurationTemplate),
             context: context,
-            allowsAlbum: allowsAlbum
+            allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode
         )
         let completionGate = AIScanManagerCompletionGate(completion: completion)
 
@@ -168,6 +170,56 @@ public enum AIScanManager {
             }
             completionGate.complete(.success(result))
         }
+        camera.onMultiResults = { [weak camera] outcomes in
+            guard completionGate.claim() else { return }
+            let result = AIScanResult(multiOutcomes: outcomes, petType: petType, partType: partType,
+                                      petId: petId, userId: userId)
+            guard let camera else { completionGate.complete(.success(result)); return }
+            if enableResultView, let resultViewController {
+                resultViewController.apply(result: result)
+                resultViewController.modalPresentationStyle = .fullScreen
+                camera.present(resultViewController, animated: true)
+                completionGate.complete(.success(result))
+            } else if enableResultView {
+                let summary = AIScanMultiResultViewController(outcomes: outcomes)
+                summary.onSelect = { [weak summary, weak camera] display in
+                    let viewModel = AIScanDisplayResultViewModel(result: display)
+                    let reportInput = AIScanPDFReportInput(
+                        viewModel: viewModel, petType: petType.rawValue.uppercased(),
+                        part: partType.key, subpart: partType.detailKey, petName: petName ?? "",
+                        petDetail: AIScanPDFPetDetailFormatter.make(petType: petType.rawValue,
+                            petName: petName, petBreedName: petBreedName,
+                            petBirthday: petBirthday, petGender: petGender))
+                    let exportAction: (() -> Void)? = enablePdfShare ? { [weak summary, weak camera] in
+                        guard let summary else { return }
+                        Task { @MainActor in
+                            switch await pdfExportCoordinator.generate(reportInput) {
+                            case let .success(url):
+                                lastExportedPDFURL = url
+                                onPDFExported?(url)
+                                if AIScanPDFSharePresenter.present(fileURL: url, from: summary) {
+                                    camera?.resultDidShare()
+                                }
+                            case let .failure(error):
+                                if error as? AIScanPDFReportError != .exportInProgress {
+                                    AIScanPDFSharePresenter.showFailure(from: summary)
+                                }
+                            }
+                        }
+                    } : nil
+                    let view = AIScanResultReferenceView(viewModel: viewModel,
+                        onClose: { [weak summary] in summary?.dismiss(animated: true) }, onExportReport: exportAction)
+                    let detail = UIHostingController(rootView: view)
+                    detail.modalPresentationStyle = .fullScreen
+                    summary?.present(detail, animated: true)
+                }
+                summary.onClose = { [weak camera] in camera?.dismissCompletedScan() }
+                camera.present(summary, animated: true)
+                completionGate.complete(.success(result))
+            } else {
+                camera.dismissCompletedScan { completionGate.complete(.success(result)) }
+            }
+        }
         camera.onFailure = { error in
             let nsError = error as NSError
             let isRetryable = nsError.userInfo[AISCRetryableKey] as? Bool == true
@@ -209,6 +261,7 @@ public enum AIScanManager {
         displayMetadata: [String: String]? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
         enableResultView: Bool = false,
         enablePdfShare: Bool = true,
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
@@ -229,6 +282,7 @@ public enum AIScanManager {
             displayMetadata: displayMetadata,
             enablesQuestionnaire: enablesQuestionnaire,
             allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
             enableResultView: enableResultView,
             enablePdfShare: enablePdfShare,
             resultViewController: resultViewController,
@@ -260,6 +314,7 @@ public enum AIScanManager {
         displayMetadata: [String: String]? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
         enableResultView: Bool = false,
         enablePdfShare: Bool = true,
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
@@ -280,6 +335,7 @@ public enum AIScanManager {
             displayMetadata: displayMetadata,
             enablesQuestionnaire: enablesQuestionnaire,
             allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
             enableResultView: enableResultView,
             enablePdfShare: enablePdfShare,
             resultViewController: resultViewController,
@@ -305,6 +361,7 @@ public enum AIScanManager {
         displayMetadata: [String: String]? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
         enableResultView: Bool = false,
         enablePdfShare: Bool = true,
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
@@ -326,6 +383,7 @@ public enum AIScanManager {
             displayMetadata: displayMetadata,
             enablesQuestionnaire: enablesQuestionnaire,
             allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
             enableResultView: enableResultView,
             enablePdfShare: enablePdfShare,
             resultViewController: resultViewController,

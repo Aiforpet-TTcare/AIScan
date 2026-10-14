@@ -20,6 +20,7 @@ _OBJC_CLASS_$_AISCQuestionnaireAnswer
 _OBJC_CLASS_$_AISCQuestionnairePrompt
 _OBJC_CLASS_$_AISCScanContext
 _OBJC_CLASS_$_AISCSession
+_OBJC_CLASS_$_AISCUploadedPhoto
 _OBJC_METACLASS_$_AISCCameraEngine
 _OBJC_METACLASS_$_AISCConfiguration
 _OBJC_METACLASS_$_AISCContractResult
@@ -36,3 +37,4 @@ _OBJC_METACLASS_$_AISCQuestionnaireAnswer
 _OBJC_METACLASS_$_AISCQuestionnairePrompt
 _OBJC_METACLASS_$_AISCScanContext
 _OBJC_METACLASS_$_AISCSession
+_OBJC_METACLASS_$_AISCUploadedPhoto

@@ -20,6 +20,15 @@ typedef void (^AISCPreparationDetailedProgress)(double normalizedProgress,
 typedef void (^AISCPhotoAccepted)(AISCImageInput *acceptedInput);
 typedef void (^AISCPhotoMeasurementCompletion)(CGSize originalSubjectSize, NSError *_Nullable error);
 
+/// Opaque, already-uploaded original photo. Provider tickets and transport
+/// state remain private. Use only with the session that uploaded this photo.
+@interface AISCUploadedPhoto : NSObject
+@property (nonatomic, copy, readonly) NSString *identifier;
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+typedef void (^AISCPhotoUploadCompletion)(AISCUploadedPhoto *_Nullable photo, NSError *_Nullable error);
+
 @interface AISCSession : NSObject
 
 @property (nonatomic, assign, readonly) AISCAnalysisMode analysisMode;
@@ -45,6 +54,13 @@ typedef void (^AISCPhotoMeasurementCompletion)(CGSize originalSubjectSize, NSErr
              accepted:(nullable AISCPhotoAccepted)accepted
              progress:(nullable AISCDiagnosisProgress)progress
            completion:(AISCDisplayResultCompletion)completion;
+/// Uploads an approved photo without starting or billing an analysis.
+- (void)uploadPhoto:(AISCImageInput *)input
+           progress:(nullable AISCDiagnosisProgress)progress
+         completion:(AISCPhotoUploadCompletion)completion;
+- (void)diagnoseUploadedPhoto:(AISCUploadedPhoto *)photo
+                     progress:(nullable AISCDiagnosisProgress)progress
+                   completion:(AISCDisplayResultCompletion)completion;
 - (void)measurePhotoSubject:(AISCImageInput *)input completion:(AISCPhotoMeasurementCompletion)completion;
 - (nullable AVCaptureDevice *)cameraDeviceForPosition:(AVCaptureDevicePosition)position NS_SWIFT_NAME(cameraDevice(for:));
 - (CGFloat)cameraZoomFactorForRequestedFactor:(CGFloat)requestedFactor

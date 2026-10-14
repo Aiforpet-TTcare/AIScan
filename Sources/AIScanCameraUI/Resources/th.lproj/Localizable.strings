@@ -135,3 +135,25 @@
 "album.subject.skin.larger" = "กรุณาเลือกรูปที่เห็นผิวหนังใหญ่ขึ้น";
 "album.subject.skin.full" = "กรุณาเลือกรูปที่เห็นบริเวณผิวหนังที่ต้องการตรวจทั้งหมด";
 "album.retake" = "รูปที่เลือกวิเคราะห์ได้ยาก กรุณาเลือกรูปอื่น";
+
+/* Multiple-photo capture and analysis */
+"multi.review" = "ตรวจสอบรูปภาพ";
+"multi.check_photos" = "กรุณาตรวจสอบรูปภาพ";
+"multi.count" = "รูปภาพ %d/4";
+"multi.results" = "ดูผลลัพธ์ (%d รูป)";
+"multi.add_more" = "ถ่ายรูปเพิ่ม";
+"multi.add_photo" = "เพิ่มรูปภาพ";
+"multi.photo" = "รูปที่ %d";
+"multi.remove" = "นำออก";
+"multi.camera" = "ถ่ายรูป";
+"multi.album" = "เลือกจากอัลบั้ม";
+"multi.cancel" = "ยกเลิก";
+"multi.ready" = "รูปภาพพร้อมแล้ว";
+"multi.preparing" = "กำลังเตรียมรูปภาพ…";
+"multi.upload_failed" = "เตรียมรูปภาพไม่สำเร็จ โปรดนำออกแล้วเพิ่มใหม่";
+"multi.progress" = "รูปที่ %d/%d · เสร็จแล้ว %d รูป";
+"multi.result_title" = "ผลวิเคราะห์แต่ละรูป";
+"multi.failed" = "วิเคราะห์ไม่สำเร็จ";
+"multi.retake" = "ถ่ายใหม่";
+"multi.complete" = "เสร็จแล้ว";
+"multi.requires_ttapi" = "ไม่สามารถวิเคราะห์หลายรูปพร้อมกันได้ โปรดวิเคราะห์ทีละรูป";

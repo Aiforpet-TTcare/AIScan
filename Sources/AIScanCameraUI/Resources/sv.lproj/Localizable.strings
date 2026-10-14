@@ -135,3 +135,25 @@
 "album.subject.skin.larger" = "Välj ett foto där huden syns större.";
 "album.subject.skin.full" = "Välj ett foto där hela hudområdet som ska kontrolleras syns.";
 "album.retake" = "Det valda fotot är svårt att analysera. Välj ett annat foto.";
+
+/* Multiple-photo capture and analysis */
+"multi.review" = "Granska foton";
+"multi.check_photos" = "Kontrollera dina foton";
+"multi.count" = "Foton %d/4";
+"multi.results" = "Visa resultat (%d)";
+"multi.add_more" = "Ta fler foton";
+"multi.add_photo" = "Lägg till foto";
+"multi.photo" = "Foto %d";
+"multi.remove" = "Ta bort";
+"multi.camera" = "Ta foto";
+"multi.album" = "Välj från album";
+"multi.cancel" = "Avbryt";
+"multi.ready" = "Fotot är klart";
+"multi.preparing" = "Förbereder foto…";
+"multi.upload_failed" = "Fotot kunde inte förberedas. Ta bort det och lägg till det igen.";
+"multi.progress" = "Foto %d/%d · %d klara";
+"multi.result_title" = "Fotoresultat";
+"multi.failed" = "Analysen misslyckades";
+"multi.retake" = "Ta ett nytt foto";
+"multi.complete" = "Klart";
+"multi.requires_ttapi" = "Analys av flera foton är inte tillgänglig. Analysera ett foto i taget.";
