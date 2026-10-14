@@ -63,9 +63,9 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertFalse(analyze.isEnabled)
         try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 400, height: 100)))
         XCTAssertFalse(analyze.isEnabled)
-        let low = try XCTUnwrap(find(album.view, "aiscan.album.quality.detect_height") as? UILabel)
-        XCTAssertEqual(low.textColor, .systemRed)
-        XCTAssertTrue(low.text?.contains("100 px") == true)
+        XCTAssertEqual(album.qualityReport?.detectedSize?.height, 100)
+        XCTAssertNil(find(album.view, "aiscan.album.quality.detect_height"))
+        XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.validation")).isHidden)
         let background = try XCTUnwrap(analyze.layer.sublayers?.first {
             $0.name == "aiscan.album.analyze-background"
         } as? CAShapeLayer)
@@ -105,32 +105,34 @@ final class AIScanAlbumQualityTests: XCTestCase {
         // This package test has no app event loop; invoke the button's registered target.
         _ = album.perform(NSSelectorFromString(action))
         XCTAssertTrue(didClose)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.checking")).isHidden)
         try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 400, height: 400)))
         XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton).isEnabled)
     }
 
-    func testQualityMeasurementsRemainScrollableOnSmallPhone() throws {
+    func testActionableGuidanceRemainsReadableOnSmallPhone() throws {
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .teeth)
         album.loadViewIfNeeded()
         album.view.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
         album.applySelectedPhoto(try photo(width: 1399, height: 1400))
         album.view.layoutIfNeeded()
-        let label = try XCTUnwrap(find(album.view, "aiscan.album.quality.width") as? UILabel)
-        XCTAssertEqual(label.textColor, .systemRed)
-        XCTAssertTrue(label.text?.contains("1399 px") == true)
+        let label = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
+        XCTAssertEqual(label.text, AIScanCameraStrings.localizedMessageKey("해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."))
+        XCTAssertNil(find(album.view, "aiscan.album.quality"))
         let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
         XCTAssertGreaterThanOrEqual(scroll.contentSize.height, scroll.bounds.height)
-        let lastRow = try XCTUnwrap(find(album.view, "aiscan.album.quality.detect_height"))
-        XCTAssertLessThanOrEqual(lastRow.convert(lastRow.bounds, to: scroll).maxY, scroll.contentSize.height)
+        XCTAssertLessThanOrEqual(label.convert(label.bounds, to: scroll).maxY, scroll.contentSize.height)
+        XCTAssertLessThanOrEqual(label.sizeThatFits(CGSize(width: label.bounds.width, height: .greatestFiniteMagnitude)).height,
+                                 label.bounds.height + 1)
         let image = UIGraphicsImageRenderer(bounds: album.view.bounds).image { album.view.layer.render(in: $0.cgContext) }
         let attachment = XCTAttachment(image: image)
-        attachment.name = "album-quality-small-phone"
+        attachment.name = "album-user-guidance-without-metrics"
         attachment.lifetime = .keepAlways
         add(attachment)
         album.view.frame.size.height = 320
         album.view.setNeedsLayout()
         album.view.layoutIfNeeded()
-        XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height, "A short viewport must scroll instead of clipping metrics.")
+        XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height, "A short viewport must scroll instead of clipping guidance.")
     }
     func testPartSpecificOriginalResolutionBoundaries() {
         for (part, minimum) in [(AISCPartType.skin, 1200), (.eye, 900), (.teeth, 1400)] {
@@ -224,22 +226,41 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertFalse(analyze.isEnabled, "A low-resolution album photo must not start diagnosis.")
     }
 
-    func testAlbumExposesQualityMeasurements() throws {
+    func testQualityMeasurementsRemainInternalAcrossInspectionStates() throws {
         let album = AIScanAlbumSelectionViewController(
-            allowsPositionSelection: true, initialPosition: "belly"
+            allowsPositionSelection: false, initialPosition: nil, partType: .eye
         )
         album.loadViewIfNeeded()
-        XCTAssertNotNil(find(album.view, "aiscan.album.quality"))
+        let checking = try XCTUnwrap(find(album.view, "aiscan.album.checking") as? UILabel)
+        XCTAssertTrue(checking.isHidden)
+        var finish: ((AIScanAlbumQualityReport) -> Void)?
+        let selected = try photo()
+        album.onInspect = { _, completion in finish = completion }
+        album.applySelectedPhoto(selected)
+        XCTAssertFalse(checking.isHidden)
+        XCTAssertEqual(checking.text, AIScanCameraStrings.localizedMessageKey("album.quality.checking"))
+        XCTAssertNil(find(album.view, "aiscan.album.quality"))
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 50, height: 50)))
+        XCTAssertTrue(checking.isHidden)
+        XCTAssertEqual(album.qualityReport?.metadata.width, 1200)
+        XCTAssertEqual(album.qualityReport?.detectedSize?.width, 50)
+        XCTAssertNil(find(album.view, "aiscan.album.quality.detect_width"))
+        XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton).isEnabled)
+        album.applySelectedPhoto(selected)
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 400, height: 400)))
+        XCTAssertTrue(checking.isHidden)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton).isEnabled)
+        XCTAssertNil(find(album.view, "aiscan.album.quality"))
     }
 
-    func testSmallPhotoShowsWhatToDoBeforeTheTechnicalMeasurements() throws {
+    func testSmallPhotoShowsOnlyActionableGuidance() throws {
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .eye)
         album.loadViewIfNeeded()
         album.applySelectedPhoto(try photo(width: 400, height: 400))
         let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
         XCTAssertEqual(message.text, AIScanCameraStrings.localizedMessageKey("해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."))
         XCTAssertFalse(message.superview!.isHidden)
-        XCTAssertNotNil(find(album.view, "aiscan.album.quality.width"), "Keep the requested quality measurements available.")
+        XCTAssertNil(find(album.view, "aiscan.album.quality.width"))
         let report = try XCTUnwrap(album.qualityReport)
         XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false,
             analysisPosition: nil, languageCode: "ko"), "사진이 너무 작아요. 더 큰 원본 사진을 선택해 주세요.")
@@ -278,8 +299,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         let message = AIScanCameraStrings.albumQualityFailureMessage(for: try XCTUnwrap(album.qualityReport),
             isInspecting: false, analysisPosition: nil, languageCode: "ko")
         XCTAssertEqual(message, "인터넷 연결이 원활하지 않아요. 연결을 확인한 뒤 다시 시도해 주세요.")
-        let row = try XCTUnwrap(find(album.view, "aiscan.album.quality.detect_width") as? UILabel)
-        XCTAssertFalse(row.text!.contains(AIScanCameraStrings.localizedMessageKey("album.quality.detect")))
+        XCTAssertNil(find(album.view, "aiscan.album.quality.detect_width"))
         XCTAssertEqual(error.userInfo[AISCDisplayReasonKey] as? String, "network_unavailable_internal")
         XCTAssertEqual(error.code, 200, "Preserve the developer's diagnostic error.")
         let retry = try XCTUnwrap(find(album.view, "aiscan.album.retry-inspection") as? UIButton)

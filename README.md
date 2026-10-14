@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.16")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.17")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.0.16'
+    :tag => '3.0.17'
 ```
 
 ### Single public module
