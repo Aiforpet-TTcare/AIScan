@@ -44,7 +44,7 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "Seleziona una foto nitida e ben a fuoco.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "Seleziona una foto in cui i denti siano ben visibili.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "Seleziona una foto in cui la pelle sia ben visibile.";
-"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "La risoluzione è troppo bassa. Prova con una foto più nitida.";
+"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "La foto è troppo piccola per vedere bene i dettagli. Scegli una foto originale più grande.";
 "popup.notice" = "Avviso";
 "popup.confirm" = "Conferma";
 "popup.flash.title" = "Consigliamo di usare il flash";
@@ -102,30 +102,30 @@
 "album.quality.detect_width" = "Larghezza area rilevata";
 "album.quality.detect_height" = "Altezza area rilevata";
 "album.quality.unknown_value" = "Non disponibile";
-"album.quality.resolution" = "La risoluzione è troppo bassa";
-"album.quality.bits_reason" = "Informazioni colore insufficienti per l’analisi";
-"album.quality.unknown" = "Impossibile leggere i dati dell’immagine originale";
-"album.quality.distance" = "Gli occhi o i denti sono stati fotografati da troppo lontano";
-"album.quality.detect" = "Impossibile rilevare la parte da esaminare";
-"album.quality.checking" = "Verifica della qualità in corso";
-"album.quality.load_failed" = "Impossibile leggere la foto selezionata";
-"album.quality.not_checked" = "Non ancora misurato";
+"album.quality.resolution" = "Scegli una foto originale più grande.";
+"album.quality.bits_reason" = "Scegli un’altra foto originale.";
+"album.quality.unknown" = "Non siamo riusciti a controllare la foto. Scegli un’altra foto originale.";
+"album.quality.distance" = "Scegli una foto in cui la zona da controllare sia più vicina.";
+"album.quality.detect" = "Scegli una foto in cui la zona da controllare sia ben visibile.";
+"album.quality.checking" = "Stiamo controllando la foto…";
+"album.quality.load_failed" = "Non siamo riusciti ad aprire la foto. Scegli un’altra foto.";
+"album.quality.not_checked" = "La foto non è ancora stata controllata.";
 
 // Scan failure guidance
-"error.configuration" = "Impossibile avviare AI Health Check. Contatta l’assistenza dell’app che stai utilizzando.";
-"error.authorization" = "Impossibile verificare l’accesso ad AI Health Check. Contatta l’assistenza dell’app che stai utilizzando.";
-"error.quota" = "Limite di richieste di scansione superato. Riprova più tardi.";
-"error.network" = "Controlla la connessione di rete e riprova.";
-"error.timeout" = "La richiesta di scansione è scaduta. Riprova.";
-"error.server" = "Si è verificato un errore del server di scansione. Riprova più tardi.";
-"error.analysis" = "Impossibile elaborare l’analisi. Riprova più tardi.";
-"error.questionnaire" = "Impossibile caricare il questionario. Riprova.";
-"error.input" = "Impossibile verificare la foto o le informazioni della scansione. Riprova.";
-"error.busy" = "Una scansione è già in corso. Attendi che termini.";
-"error.cancelled" = "La scansione è stata annullata.";
-"error.result" = "Impossibile elaborare il risultato della scansione. Riprova.";
-"error.upload" = "Impossibile caricare la foto. Riprova.";
-"photo.color_quality" = "Le informazioni sui colori della foto sono insufficienti. Seleziona la foto originale.";
+"error.configuration" = "Al momento non è possibile avviare il controllo. Se il problema continua, contatta l’assistenza dell’app.";
+"error.authorization" = "Al momento non puoi usare il controllo. Contatta l’assistenza dell’app.";
+"error.quota" = "Al momento non puoi avviare un altro controllo. Riprova più tardi.";
+"error.network" = "La connessione a Internet è instabile. Controlla la connessione e riprova.";
+"error.timeout" = "Il controllo sta richiedendo più tempo del previsto. Riprova tra poco.";
+"error.server" = "Non siamo riusciti a completare il controllo. Riprova tra poco.";
+"error.analysis" = "Non siamo riusciti a completare il controllo. Riprova tra poco.";
+"error.questionnaire" = "Non siamo riusciti a caricare il questionario. Riprova.";
+"error.input" = "Non siamo riusciti a proseguire con il controllo. Riprova.";
+"error.busy" = "È in corso un controllo. Attendi un momento.";
+"error.cancelled" = "Il controllo è stato annullato.";
+"error.result" = "Non siamo riusciti a caricare i risultati. Riprova.";
+"error.upload" = "Non siamo riusciti a inviare la foto. Riprova.";
+"photo.color_quality" = "Questa foto non può essere usata per il controllo. Scegli un’altra foto originale.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "Seleziona una foto in cui l’occhio sia più grande.";

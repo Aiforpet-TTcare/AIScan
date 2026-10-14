@@ -42,7 +42,7 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "ピントの合った鮮明な写真を選択してください。";
 "치아가 잘 보이는 사진을 선택해 주세요." = "歯がよく見える写真を選択してください。";
 "피부가 잘 보이는 사진을 선택해 주세요." = "皮膚がよく見える写真を選択してください。";
-"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "解像度が低すぎます。より鮮明な写真でお試しください。";
+"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "写真が小さく、細部を確認できません。サイズの大きい元の写真を選んでください。";
 "popup.notice" = "お知らせ";
 "popup.confirm" = "確認";
 "popup.flash.title" = "フラッシュの使用をおすすめします";
@@ -102,30 +102,30 @@
 "album.quality.detect_width" = "検出領域の幅";
 "album.quality.detect_height" = "検出領域の高さ";
 "album.quality.unknown_value" = "確認できません";
-"album.quality.resolution" = "画像の解像度が低すぎます";
-"album.quality.bits_reason" = "解析に必要な画像情報が不足しています";
-"album.quality.unknown" = "元画像の情報を確認できません";
-"album.quality.distance" = "目や歯が遠すぎます";
-"album.quality.detect" = "検査する部位を検出できません";
-"album.quality.checking" = "画像品質を確認中";
-"album.quality.load_failed" = "選択した写真を読み込めません";
-"album.quality.not_checked" = "未測定";
+"album.quality.resolution" = "サイズの大きい元の写真を選んでください。";
+"album.quality.bits_reason" = "別の元の写真を選んでください。";
+"album.quality.unknown" = "写真を確認できませんでした。別の元の写真を選んでください。";
+"album.quality.distance" = "調べたい部分がもっと大きく写った写真を選んでください。";
+"album.quality.detect" = "調べたい部分がはっきり見える写真を選んでください。";
+"album.quality.checking" = "写真を確認しています。";
+"album.quality.load_failed" = "写真を読み込めませんでした。別の写真を選んでください。";
+"album.quality.not_checked" = "写真はまだ確認していません。";
 
 // Scan failure guidance
-"error.configuration" = "AI健康チェックを開始できません。ご利用のアプリのサポートにお問い合わせください。";
-"error.authorization" = "AI健康チェックの利用権限を確認できません。ご利用のアプリのサポートにお問い合わせください。";
-"error.quota" = "検査リクエストの上限を超えました。しばらくしてから再試行してください。";
-"error.network" = "ネットワーク接続を確認して再試行してください。";
-"error.timeout" = "検査の応答がタイムアウトしました。再試行してください。";
-"error.server" = "検査サーバーでエラーが発生しました。しばらくしてから再試行してください。";
-"error.analysis" = "分析を処理できません。しばらくしてから再試行してください。";
-"error.questionnaire" = "問診を読み込めません。再試行してください。";
-"error.input" = "写真または検査情報を確認できません。再試行してください。";
-"error.busy" = "検査中です。完了するまでお待ちください。";
+"error.configuration" = "今は検査を始められません。解決しない場合は、ご利用のアプリのサポートにお問い合わせください。";
+"error.authorization" = "今は検査を利用できません。ご利用のアプリのサポートにお問い合わせください。";
+"error.quota" = "今は検査を続けられません。しばらくしてからもう一度お試しください。";
+"error.network" = "インターネット接続が不安定です。接続を確認して、もう一度お試しください。";
+"error.timeout" = "検査に時間がかかっています。しばらくしてからもう一度お試しください。";
+"error.server" = "検査を完了できませんでした。しばらくしてからもう一度お試しください。";
+"error.analysis" = "検査を完了できませんでした。しばらくしてからもう一度お試しください。";
+"error.questionnaire" = "問診を読み込めませんでした。もう一度お試しください。";
+"error.input" = "検査を進められませんでした。もう一度お試しください。";
+"error.busy" = "検査中です。少々お待ちください。";
 "error.cancelled" = "検査がキャンセルされました。";
-"error.result" = "検査結果を処理できません。再試行してください。";
-"error.upload" = "写真をアップロードできませんでした。再試行してください。";
-"photo.color_quality" = "写真の色情報が不足しています。元の写真を選択してください。";
+"error.result" = "検査結果を読み込めませんでした。もう一度お試しください。";
+"error.upload" = "写真を送れませんでした。もう一度お試しください。";
+"photo.color_quality" = "この写真では検査できません。別の元の写真を選んでください。";
 
 // Album framing guidance
 "album.subject.eye.larger" = "目がより大きく写った写真を選択してください。";

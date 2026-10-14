@@ -231,4 +231,99 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.loadViewIfNeeded()
         XCTAssertNotNil(find(album.view, "aiscan.album.quality"))
     }
+
+    func testSmallPhotoShowsWhatToDoBeforeTheTechnicalMeasurements() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .eye)
+        album.loadViewIfNeeded()
+        album.applySelectedPhoto(try photo(width: 400, height: 400))
+        let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
+        XCTAssertEqual(message.text, AIScanCameraStrings.localizedMessageKey("해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."))
+        XCTAssertFalse(message.superview!.isHidden)
+        XCTAssertNotNil(find(album.view, "aiscan.album.quality.width"), "Keep the requested quality measurements available.")
+        let report = try XCTUnwrap(album.qualityReport)
+        XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false,
+            analysisPosition: nil, languageCode: "ko"), "사진이 너무 작아요. 더 큰 원본 사진을 선택해 주세요.")
+    }
+
+    func testQualityGuidanceNamesTheActualBodyPartAndClearsAfterAnotherPhotoPasses() throws {
+        for (part, expected) in [(AISCPartType.eye, "눈이 더 크게 나온 사진을 선택해 주세요."),
+                                 (.teeth, "치아가 더 크게 나온 사진을 선택해 주세요.")] {
+            let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: part)
+            album.loadViewIfNeeded()
+            let photo = try photo(width: 1600, height: 1600)
+            album.onInspect = { _, completion in
+                completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: part).measured(CGSize(width: 50, height: 50)))
+            }
+            album.applySelectedPhoto(photo)
+            XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: try XCTUnwrap(album.qualityReport),
+                isInspecting: false, analysisPosition: nil, languageCode: "ko"), expected)
+            album.onInspect = { _, completion in
+                completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: part).measured(CGSize(width: 500, height: 500)))
+            }
+            album.applySelectedPhoto(photo)
+            XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.validation")).isHidden)
+            XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton).isEnabled)
+        }
+    }
+
+    func testInspectionServiceFailureDoesNotTellTheUserToReplaceThePhoto() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .eye)
+        album.loadViewIfNeeded()
+        let photo = try photo()
+        let error = NSError(domain: AISCErrorDomain, code: 200, userInfo: [AISCDisplayReasonKey: "network_unavailable_internal"])
+        album.onInspect = { _, completion in
+            completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: .eye).measured(nil, issue: "detect", error: error))
+        }
+        album.applySelectedPhoto(photo)
+        let message = AIScanCameraStrings.albumQualityFailureMessage(for: try XCTUnwrap(album.qualityReport),
+            isInspecting: false, analysisPosition: nil, languageCode: "ko")
+        XCTAssertEqual(message, "인터넷 연결이 원활하지 않아요. 연결을 확인한 뒤 다시 시도해 주세요.")
+        let row = try XCTUnwrap(find(album.view, "aiscan.album.quality.detect_width") as? UILabel)
+        XCTAssertFalse(row.text!.contains(AIScanCameraStrings.localizedMessageKey("album.quality.detect")))
+        XCTAssertEqual(error.userInfo[AISCDisplayReasonKey] as? String, "network_unavailable_internal")
+        XCTAssertEqual(error.code, 200, "Preserve the developer's diagnostic error.")
+        let retry = try XCTUnwrap(find(album.view, "aiscan.album.retry-inspection") as? UIButton)
+        XCTAssertFalse(retry.isHidden, "A service failure must offer a retry without choosing the photo again.")
+        var retriedSamePhoto = false
+        album.onInspect = { selected, completion in
+            retriedSamePhoto = selected.image === photo.image
+            completion(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 400, height: 400)))
+        }
+        let action = try XCTUnwrap(retry.actions(forTarget: album, forControlEvent: .touchUpInside)?.first)
+        _ = album.perform(NSSelectorFromString(action))
+        XCTAssertTrue(retriedSamePhoto)
+        XCTAssertTrue(retry.isHidden)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton).isEnabled)
+    }
+
+    func testAllLanguagesOfferUserGuidanceWithoutCodesForEveryQualityFailure() {
+        let original = AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: 24)
+        let reports = [
+            AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 400, height: 400, bitsPerPixel: 24), part: .eye),
+            AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: 8), part: .skin),
+            AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: nil), part: .skin),
+            AIScanAlbumQualityReport(metadata: original, part: .eye).measured(nil, issue: "detect"),
+            AIScanAlbumQualityReport(metadata: original, part: .teeth).measured(CGSize(width: 50, height: 50)),
+            AIScanAlbumQualityReport(metadata: original, part: .eye).measured(nil, issue: "detect", error: NSError(domain: AISCErrorDomain, code: 202)),
+        ]
+        for language in ["ko", "en", "ja", "it", "sv", "th"] {
+            for report in reports {
+                let message = AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false,
+                    analysisPosition: nil, languageCode: language)
+                XCTAssertNotNil(message)
+                for term in ["AISC-", "PRE_", "album.", "photo.color_quality", "bpp", "BBOX"] {
+                    XCTAssertFalse(message?.contains(term) == true, "\(language): \(message ?? "")")
+                }
+            }
+        }
+        XCTAssertNil(AIScanCameraStrings.albumQualityFailureMessage(for: AIScanAlbumQualityReport(metadata: original, part: .eye),
+            isInspecting: true, analysisPosition: nil))
+    }
+
+    func testUntranslatedFailureReasonNeverLeaksToTheUser() {
+        let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+            userInfo: [AISCDisplayReasonKey: "PRE_UNRECOGNIZED_INTERNAL_REASON"])
+        let message = AIScanCameraStrings.albumDisplayMessage(for: error, partType: .eye, analysisPosition: nil, languageCode: "ko")
+        XCTAssertEqual(message, "검사를 진행하지 못했어요. 다시 시도해 주세요.")
+    }
 }

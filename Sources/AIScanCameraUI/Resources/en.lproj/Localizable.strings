@@ -44,7 +44,7 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "Please select a clear, well-focused photo.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "Please select a photo where the dental is clearly visible.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "Please select a photo where the skin is clearly visible.";
-"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "Resolution is too low. Please try a clearer photo.";
+"해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "This photo is too small to check clearly. Please choose a larger original photo.";
 "popup.notice" = "Notice";
 "popup.confirm" = "OK";
 "popup.flash.title" = "We recommend using flash";
@@ -102,30 +102,30 @@
 "album.quality.detect_width" = "Detected area width";
 "album.quality.detect_height" = "Detected area height";
 "album.quality.unknown_value" = "Unavailable";
-"album.quality.resolution" = "Image resolution is too low";
-"album.quality.bits_reason" = "Insufficient image color information";
-"album.quality.unknown" = "Original image information could not be read";
-"album.quality.distance" = "The eye or teeth were photographed too far away";
-"album.quality.detect" = "The requested area could not be detected";
-"album.quality.checking" = "Checking image quality";
-"album.quality.load_failed" = "Unable to read the selected photo";
-"album.quality.not_checked" = "Not measured";
+"album.quality.resolution" = "Please choose a larger original photo.";
+"album.quality.bits_reason" = "Please choose a different original photo.";
+"album.quality.unknown" = "We couldn't check this photo. Please choose a different original photo.";
+"album.quality.distance" = "Please choose a photo showing the area more closely.";
+"album.quality.detect" = "Please choose a photo where the area to check is clearly visible.";
+"album.quality.checking" = "Checking your photo…";
+"album.quality.load_failed" = "We couldn't open this photo. Please choose another photo.";
+"album.quality.not_checked" = "Photo not checked yet.";
 
 // Scan failure guidance
-"error.configuration" = "AI Health Check could not be started. Please contact support for the app you are using.";
-"error.authorization" = "Access to AI Health Check could not be verified. Please contact support for the app you are using.";
-"error.quota" = "The scan request limit was exceeded. Please try again later.";
-"error.network" = "Please check your network connection and try again.";
-"error.timeout" = "The scan request timed out. Please try again.";
-"error.server" = "The scan server encountered an error. Please try again later.";
-"error.analysis" = "Analysis could not be processed. Please try again later.";
-"error.questionnaire" = "The questionnaire could not be loaded. Please try again.";
-"error.input" = "The photo or scan information could not be verified. Please try again.";
-"error.busy" = "A scan is already in progress. Please wait for it to finish.";
-"error.cancelled" = "The scan was cancelled.";
-"error.result" = "The scan result could not be processed. Please try again.";
-"error.upload" = "The photo could not be uploaded. Please try again.";
-"photo.color_quality" = "The photo has insufficient color information. Please select the original photo.";
+"error.configuration" = "The check isn't available right now. If this continues, please contact the app's support team.";
+"error.authorization" = "You can't use the check right now. Please contact the app's support team.";
+"error.quota" = "You can't start another check right now. Please try again later.";
+"error.network" = "The internet connection is unstable. Please check your connection and try again.";
+"error.timeout" = "The check is taking longer than expected. Please try again in a moment.";
+"error.server" = "We couldn't finish the check. Please try again in a moment.";
+"error.analysis" = "We couldn't finish the check. Please try again in a moment.";
+"error.questionnaire" = "We couldn't load the questionnaire. Please try again.";
+"error.input" = "We couldn't continue the check. Please try again.";
+"error.busy" = "A check is in progress. Please wait a moment.";
+"error.cancelled" = "The check was cancelled.";
+"error.result" = "We couldn't load your results. Please try again.";
+"error.upload" = "We couldn't send your photo. Please try again.";
+"photo.color_quality" = "We can't use this photo for a check. Please choose a different original photo.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "Please select a photo where the eye appears larger.";
