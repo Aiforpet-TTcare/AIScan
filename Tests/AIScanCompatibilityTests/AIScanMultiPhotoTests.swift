@@ -175,6 +175,34 @@ final class AIScanMultiPhotoTests: XCTestCase {
         XCTAssertTrue(multiEngine.photoCollectionEnabled)
     }
 
+    func testReviewGridControlSitsBesideShutterAndTracksCaptureAvailability() throws {
+        for size in [CGSize(width: 320, height: 568), CGSize(width: 390, height: 844)] {
+            let context = AISCScanContext(); context.partType = .eye; context.petType = .dog
+            let multi = AIScanCameraViewController(cameraController: AIScanCameraController(cameraEngine: MockCameraEngine()),
+                context: context, stackDismisser: MultiTestStackDismisser(), enableMultiMode: true,
+                multiPhotoControllerFactory: { AIScanCameraController(cameraEngine: MockCameraEngine()) })
+            multi.beginsScanningAutomatically = false
+            multi.loadViewIfNeeded(); multi.view.frame = CGRect(origin: .zero, size: size)
+            multi.view.layoutIfNeeded()
+            let surface = try XCTUnwrap(multi.children.compactMap { $0 as? CameraViewController }.first)
+            surface.view.layoutIfNeeded(); surface.setPreparing(false)
+            let grid = surface.photoReviewButton
+            XCTAssertFalse(grid.isHidden, "Review is available even before the first photo.")
+            XCTAssertNil(grid.title(for: .normal))
+            XCTAssertNotNil(grid.image(for: .normal))
+            XCTAssertEqual(grid.bounds.size, CGSize(width: 44, height: 44))
+            XCTAssertEqual(grid.frame.midY, surface.captureButtonContainer.convert(surface.captureButtonContainer.bounds, to: surface.view).midY, accuracy: 0.5)
+            XCTAssertGreaterThan(grid.frame.minX, surface.captureButtonContainer.frame.maxX)
+            XCTAssertEqual(surface.albumButton.frame.minX, surface.view.bounds.width - grid.frame.maxX, accuracy: 0.5)
+            surface.setCaptureAttempt(active: true)
+            XCTAssertTrue(grid.isHidden); XCTAssertFalse(grid.isEnabled)
+            surface.setCaptureAttempt(active: false)
+            XCTAssertFalse(grid.isHidden); XCTAssertTrue(grid.isEnabled)
+            let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: multi.view.bounds).image { multi.view.layer.render(in: $0.cgContext) })
+            attachment.name = "camera-review-grid-\(Int(size.width))"; attachment.lifetime = .keepAlways; add(attachment)
+        }
+    }
+
     func testReviewUsesFourFixedSquareFillFramesAndRemovalRemainsTappableOnSmallScreens() async throws {
         let (coordinator, _) = fixture(4)
         for _ in 0..<4 { XCTAssertTrue(append(coordinator)) }
@@ -237,7 +265,21 @@ final class AIScanMultiPhotoTests: XCTestCase {
                 }
             }
         }
-        XCTAssertEqual(cameras, 1); XCTAssertEqual(albums, 1)
+        let empty = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.photo.2" } as? UIButton)
+        for target in empty.allTargets {
+            for action in empty.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                (target as? NSObject)?.perform(NSSelectorFromString(action), with: empty)
+            }
+        }
+        var backs = 0
+        review.onBack = { backs += 1 }
+        let back = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.back" } as? UIButton)
+        for target in back.allTargets {
+            for action in back.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                (target as? NSObject)?.perform(NSSelectorFromString(action), with: back)
+            }
+        }
+        XCTAssertEqual(cameras, 2); XCTAssertEqual(albums, 1); XCTAssertEqual(backs, 1)
         XCTAssertNil(review.presentedViewController)
         let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: review.view.bounds).image { review.view.layer.render(in: $0.cgContext) })
         attachment.name = "multi-dark-review-one-photo"; attachment.lifetime = .keepAlways; add(attachment)

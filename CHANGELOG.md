@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.3
+
+- Show inline activity and prevent conflicting album actions during loading and inspection, while keeping close available and ignoring late results.
+
+- Close the system photo picker before loading the original asset or presenting review, so slow asset loading does not leave the photo list on screen.
+
+- Move multi-photo review to a grid control beside the shutter and keep camera/album navigation direct.
+- Restore the album preview frame's screen-adaptive height while preserving centered fill cropping.
+
 ## 3.1.2
 
 - Match album and multi-photo review to the dark camera style, with a pinned album action and separate camera/album controls.

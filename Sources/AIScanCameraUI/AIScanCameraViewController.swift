@@ -158,7 +158,6 @@ public final class AIScanCameraViewController: UIViewController {
     private var multiPreviewTimer: Timer?
     private var multiPreviewIndex = 0
     private var multiQuestionnaireCompletion: (([AISCQuestionnaireAnswer]) -> Void)?
-    private let multiReviewButton = UIButton(type: .system)
     private var guideController: PreviewGuideViewController?
     private var progressController: TTProgressViewController?
     private var questionnaireController: UIViewController?
@@ -293,7 +292,7 @@ public final class AIScanCameraViewController: UIViewController {
             object: nil
         )
         installOriginalCameraUI()
-        installMultiReviewButton()
+        configureMultiReviewControl()
         if beginsScanningAutomatically {
             if !requiresSkinPositionSelection {
                 beginScanningIfNeeded()
@@ -421,7 +420,8 @@ public final class AIScanCameraViewController: UIViewController {
         cameraSurface.configureControls(
             showsPartSelector: allowsSkinPositionSelection,
             showsGuide: true,
-            showsAlbum: allowsAlbum
+            showsAlbum: allowsAlbum,
+            showsPhotoReview: enableMultiMode
         )
         cameraSurface.setPreparing(true)
     }
@@ -970,9 +970,7 @@ public final class AIScanCameraViewController: UIViewController {
             album.dismiss(animated: true) { [weak self] in
                 guard let self, !self.isClosed else { return }
                 self.albumController = nil
-                if self.enableMultiMode, self.multiCoordinator?.items.isEmpty == false {
-                    self.showMultiReview()
-                } else { self.startCameraSession() }
+                self.startCameraSession()
             }
         }
         if enableMultiMode {
@@ -1248,37 +1246,21 @@ public final class AIScanCameraViewController: UIViewController {
         }
     }
 
-    private func installMultiReviewButton() {
+    private func configureMultiReviewControl() {
         guard enableMultiMode else { return }
-        multiReviewButton.translatesAutoresizingMaskIntoConstraints = false
-        multiReviewButton.setTitleColor(AIScanReferenceTheme.onBrand, for: .normal)
-        multiReviewButton.backgroundColor = AIScanReferenceTheme.brandPrimary
-        multiReviewButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
-        multiReviewButton.layer.cornerRadius = 18
-        multiReviewButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-        multiReviewButton.accessibilityIdentifier = "aiscan.multi.open_review"
-        multiReviewButton.addTarget(self, action: #selector(multiReviewTapped), for: .touchUpInside)
-        view.addSubview(multiReviewButton)
-        NSLayoutConstraint.activate([
-            multiReviewButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            multiReviewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 64),
-            multiReviewButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
-        ])
+        cameraSurface.onPhotoReview = { [weak self] in self?.showMultiReview() }
         updateMultiPhotoUI()
     }
 
     private func updateMultiPhotoUI() {
         guard let coordinator = multiCoordinator else { return }
         multiReviewController?.refresh(coordinator.items)
-        multiReviewButton.isHidden = coordinator.items.isEmpty || coordinator.isAnalyzing
-        multiReviewButton.setTitle(String(format: AIScanCameraStrings.localizedMessageKey("multi.count"), coordinator.items.count), for: .normal)
+        cameraSurface.setPhotoReview(count: coordinator.items.count, available: !coordinator.isAnalyzing)
         if coordinator.isAnalyzing {
             progressController?.set(progress: coordinator.progress, animated: true)
             updateMultiProgressPhoto()
         }
     }
-
-    @objc private func multiReviewTapped() { showMultiReview() }
 
     private func showMultiReview() {
         guard let coordinator = multiCoordinator, !isClosed, !coordinator.isAnalyzing,

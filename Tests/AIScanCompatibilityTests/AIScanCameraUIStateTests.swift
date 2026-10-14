@@ -2474,7 +2474,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
             accessibilityIdentifier: "aiscan.album.area.ear"
         ) as? UIButton)
 
-        XCTAssertEqual(card.bounds.height, 283.5, accuracy: 0.5)
+        XCTAssertEqual(card.bounds.height, 380, accuracy: 0.5)
         XCTAssertEqual(card.layer.cornerRadius, 16)
         let selectBorder = try XCTUnwrap(select.layer.sublayers?.first {
             $0.name == "aiscan.album.select-photo-border"

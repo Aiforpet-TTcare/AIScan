@@ -65,6 +65,8 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private var selectedImage: UIImage?
     private let partType: AISCPartType
     private let inspectionStatusLabel = UILabel()
+    private let inspectionStatusRow = UIStackView()
+    private let inspectionSpinner = UIActivityIndicatorView(style: .medium)
     private var inspectionGeneration = 0
     private var isInspecting = false
     private var isClosed = false
@@ -296,7 +298,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         inspectionStatusLabel.numberOfLines = 0
         inspectionStatusLabel.accessibilityIdentifier = "aiscan.album.checking"
         inspectionStatusLabel.isHidden = true
-        contentStack.addArrangedSubview(inspectionStatusLabel)
+        inspectionSpinner.color = AIScanReferenceTheme.photoPrimary
+        inspectionSpinner.hidesWhenStopped = true
+        inspectionStatusRow.axis = .horizontal
+        inspectionStatusRow.alignment = .center
+        inspectionStatusRow.spacing = 10
+        inspectionStatusRow.addArrangedSubview(inspectionSpinner)
+        inspectionStatusRow.addArrangedSubview(inspectionStatusLabel)
+        contentStack.addArrangedSubview(inspectionStatusRow)
 
         let spacer = UIView()
         spacer.setContentHuggingPriority(.defaultLow, for: .vertical)
@@ -429,7 +438,12 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func updateSelectionUI() {
+        let canSelect = !isInspecting && !isAnalyzing && !isClosed
+        selectPhotoButton.isEnabled = canSelect
+        selectPhotoButton.alpha = canSelect ? 1 : 0.45
+        photoCard.isUserInteractionEnabled = canSelect
         for (position, button) in areaButtons {
+            button.isEnabled = canSelect
             let selected = position == selectedPosition
             button.backgroundColor = selected
                 ? AIScanReferenceTheme.brandPrimary
@@ -444,13 +458,16 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         emptyStack.isHidden = selectedImage != nil
         inspectionRetryButton.isHidden = qualityReport?.inspectionError == nil || isInspecting || isAnalyzing || isClosed
         inspectionStatusLabel.isHidden = !isInspecting || isAnalyzing || isClosed
+        inspectionStatusRow.isHidden = inspectionStatusLabel.isHidden
+        if inspectionStatusRow.isHidden { inspectionSpinner.stopAnimating() }
+        else { inspectionSpinner.startAnimating() }
         updatePreviewHeight()
         analyzeButton.isEnabled = qualityReport?.isValid == true && !isAnalyzing && !isInspecting && !isClosed
         updateAnalyzeButtonStyle()
     }
 
     private func updatePreviewHeight() {
-        let height = min(380, max(160, min((view.bounds.width - 40) * 0.81, view.bounds.height * 0.6)))
+        let height = min(380, max(160, view.bounds.height * 0.6))
         if photoHeightConstraint?.constant != height { photoHeightConstraint?.constant = height }
     }
 
@@ -488,11 +505,13 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     @objc private func areaTapped(_ sender: UIButton) {
+        guard !isInspecting, !isAnalyzing, !isClosed else { return }
         selectedPosition = areaButtons.first(where: { $0.value === sender })?.key
         updateSelectionUI()
     }
 
     @objc private func selectPhotoTapped() {
+        guard !isInspecting, !isAnalyzing, !isClosed, presentedViewController == nil else { return }
         if #available(iOS 14, *) {
             var configuration = PHPickerConfiguration(photoLibrary: .shared())
             configuration.filter = .images
@@ -581,6 +600,11 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         ))
     }
 
+    private func dismissPhotoPicker(_ picker: UIViewController, completion: @escaping () -> Void) {
+        guard picker.presentingViewController != nil else { completion(); return }
+        picker.dismiss(animated: true, completion: completion)
+    }
+
     private static func canonicalPosition(_ position: String?) -> String? {
         switch position?.lowercased() {
         case "ear": "ear"
@@ -599,17 +623,21 @@ extension AIScanAlbumSelectionViewController: @preconcurrency PHPickerViewContro
             return
         }
         let generation = beginLoadingPhoto()
-        AIScanAlbumImageLoader.loadPhoto(from: provider) { [weak self, weak picker] photo in
-            guard let self, generation == self.inspectionGeneration else { return }
-            guard let photo else {
-                picker?.dismiss(animated: true)
-                self.isInspecting = false
-                self.updateSelectionUI()
-                self.setValidationMessage(AIScanCameraStrings.localizedMessageKey("album.quality.load_failed"))
-                return
+        // Dismiss the system list before reading the original asset. iCloud
+        // loading can be slow; progress belongs on our album screen. Waiting
+        // for dismissal also prevents collection from presenting during it.
+        dismissPhotoPicker(picker) { [weak self] in
+            guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
+            AIScanAlbumImageLoader.loadPhoto(from: provider) { [weak self] photo in
+                guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
+                guard let photo else {
+                    self.isInspecting = false
+                    self.updateSelectionUI()
+                    self.setValidationMessage(AIScanCameraStrings.localizedMessageKey("album.quality.load_failed"))
+                    return
+                }
+                self.applySelectedPhoto(photo)
             }
-            picker?.dismiss(animated: true)
-            self.applySelectedPhoto(photo)
         }
     }
 }
@@ -619,13 +647,19 @@ extension AIScanAlbumSelectionViewController: @preconcurrency UIImagePickerContr
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
-        let image = info[.originalImage] as? UIImage
-        picker.dismiss(animated: true)
-        if let url = info[.imageURL] as? URL,
-           let data = try? Data(contentsOf: url), let photo = AIScanAlbumPhoto(data: data) {
-            applySelectedPhoto(photo)
-        } else if let image {
-            applySelectedPhoto(AIScanAlbumPhoto(image: image))
+        let generation = beginLoadingPhoto()
+        dismissPhotoPicker(picker) { [weak self] in
+            guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
+            if let url = info[.imageURL] as? URL,
+               let data = try? Data(contentsOf: url), let photo = AIScanAlbumPhoto(data: data) {
+                self.applySelectedPhoto(photo)
+            } else if let image = info[.originalImage] as? UIImage {
+                self.applySelectedPhoto(AIScanAlbumPhoto(image: image))
+            } else {
+                self.isInspecting = false
+                self.updateSelectionUI()
+                self.setValidationMessage(AIScanCameraStrings.localizedMessageKey("album.quality.load_failed"))
+            }
         }
     }
 
