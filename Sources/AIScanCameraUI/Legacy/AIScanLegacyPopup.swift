@@ -245,6 +245,7 @@ final class TTPopupCheckedResultViewController: UIViewController, AIScanLegacyPo
         guideButton.isHidden = true
         guideContainer.isHidden = true
         confirmButton.setTitle(AIScanCameraStrings.localized(.retakeAction), for: .normal)
+        confirmButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         confirmButton.accessibilityIdentifier = "aiscan.camera.retake.confirm"
         confirmButton.backgroundColor = AIScanLegacyText.primaryAction
         confirmButton.setTitleColor(AIScanLegacyText.onPrimaryAction, for: .normal)

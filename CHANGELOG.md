@@ -2,6 +2,10 @@
 
 ## 3.0.20
 
+- Preserve at least 16 points of horizontal padding on retake buttons in every
+  UI language. Let longer translations expand the button instead of touching
+  its rounded edges.
+
 - Keep the album preview frame the same size when changing photos. Fill the frame
   using the photo’s display aspect ratio and center-crop overflow.
 - Bound the frame to 380 points and adapt it to shorter viewports. Preserve the
