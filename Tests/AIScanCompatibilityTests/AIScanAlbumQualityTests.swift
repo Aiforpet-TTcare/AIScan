@@ -325,8 +325,12 @@ final class AIScanAlbumQualityTests: XCTestCase {
             let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
             album.loadViewIfNeeded()
             let picker = DeferredDismissalPhotoPicker()
+            let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
+            XCTAssertFalse(analyze.isHidden, "Single-photo mode retains its explicit analysis action.")
             var approvals = 0
             album.onValidatedPhoto = { _, _ in approvals += 1 }
+            XCTAssertTrue(analyze.isHidden, "Collection automatically advances to review after validation.")
+            XCTAssertFalse(analyze.isEnabled)
             album.imagePickerController(picker, didFinishPickingMediaWithInfo: [.imageURL: fixtureURL])
             XCTAssertTrue(picker.dismissalRequested)
             XCTAssertNil(album.selectedPhoto)

@@ -55,7 +55,9 @@ enum AIScanAlbumImageLoader {
 final class AIScanAlbumSelectionViewController: UIViewController {
     var onClose: (() -> Void)?
     var onAnalyze: ((UIImage, String?) -> Void)?
-    var onValidatedPhoto: ((UIImage, String?) -> Void)?
+    var onValidatedPhoto: ((UIImage, String?) -> Void)? {
+        didSet { if isViewLoaded { updateSelectionUI() } }
+    }
     var onInspect: ((AIScanAlbumPhoto, @escaping (AIScanAlbumQualityReport) -> Void) -> Void)?
     private(set) var qualityReport: AIScanAlbumQualityReport?
     private(set) var selectedPhoto: AIScanAlbumPhoto?
@@ -72,6 +74,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private var isClosed = false
     private let contentStack = UIStackView()
     private let contentScrollView = UIScrollView()
+    private var contentBottomConstraint: NSLayoutConstraint?
     private let areaStack = UIStackView()
     private let photoCard = UIView()
     private var photoHeightConstraint: NSLayoutConstraint?
@@ -213,11 +216,13 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         contentScrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentStack)
+        let bottom = contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -88)
+        contentBottomConstraint = bottom
         NSLayoutConstraint.activate([
             contentScrollView.topAnchor.constraint(equalTo: closeButton.bottomAnchor),
             contentScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -88),
+            bottom,
             contentStack.topAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.topAnchor, constant: 16),
             contentStack.leadingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.leadingAnchor, constant: 20),
             contentStack.trailingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.trailingAnchor, constant: -20),
@@ -438,6 +443,9 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func updateSelectionUI() {
+        let isCollecting = onValidatedPhoto != nil
+        analyzeButton.isHidden = isCollecting
+        contentBottomConstraint?.constant = isCollecting ? -16 : -88
         let canSelect = !isInspecting && !isAnalyzing && !isClosed
         selectPhotoButton.isEnabled = canSelect
         selectPhotoButton.alpha = canSelect ? 1 : 0.45
@@ -462,7 +470,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         if inspectionStatusRow.isHidden { inspectionSpinner.stopAnimating() }
         else { inspectionSpinner.startAnimating() }
         updatePreviewHeight()
-        analyzeButton.isEnabled = qualityReport?.isValid == true && !isAnalyzing && !isInspecting && !isClosed
+        analyzeButton.isEnabled = !isCollecting && qualityReport?.isValid == true && !isAnalyzing && !isInspecting && !isClosed
         updateAnalyzeButtonStyle()
     }
 
