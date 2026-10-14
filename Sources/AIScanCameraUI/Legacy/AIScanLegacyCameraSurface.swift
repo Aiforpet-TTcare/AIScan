@@ -42,7 +42,7 @@ final class CameraViewController: UIViewController {
     private var showsGuideControl = true
     private var showsAlbumControl = false
     private var showsPhotoReviewControl = false
-    private var isPhotoReviewAvailable = true
+    private var isPhotoReviewAvailable = false
     private var isPreparing = true
     private var isCaptureDebouncing = false
     private var isFlashAvailable = true
@@ -198,7 +198,7 @@ final class CameraViewController: UIViewController {
     func setPhotoReview(count: Int, available: Bool) {
         photoReviewButton.accessibilityValue = String(format:
             AIScanCameraStrings.localizedMessageKey("multi.count"), count)
-        isPhotoReviewAvailable = available
+        isPhotoReviewAvailable = available && count > 0
         updateControlAvailability()
     }
 

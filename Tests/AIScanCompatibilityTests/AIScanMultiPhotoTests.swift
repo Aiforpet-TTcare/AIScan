@@ -187,7 +187,11 @@ final class AIScanMultiPhotoTests: XCTestCase {
             let surface = try XCTUnwrap(multi.children.compactMap { $0 as? CameraViewController }.first)
             surface.view.layoutIfNeeded(); surface.setPreparing(false)
             let grid = surface.photoReviewButton
-            XCTAssertFalse(grid.isHidden, "Review is available even before the first photo.")
+            XCTAssertTrue(grid.isHidden)
+            XCTAssertFalse(grid.isEnabled)
+            surface.setPhotoReview(count: 1, available: true)
+            XCTAssertFalse(grid.isHidden)
+            XCTAssertTrue(grid.isEnabled)
             XCTAssertNil(grid.title(for: .normal))
             XCTAssertNotNil(grid.image(for: .normal))
             XCTAssertEqual(grid.bounds.size, CGSize(width: 44, height: 44))
@@ -200,6 +204,9 @@ final class AIScanMultiPhotoTests: XCTestCase {
             XCTAssertFalse(grid.isHidden); XCTAssertTrue(grid.isEnabled)
             let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: multi.view.bounds).image { multi.view.layer.render(in: $0.cgContext) })
             attachment.name = "camera-review-grid-\(Int(size.width))"; attachment.lifetime = .keepAlways; add(attachment)
+            surface.setPhotoReview(count: 0, available: true)
+            XCTAssertTrue(grid.isHidden, "Removing the last photo hides review again.")
+            XCTAssertFalse(grid.isEnabled)
         }
     }
 
@@ -221,6 +228,18 @@ final class AIScanMultiPhotoTests: XCTestCase {
             let image = try XCTUnwrap(frame.subviews.compactMap { $0 as? UIImageView }.first)
             XCTAssertEqual(image.contentMode, .scaleAspectFill)
         }
+        var cameraReturns = 0
+        review.onCamera = { cameraReturns += 1 }
+        for frame in frames {
+            let button = try XCTUnwrap(frame as? UIButton)
+            for target in button.allTargets {
+                for action in button.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                    (target as? NSObject)?.perform(NSSelectorFromString(action), with: button)
+                }
+            }
+        }
+        XCTAssertEqual(cameraReturns, 4, "Every occupied slot returns to camera, including at capacity.")
+        XCTAssertNil(review.presentedViewController)
         let add = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.add" })
         XCTAssertTrue(add.isHidden)
         let remove = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.remove.2" } as? UIButton)

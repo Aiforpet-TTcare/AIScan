@@ -170,8 +170,8 @@ final class AIScanMultiPhotoReviewViewController: UIViewController {
                 icon.centerYAnchor.constraint(equalTo: iconBackground.centerYAnchor),
             ])
             photo.accessibilityLabel = AIScanCameraStrings.localizedMessageKey("multi.add_photo")
-            photo.addTarget(self, action: #selector(cameraTapped), for: .touchUpInside)
         }
+        photo.addTarget(self, action: #selector(cameraTapped), for: .touchUpInside)
         stack.addArrangedSubview(photo)
         let caption = UILabel()
         caption.text = String(format: AIScanCameraStrings.localizedMessageKey("multi.photo"), index + 1)
@@ -218,6 +218,6 @@ final class AIScanMultiPhotoReviewViewController: UIViewController {
     }
     @objc private func analyzeTapped() { if !items.isEmpty { onAnalyze?() } }
     @objc private func backTapped() { onBack?() }
-    @objc private func cameraTapped() { if items.count < 4 { onCamera?() } }
+    @objc private func cameraTapped() { onCamera?() }
     @objc private func albumTapped() { if allowsAlbum && items.count < 4 { onAlbum?() } }
 }
