@@ -4083,3 +4083,47 @@ extension AIScanCameraUIStateTests {
         XCTAssertEqual(content.view.transform.ty, 123)
     }
 }
+
+
+extension AIScanCameraUIStateTests {
+    @MainActor
+    func testProgressPhotoFillsEveryFrameEdgeWithTheCenteredCropForTallAndWidePhotos() throws {
+        let progress = TTProgressViewController.instantiate()
+        progress.loadViewIfNeeded()
+        progress.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        progress.view.layoutIfNeeded()
+        let imageView = try XCTUnwrap(progress.diagnosisImageView)
+        let originalFrame = imageView.frame
+        for size in [CGSize(width: 100, height: 360), CGSize(width: 360, height: 100)] {
+            let format = UIGraphicsImageRendererFormat(); format.scale = 1
+            let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
+                UIColor.red.setFill(); context.fill(CGRect(origin: .zero, size: size))
+                UIColor.green.setFill()
+                let center = size.width > size.height
+                    ? CGRect(x: size.width / 3, y: 0, width: size.width / 3, height: size.height)
+                    : CGRect(x: 0, y: size.height / 3, width: size.width, height: size.height / 3)
+                context.fill(center)
+            }
+            progress.set(previewImage: image)
+            progress.view.layoutIfNeeded()
+            imageView.layer.displayIfNeeded()
+            XCTAssertEqual(imageView.frame, originalFrame)
+            var pixels = [UInt8](repeating: 0, count: 32 * 32 * 4)
+            pixels.withUnsafeMutableBytes { storage in
+                let context = CGContext(data: storage.baseAddress, width: 32, height: 32,
+                    bitsPerComponent: 8, bytesPerRow: 32 * 4,
+                    space: CGColorSpaceCreateDeviceRGB(),
+                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)!
+                context.scaleBy(x: 32 / imageView.bounds.width, y: 32 / imageView.bounds.height)
+                imageView.layer.render(in: context)
+            }
+            for (x, y) in [(1, 16), (30, 16), (16, 1), (16, 30)] {
+                let offset = (y * 32 + x) * 4
+                XCTAssertLessThan(pixels[offset], 5, "Off-center red crop for \(size)")
+                XCTAssertGreaterThan(pixels[offset + 1], 250, "Empty edge or wrong crop for \(size)")
+                XCTAssertLessThan(pixels[offset + 2], 5)
+                XCTAssertEqual(pixels[offset + 3], 255)
+            }
+        }
+    }
+}
