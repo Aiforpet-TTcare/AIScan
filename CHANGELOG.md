@@ -14,14 +14,16 @@
 - Preserve native and partner polygons across dictionary, string and Codable
   result surfaces. Existing callback payloads without polygons stay unchanged.
 
-### Candidate validation
+### Validation
 
 - 85 Core tests and 192 public tests passed, including native quality failures,
   all 58 reference error classifications and exact polygon JSON preservation.
 - CocoaPods consumer tests passed, including runtime playback of all seven
   guides. Device-target iOS 13 compatibility and public artifact audits passed.
-- Live host acceptance with a polygon-enabled project remains outstanding.
-  This candidate is not a published release.
+- Nine follow-up copy tests passed, and localization keys match across Korean,
+  English, Japanese, Italian, Swedish and Thai.
+- Live host acceptance with a polygon-enabled project and physical-device
+  acceptance for this version remain outstanding.
 
 ## 3.0.14
 
