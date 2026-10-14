@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.19
+
+- Keep the album border attached to the photo card itself so it resizes with the
+  preview immediately when changing photos. Remove the separate shape path that
+  could retain the preceding photo’s size.
+- Preserve photo aspect-ratio sizing, maximum-height cropping, full originals for
+  analysis, quality checks and Core binaries.
+
 ## 3.0.18
 
 - Size the album preview from the selected photo’s display aspect ratio, including

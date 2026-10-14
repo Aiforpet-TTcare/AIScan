@@ -81,7 +81,6 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private let inspectionRetryButton = UIButton(type: .system)
     private let selectPhotoButton = UIButton(type: .system)
     private let dashedBorderLayer = CAShapeLayer()
-    private let photoBorderLayer = CAShapeLayer()
     private let analyzeButton = UIButton(type: .system)
     private let analyzeBackgroundLayer = CAShapeLayer()
     private let analyzeLabel = UILabel()
@@ -120,16 +119,6 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             dashedBorderLayer.path = UIBezierPath(
                 roundedRect: dashedBounds,
                 cornerRadius: 11.5
-            ).cgPath
-        }
-        if photoCard.bounds.width.isFinite,
-           photoCard.bounds.height.isFinite,
-           photoCard.bounds.width > 0,
-           photoCard.bounds.height > 0 {
-            photoBorderLayer.frame = photoCard.bounds
-            photoBorderLayer.path = UIBezierPath(
-                roundedRect: photoCard.bounds,
-                cornerRadius: 12
             ).cgPath
         }
         if emptyIconBackground.bounds.width.isFinite,
@@ -351,6 +340,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private func buildPhotoCard() {
         photoCard.backgroundColor = AIScanReferenceTheme.surface
         photoCard.layer.cornerRadius = 12
+        photoCard.layer.borderWidth = 1
         photoCard.clipsToBounds = false
         photoCard.accessibilityIdentifier = "aiscan.album.photo-card"
         photoCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectPhotoTapped)))
@@ -405,10 +395,6 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             emptyStack.centerXAnchor.constraint(equalTo: photoCard.centerXAnchor),
             emptyStack.centerYAnchor.constraint(equalTo: photoCard.centerYAnchor),
         ])
-        photoBorderLayer.name = "aiscan.album.photo-border"
-        photoBorderLayer.fillColor = UIColor.clear.cgColor
-        photoBorderLayer.lineWidth = 1
-        photoCard.layer.addSublayer(photoBorderLayer)
     }
 
     private func buildValidationRow() {
@@ -476,7 +462,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func updateLayerColors() {
-        photoBorderLayer.strokeColor = AIScanReferenceTheme.resolvedCGColor(
+        photoCard.layer.borderColor = AIScanReferenceTheme.resolvedCGColor(
             AIScanReferenceTheme.controlBorder,
             traits: traitCollection
         )
