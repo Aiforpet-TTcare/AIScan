@@ -55,6 +55,7 @@ enum AIScanAlbumImageLoader {
 final class AIScanAlbumSelectionViewController: UIViewController {
     var onClose: (() -> Void)?
     var onAnalyze: ((UIImage, String?) -> Void)?
+    var onValidatedPhoto: ((UIImage, String?) -> Void)?
     var onInspect: ((AIScanAlbumPhoto, @escaping (AIScanAlbumQualityReport) -> Void) -> Void)?
     private(set) var qualityReport: AIScanAlbumQualityReport?
     private(set) var selectedPhoto: AIScanAlbumPhoto?
@@ -523,7 +524,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         setValidationMessage(nil)
         renderQuality()
         updateSelectionUI()
-        guard isInspecting else { return }
+        guard isInspecting else { approvePhotoForCollectionIfNeeded(); return }
         guard let onInspect else {
             finishInspection(report.measured(nil, issue: "detect"), generation: generation)
             return
@@ -539,6 +540,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         isInspecting = false
         renderQuality()
         updateSelectionUI()
+        approvePhotoForCollectionIfNeeded()
+    }
+
+    private func approvePhotoForCollectionIfNeeded() {
+        guard let onValidatedPhoto, let selectedImage,
+              qualityReport?.isValid == true, !isInspecting, !isAnalyzing, !isClosed else { return }
+        setAnalyzing(true)
+        onValidatedPhoto(selectedImage, selectedPosition)
     }
 
     private func beginLoadingPhoto() -> Int {

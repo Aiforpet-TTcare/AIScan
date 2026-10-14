@@ -135,3 +135,25 @@
 "album.subject.skin.larger" = "Please select a photo where the skin appears larger.";
 "album.subject.skin.full" = "Please select a photo showing the entire skin area to check.";
 "album.retake" = "The selected photo is difficult to analyze. Please select another photo.";
+
+/* Multiple-photo capture and analysis */
+"multi.review" = "Review photos";
+"multi.check_photos" = "Check your photos";
+"multi.count" = "Photos %d/4";
+"multi.results" = "View results (%d)";
+"multi.add_more" = "Take more photos";
+"multi.add_photo" = "Add photo";
+"multi.photo" = "Photo %d";
+"multi.remove" = "Remove";
+"multi.camera" = "Take photo";
+"multi.album" = "Choose from album";
+"multi.cancel" = "Cancel";
+"multi.ready" = "Photo ready";
+"multi.preparing" = "Preparing photo…";
+"multi.upload_failed" = "Couldn’t prepare this photo. Remove it and add it again.";
+"multi.progress" = "Photo %d/%d · %d complete";
+"multi.result_title" = "Photo results";
+"multi.failed" = "Analysis failed";
+"multi.retake" = "Take another photo";
+"multi.complete" = "Complete";
+"multi.requires_ttapi" = "Multiple-photo analysis is unavailable. Please analyze one photo at a time.";

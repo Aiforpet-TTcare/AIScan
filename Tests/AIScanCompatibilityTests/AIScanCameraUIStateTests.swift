@@ -9,7 +9,7 @@ import AIScanCore
 import AIScan
 @_spi(AIScanLifecycle) @testable import AIScanCameraUI
 
-private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
+final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
     weak var delegate: AISCCameraEngineDelegate?
     var automaticallyCapturesReadyFrames = false
     var analysisMode: AISCAnalysisMode = .onDevice
@@ -43,6 +43,25 @@ private final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
     var emitsPreparationProgress = true
     var completesPreparationImmediately = true
     private var pendingPreparationCompletions: [(Error?) -> Void] = []
+
+    var photoCollectionEnabled = false
+    var uploadedPhotoInputs: [AISCImageInput] = []
+    var diagnosedUploadedPhotos: [AISCUploadedPhoto] = []
+    var uploadCompletions: [(AISCUploadedPhoto?, Error?) -> Void] = []
+    var onUpload: (() -> Void)?
+
+    func setPhotoCollectionEnabled(_ enabled: Bool) { photoCollectionEnabled = enabled }
+    func photoInput(for image: CIImage) -> AISCImageInput? {
+        AISCImageInput(imageURL: URL(string: "file:///fixture/original.jpg")!)
+    }
+    func uploadPhoto(_ input: AISCImageInput, progress: ((Double) -> Void)?,
+                     completion: @escaping (AISCUploadedPhoto?, Error?) -> Void) {
+        uploadedPhotoInputs.append(input)
+        uploadCompletions.append(completion)
+        progress?(0.5)
+        onUpload?()
+    }
+    func diagnoseUploadedPhoto(_ photo: AISCUploadedPhoto) { diagnosedUploadedPhotos.append(photo) }
 
     func requestCameraAccess(completion: @escaping (Bool) -> Void) {
         cameraAccessRequestCount += 1

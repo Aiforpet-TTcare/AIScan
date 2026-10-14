@@ -83,9 +83,11 @@ for core_binary in "$CORE"/*/AIScanCore.framework/AIScanCore; do
   done
 done
 
+# Accepted-image tokens may cross the collection/upload boundary. Frame
+# evaluation, model work and network submission stay behind AISCCameraEngine.
 CAMERA_CONTROLLER="$ROOT/Sources/AIScanCameraUI/AIScanCameraController.swift"
 for forbidden_workflow_call in \
-  AISCSession coreSession frameInput evaluateFrame captureFrame diagnoseImage AISCImageInput; do
+  AISCSession coreSession frameInput evaluateFrame captureFrame diagnoseImage; do
   if grep -n -F "$forbidden_workflow_call" "$CAMERA_CONTROLLER" >/dev/null; then
     echo "Protected scan workflow leaked into public camera UI: $forbidden_workflow_call" >&2
     exit 1

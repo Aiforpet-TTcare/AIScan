@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.0
+
+- Add optional `enableMultiMode` (default `false`) for one to four camera/album photos.
+- Upload each accepted original during review; start TTAPI analyses concurrently only after confirmation.
+- Return successes, retakes and failures together once in photo order, with unchanged nested result JSON and polygons.
+- Add a themed photo review grid, rotating progress previews and an optional result summary with per-photo PDF export.
+- Keep existing single-photo behavior and all six UI languages.
+
+
 ## 3.0.21
 
 - Accept album eye and tooth detections when their longer side is at least

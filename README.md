@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.21")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.0")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.0.21'
+    :tag => '3.1.0'
 ```
 
 ### Single public module
@@ -283,6 +283,66 @@ Please refer to the service documentation for more details.
 ## Contact
 
 For your publishable key or any other questions, visit [AI for Pet](https://www.aiforpet.com/).
+## Multiple photos (3.1.0)
+
+Pass `enableMultiMode: true` to `makeCameraViewController` or `showCamera` to
+collect one to four photos. The argument is optional and defaults to `false`;
+existing single-photo calls and callback JSON remain unchanged.
+
+```swift
+try AIScanManager.showCamera(
+    petType: .dog, partType: .eye, on: self,
+    allowsAlbum: true, enableMultiMode: true
+) { result in
+    switch result {
+    case let .success(scan):
+        for photo in scan.photoResults ?? [] {
+            print(photo.photoIndex, photo.status)
+            // photo.result contains this photo's unchanged callback payload.
+            // photo.error or photo.reasonCode describes a failed/retake item.
+        }
+    case let .failure(error):
+        print(error.localizedDescription) // cancellation or flow setup failure
+    }
+}
+```
+
+This mode requires an App configured for TTAPI. Preprocessing remains local.
+After each photo passes, its original is uploaded while the review modal is open.
+No analysis job starts before **View results** is pressed. Remove a photo before
+confirmation to exclude it; close the camera to cancel the whole flow. Uploaded
+originals follow the service's existing retention policy. An expired upload is
+renewed before its first analysis job.
+
+Confirmation starts all ready photos concurrently; a photo still uploading joins
+when ready. Progress cycles through the selected photos. Matching questionnaires
+are answered once and applied to their respective photo sessions. Completion
+fires once after all selected photos finish, including failures in selection
+order. With `enableResultView: true`, the built-in summary links to individual
+successful results and their optional PDF exports.
+
+The legacy string callback returns the same aggregate object as `scan.string`:
+
+```json
+{
+  "mode": "multi",
+  "status": "PARTIAL",
+  "photoCount": 2,
+  "results": [
+    {"photoId": "photo-a", "photoIndex": 1, "status": "SUCCESS", "result": {"status": "SUCCESS"}},
+    {"photoId": "photo-b", "photoIndex": 2, "status": "ERROR", "error": {"domain": "AIScan", "code": 1, "message": "Please try again.", "retryable": true}}
+  ]
+}
+```
+
+Photo indexes start at 1. Each entry has `SUCCESS`, `RETRY` (retake required), or
+`ERROR`; a retry entry retains its result and reason code. Overall status is
+`SUCCESS` when every photo succeeds, `PARTIAL` when some succeed, and `ERROR` when
+none succeed. An aggregate containing failed photos is still a completed scan
+and arrives through `.success`; inspect the per-photo statuses. The typed schema
+is `ttcare.multi.v1`. Native payload fields, image URLs and polygons remain inside
+each unchanged `result` object.
+
 ## Album image quality (3.0.21)
 
 With `allowsAlbum: true`, the SDK checks the

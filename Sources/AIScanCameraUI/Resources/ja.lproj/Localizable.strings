@@ -135,3 +135,25 @@
 "album.subject.skin.larger" = "皮膚がより大きく写った写真を選択してください。";
 "album.subject.skin.full" = "確認する皮膚の部位全体が見える写真を選択してください。";
 "album.retake" = "選択した写真は分析が難しいため、別の写真を選択してください。";
+
+/* Multiple-photo capture and analysis */
+"multi.review" = "写真の確認";
+"multi.check_photos" = "写真を確認してください";
+"multi.count" = "写真 %d/4枚";
+"multi.results" = "結果を見る（%d枚）";
+"multi.add_more" = "さらに撮影";
+"multi.add_photo" = "写真を追加";
+"multi.photo" = "写真 %d";
+"multi.remove" = "除外";
+"multi.camera" = "写真を撮る";
+"multi.album" = "アルバムから選択";
+"multi.cancel" = "キャンセル";
+"multi.ready" = "写真の準備完了";
+"multi.preparing" = "写真を準備中…";
+"multi.upload_failed" = "写真を準備できませんでした。除外して追加し直してください。";
+"multi.progress" = "写真 %d/%d · %d枚完了";
+"multi.result_title" = "写真ごとの解析結果";
+"multi.failed" = "解析に失敗";
+"multi.retake" = "撮り直す";
+"multi.complete" = "完了";
+"multi.requires_ttapi" = "複数写真の解析は利用できません。1枚ずつ解析してください。";

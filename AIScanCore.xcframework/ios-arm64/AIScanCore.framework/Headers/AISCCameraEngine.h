@@ -22,6 +22,7 @@ typedef void (^AISCCameraPermissionCompletion)(BOOL granted);
 - (void)cameraEngineDidAcceptPreviewImage:(CIImage *)previewImage;
 /// Requests source UI presentation using display-safe prompts only. Model and
 /// network work may continue while the user answers.
+- (void)cameraEngineDidCollectImageInput:(AISCImageInput *)input;
 - (void)cameraEngineDidRequestQuestionnaire:(AISCQuestionnaire *)questionnaire;
 @required
 - (void)cameraEngineDidUpdateProgress:(double)normalizedProgress;
@@ -43,6 +44,12 @@ typedef void (^AISCCameraPermissionCompletion)(BOOL granted);
                 completion:(AISCCameraEngineCompletion)completion;
 - (void)requestCameraAccess:(AISCCameraPermissionCompletion)completion NS_SWIFT_NAME(requestCameraAccess(completion:));
 @optional
+- (nullable AISCImageInput *)imageInputForPhotoImage:(CIImage *)image NS_SWIFT_NAME(photoInput(for:));
+- (void)setPhotoCollectionEnabled:(BOOL)enabled NS_SWIFT_NAME(setPhotoCollectionEnabled(_:));
+- (void)uploadPhotoInput:(AISCImageInput *)input
+                progress:(nullable AISCDiagnosisProgress)progress
+              completion:(AISCPhotoUploadCompletion)completion NS_SWIFT_NAME(uploadPhoto(_:progress:completion:));
+- (void)diagnoseUploadedPhoto:(AISCUploadedPhoto *)photo NS_SWIFT_NAME(diagnoseUploadedPhoto(_:));
 - (void)albumDidOpen NS_SWIFT_NAME(albumDidOpen());
 - (void)albumDidCancel NS_SWIFT_NAME(albumDidCancel());
 - (void)resultDidBecomeVisible NS_SWIFT_NAME(resultDidBecomeVisible());
