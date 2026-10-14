@@ -44,8 +44,6 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "Välj ett tydligt och välfokuserat foto.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "Välj ett tydligt foto av tänderna.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "Välj ett tydligt foto av huden.";
-"피사체가 눈에 다 들어오는 사진을 선택해 주세요." = "Välj ett foto där motivet passar i ramen.";
-"피사체가 더 크게 나온 사진을 선택해 주세요." = "Välj ett foto där motivet är större.";
 "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "Upplösningen är för låg. Försök med en skarpare bild.";
 "popup.notice" = "Meddelande";
 "popup.confirm" = "Bekräfta";
@@ -112,3 +110,28 @@
 "album.quality.checking" = "Kontrollerar bildkvaliteten";
 "album.quality.load_failed" = "Det valda fotot kunde inte läsas";
 "album.quality.not_checked" = "Inte mätt ännu";
+
+// Scan failure guidance
+"error.configuration" = "AI Health Check kunde inte startas. Kontakta supporten för appen du använder.";
+"error.authorization" = "Åtkomst till AI Health Check kunde inte kontrolleras. Kontakta supporten för appen du använder.";
+"error.quota" = "Gränsen för skanningsförfrågningar har överskridits. Försök igen senare.";
+"error.network" = "Kontrollera din nätverksanslutning och försök igen.";
+"error.timeout" = "Skanningsförfrågan tog för lång tid. Försök igen.";
+"error.server" = "Ett fel uppstod på skanningsservern. Försök igen senare.";
+"error.analysis" = "Analysen kunde inte behandlas. Försök igen senare.";
+"error.questionnaire" = "Frågeformuläret kunde inte laddas. Försök igen.";
+"error.input" = "Fotot eller skanningsinformationen kunde inte kontrolleras. Försök igen.";
+"error.busy" = "En skanning pågår redan. Vänta tills den är klar.";
+"error.cancelled" = "Skanningen avbröts.";
+"error.result" = "Skanningsresultatet kunde inte behandlas. Försök igen.";
+"error.upload" = "Fotot kunde inte laddas upp. Försök igen.";
+"photo.color_quality" = "Fotot har otillräcklig färginformation. Välj originalfotot.";
+
+// Album framing guidance
+"album.subject.eye.larger" = "Välj ett foto där ögat syns större.";
+"album.subject.eye.full" = "Välj ett foto där hela ögat syns.";
+"album.subject.teeth.larger" = "Välj ett foto där tänderna syns större.";
+"album.subject.teeth.full" = "Välj ett foto där alla tänder syns.";
+"album.subject.skin.larger" = "Välj ett foto där huden syns större.";
+"album.subject.skin.full" = "Välj ett foto där hela hudområdet som ska kontrolleras syns.";
+"album.retake" = "Det valda fotot är svårt att analysera. Välj ett annat foto.";

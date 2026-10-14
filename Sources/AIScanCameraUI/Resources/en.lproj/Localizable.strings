@@ -44,8 +44,6 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "Please select a clear, well-focused photo.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "Please select a photo where the dental is clearly visible.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "Please select a photo where the skin is clearly visible.";
-"피사체가 눈에 다 들어오는 사진을 선택해 주세요." = "Please select a photo where the subject is fully in frame.";
-"피사체가 더 크게 나온 사진을 선택해 주세요." = "Please select a photo where the subject appears larger.";
 "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "Resolution is too low. Please try a clearer photo.";
 "popup.notice" = "Notice";
 "popup.confirm" = "OK";
@@ -112,3 +110,28 @@
 "album.quality.checking" = "Checking image quality";
 "album.quality.load_failed" = "Unable to read the selected photo";
 "album.quality.not_checked" = "Not measured";
+
+// Scan failure guidance
+"error.configuration" = "AI Health Check could not be started. Please contact support for the app you are using.";
+"error.authorization" = "Access to AI Health Check could not be verified. Please contact support for the app you are using.";
+"error.quota" = "The scan request limit was exceeded. Please try again later.";
+"error.network" = "Please check your network connection and try again.";
+"error.timeout" = "The scan request timed out. Please try again.";
+"error.server" = "The scan server encountered an error. Please try again later.";
+"error.analysis" = "Analysis could not be processed. Please try again later.";
+"error.questionnaire" = "The questionnaire could not be loaded. Please try again.";
+"error.input" = "The photo or scan information could not be verified. Please try again.";
+"error.busy" = "A scan is already in progress. Please wait for it to finish.";
+"error.cancelled" = "The scan was cancelled.";
+"error.result" = "The scan result could not be processed. Please try again.";
+"error.upload" = "The photo could not be uploaded. Please try again.";
+"photo.color_quality" = "The photo has insufficient color information. Please select the original photo.";
+
+// Album framing guidance
+"album.subject.eye.larger" = "Please select a photo where the eye appears larger.";
+"album.subject.eye.full" = "Please select a photo showing the entire eye.";
+"album.subject.teeth.larger" = "Please select a photo where the teeth appear larger.";
+"album.subject.teeth.full" = "Please select a photo showing all the teeth.";
+"album.subject.skin.larger" = "Please select a photo where the skin appears larger.";
+"album.subject.skin.full" = "Please select a photo showing the entire skin area to check.";
+"album.retake" = "The selected photo is difficult to analyze. Please select another photo.";

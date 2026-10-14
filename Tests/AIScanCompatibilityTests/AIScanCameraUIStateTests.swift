@@ -444,6 +444,43 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
     }
 
+    func testTTAPIAlbumQualityFailuresOfferAnotherPhotoAndServiceFailuresDoNotBlameThePhoto() {
+        let expected = [
+            "PRE_IMAGE_RESOLUTION_TOO_LOW": "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요.",
+            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "사진의 색상 정보가 부족해요. 원본 사진을 선택해 주세요.",
+            "PRE_EYE_DETECT_BBOX_TOO_SMALL": "눈이 더 크게 나온 사진을 선택해 주세요.",
+            "PRE_TOOTH_DETECT_BBOX_TOO_SMALL": "치아가 더 크게 나온 사진을 선택해 주세요."
+        ]
+        for (reason, message) in expected {
+            XCTAssertEqual(AIScanCameraStrings.retakeMessage(for: reason,
+                partType: reason.contains("TOOTH") ? .teeth : .eye, analysisPosition: nil,
+                isAlbum: true, languageCode: "ko"), message)
+        }
+        XCTAssertEqual(AIScanCameraStrings.retakeMessage(for: "model_unavailable",
+            partType: .eye, analysisPosition: nil, isAlbum: true, languageCode: "ko"),
+            "분석을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.")
+        XCTAssertEqual(AIScanCameraStrings.retakeMessage(for: "PRE_EYE_DETECT_BBOX_TOO_SMALL",
+            partType: .eye, analysisPosition: nil, isAlbum: false, languageCode: "ko"),
+            "더 가까이에서 촬영해 주세요")
+        for language in ["ko", "en", "ja", "it", "sv", "th"] {
+            for reason in expected.keys {
+                let message = AIScanCameraStrings.retakeMessage(for: reason, partType: .eye,
+                    analysisPosition: nil, isAlbum: true, languageCode: language)
+                XCTAssertFalse(message.contains("PRE_"))
+                XCTAssertFalse(message.contains("photo.color_quality"))
+            }
+            for code in [100, 101, 102, 103, 104, 200, 201, 202, 300, 301, 302, 303, 304, 305, 400, 402, 403, 404, 500, 501, 502] {
+                let error = NSError(domain: AISCErrorDomain, code: code)
+                let message = AIScanCameraStrings.displayMessage(for: error, languageCode: language)
+                XCTAssertFalse(message.hasPrefix("error."))
+                XCTAssertTrue(message.contains("[AISC-\(code)]"))
+            }
+        }
+        let input = NSError(domain: AISCErrorDomain, code: AISCErrorCode.invalidInput.rawValue)
+        XCTAssertEqual(AIScanCameraStrings.displayMessage(for: input, languageCode: "ko"),
+            "사진 또는 검사 정보를 확인할 수 없어요. 다시 시도해 주세요.\n[AISC-400]")
+    }
+
     func testAlbumFrameRejectedShowsActionableGuidanceInsteadOfCriticalError() {
         let rejected = NSError(
             domain: AISCErrorDomain,
@@ -508,8 +545,12 @@ final class AIScanCameraUIStateTests: XCTestCase {
             ("눈을 촬영해 주세요.", .eye, nil, "눈이 잘 보이는 사진을 선택해 주세요."),
             ("치아를 촬영해 주세요.", .teeth, nil, "치아가 잘 보이는 사진을 선택해 주세요."),
             ("초점을 잘 맞춰 주세요.", .eye, nil, "초점이 잘 맞는 선명한 사진을 선택해 주세요."),
-            ("더 가까이에서 촬영해 주세요", .eye, nil, "피사체가 더 크게 나온 사진을 선택해 주세요."),
-            ("더 멀리서 촬영해 주세요", .eye, nil, "피사체가 눈에 다 들어오는 사진을 선택해 주세요."),
+            ("더 가까이에서 촬영해 주세요", .eye, nil, "눈이 더 크게 나온 사진을 선택해 주세요."),
+            ("더 멀리서 촬영해 주세요", .eye, nil, "눈 전체가 보이는 사진을 선택해 주세요."),
+            ("move_closer", .teeth, nil, "치아가 더 크게 나온 사진을 선택해 주세요."),
+            ("move_farther", .teeth, nil, "치아 전체가 보이는 사진을 선택해 주세요."),
+            ("move_closer", .skin, "ear", "피부가 더 크게 나온 사진을 선택해 주세요."),
+            ("move_farther", .skin, "ear", "피부를 확인할 부위 전체가 보이는 사진을 선택해 주세요."),
             ("귀를 촬영해 주세요.", .skin, "ear", "귀가 잘 보이는 사진을 선택해 주세요."),
             ("몸통을 촬영해 주세요.", .skin, "belly", "몸통이 잘 보이는 사진을 선택해 주세요."),
             ("발을 촬영해 주세요.", .skin, "foot", "발이 잘 보이는 사진을 선택해 주세요."),

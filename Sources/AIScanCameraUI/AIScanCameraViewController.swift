@@ -756,17 +756,12 @@ public final class AIScanCameraViewController: UIViewController {
     }
 
     private func retakeTitle(for reasonCode: String?) -> String {
-        let code = reasonCode?.uppercased() ?? ""
-        if code.contains("BBOX_TOO_SMALL") || code.contains("TOO_FAR") {
-            return AIScanCameraStrings.localizedMessageKey("move_closer")
-        }
-        if code.contains("BBOX_TOO_LARGE") || code.contains("TOO_CLOSE") {
-            return AIScanCameraStrings.localizedMessageKey("move_farther")
-        }
-        if code.contains("BLUR") || code.contains("CBLUR") {
-            return AIScanCameraStrings.localizedMessageKey("hold_still")
-        }
-        return AIScanCameraStrings.localized(.retakeTitle)
+        AIScanCameraStrings.retakeMessage(
+            for: reasonCode,
+            partType: scanContext.partType,
+            analysisPosition: scanContext.analysisPosition,
+            isAlbum: false
+        )
     }
 
     private func retakeGuideImage(suffix: String) -> UIImage? {
@@ -1008,7 +1003,12 @@ public final class AIScanCameraViewController: UIViewController {
         isDiagnosingAlbum = false
         pendingAlbumProgress = nil
         albumController.setAnalyzing(false)
-        albumController.setValidationMessage(retakeTitle(for: result.retakeReasonCode))
+        albumController.setValidationMessage(AIScanCameraStrings.retakeMessage(
+            for: result.retakeReasonCode,
+            partType: scanContext.partType,
+            analysisPosition: scanContext.analysisPosition,
+            isAlbum: true
+        ))
         restoreAlbumSelectionIfNeeded(albumController)
     }
 
