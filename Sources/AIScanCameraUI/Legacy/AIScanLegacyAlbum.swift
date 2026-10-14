@@ -13,6 +13,20 @@ enum AIScanAlbumImageLoader {
         }
     }
 
+    nonisolated static func loadPreview(
+        from provider: NSItemProvider,
+        completion: @escaping @MainActor @Sendable (UIImage?) -> Void
+    ) {
+        provider.loadPreviewImage(options: [NSItemProviderPreferredImageSizeKey: NSValue(cgSize: CGSize(width: 512, height: 512))]) { item, _ in
+            let preview: UIImage?
+            if let image = item as? UIImage { preview = image }
+            else if let data = item as? Data { preview = UIImage(data: data) }
+            else if let url = item as? URL, let data = try? Data(contentsOf: url) { preview = UIImage(data: data) }
+            else { preview = nil }
+            Task { @MainActor in completion(preview) }
+        }
+    }
+
     nonisolated static func loadFullResolutionImage(
         from provider: NSItemProvider,
         completion: @escaping @MainActor @Sendable (UIImage?) -> Void
@@ -51,6 +65,27 @@ enum AIScanAlbumImageLoader {
     }
 }
 
+/// Loading starts while the picker owns its asset service, but delivery waits
+/// until dismissal so validation cannot race the modal transition.
+@MainActor
+final class AIScanAlbumPickerDelivery {
+    private var photo: AIScanAlbumPhoto?
+    private var hasLoaded = false
+    private var hasDismissed = false
+    private var completion: ((AIScanAlbumPhoto?) -> Void)?
+
+    init(completion: @escaping (AIScanAlbumPhoto?) -> Void) { self.completion = completion }
+    func loaded(_ photo: AIScanAlbumPhoto?) { guard completion != nil, !hasLoaded else { return }; self.photo = photo; hasLoaded = true; deliverIfReady() }
+    func dismissed() { hasDismissed = true; deliverIfReady() }
+    private func deliverIfReady() {
+        guard hasLoaded, hasDismissed, let completion else { return }
+        self.completion = nil
+        let photo = photo
+        self.photo = nil
+        completion(photo)
+    }
+}
+
 @MainActor
 final class AIScanAlbumSelectionViewController: UIViewController {
     var onClose: (() -> Void)?
@@ -65,12 +100,17 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private let allowsPositionSelection: Bool
     private var selectedPosition: String?
     private var selectedImage: UIImage?
+    private var loadingPreview: UIImage?
     private let partType: AISCPartType
     private let inspectionStatusLabel = UILabel()
     private let inspectionStatusRow = UIStackView()
     private let inspectionSpinner = UIActivityIndicatorView(style: .medium)
     private var inspectionGeneration = 0
     private var isInspecting = false
+    private var isLoadingPhoto = false
+    private var inspectionDeadlineTask: Task<Void, Never>?
+    private let photoLoadingTimeout: TimeInterval
+    private let photoInspectionTimeout: TimeInterval
     private var isClosed = false
     private let contentStack = UIStackView()
     private let contentScrollView = UIScrollView()
@@ -93,7 +133,10 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     private var areaButtons: [String: UIButton] = [:]
     private var isAnalyzing = false
 
-    init(allowsPositionSelection: Bool, initialPosition: String?, partType: AISCPartType? = nil) {
+    init(allowsPositionSelection: Bool, initialPosition: String?, partType: AISCPartType? = nil,
+         photoLoadingTimeout: TimeInterval = 30, photoInspectionTimeout: TimeInterval = 15) {
+        self.photoLoadingTimeout = photoLoadingTimeout
+        self.photoInspectionTimeout = photoInspectionTimeout
         self.allowsPositionSelection = allowsPositionSelection
         self.partType = partType ?? (allowsPositionSelection ? .skin : .eye)
         selectedPosition = Self.canonicalPosition(initialPosition)
@@ -461,10 +504,12 @@ final class AIScanAlbumSelectionViewController: UIViewController {
                 for: .normal
             )
         }
-        photoImageView.image = selectedImage
-        photoImageView.isHidden = selectedImage == nil
-        emptyStack.isHidden = selectedImage != nil
+        photoImageView.image = selectedImage ?? loadingPreview
+        photoImageView.isHidden = photoImageView.image == nil
+        emptyStack.isHidden = photoImageView.image != nil
         inspectionRetryButton.isHidden = qualityReport?.inspectionError == nil || isInspecting || isAnalyzing || isClosed
+        inspectionStatusLabel.text = AIScanCameraStrings.localizedMessageKey(
+            isLoadingPhoto ? "album.quality.loading" : "album.quality.checking")
         inspectionStatusLabel.isHidden = !isInspecting || isAnalyzing || isClosed
         inspectionStatusRow.isHidden = inspectionStatusLabel.isHidden
         if inspectionStatusRow.isHidden { inspectionSpinner.stopAnimating() }
@@ -506,6 +551,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     @objc private func closeTapped() {
+        inspectionDeadlineTask?.cancel()
         isClosed = true
         inspectionGeneration += 1
         updateSelectionUI()
@@ -550,6 +596,9 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     func applySelectedPhoto(_ photo: AIScanAlbumPhoto) {
+        inspectionDeadlineTask?.cancel()
+        isLoadingPhoto = false
+        loadingPreview = nil
         inspectionGeneration += 1
         let generation = inspectionGeneration
         selectedPhoto = photo
@@ -566,13 +615,15 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             finishInspection(report.measured(nil, issue: "detect"), generation: generation)
             return
         }
+        startInspectionDeadline(after: photoInspectionTimeout, generation: generation)
         onInspect(photo) { [weak self] result in
             self?.finishInspection(result, generation: generation)
         }
     }
 
     private func finishInspection(_ report: AIScanAlbumQualityReport, generation: Int) {
-        guard generation == inspectionGeneration, !isClosed else { return }
+        guard generation == inspectionGeneration, !isClosed, isInspecting, !isLoadingPhoto else { return }
+        inspectionDeadlineTask?.cancel()
         qualityReport = report
         isInspecting = false
         renderQuality()
@@ -588,14 +639,45 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func beginLoadingPhoto() -> Int {
+        inspectionDeadlineTask?.cancel()
         inspectionGeneration += 1
+        isLoadingPhoto = true
         isInspecting = true
         qualityReport = nil
         selectedPhoto = nil
         selectedImage = nil
+        loadingPreview = nil
         renderQuality()
         updateSelectionUI()
+        startInspectionDeadline(after: photoLoadingTimeout, generation: inspectionGeneration)
         return inspectionGeneration
+    }
+
+    private func startInspectionDeadline(after timeout: TimeInterval, generation: Int) {
+        inspectionDeadlineTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: UInt64(max(timeout, 0) * 1_000_000_000))
+            guard !Task.isCancelled, let self, generation == self.inspectionGeneration,
+                  !self.isClosed, self.isInspecting else { return }
+            if self.isLoadingPhoto {
+                self.failPhotoLoading(generation: generation, messageKey: "album.quality.load_timeout")
+            } else if let report = self.qualityReport {
+                let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.requestTimedOut.rawValue,
+                    userInfo: [AISCRetryableKey: true])
+                self.finishInspection(report.measured(nil, issue: "detect", error: error), generation: generation)
+                self.inspectionGeneration += 1
+            }
+        }
+    }
+
+    private func failPhotoLoading(generation: Int, messageKey: String = "album.quality.load_failed") {
+        guard generation == inspectionGeneration, !isClosed else { return }
+        inspectionDeadlineTask?.cancel()
+        inspectionGeneration += 1
+        isLoadingPhoto = false
+        isInspecting = false
+        loadingPreview = nil
+        updateSelectionUI()
+        setValidationMessage(AIScanCameraStrings.localizedMessageKey(messageKey))
     }
 
     private func renderQuality() {
@@ -630,23 +712,25 @@ extension AIScanAlbumSelectionViewController: @preconcurrency PHPickerViewContro
             picker.dismiss(animated: true)
             return
         }
+        receivePhotoSelection(from: provider, dismissing: picker)
+    }
+
+    func receivePhotoSelection(from provider: NSItemProvider, dismissing picker: UIViewController) {
         let generation = beginLoadingPhoto()
-        // Dismiss the system list before reading the original asset. iCloud
-        // loading can be slow; progress belongs on our album screen. Waiting
-        // for dismissal also prevents collection from presenting during it.
-        dismissPhotoPicker(picker) { [weak self] in
+        let delivery = AIScanAlbumPickerDelivery { [weak self] photo in
             guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
-            AIScanAlbumImageLoader.loadPhoto(from: provider) { [weak self] photo in
-                guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
-                guard let photo else {
-                    self.isInspecting = false
-                    self.updateSelectionUI()
-                    self.setValidationMessage(AIScanCameraStrings.localizedMessageKey("album.quality.load_failed"))
-                    return
-                }
-                self.applySelectedPhoto(photo)
-            }
+            guard let photo else { self.failPhotoLoading(generation: generation); return }
+            self.applySelectedPhoto(photo)
         }
+        AIScanAlbumImageLoader.loadPreview(from: provider) { [weak self] image in
+            guard let self, generation == self.inspectionGeneration, self.isLoadingPhoto, !self.isClosed else { return }
+            self.loadingPreview = image
+            self.updateSelectionUI()
+        }
+        // Start the provider request before its owning picker is torn down.
+        // The list still closes immediately; only validation waits for dismissal.
+        AIScanAlbumImageLoader.loadPhoto(from: provider) { photo in delivery.loaded(photo) }
+        dismissPhotoPicker(picker) { delivery.dismissed() }
     }
 }
 
@@ -664,9 +748,7 @@ extension AIScanAlbumSelectionViewController: @preconcurrency UIImagePickerContr
             } else if let image = info[.originalImage] as? UIImage {
                 self.applySelectedPhoto(AIScanAlbumPhoto(image: image))
             } else {
-                self.isInspecting = false
-                self.updateSelectionUI()
-                self.setValidationMessage(AIScanCameraStrings.localizedMessageKey("album.quality.load_failed"))
+                self.failPhotoLoading(generation: generation)
             }
         }
     }

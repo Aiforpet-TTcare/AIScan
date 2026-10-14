@@ -159,3 +159,6 @@
 "multi.requires_ttapi" = "複数写真の解析は利用できません。1枚ずつ解析してください。";
 
 "multi.guidance" = "最大4枚の写真を追加して、まとめて分析できます。";
+
+"album.quality.loading" = "写真を読み込んでいます。";
+"album.quality.load_timeout" = "写真を読み込めませんでした。もう一度選択してください。";

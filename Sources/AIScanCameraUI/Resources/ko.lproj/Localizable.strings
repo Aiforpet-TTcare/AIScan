@@ -159,3 +159,6 @@
 "multi.requires_ttapi" = "여러 사진을 함께 분석할 수 없습니다. 한 장씩 분석해 주세요.";
 
 "multi.guidance" = "최대 4장까지 추가한 뒤 한 번에 분석할 수 있어요.";
+
+"album.quality.loading" = "사진을 불러오고 있어요.";
+"album.quality.load_timeout" = "사진을 불러오지 못했어요. 다시 선택해 주세요.";
