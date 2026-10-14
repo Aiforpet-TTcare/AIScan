@@ -190,12 +190,12 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     public let status: String
     public let diagnosisID: String?
     public let symptoms: [AIScanSymptom]
-    /// Exact partner callback payload. The `schema`/`payload` transport
-    /// envelope is never inserted into callback JSON.
+    /// Exact partner payload for a single photo. In multi mode this retains
+    /// structured metadata; callback JSON is the root `jsonArray` only.
     public let contractResult: [String: Any]?
 
     /// Optional transport metadata for hosts that opt into the structured API.
-    /// Callback JSON always remains the direct `contractResult` dictionary.
+    /// Callback JSON is a direct dictionary for one photo or a root array for multi mode.
     public var typedContractResult: AIScanContractResult? {
         guard let contractSchema, let contractResult else { return nil }
         return AIScanContractResult(schema: contractSchema, payload: contractResult)
@@ -355,6 +355,11 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
 
     /// Exact JSON string used by the original string-completion API.
     public var jsonString: String? {
+        if let jsonArray,
+           JSONSerialization.isValidJSONObject(jsonArray),
+           let data = try? JSONSerialization.data(withJSONObject: jsonArray) {
+            return String(data: data, encoding: .utf8)
+        }
         if let contractResult,
            JSONSerialization.isValidJSONObject(contractResult),
            let data = try? JSONSerialization.data(withJSONObject: contractResult) {
@@ -367,6 +372,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     /// Original `AIScanResult.string` callback surface retained for existing hosts.
     public var string: String? { jsonString }
 
+    /// Single-photo JSON dictionary; multi-photo callbacks use `jsonArray`.
     public var jsonObject: [String: Any]? {
         guard let jsonString,
               let value = try? JSONSerialization.jsonObject(with: Data(jsonString.utf8)) else {
@@ -384,6 +390,15 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     }
 
     public init(from decoder: Decoder) throws {
+        if let entries = try? decoder.singleValueContainer().decode([[String: AIScanJSONValue]].self) {
+            let payload = entries.map { $0.mapValues(\.foundationValue) }
+            let successes = payload.filter { $0["status"] as? String == "SUCCESS" }.count
+            let status = successes == payload.count ? "SUCCESS" : successes == 0 ? "ERROR" : "PARTIAL"
+            self.init(status: status, typedContractResult: AIScanContractResult(schema: "ttcare.multi.v2", payload: [
+                "mode": "multi", "status": status, "photoCount": payload.count, "results": payload,
+            ]))
+            return
+        }
         let directPayload = try? decoder.singleValueContainer()
             .decode([String: AIScanJSONValue].self)
             .mapValues(\.foundationValue)
@@ -425,6 +440,11 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     }
 
     public func encode(to encoder: Encoder) throws {
+        if let jsonArray {
+            var container = encoder.singleValueContainer()
+            try container.encode(jsonArray.map { $0.mapValues { AIScanJSONValue(foundationValue: $0) } })
+            return
+        }
         if let contractResult {
             var container = encoder.singleValueContainer()
             try container.encode(contractResult.mapValues { AIScanJSONValue(foundationValue: $0) })

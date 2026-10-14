@@ -151,7 +151,7 @@
 "multi.ready" = "Foto pronta";
 "multi.preparing" = "Preparazione foto…";
 "multi.upload_failed" = "Impossibile preparare la foto. Rimuovila e aggiungila di nuovo.";
-"multi.progress" = "Foto %d/%d · %d completate";
+"multi.progress" = "Analisi completate %d/%d";
 "multi.result_title" = "Risultati delle foto";
 "multi.failed" = "Analisi non riuscita";
 "multi.retake" = "Scatta di nuovo";

@@ -66,6 +66,37 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         XCTAssertNil(object["payload"])
     }
 
+    func testMultiCallbackDeliversOnlyTheOrderedRootArrayOnceIncludingFailures() throws {
+        var callbacks: [(String?, Error?)] = []
+        let camera = try AIScanManager.makeCameraViewController(
+            petType: .dog, partType: .eye, enableMultiMode: true, enableResultView: false,
+            completion: { (json: String?, error: Error?) in callbacks.append((json, error)) }
+        ) as! AIScanCameraViewController
+        camera.beginsScanningAutomatically = false
+        camera.loadViewIfNeeded()
+        let success = AISCDisplayResult(status: "completed", diagnosisID: "ok", symptoms: [],
+            contractResult: AISCContractResult(schema: "native.v1", payload: payload))
+        let outcomes = [
+            AIScanMultiPhotoOutcome(photoID: "first", photoIndex: 1, result: nil,
+                error: NSError(domain: AISCErrorDomain, code: 408), errorMessage: "Try again", analysisSubpart: "left", analysisPosition: nil),
+            AIScanMultiPhotoOutcome(photoID: "second", photoIndex: 2, result: success,
+                error: nil, errorMessage: nil, analysisSubpart: "right", analysisPosition: nil),
+        ]
+        camera.onMultiResults?(outcomes)
+        camera.onMultiResults?(outcomes)
+        camera.onClose?()
+        XCTAssertEqual(callbacks.count, 1)
+        let callback = try XCTUnwrap(callbacks.first)
+        XCTAssertNil(callback.1)
+        let root = try JSONSerialization.jsonObject(with: Data(try XCTUnwrap(callback.0).utf8))
+        XCTAssertNil(root as? [String: Any], "No results wrapper is sent to the host app.")
+        let entries = try XCTUnwrap(root as? [[String: Any]])
+        XCTAssertEqual(entries.compactMap { $0["photoIndex"] as? Int }, [1, 2])
+        XCTAssertEqual(entries.compactMap { $0["status"] as? String }, ["ERROR", "SUCCESS"])
+        XCTAssertEqual(entries.first?["error"] as? [String: Any] != nil, true)
+        XCTAssertEqual(entries.last?["result"] as? NSDictionary, payload as NSDictionary)
+    }
+
     func testServerErrorDeliversNilLikeTheOriginalHTTP500() throws {
         var received: (result: String?, error: Error?)?
         let camera = try makeCamera { received = ($0, $1) }

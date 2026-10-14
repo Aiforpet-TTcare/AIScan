@@ -319,14 +319,15 @@ final class AIScanMultiPhotoTests: XCTestCase {
         ]
         let result = AIScanResult(multiOutcomes: outcomes, petType: .dog, partType: .eye, petId: nil, userId: nil)
         XCTAssertEqual(result.status, "PARTIAL")
-        XCTAssertEqual(result.typedContractResult?.schema, "ttcare.multi.v1")
+        XCTAssertEqual(result.typedContractResult?.schema, "ttcare.multi.v2")
         let photos = try XCTUnwrap(result.photoResults)
         XCTAssertEqual(photos.map(\.status), ["SUCCESS", "RETRY", "ERROR"])
         XCTAssertEqual(photos.first?.result?.jsonObject as NSDictionary?, native as NSDictionary)
         XCTAssertEqual(photos.dropFirst().first?.result?.jsonObject as NSDictionary?, retryPayload as NSDictionary)
         XCTAssertEqual(photos.last?.error?.retryable, true)
         XCTAssertEqual(photos.last?.message, "Please try again")
-        XCTAssertNil(result.jsonObject?["schema"])
+        XCTAssertNil(result.jsonObject)
+        XCTAssertEqual(result.jsonArray?.count, 3)
         let failed = AIScanResult(multiOutcomes: Array(outcomes.suffix(1)), petType: .dog, partType: .eye, petId: nil, userId: nil)
         XCTAssertEqual(failed.status, "ERROR")
         XCTAssertEqual(failed.photoResults?.count, 1)
@@ -334,6 +335,37 @@ final class AIScanMultiPhotoTests: XCTestCase {
 
     private func addAttachment(_ attachment: XCTAttachment) { add(attachment) }
     private func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+
+    func testRootArrayRoundTripPreservesOrderedFailuresAndNativeResults() throws {
+        let entries: [[String: Any]] = [
+            ["photoId": "a", "photoIndex": 1, "status": "ERROR", "error": ["domain": "network", "code": 408, "message": "Try again", "retryable": true]],
+            ["photoId": "b", "photoIndex": 2, "status": "SUCCESS", "result": ["status": "SUCCESS", "response": ["symptoms": [["polygons": [[1, 2, 3, 4]]]]]]],
+        ]
+        let decoded = try JSONDecoder().decode(AIScanResult.self, from: JSONSerialization.data(withJSONObject: entries))
+        XCTAssertTrue(decoded.isMultiMode)
+        XCTAssertEqual(decoded.status, "PARTIAL")
+        XCTAssertEqual(decoded.photoResults?.map(\.photoIndex), [1, 2])
+        XCTAssertEqual(decoded.photoResults?.first?.error?.code, 408)
+        XCTAssertEqual(decoded.jsonArray as NSArray?, entries as NSArray)
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder().encode(decoded))
+        XCTAssertEqual(encoded as? NSArray, entries as NSArray)
+        let callback = try JSONSerialization.jsonObject(with: Data(try XCTUnwrap(decoded.string).utf8))
+        XCTAssertEqual(callback as? NSArray, entries as NSArray)
+        XCTAssertNil(callback as? [String: Any])
+    }
+
+    func testRotatingPreviewDoesNotChangeTheCompletedPhotoCount() {
+        let progress = TTProgressViewController.instantiate()
+        progress.setPhotoProgress(completed: 2, total: 4)
+        let count = progress.subtitleLabel.text
+        for color in [UIColor.red, .green, .blue, .yellow, .red] {
+            let image = UIGraphicsImageRenderer(size: CGSize(width: 20, height: 20)).image { color.setFill(); $0.fill(CGRect(x: 0, y: 0, width: 20, height: 20)) }
+            progress.set(previewImage: image)
+            XCTAssertEqual(progress.subtitleLabel.text, count)
+        }
+        progress.setPhotoProgress(completed: 3, total: 4)
+        XCTAssertNotEqual(progress.subtitleLabel.text, count)
+    }
 
     func testAggregatePreservesOrderedFailuresAndNestedNativePayloadOnJSONRoundTrip() throws {
         let native: [String: Any] = ["status": "SUCCESS", "petType": "DOG", "response": ["symptoms": [["code": "opacity", "polygons": [[12.25, 23.5, 35.75, 47.125]]]]]]
@@ -349,7 +381,8 @@ final class AIScanMultiPhotoTests: XCTestCase {
         guard photos.count == 2 else { return }
         XCTAssertEqual(photos[0].error?.code, 408)
         XCTAssertEqual(photos[1].result?.jsonObject as NSDictionary?, native as NSDictionary)
-        XCTAssertEqual(decoded.jsonObject as NSDictionary?, payload as NSDictionary)
+        XCTAssertEqual(decoded.jsonArray as NSArray?, payload["results"] as? NSArray)
+        XCTAssertNil(decoded.jsonObject)
     }
 }
 

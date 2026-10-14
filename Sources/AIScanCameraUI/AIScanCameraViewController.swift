@@ -1328,6 +1328,7 @@ public final class AIScanCameraViewController: UIViewController {
             self.multiPreviewIndex = 0
             let progress = self.showProgressIfNeeded()
             progress.set(previewImage: coordinator.items[0].preview)
+            progress.setPhotoProgress(completed: coordinator.completedCount, total: coordinator.items.count)
             self.multiPreviewTimer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { [weak self] _ in
                 Task { @MainActor [weak self] in
                     guard let self else { return }
@@ -1343,7 +1344,7 @@ public final class AIScanCameraViewController: UIViewController {
         guard let coordinator = multiCoordinator, !coordinator.items.isEmpty, let progressController else { return }
         let index = multiPreviewIndex % coordinator.items.count
         progressController.set(previewImage: coordinator.items[index].preview)
-        progressController.subtitleLabel.text = String(format: AIScanCameraStrings.localizedMessageKey("multi.progress"), index + 1, coordinator.items.count, coordinator.completedCount)
+        progressController.setPhotoProgress(completed: coordinator.completedCount, total: coordinator.items.count)
     }
 
     private var automaticGuideDefaultsKey: String {

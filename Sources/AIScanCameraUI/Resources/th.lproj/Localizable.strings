@@ -151,7 +151,7 @@
 "multi.ready" = "รูปภาพพร้อมแล้ว";
 "multi.preparing" = "กำลังเตรียมรูปภาพ…";
 "multi.upload_failed" = "เตรียมรูปภาพไม่สำเร็จ โปรดนำออกแล้วเพิ่มใหม่";
-"multi.progress" = "รูปที่ %d/%d · เสร็จแล้ว %d รูป";
+"multi.progress" = "วิเคราะห์เสร็จแล้ว %d/%d";
 "multi.result_title" = "ผลวิเคราะห์แต่ละรูป";
 "multi.failed" = "วิเคราะห์ไม่สำเร็จ";
 "multi.retake" = "ถ่ายใหม่";

@@ -321,26 +321,24 @@ fires once after all selected photos finish, including failures in selection
 order. With `enableResultView: true`, the built-in summary links to individual
 successful results and their optional PDF exports.
 
-The legacy string callback returns the same aggregate object as `scan.string`:
+The legacy string callback and `scan.string` return a root array in multi mode:
 
 ```json
-{
-  "mode": "multi",
-  "status": "PARTIAL",
-  "photoCount": 2,
-  "results": [
-    {"photoId": "photo-a", "photoIndex": 1, "status": "SUCCESS", "result": {"status": "SUCCESS"}},
-    {"photoId": "photo-b", "photoIndex": 2, "status": "ERROR", "error": {"domain": "AIScan", "code": 1, "message": "Please try again.", "retryable": true}}
-  ]
-}
+[
+  {"photoId": "photo-a", "photoIndex": 1, "status": "SUCCESS", "result": {"status": "SUCCESS"}},
+  {"photoId": "photo-b", "photoIndex": 2, "status": "ERROR", "error": {"domain": "AIScan", "code": 1, "message": "Please try again.", "retryable": true}}
+]
 ```
 
 Photo indexes start at 1. Each entry has `SUCCESS`, `RETRY` (retake required), or
-`ERROR`; a retry entry retains its result and reason code. Overall status is
+`ERROR`; a retry entry retains its result and reason code. The typed Swift
+completion still receives `AIScanResult`; use `jsonArray` for the root array or
+`photoResults` for typed entries. `jsonObject` is for single-photo dictionaries.
+The typed result's overall status is
 `SUCCESS` when every photo succeeds, `PARTIAL` when some succeed, and `ERROR` when
 none succeed. An aggregate containing failed photos is still a completed scan
 and arrives through `.success`; inspect the per-photo statuses. The typed schema
-is `ttcare.multi.v1`. Native payload fields, image URLs and polygons remain inside
+is `ttcare.multi.v2`. Native payload fields, image URLs and polygons remain inside
 each unchanged `result` object.
 
 ## Album image quality (3.0.21)

@@ -151,7 +151,7 @@
 "multi.ready" = "사진 준비 완료";
 "multi.preparing" = "사진 준비 중…";
 "multi.upload_failed" = "사진을 준비하지 못했어요. 제외한 뒤 다시 추가해 주세요.";
-"multi.progress" = "사진 %d/%d · 완료 %d장";
+"multi.progress" = "분석 완료 %d/%d";
 "multi.result_title" = "사진별 분석 결과";
 "multi.failed" = "분석 실패";
 "multi.retake" = "다시 촬영";

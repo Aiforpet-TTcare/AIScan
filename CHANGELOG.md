@@ -2,6 +2,9 @@
 
 ## 3.1.3
 
+- Deliver multi-photo callback JSON as the ordered root array; single-photo callbacks remain unchanged. Swift hosts can use `jsonArray` or typed `photoResults`.
+- Display actual completed-photo count while rotating progress previews, so the counter does not cycle with the shown photo.
+
 - Show inline activity and prevent conflicting album actions during loading and inspection, while keeping close available and ignoring late results.
 
 - Close the system photo picker before loading the original asset or presenting review, so slow asset loading does not leave the photo list on screen.

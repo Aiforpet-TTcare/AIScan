@@ -151,7 +151,7 @@
 "multi.ready" = "Fotot är klart";
 "multi.preparing" = "Förbereder foto…";
 "multi.upload_failed" = "Fotot kunde inte förberedas. Ta bort det och lägg till det igen.";
-"multi.progress" = "Foto %d/%d · %d klara";
+"multi.progress" = "Analyser klara %d/%d";
 "multi.result_title" = "Fotoresultat";
 "multi.failed" = "Analysen misslyckades";
 "multi.retake" = "Ta ett nytt foto";
