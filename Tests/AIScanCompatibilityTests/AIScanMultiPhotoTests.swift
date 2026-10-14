@@ -190,6 +190,31 @@ final class AIScanMultiPhotoTests: XCTestCase {
         attachment.name = "multi-review-320x568"; attachment.lifetime = .keepAlways; addAttachment(attachment)
     }
 
+    func testAggregateIncludesSuccessRetakeAndNetworkFailureWithoutChangingNestedPayloads() throws {
+        let native: [String: Any] = ["status": "SUCCESS", "response": ["symptoms": [["code": "opacity", "polygons": [[12.25, 23.5, 35.75, 47.125]]]]]]
+        let success = AISCDisplayResult(status: "completed", diagnosisID: "success", symptoms: [], contractResult: AISCContractResult(schema: "native.v1", payload: native))
+        let retryPayload: [String: Any] = ["status": "RETRY", "error": ["code": "PRE_EYE_DETECT_BBOX_TOO_SMALL"]]
+        let retry = AISCDisplayResult(status: "RETRY", diagnosisID: "retry", symptoms: [], contractResult: AISCContractResult(schema: "native.v1", payload: retryPayload), requiresRetake: true, retakeReasonCode: "PRE_EYE_DETECT_BBOX_TOO_SMALL")
+        let outcomes = [
+            AIScanMultiPhotoOutcome(photoID: "a", photoIndex: 1, result: success, error: nil, errorMessage: nil, analysisSubpart: "left", analysisPosition: nil),
+            AIScanMultiPhotoOutcome(photoID: "b", photoIndex: 2, result: retry, error: nil, errorMessage: "Choose a closer photo", analysisSubpart: "right", analysisPosition: nil),
+            AIScanMultiPhotoOutcome(photoID: "c", photoIndex: 3, result: nil, error: NSError(domain: AISCErrorDomain, code: 408, userInfo: [AISCRetryableKey: true]), errorMessage: "Please try again", analysisSubpart: "left", analysisPosition: nil)
+        ]
+        let result = AIScanResult(multiOutcomes: outcomes, petType: .dog, partType: .eye, petId: nil, userId: nil)
+        XCTAssertEqual(result.status, "PARTIAL")
+        XCTAssertEqual(result.typedContractResult?.schema, "ttcare.multi.v1")
+        let photos = try XCTUnwrap(result.photoResults)
+        XCTAssertEqual(photos.map(\.status), ["SUCCESS", "RETRY", "ERROR"])
+        XCTAssertEqual(photos.first?.result?.jsonObject as NSDictionary?, native as NSDictionary)
+        XCTAssertEqual(photos.dropFirst().first?.result?.jsonObject as NSDictionary?, retryPayload as NSDictionary)
+        XCTAssertEqual(photos.last?.error?.retryable, true)
+        XCTAssertEqual(photos.last?.message, "Please try again")
+        XCTAssertNil(result.jsonObject?["schema"])
+        let failed = AIScanResult(multiOutcomes: Array(outcomes.suffix(1)), petType: .dog, partType: .eye, petId: nil, userId: nil)
+        XCTAssertEqual(failed.status, "ERROR")
+        XCTAssertEqual(failed.photoResults?.count, 1)
+    }
+
     private func addAttachment(_ attachment: XCTAttachment) { add(attachment) }
     private func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
 
