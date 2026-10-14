@@ -102,7 +102,8 @@ final class AIScanAlbumSelectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = AIScanReferenceTheme.background
+        overrideUserInterfaceStyle = .dark
+        view.backgroundColor = AIScanReferenceTheme.photoBackground
         buildHeader()
         buildContent()
         updateSelectionUI()
@@ -119,7 +120,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             let dashedBounds = selectPhotoButton.bounds.insetBy(dx: 0.5, dy: 0.5)
             dashedBorderLayer.path = UIBezierPath(
                 roundedRect: dashedBounds,
-                cornerRadius: 11.5
+                cornerRadius: 15.5
             ).cgPath
         }
         if emptyIconBackground.bounds.width.isFinite,
@@ -138,9 +139,12 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             analyzeBackgroundLayer.frame = analyzeButton.bounds
             analyzeBackgroundLayer.path = UIBezierPath(
                 roundedRect: analyzeButton.bounds,
-                cornerRadius: 14
+                cornerRadius: 18
             ).cgPath
         }
+        analyzeButton.layer.cornerRadius = 18
+        analyzeButton.layer.borderWidth = analyzeButton.isEnabled ? 0 : 1
+        analyzeButton.layer.borderColor = AIScanReferenceTheme.photoSecondaryText.cgColor
         updateLayerColors()
     }
 
@@ -211,7 +215,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             contentScrollView.topAnchor.constraint(equalTo: closeButton.bottomAnchor),
             contentScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -88),
             contentStack.topAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.topAnchor, constant: 16),
             contentStack.leadingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.leadingAnchor, constant: 20),
             contentStack.trailingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.trailingAnchor, constant: -20),
@@ -229,28 +233,28 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         }
 
         selectPhotoButton.translatesAutoresizingMaskIntoConstraints = false
-        selectPhotoButton.layer.cornerRadius = 12
-        selectPhotoButton.backgroundColor = AIScanReferenceTheme.surface
+        selectPhotoButton.layer.cornerRadius = 16
+        selectPhotoButton.backgroundColor = AIScanReferenceTheme.photoSurface
         selectPhotoButton.accessibilityIdentifier = "aiscan.album.select-photo"
         selectPhotoButton.accessibilityLabel = AIScanCameraStrings.localizedMessageKey("album.select_photo")
         selectPhotoButton.addTarget(self, action: #selector(selectPhotoTapped), for: .touchUpInside)
         selectPhotoButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         let selectIcon = UIImageView(image: UIImage(
-            systemName: "plus.circle.fill",
+            systemName: "circle.fill",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 17)
         ))
-        selectIcon.tintColor = AIScanReferenceTheme.textTertiary
+        selectIcon.tintColor = AIScanReferenceTheme.photoPrimary
         selectIcon.setContentHuggingPriority(.required, for: .horizontal)
         let selectLabel = UILabel()
         selectLabel.text = AIScanCameraStrings.localizedMessageKey("album.select_photo")
-        selectLabel.textColor = AIScanReferenceTheme.textTertiary
+        selectLabel.textColor = AIScanReferenceTheme.photoPrimary
         selectLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         selectLabel.accessibilityIdentifier = "aiscan.album.select-photo.label"
         let selectContent = UIStackView(arrangedSubviews: [selectIcon, selectLabel])
         selectContent.translatesAutoresizingMaskIntoConstraints = false
         selectContent.axis = .horizontal
         selectContent.alignment = .center
-        selectContent.spacing = 4
+        selectContent.spacing = 12
         selectContent.isUserInteractionEnabled = false
         selectPhotoButton.addSubview(selectContent)
         NSLayoutConstraint.activate([
@@ -318,7 +322,13 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             analyzeLabel.centerXAnchor.constraint(equalTo: analyzeButton.centerXAnchor),
             analyzeLabel.centerYAnchor.constraint(equalTo: analyzeButton.centerYAnchor),
         ])
-        contentStack.addArrangedSubview(analyzeButton)
+        analyzeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(analyzeButton)
+        NSLayoutConstraint.activate([
+            analyzeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            analyzeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            analyzeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+        ])
     }
 
     private func buildAreaSelector() {
@@ -339,8 +349,8 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func buildPhotoCard() {
-        photoCard.backgroundColor = AIScanReferenceTheme.surface
-        photoCard.layer.cornerRadius = 12
+        photoCard.backgroundColor = AIScanReferenceTheme.photoSurface
+        photoCard.layer.cornerRadius = 16
         photoCard.layer.borderWidth = 1
         photoCard.clipsToBounds = false
         photoCard.accessibilityIdentifier = "aiscan.album.photo-card"
@@ -349,7 +359,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         photoImageView.contentMode = .scaleAspectFill
         photoImageView.clipsToBounds = true
-        photoImageView.layer.cornerRadius = 12
+        photoImageView.layer.cornerRadius = 16
         photoImageView.isHidden = true
         photoImageView.accessibilityIdentifier = "aiscan.album.preview"
         photoCard.addSubview(photoImageView)
@@ -377,7 +387,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
 
         let emptyLabel = UILabel()
         emptyLabel.text = AIScanCameraStrings.localizedMessageKey("album.empty")
-        emptyLabel.textColor = AIScanReferenceTheme.textTertiary
+        emptyLabel.textColor = AIScanReferenceTheme.photoSecondaryText
         emptyLabel.font = .systemFont(ofSize: 16)
         emptyLabel.textAlignment = .center
         emptyStack.translatesAutoresizingMaskIntoConstraints = false
@@ -410,9 +420,9 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         validationLabel.numberOfLines = 0
         validationLabel.accessibilityIdentifier = "aiscan.album.validation.message"
         validationRow.axis = .horizontal
-        validationRow.alignment = .top
+        validationLabel.textAlignment = .center
+        validationRow.alignment = .center
         validationRow.spacing = 6
-        validationRow.addArrangedSubview(icon)
         validationRow.addArrangedSubview(validationLabel)
         validationRow.isHidden = true
         validationRow.accessibilityIdentifier = "aiscan.album.validation"
@@ -440,28 +450,28 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func updatePreviewHeight() {
-        let height = min(380, max(160, view.bounds.height * 0.6))
+        let height = min(380, max(160, min((view.bounds.width - 40) * 0.81, view.bounds.height * 0.6)))
         if photoHeightConstraint?.constant != height { photoHeightConstraint?.constant = height }
     }
 
     private func updateAnalyzeButtonStyle() {
         let hasSelectedImage = qualityReport?.isValid == true && !isInspecting && !isClosed
         analyzeBackgroundLayer.fillColor = AIScanReferenceTheme.resolvedCGColor(
-            hasSelectedImage ? AIScanReferenceTheme.brandPrimary : AIScanReferenceTheme.disabledSurface,
+            hasSelectedImage ? AIScanReferenceTheme.photoPrimary : AIScanReferenceTheme.photoAction,
             traits: traitCollection
         )
         analyzeLabel.textColor = hasSelectedImage
-            ? AIScanReferenceTheme.onBrand
-            : AIScanReferenceTheme.textTertiary
+            ? AIScanReferenceTheme.photoBackground
+            : AIScanReferenceTheme.photoSecondaryText
     }
 
     private func updateLayerColors() {
         photoCard.layer.borderColor = AIScanReferenceTheme.resolvedCGColor(
-            AIScanReferenceTheme.controlBorder,
+            AIScanReferenceTheme.photoBorder,
             traits: traitCollection
         )
         dashedBorderLayer.strokeColor = AIScanReferenceTheme.resolvedCGColor(
-            AIScanReferenceTheme.controlBorder,
+            AIScanReferenceTheme.photoBorder,
             traits: traitCollection
         )
         emptyIconBackgroundLayer.fillColor = AIScanReferenceTheme.resolvedCGColor(

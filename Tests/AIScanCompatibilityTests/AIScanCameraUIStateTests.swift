@@ -2474,8 +2474,8 @@ final class AIScanCameraUIStateTests: XCTestCase {
             accessibilityIdentifier: "aiscan.album.area.ear"
         ) as? UIButton)
 
-        XCTAssertEqual(card.bounds.height, 380, accuracy: 0.5)
-        XCTAssertEqual(card.layer.cornerRadius, 12)
+        XCTAssertEqual(card.bounds.height, 283.5, accuracy: 0.5)
+        XCTAssertEqual(card.layer.cornerRadius, 16)
         let selectBorder = try XCTUnwrap(select.layer.sublayers?.first {
             $0.name == "aiscan.album.select-photo-border"
         } as? CAShapeLayer)
@@ -2494,26 +2494,26 @@ final class AIScanCameraUIStateTests: XCTestCase {
         let analyzeFrame = analyze.convert(analyze.bounds, to: album.view)
         XCTAssertEqual(earFrame.minY, close.frame.maxY + 16, accuracy: 0.5)
         XCTAssertEqual(selectFrame.minY, earFrame.maxY + 19, accuracy: 0.5)
-        XCTAssertEqual(analyzeFrame.maxY, album.view.bounds.maxY - 20, accuracy: 0.5)
+        XCTAssertEqual(analyzeFrame.maxY, album.view.safeAreaLayoutGuide.layoutFrame.maxY - 16, accuracy: 0.5)
         XCTAssertEqual(preview.contentMode, .scaleAspectFill)
         XCTAssertTrue(preview.clipsToBounds)
         XCTAssertFalse(analyze.isEnabled)
         XCTAssertEqual(
-            selectLabel.textColor.resolvedColor(with: .init(userInterfaceStyle: .light)),
-            UIColor(red: 0x99 / 255, green: 0x99 / 255, blue: 0x99 / 255, alpha: 1)
+            selectLabel.textColor,
+            AIScanReferenceTheme.photoPrimary
         )
         XCTAssertEqual(selectLabel.font.pointSize, 16)
         XCTAssertEqual(analyzeLabel.font.pointSize, 17)
         XCTAssertEqual(
             UIColor(cgColor: try XCTUnwrap(card.layer.borderColor)),
-            UIColor(red: 0xEB / 255, green: 0xED / 255, blue: 0xF0 / 255, alpha: 1)
+            AIScanReferenceTheme.photoBorder
         )
         let emptyLabel = try XCTUnwrap(album.view.allLabels.first {
             $0.text == AIScanCameraStrings.localizedMessageKey("album.empty")
         })
         XCTAssertEqual(
-            emptyLabel.textColor.resolvedColor(with: .init(userInterfaceStyle: .light)),
-            UIColor(red: 0x99 / 255, green: 0x99 / 255, blue: 0x99 / 255, alpha: 1)
+            emptyLabel.textColor,
+            AIScanReferenceTheme.photoSecondaryText
         )
         XCTAssertEqual(
             analyzeLabel.text,

@@ -130,7 +130,7 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
     }
 
     @MainActor
-    func testAlbumEmptyStateRendersTheOriginalLightAndDarkSurface() throws {
+    func testAlbumEmptyStateKeepsTheDarkCameraSurfaceInEitherHostTheme() throws {
         for (style, suffix) in [
             (UIUserInterfaceStyle.light, "light"),
             (.dark, "dark"),
@@ -147,10 +147,10 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
             let analyze = try XCTUnwrap(album.view.descendant(
                 accessibilityIdentifier: "aiscan.album.analyze"
             ))
-            XCTAssertEqual(card.bounds.height, 380, accuracy: 0.5)
+            XCTAssertEqual(card.bounds.height, 283.5, accuracy: 0.5)
             XCTAssertEqual(
                 analyze.convert(analyze.bounds, to: album.view).maxY,
-                album.view.safeAreaLayoutGuide.layoutFrame.maxY - 20,
+                album.view.safeAreaLayoutGuide.layoutFrame.maxY - 16,
                 accuracy: 0.5
             )
             attach(image, name: "gap_zero_album_empty_\(suffix)_390x844")

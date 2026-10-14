@@ -138,7 +138,7 @@
 
 /* Multiple-photo capture and analysis */
 "multi.review" = "사진 확인";
-"multi.check_photos" = "사진을 확인해 주세요";
+"multi.check_photos" = "촬영한 사진을 확인해 주세요";
 "multi.count" = "사진 %d/4장";
 "multi.results" = "결과 확인하기 (%d장)";
 "multi.add_more" = "사진 더 찍기";
@@ -157,3 +157,5 @@
 "multi.retake" = "다시 촬영";
 "multi.complete" = "완료";
 "multi.requires_ttapi" = "여러 사진을 함께 분석할 수 없습니다. 한 장씩 분석해 주세요.";
+
+"multi.guidance" = "최대 4장까지 추가한 뒤 한 번에 분석할 수 있어요.";

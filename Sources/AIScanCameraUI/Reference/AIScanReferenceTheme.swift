@@ -1,6 +1,14 @@
 import UIKit
 
 enum AIScanReferenceTheme {
+    // Album and multi-photo review share the camera's fixed dark appearance.
+    static let photoBackground = rgb(0x0E0E0E)
+    static let photoSurface = rgb(0x202024)
+    static let photoAction = rgb(0x2B2A32)
+    static let photoBorder = rgb(0x48474E)
+    static let photoPrimary = rgb(0xF3F3F3)
+    static let photoSecondaryText = rgb(0xA5A4AA)
+
     static var background: UIColor { adaptive(light: .white, dark: .systemBackground) }
     static var surface: UIColor { adaptive(light: .white, dark: .secondarySystemBackground) }
     static var surfaceSecondary: UIColor {
