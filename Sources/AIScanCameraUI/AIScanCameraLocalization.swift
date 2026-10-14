@@ -131,9 +131,9 @@ enum AIScanCameraStrings {
         case "PRE_IMAGE_BIT_DEPTH_TOO_LOW": key = "photo.color_quality"
         default:
             if code.contains("BBOX_TOO_SMALL") || code.contains("TOO_FAR") {
-                key = isAlbum ? "피사체가 더 크게 나온 사진을 선택해 주세요." : "move_closer"
+                key = isAlbum ? albumFramingKey(partType: partType, larger: true) : "move_closer"
             } else if code.contains("BBOX_TOO_LARGE") || code.contains("TOO_CLOSE") {
-                key = isAlbum ? "피사체가 눈에 다 들어오는 사진을 선택해 주세요." : "move_farther"
+                key = isAlbum ? albumFramingKey(partType: partType, larger: false) : "move_farther"
             } else if code.contains("BLUR") || code.contains("SCORE_LOW") {
                 key = isAlbum ? "초점이 잘 맞는 선명한 사진을 선택해 주세요." : "hold_still"
             } else if code.contains("CLASSIFICATION_MISMATCH") || code.contains("DETECT_EMPTY") {
@@ -141,9 +141,9 @@ enum AIScanCameraStrings {
                 case .eye: key = isAlbum ? "눈이 잘 보이는 사진을 선택해 주세요." : "눈을 촬영해 주세요."
                 case .teeth: key = isAlbum ? "치아가 잘 보이는 사진을 선택해 주세요." : "치아를 촬영해 주세요."
                 case .skin: key = isAlbum ? albumSkinSelectionKey(partType: partType, analysisPosition: analysisPosition) : "피부를 촬영해 주세요."
-                default: key = "popup.retake.title"
+                default: key = isAlbum ? "album.retake" : "popup.retake.title"
                 }
-            } else { key = "popup.retake.title" }
+            } else { key = isAlbum ? "album.retake" : "popup.retake.title" }
         }
         return localizedMessageKey(key, languageCode: languageCode)
     }
@@ -170,9 +170,9 @@ enum AIScanCameraStrings {
         case "초점을 잘 맞춰 주세요.", "hold_still":
             key = "초점이 잘 맞는 선명한 사진을 선택해 주세요."
         case "더 가까이에서 촬영해 주세요", "move_closer":
-            key = "피사체가 더 크게 나온 사진을 선택해 주세요."
+            key = albumFramingKey(partType: partType, larger: true)
         case "더 멀리서 촬영해 주세요", "move_farther":
-            key = "피사체가 눈에 다 들어오는 사진을 선택해 주세요."
+            key = albumFramingKey(partType: partType, larger: false)
         case "귀를 촬영해 주세요.", "몸통을 촬영해 주세요.",
              "발을 촬영해 주세요.", "피부를 촬영해 주세요.":
             key = albumSkinSelectionKey(
@@ -189,6 +189,17 @@ enum AIScanCameraStrings {
             return displayMessage(for: error, languageCode: languageCode)
         }
         return localizedMessageKey(key, languageCode: languageCode)
+    }
+
+    private static func albumFramingKey(partType: AISCPartType, larger: Bool) -> String {
+        let part: String
+        switch partType {
+        case .eye: part = "eye"
+        case .teeth: part = "teeth"
+        case .skin: part = "skin"
+        default: return "album.retake"
+        }
+        return "album.subject.\(part).\(larger ? "larger" : "full")"
     }
 
     private static func albumSkinSelectionKey(

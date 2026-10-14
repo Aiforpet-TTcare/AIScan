@@ -447,9 +447,9 @@ final class AIScanCameraUIStateTests: XCTestCase {
     func testTTAPIAlbumQualityFailuresOfferAnotherPhotoAndServiceFailuresDoNotBlameThePhoto() {
         let expected = [
             "PRE_IMAGE_RESOLUTION_TOO_LOW": "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요.",
-            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "색상 정보가 충분한 원본 컬러 사진을 선택해 주세요.",
-            "PRE_EYE_DETECT_BBOX_TOO_SMALL": "피사체가 더 크게 나온 사진을 선택해 주세요.",
-            "PRE_TOOTH_DETECT_BBOX_TOO_SMALL": "피사체가 더 크게 나온 사진을 선택해 주세요."
+            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "사진의 색상 정보가 부족해요. 원본 사진을 선택해 주세요.",
+            "PRE_EYE_DETECT_BBOX_TOO_SMALL": "눈이 더 크게 나온 사진을 선택해 주세요.",
+            "PRE_TOOTH_DETECT_BBOX_TOO_SMALL": "치아가 더 크게 나온 사진을 선택해 주세요."
         ]
         for (reason, message) in expected {
             XCTAssertEqual(AIScanCameraStrings.retakeMessage(for: reason,
@@ -478,7 +478,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
         let input = NSError(domain: AISCErrorDomain, code: AISCErrorCode.invalidInput.rawValue)
         XCTAssertEqual(AIScanCameraStrings.displayMessage(for: input, languageCode: "ko"),
-            "사진 또는 검사 요청을 처리할 수 없습니다. 다른 사진으로 다시 시도해 주세요.\n[AISC-400]")
+            "사진 또는 검사 정보를 확인할 수 없어요. 다시 시도해 주세요.\n[AISC-400]")
     }
 
     func testAlbumFrameRejectedShowsActionableGuidanceInsteadOfCriticalError() {
@@ -545,8 +545,12 @@ final class AIScanCameraUIStateTests: XCTestCase {
             ("눈을 촬영해 주세요.", .eye, nil, "눈이 잘 보이는 사진을 선택해 주세요."),
             ("치아를 촬영해 주세요.", .teeth, nil, "치아가 잘 보이는 사진을 선택해 주세요."),
             ("초점을 잘 맞춰 주세요.", .eye, nil, "초점이 잘 맞는 선명한 사진을 선택해 주세요."),
-            ("더 가까이에서 촬영해 주세요", .eye, nil, "피사체가 더 크게 나온 사진을 선택해 주세요."),
-            ("더 멀리서 촬영해 주세요", .eye, nil, "피사체가 눈에 다 들어오는 사진을 선택해 주세요."),
+            ("더 가까이에서 촬영해 주세요", .eye, nil, "눈이 더 크게 나온 사진을 선택해 주세요."),
+            ("더 멀리서 촬영해 주세요", .eye, nil, "눈 전체가 보이는 사진을 선택해 주세요."),
+            ("move_closer", .teeth, nil, "치아가 더 크게 나온 사진을 선택해 주세요."),
+            ("move_farther", .teeth, nil, "치아 전체가 보이는 사진을 선택해 주세요."),
+            ("move_closer", .skin, "ear", "피부가 더 크게 나온 사진을 선택해 주세요."),
+            ("move_farther", .skin, "ear", "피부를 확인할 부위 전체가 보이는 사진을 선택해 주세요."),
             ("귀를 촬영해 주세요.", .skin, "ear", "귀가 잘 보이는 사진을 선택해 주세요."),
             ("몸통을 촬영해 주세요.", .skin, "belly", "몸통이 잘 보이는 사진을 선택해 주세요."),
             ("발을 촬영해 주세요.", .skin, "foot", "발이 잘 보이는 사진을 선택해 주세요."),

@@ -44,8 +44,6 @@
 "초점이 잘 맞는 선명한 사진을 선택해 주세요." = "Seleziona una foto nitida e ben a fuoco.";
 "치아가 잘 보이는 사진을 선택해 주세요." = "Seleziona una foto in cui i denti siano ben visibili.";
 "피부가 잘 보이는 사진을 선택해 주세요." = "Seleziona una foto in cui la pelle sia ben visibile.";
-"피사체가 눈에 다 들어오는 사진을 선택해 주세요." = "Seleziona una foto in cui il soggetto sia interamente inquadrato.";
-"피사체가 더 크게 나온 사진을 선택해 주세요." = "Seleziona una foto in cui il soggetto sia più grande.";
 "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요." = "La risoluzione è troppo bassa. Prova con una foto più nitida.";
 "popup.notice" = "Avviso";
 "popup.confirm" = "Conferma";
@@ -114,17 +112,26 @@
 "album.quality.not_checked" = "Non ancora misurato";
 
 // Scan failure guidance
-"error.configuration" = "Configurazione della scansione non disponibile. Contatta l’amministratore dell’app.";
-"error.authorization" = "Impossibile autorizzare l’accesso alla scansione. Contatta l’amministratore dell’app.";
+"error.configuration" = "Impossibile avviare AI Health Check. Contatta l’assistenza dell’app che stai utilizzando.";
+"error.authorization" = "Impossibile verificare l’accesso ad AI Health Check. Contatta l’assistenza dell’app che stai utilizzando.";
 "error.quota" = "Limite di richieste di scansione superato. Riprova più tardi.";
 "error.network" = "Controlla la connessione di rete e riprova.";
 "error.timeout" = "La richiesta di scansione è scaduta. Riprova.";
 "error.server" = "Si è verificato un errore del server di scansione. Riprova più tardi.";
 "error.analysis" = "Impossibile elaborare l’analisi. Riprova più tardi.";
 "error.questionnaire" = "Impossibile caricare il questionario. Riprova.";
-"error.input" = "Impossibile elaborare la foto o la richiesta di scansione. Prova un’altra foto.";
+"error.input" = "Impossibile verificare la foto o le informazioni della scansione. Riprova.";
 "error.busy" = "Una scansione è già in corso. Attendi che termini.";
 "error.cancelled" = "La scansione è stata annullata.";
 "error.result" = "Impossibile elaborare il risultato della scansione. Riprova.";
-"error.upload" = "Caricamento della foto non riuscito. Controlla la connessione di rete e riprova.";
-"photo.color_quality" = "Seleziona una foto originale a colori con informazioni cromatiche sufficienti.";
+"error.upload" = "Impossibile caricare la foto. Riprova.";
+"photo.color_quality" = "Le informazioni sui colori della foto sono insufficienti. Seleziona la foto originale.";
+
+// Album framing guidance
+"album.subject.eye.larger" = "Seleziona una foto in cui l’occhio sia più grande.";
+"album.subject.eye.full" = "Seleziona una foto in cui si veda l’intero occhio.";
+"album.subject.teeth.larger" = "Seleziona una foto in cui i denti siano più grandi.";
+"album.subject.teeth.full" = "Seleziona una foto in cui si vedano tutti i denti.";
+"album.subject.skin.larger" = "Seleziona una foto in cui la pelle sia più grande.";
+"album.subject.skin.full" = "Seleziona una foto in cui si veda l’intera area della pelle da controllare.";
+"album.retake" = "La foto selezionata è difficile da analizzare. Seleziona un’altra foto.";

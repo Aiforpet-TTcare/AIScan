@@ -5,7 +5,8 @@
 - Preserve the SDK verdict when a TTAPI diagnosis ends as failed. Native quality
   rejections now reach the retry flow instead of becoming AISC-202 server errors.
 - Give album users photo-selection guidance for resolution, color depth, subject
-  size, blur and missing subjects. Separate service/model retry guidance from
+  size, blur and missing subjects. Name eyes, teeth or skin explicitly and use
+  selected-photo wording across all six UI languages. Separate service/model retry guidance from
   photo-quality rejections, including PREPROCESS model failures.
 - Report invalid HTTP requests as AISC-400, preserving the HTTP status. Provide
   localized messages for network, timeout, configuration, authorization, upload
