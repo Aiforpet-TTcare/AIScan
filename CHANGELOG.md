@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.18
+
+- Size the album preview from the selected photo’s display aspect ratio, including
+  EXIF rotation. Landscape and square photos no longer share a fixed-height frame.
+- Limit preview height to 380 points and 60% of the viewport on small screens.
+  Crop overflow inside the preview; preserve the full original for analysis.
+- Keep quality checks, localized guidance, Core binaries and callback data unchanged.
+
 ## 3.0.17
 
 - Remove original-photo dimensions, detected-area dimensions and bit-depth values
