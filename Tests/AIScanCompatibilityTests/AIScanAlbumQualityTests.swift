@@ -52,7 +52,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertEqual(selected.metadata.bitsPerPixel, 24)
     }
 
-    func testEyeAnalysisStaysDisabledUntilBothDetectionAxesPass() throws {
+    func testEyeAnalysisStaysDisabledUntilDetectedLongSidePasses() throws {
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .eye)
         album.loadViewIfNeeded()
         var finish: ((AIScanAlbumQualityReport) -> Void)?
@@ -61,7 +61,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(selected)
         let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
         XCTAssertFalse(analyze.isEnabled)
-        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 400, height: 100)))
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 269, height: 100)))
         XCTAssertFalse(analyze.isEnabled)
         XCTAssertEqual(album.qualityReport?.detectedSize?.height, 100)
         XCTAssertNil(find(album.view, "aiscan.album.quality.detect_height"))
@@ -73,7 +73,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             AIScanReferenceTheme.disabledSurface, traits: album.traitCollection
         ), "A rejected image must visibly disable the analysis action.")
         album.applySelectedPhoto(selected)
-        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 270, height: 270)))
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 270, height: 100)))
         XCTAssertTrue(analyze.isEnabled)
     }
 
@@ -226,15 +226,38 @@ final class AIScanAlbumQualityTests: XCTestCase {
         }
     }
 
-    func testDetectedWidthAndHeightAreIndependentAndNotUpscaled() {
+    func testEyeAndTeethDetectionUseTheSame270PixelLongSideWithoutUpscaling() {
         let metadata = AIScanAlbumMetadata(width: 2000, height: 2000, bitsPerPixel: 24)
-        for (part, minimum) in [(AISCPartType.eye, 270), (.teeth, 400)] {
+        for part in [AISCPartType.eye, .teeth] {
             let report = AIScanAlbumQualityReport(metadata: metadata, part: part)
             XCTAssertFalse(report.isValid)
-            XCTAssertTrue(report.measured(CGSize(width: minimum, height: minimum)).isValid)
-            XCTAssertFalse(report.measured(CGSize(width: minimum - 1, height: minimum)).isValid)
-            XCTAssertFalse(report.measured(CGSize(width: minimum, height: minimum - 1)).isValid)
-            XCTAssertFalse(report.measured(CGSize(width: CGFloat.nan, height: CGFloat(minimum))).isValid)
+            for size in [CGSize(width: 270, height: 270), CGSize(width: 270, height: 100),
+                         CGSize(width: 100, height: 270), CGSize(width: 400, height: 100),
+                         CGSize(width: 270, height: 1), CGSize(width: 1, height: 270)] {
+                XCTAssertTrue(report.measured(size).isValid, "\(part): \(size)")
+            }
+            for size in [CGSize(width: 269, height: 269), CGSize(width: 269.9, height: 100),
+                         CGSize(width: 100, height: 269.9), CGSize(width: CGFloat.nan, height: 270),
+                         CGSize(width: 270, height: CGFloat.infinity), CGSize(width: 270, height: 0),
+                         CGSize(width: -1, height: 270)] {
+                XCTAssertFalse(report.measured(size).isValid, "\(part): \(size)")
+            }
+            XCTAssertFalse(report.measured(CGSize(width: 400, height: 100), issue: "distance").isValid)
+        }
+    }
+
+    func testTeethAnalysisAccepts270PixelLongSideInEitherOrientation() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .teeth)
+        album.loadViewIfNeeded()
+        let selected = try photo(width: 1400, height: 1400)
+        var finish: ((AIScanAlbumQualityReport) -> Void)?
+        album.onInspect = { _, completion in finish = completion }
+        let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
+        for size in [CGSize(width: 270, height: 100), CGSize(width: 100, height: 270)] {
+            album.applySelectedPhoto(selected)
+            XCTAssertFalse(analyze.isEnabled)
+            try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .teeth).measured(size))
+            XCTAssertTrue(analyze.isEnabled)
         }
     }
 

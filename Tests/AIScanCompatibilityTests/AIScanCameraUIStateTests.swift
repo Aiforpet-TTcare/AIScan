@@ -349,7 +349,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
     func testTTAPIAlbumQualityAdapterMeasuresBeforeDiagnosisInUprightPixels() throws {
         let engine = MockCameraEngine()
         engine.analysisMode = AISCAnalysisMode(rawValue: 1)! // AISCAnalysisModeTTAPI
-        engine.measuredSubjectSize = CGSize(width: 270, height: 269)
+        engine.measuredSubjectSize = CGSize(width: 270, height: 100)
         let controller = AIScanCameraController(cameraEngine: engine)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -364,7 +364,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
         var result: AIScanAlbumQualityReport?
         controller.inspectAlbumPhoto(photo, part: .eye) { result = $0 }
         let report = try XCTUnwrap(result)
-        XCTAssertFalse(report.isValid)
+        XCTAssertTrue(report.isValid)
         XCTAssertEqual(engine.measuredPhotoImages.count, 1)
         XCTAssertEqual(engine.measuredPhotoImages.first?.extent.size, CGSize(width: 1600, height: 1200))
         XCTAssertTrue(engine.diagnosedPhotoImages.isEmpty)

@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.21
+
+- Accept album eye and tooth detections when their longer side is at least
+  270 original-image pixels. Reduce the tooth detection minimum from 400 to 270
+  and stop requiring both detection dimensions to meet the minimum.
+- Preserve source-image resolution/bit-depth checks, detection failures, original
+  images for analysis, fixed center-cropped previews, Core binaries and callbacks.
+
 ## 3.0.20
 
 - Preserve at least 16 points of horizontal padding on retake buttons in every

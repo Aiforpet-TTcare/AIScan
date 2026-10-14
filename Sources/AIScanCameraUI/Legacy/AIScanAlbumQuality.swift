@@ -122,10 +122,15 @@ struct AIScanAlbumQualityReport: Sendable {
 
     var detectionRows: [Row] {
         guard requiresDetection else { return [] }
-        let minimum = part == .teeth ? 400 : 270
+        let longestSide: Int?
+        if let width = pixels(detectedSize?.width), let height = pixels(detectedSize?.height),
+           width > 0, height > 0 {
+            longestSide = max(width, height)
+        } else {
+            longestSide = nil
+        }
         return [
-            row("detect_width", pixels(detectedSize?.width), minimum, "distance", override: detectionIssue ?? (detectedSize == nil ? "not_checked" : nil)),
-            row("detect_height", pixels(detectedSize?.height), minimum, "distance", override: detectionIssue ?? (detectedSize == nil ? "not_checked" : nil)),
+            row("detect_long_side", longestSide, 270, "distance", override: detectionIssue ?? (detectedSize == nil ? "not_checked" : nil)),
         ]
     }
 

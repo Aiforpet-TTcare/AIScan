@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.20")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.0.21")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.0.20'
+    :tag => '3.0.21'
 ```
 
 ### Single public module
@@ -283,22 +283,24 @@ Please refer to the service documentation for more details.
 ## Contact
 
 For your publishable key or any other questions, visit [AI for Pet](https://www.aiforpet.com/).
-## Album image quality (3.0.14)
+## Album image quality (3.0.21)
 
 With `allowsAlbum: true`, the SDK checks the
-selected image before starting analysis. It displays source pixel dimensions,
-bits per pixel and, for eyes/teeth, the detected subject dimensions. Failed
-values and reasons appear in red and the analysis action stays disabled.
+selected image before starting analysis. It shows localized, actionable guidance
+when a photo fails; internal pixel and bit-depth measurements are not displayed.
+The analysis action stays disabled until the checks pass.
 
-| Part | Minimum source width and height | Minimum detected width and height | Minimum source bits per pixel |
+| Part | Minimum source width and height | Minimum detected longer side | Minimum source bits per pixel |
 | --- | --- | --- | --- |
 | Skin | 1200 × 1200 px | Not required | 24 bpp |
-| Eye | 900 × 900 px | 270 × 270 px | 24 bpp |
-| Teeth | 1400 × 1400 px | 400 × 400 px | 24 bpp |
+| Eye | 900 × 900 px | 270 px | 24 bpp |
+| Teeth | 1400 × 1400 px | 270 px | 24 bpp |
 
 JPEG, PNG and HEIC metadata are inspected before conversion. If source metadata
 cannot be read, the SDK asks the user to select another photo. Detection sizes
-refer to upright original pixels, before crop expansion or resizing. TTAPI also
+refer to upright original pixels, before crop expansion or resizing. For eyes
+and teeth, either detected width or height reaching 270 px passes the size gate;
+the shorter side must be positive but has no separate minimum. TTAPI also
 performs the detection-only quality check before uploading; the final callback
 format is unchanged. Passing these minimum checks continues the existing
 analysis flow and does not guarantee a successful diagnosis.
