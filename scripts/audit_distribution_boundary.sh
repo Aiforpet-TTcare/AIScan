@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CORE="$ROOT/AIScanCore.xcframework"
 EXPECTED_SYMBOLS="$ROOT/scripts/aiscancore-public-symbols.txt"
+mkdir -p "$ROOT/tmp"
 
 if [[ ! -d "$CORE" ]]; then
   echo "AIScanCore.xcframework is missing." >&2
