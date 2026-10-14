@@ -147,6 +147,12 @@ final class AIScanAlbumQualityTests: XCTestCase {
             XCTAssertEqual(preview.bounds.height, 350 * CGFloat(height) / CGFloat(width), accuracy: 0.5,
                            "Photos below the height limit must display without cropping.")
             XCTAssertTrue(preview.image === selected.image)
+            let card = try XCTUnwrap(find(album.view, "aiscan.album.photo-card"))
+            XCTAssertEqual(preview.frame, card.bounds)
+            XCTAssertEqual(card.layer.bounds, preview.bounds)
+            XCTAssertEqual(card.layer.borderWidth, 1)
+            XCTAssertFalse(card.layer.sublayers?.contains { $0.name == "aiscan.album.photo-border" } ?? false,
+                           "A separate border path must not retain the previous photo's size.")
         }
     }
 

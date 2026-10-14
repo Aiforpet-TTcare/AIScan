@@ -2457,14 +2457,11 @@ final class AIScanCameraUIStateTests: XCTestCase {
 
         XCTAssertEqual(card.bounds.height, 380, accuracy: 0.5)
         XCTAssertEqual(card.layer.cornerRadius, 12)
-        let photoBorder = try XCTUnwrap(card.layer.sublayers?.first {
-            $0.name == "aiscan.album.photo-border"
-        } as? CAShapeLayer)
         let selectBorder = try XCTUnwrap(select.layer.sublayers?.first {
             $0.name == "aiscan.album.select-photo-border"
         } as? CAShapeLayer)
-        XCTAssertEqual(photoBorder.lineWidth, 1)
-        XCTAssertEqual(photoBorder.path?.boundingBox, card.bounds)
+        XCTAssertEqual(card.layer.borderWidth, 1)
+        XCTAssertEqual(card.layer.bounds, card.bounds)
         XCTAssertEqual(selectBorder.lineDashPattern, [4])
         XCTAssertEqual(selectBorder.lineDashPhase, 7)
         XCTAssertEqual(
@@ -2489,7 +2486,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
         XCTAssertEqual(selectLabel.font.pointSize, 16)
         XCTAssertEqual(analyzeLabel.font.pointSize, 17)
         XCTAssertEqual(
-            UIColor(cgColor: try XCTUnwrap(photoBorder.strokeColor)),
+            UIColor(cgColor: try XCTUnwrap(card.layer.borderColor)),
             UIColor(red: 0xEB / 255, green: 0xED / 255, blue: 0xF0 / 255, alpha: 1)
         )
         let emptyLabel = try XCTUnwrap(album.view.allLabels.first {
