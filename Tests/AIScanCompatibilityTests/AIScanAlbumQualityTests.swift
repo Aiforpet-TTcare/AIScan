@@ -134,7 +134,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.view.layoutIfNeeded()
         XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height, "A short viewport must scroll instead of clipping guidance.")
     }
-    func testPreviewFollowsPhotoRatioUntilMaximumHeight() throws {
+    func testFixedFrameFillsAndCenterCropsEveryPhotoShape() throws {
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
         album.loadViewIfNeeded()
         album.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
@@ -144,8 +144,10 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.applySelectedPhoto(selected)
             album.view.layoutIfNeeded()
             XCTAssertEqual(preview.bounds.width, 350, accuracy: 0.5)
-            XCTAssertEqual(preview.bounds.height, 350 * CGFloat(height) / CGFloat(width), accuracy: 0.5,
-                           "Photos below the height limit must display without cropping.")
+            XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5,
+                           "Changing photos must not resize the frame.")
+            XCTAssertEqual(preview.contentMode, .scaleAspectFill)
+            XCTAssertTrue(preview.clipsToBounds)
             XCTAssertTrue(preview.image === selected.image)
             let card = try XCTUnwrap(find(album.view, "aiscan.album.photo-card"))
             XCTAssertEqual(preview.frame, card.bounds)
@@ -156,7 +158,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         }
     }
 
-    func testTallPreviewCropsOnlyAtMaximumAndPreservesAnalysisPhoto() throws {
+    func testFixedFrameCropsPreviewAndPreservesFullAnalysisPhoto() throws {
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
         album.loadViewIfNeeded()
         album.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
@@ -196,7 +198,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height)
     }
 
-    func testEXIFRotatedPhotoUsesDisplayOrientationForPreviewRatio() throws {
+    func testFixedFramePreservesEXIFDisplayOrientation() throws {
         let source = try photo(width: 1300, height: 1200)
         for orientation in [UIImage.Orientation.right, .left, .rightMirrored, .leftMirrored] {
             let image = UIImage(cgImage: try XCTUnwrap(source.image.cgImage), scale: 1, orientation: orientation)
@@ -207,7 +209,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.applySelectedPhoto(selected)
             album.view.layoutIfNeeded()
             let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-            XCTAssertEqual(preview.bounds.height, 350 * 1300 / 1200, accuracy: 0.5)
+            XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5)
             XCTAssertEqual(preview.image?.imageOrientation, orientation)
             XCTAssertTrue(preview.image === image)
         }

@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.20
+
+- Preserve at least 16 points of horizontal padding on retake buttons in every
+  UI language. Let longer translations expand the button instead of touching
+  its rounded edges.
+
+- Keep the album preview frame the same size when changing photos. Fill the frame
+  using the photo’s display aspect ratio and center-crop overflow.
+- Bound the frame to 380 points and adapt it to shorter viewports. Preserve the
+  full original image for analysis and the border attached to the frame.
+- Keep quality checks, user guidance, Core binaries and callback data unchanged.
+
 ## 3.0.19
 
 - Keep the album border attached to the photo card itself so it resizes with the
