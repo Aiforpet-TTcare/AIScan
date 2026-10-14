@@ -280,7 +280,6 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         contentStack.addArrangedSubview(photoCard)
         let photoHeight = photoCard.heightAnchor.constraint(equalToConstant: 380)
         photoHeightConstraint = photoHeight
-        photoHeight.priority = .defaultHigh
         photoHeight.isActive = true
 
         buildValidationRow()
@@ -454,7 +453,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func updatePreviewHeight() {
-        let height: CGFloat = selectedImage == nil ? 380 : min(380, max(160, view.bounds.height * 0.3))
+        let height: CGFloat
+        if let selectedImage, selectedImage.size.width > 0, selectedImage.size.height > 0 {
+            let availableWidth = max(1, view.bounds.width - 40)
+            let maximumHeight = min(380, max(160, view.bounds.height * 0.6))
+            height = min(availableWidth * selectedImage.size.height / selectedImage.size.width, maximumHeight)
+        } else {
+            height = 380
+        }
         if photoHeightConstraint?.constant != height { photoHeightConstraint?.constant = height }
     }
 

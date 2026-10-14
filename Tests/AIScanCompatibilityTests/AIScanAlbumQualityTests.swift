@@ -134,6 +134,79 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.view.layoutIfNeeded()
         XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height, "A short viewport must scroll instead of clipping guidance.")
     }
+    func testPreviewFollowsPhotoRatioUntilMaximumHeight() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
+        album.loadViewIfNeeded()
+        album.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
+        for (width, height) in [(1800, 1200), (1200, 1200), (1200, 1300), (2400, 300)] {
+            let selected = try photo(width: width, height: height)
+            album.applySelectedPhoto(selected)
+            album.view.layoutIfNeeded()
+            XCTAssertEqual(preview.bounds.width, 350, accuracy: 0.5)
+            XCTAssertEqual(preview.bounds.height, 350 * CGFloat(height) / CGFloat(width), accuracy: 0.5,
+                           "Photos below the height limit must display without cropping.")
+            XCTAssertTrue(preview.image === selected.image)
+        }
+    }
+
+    func testTallPreviewCropsOnlyAtMaximumAndPreservesAnalysisPhoto() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
+        album.loadViewIfNeeded()
+        album.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        let selected = try photo(width: 1200, height: 3600)
+        album.applySelectedPhoto(selected)
+        album.view.layoutIfNeeded()
+        let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
+        XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5)
+        XCTAssertEqual(preview.contentMode, .scaleAspectFill, "Overflow is cropped in the preview only.")
+        XCTAssertTrue(preview.clipsToBounds)
+        var analyzedImage: UIImage?
+        album.onAnalyze = { image, _ in analyzedImage = image }
+        let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
+        XCTAssertTrue(analyze.isEnabled)
+        let action = try XCTUnwrap(analyze.actions(forTarget: album, forControlEvent: .touchUpInside)?.first)
+        _ = album.perform(NSSelectorFromString(action))
+        XCTAssertTrue(analyzedImage === selected.image, "The full original must reach analysis, without preview cropping.")
+        XCTAssertEqual(analyzedImage?.size, CGSize(width: 1200, height: 3600))
+    }
+
+    func testPreviewReflowsForSmallViewportAndKeepsActionsScrollable() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
+        album.loadViewIfNeeded()
+        album.view.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
+        album.applySelectedPhoto(try photo(width: 1200, height: 3600))
+        album.view.layoutIfNeeded()
+        let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
+        XCTAssertEqual(preview.bounds.height, 340.8, accuracy: 0.5)
+        let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
+        let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze"))
+        XCTAssertLessThanOrEqual(analyze.convert(analyze.bounds, to: scroll).maxY, scroll.contentSize.height + 1)
+        album.view.frame.size = CGSize(width: 568, height: 320)
+        album.view.setNeedsLayout()
+        album.view.layoutIfNeeded()
+        XCTAssertEqual(preview.bounds.width, 528, accuracy: 0.5)
+        XCTAssertEqual(preview.bounds.height, 192, accuracy: 0.5)
+        XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height)
+    }
+
+    func testEXIFRotatedPhotoUsesDisplayOrientationForPreviewRatio() throws {
+        let source = try photo(width: 1300, height: 1200)
+        for orientation in [UIImage.Orientation.right, .left, .rightMirrored, .leftMirrored] {
+            let image = UIImage(cgImage: try XCTUnwrap(source.image.cgImage), scale: 1, orientation: orientation)
+            let selected = AIScanAlbumPhoto(image: image)
+            let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
+            album.loadViewIfNeeded()
+            album.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+            album.applySelectedPhoto(selected)
+            album.view.layoutIfNeeded()
+            let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
+            XCTAssertEqual(preview.bounds.height, 350 * 1300 / 1200, accuracy: 0.5)
+            XCTAssertEqual(preview.image?.imageOrientation, orientation)
+            XCTAssertTrue(preview.image === image)
+        }
+    }
+
     func testPartSpecificOriginalResolutionBoundaries() {
         for (part, minimum) in [(AISCPartType.skin, 1200), (.eye, 900), (.teeth, 1400)] {
             let valid = AIScanAlbumMetadata(width: minimum, height: minimum, bitsPerPixel: 24)
