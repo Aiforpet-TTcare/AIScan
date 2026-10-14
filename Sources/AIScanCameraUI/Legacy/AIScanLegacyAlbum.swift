@@ -439,14 +439,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
     }
 
     private func updatePreviewHeight() {
-        let height: CGFloat
-        if let selectedImage, selectedImage.size.width > 0, selectedImage.size.height > 0 {
-            let availableWidth = max(1, view.bounds.width - 40)
-            let maximumHeight = min(380, max(160, view.bounds.height * 0.6))
-            height = min(availableWidth * selectedImage.size.height / selectedImage.size.width, maximumHeight)
-        } else {
-            height = 380
-        }
+        let height = min(380, max(160, view.bounds.height * 0.6))
         if photoHeightConstraint?.constant != height { photoHeightConstraint?.constant = height }
     }
 
