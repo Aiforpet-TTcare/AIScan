@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.17
+
+- Remove original-photo dimensions, detected-area dimensions and bit-depth values
+  from the album screen. Retain the internal quality gates and measurements.
+- Show only localized photo-checking status and actionable guidance, including
+  the existing same-photo retry for service failures. Polygon callbacks and
+  Core binaries are unchanged.
+
 ## 3.0.16
 
 - Explain album photo failures in everyday language, with a clear next step,
