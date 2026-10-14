@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.2
+
+- Match album and multi-photo review to the dark camera style, with a pinned album action and separate camera/album controls.
+
+- Expose the accepted-camera-photo callback to Objective-C Core so multi-photo captures open review instead of an invalid-input popup.
+- Verify the actual optional-selector dispatch boundary and delivery of the accepted image to the UI.
+
+
 ## 3.1.1
 
 - Fill the fixed diagnosis-progress photo frame with a centered crop for every image ratio.

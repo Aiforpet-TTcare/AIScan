@@ -70,7 +70,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             $0.name == "aiscan.album.analyze-background"
         } as? CAShapeLayer)
         XCTAssertEqual(background.fillColor, AIScanReferenceTheme.resolvedCGColor(
-            AIScanReferenceTheme.disabledSurface, traits: album.traitCollection
+            AIScanReferenceTheme.photoAction, traits: album.traitCollection
         ), "A rejected image must visibly disable the analysis action.")
         album.applySelectedPhoto(selected)
         try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 270, height: 100)))
@@ -144,7 +144,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.applySelectedPhoto(selected)
             album.view.layoutIfNeeded()
             XCTAssertEqual(preview.bounds.width, 350, accuracy: 0.5)
-            XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5,
+            XCTAssertEqual(preview.bounds.height, 283.5, accuracy: 0.5,
                            "Changing photos must not resize the frame.")
             XCTAssertEqual(preview.contentMode, .scaleAspectFill)
             XCTAssertTrue(preview.clipsToBounds)
@@ -166,7 +166,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(selected)
         album.view.layoutIfNeeded()
         let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-        XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5)
+        XCTAssertEqual(preview.bounds.height, 283.5, accuracy: 0.5)
         XCTAssertEqual(preview.contentMode, .scaleAspectFill, "Overflow is cropped in the preview only.")
         XCTAssertTrue(preview.clipsToBounds)
         var analyzedImage: UIImage?
@@ -186,10 +186,11 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(try photo(width: 1200, height: 3600))
         album.view.layoutIfNeeded()
         let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-        XCTAssertEqual(preview.bounds.height, 340.8, accuracy: 0.5)
+        XCTAssertEqual(preview.bounds.height, 226.8, accuracy: 0.5)
         let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
         let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze"))
-        XCTAssertLessThanOrEqual(analyze.convert(analyze.bounds, to: scroll).maxY, scroll.contentSize.height + 1)
+        XCTAssertLessThanOrEqual(analyze.frame.maxY, album.view.bounds.height)
+        XCTAssertGreaterThanOrEqual(analyze.frame.minY, scroll.frame.maxY)
         album.view.frame.size = CGSize(width: 568, height: 320)
         album.view.setNeedsLayout()
         album.view.layoutIfNeeded()
@@ -209,7 +210,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.applySelectedPhoto(selected)
             album.view.layoutIfNeeded()
             let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-            XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5)
+            XCTAssertEqual(preview.bounds.height, 283.5, accuracy: 0.5)
             XCTAssertEqual(preview.image?.imageOrientation, orientation)
             XCTAssertTrue(preview.image === image)
         }

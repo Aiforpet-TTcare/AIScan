@@ -139,6 +139,26 @@ final class AIScanMultiPhotoTests: XCTestCase {
         coordinator.cancel()
     }
 
+    func testCapturedPhotoCollectionBridgeIsVisibleToObjectiveCCore() async throws {
+        let controller = AIScanCameraController(cameraEngine: MockCameraEngine())
+        let probe = MultiCaptureCollectionProbe()
+        controller.delegate = probe
+        let selector = NSSelectorFromString("cameraEngineDidCollectImageInput:")
+        XCTAssertTrue(controller.responds(to: selector))
+        guard controller.responds(to: selector) else { return }
+        var buffer: CVPixelBuffer?
+        XCTAssertEqual(CVPixelBufferCreate(kCFAllocatorDefault, 64, 64,
+            kCVPixelFormatType_32BGRA, nil, &buffer), kCVReturnSuccess)
+        let input = AISCImageInput(pixelBuffer: try XCTUnwrap(buffer))
+        // Core uses Objective-C optional-selector dispatch, not a direct Swift
+        // call. Exercise that exact boundary before checking the UI event.
+        controller.perform(selector, with: input)
+        try await drain()
+        XCTAssertEqual(probe.inputs.count, 1)
+        XCTAssertTrue(probe.inputs.first === input)
+        XCTAssertEqual(probe.preview?.size, CGSize(width: 64, height: 64))
+    }
+
     func testDefaultFlagRemainsFalseAndCollectionIsOptIn() {
         let context = AISCScanContext(); context.partType = .eye; context.petType = .dog
         let engine = MockCameraEngine()
@@ -190,6 +210,42 @@ final class AIScanMultiPhotoTests: XCTestCase {
         attachment.name = "multi-review-320x568"; attachment.lifetime = .keepAlways; addAttachment(attachment)
     }
 
+    func testReviewOffersCameraAndAlbumDirectlyAndHidesBothAtCapacity() async throws {
+        let (coordinator, _) = fixture(4)
+        XCTAssertTrue(append(coordinator))
+        let review = AIScanMultiPhotoReviewViewController(allowsAlbum: true)
+        review.refresh(coordinator.items)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        window.overrideUserInterfaceStyle = .light
+        window.rootViewController = review; window.makeKeyAndVisible()
+        defer { window.isHidden = true; coordinator.cancel() }
+        review.view.layoutIfNeeded()
+        XCTAssertEqual(review.traitCollection.userInterfaceStyle, .dark)
+        for frame in descendants(review.view) where frame.accessibilityIdentifier?.hasPrefix("aiscan.multi.photo.") == true {
+            XCTAssertEqual(frame.bounds.width, frame.bounds.height, accuracy: 0.5)
+        }
+        let all = descendants(review.view)
+        let camera = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.add" } as? UIButton)
+        let album = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.album" } as? UIButton)
+        var cameras = 0; var albums = 0
+        review.onCamera = { cameras += 1 }; review.onAlbum = { albums += 1 }
+        for button in [camera, album] {
+            XCTAssertFalse(button.isHidden)
+            for target in button.allTargets {
+                for action in button.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                    (target as? NSObject)?.perform(NSSelectorFromString(action), with: button)
+                }
+            }
+        }
+        XCTAssertEqual(cameras, 1); XCTAssertEqual(albums, 1)
+        XCTAssertNil(review.presentedViewController)
+        let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: review.view.bounds).image { review.view.layer.render(in: $0.cgContext) })
+        attachment.name = "multi-dark-review-one-photo"; attachment.lifetime = .keepAlways; add(attachment)
+        for _ in 0..<3 { XCTAssertTrue(append(coordinator)) }
+        review.refresh(coordinator.items)
+        XCTAssertTrue(camera.isHidden); XCTAssertTrue(album.isHidden)
+    }
+
     func testAggregateIncludesSuccessRetakeAndNetworkFailureWithoutChangingNestedPayloads() throws {
         let native: [String: Any] = ["status": "SUCCESS", "response": ["symptoms": [["code": "opacity", "polygons": [[12.25, 23.5, 35.75, 47.125]]]]]]
         let success = AISCDisplayResult(status: "completed", diagnosisID: "success", symptoms: [], contractResult: AISCContractResult(schema: "native.v1", payload: native))
@@ -239,4 +295,17 @@ final class AIScanMultiPhotoTests: XCTestCase {
 @MainActor
 private final class MultiTestStackDismisser: AIScanCameraStackDismissing {
     func dismissStack(from camera: UIViewController, transition: AIScanCameraStackDismissalTransition, completion: @escaping () -> Void) { completion() }
+}
+
+
+@MainActor
+private final class MultiCaptureCollectionProbe: AIScanCameraControllerDelegate {
+    var inputs: [AISCImageInput] = []
+    var preview: UIImage?
+    func aiscanCameraController(_ controller: AIScanCameraController, didUpdate evaluation: AISCFrameEvaluation) {}
+    func aiscanCameraController(_ controller: AIScanCameraController, didCapture evaluation: AISCFrameEvaluation) {}
+    func aiscanCameraController(_ controller: AIScanCameraController, didFail error: Error) { XCTFail("Unexpected collection failure: \(error)") }
+    func aiscanCameraController(_ controller: AIScanCameraController, didCollect input: AISCImageInput, preview: UIImage) {
+        inputs.append(input); self.preview = preview
+    }
 }

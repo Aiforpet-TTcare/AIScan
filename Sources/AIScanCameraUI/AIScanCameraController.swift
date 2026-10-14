@@ -341,6 +341,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         }
     }
 
+    @objc(cameraEngineDidCollectImageInput:)
     public func cameraEngineDidCollectImageInput(_ input: AISCImageInput) {
         guard let pixels = input.pixelBuffer else { return }
         let image = CIImage(cvPixelBuffer: pixels)

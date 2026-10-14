@@ -157,3 +157,5 @@
 "multi.retake" = "Ta ett nytt foto";
 "multi.complete" = "Klart";
 "multi.requires_ttapi" = "Analys av flera foton är inte tillgänglig. Analysera ett foto i taget.";
+
+"multi.guidance" = "Lägg till upp till 4 bilder och analysera dem tillsammans.";

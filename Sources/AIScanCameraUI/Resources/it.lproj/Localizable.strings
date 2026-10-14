@@ -157,3 +157,5 @@
 "multi.retake" = "Scatta di nuovo";
 "multi.complete" = "Completata";
 "multi.requires_ttapi" = "L’analisi di più foto non è disponibile. Analizza una foto alla volta.";
+
+"multi.guidance" = "Aggiungi fino a 4 foto e analizzale insieme.";
