@@ -175,6 +175,41 @@ final class AIScanMultiPhotoTests: XCTestCase {
         XCTAssertTrue(multiEngine.photoCollectionEnabled)
     }
 
+    func testReviewGridControlSitsBesideShutterAndTracksCaptureAvailability() throws {
+        for size in [CGSize(width: 320, height: 568), CGSize(width: 390, height: 844)] {
+            let context = AISCScanContext(); context.partType = .eye; context.petType = .dog
+            let multi = AIScanCameraViewController(cameraController: AIScanCameraController(cameraEngine: MockCameraEngine()),
+                context: context, stackDismisser: MultiTestStackDismisser(), enableMultiMode: true,
+                multiPhotoControllerFactory: { AIScanCameraController(cameraEngine: MockCameraEngine()) })
+            multi.beginsScanningAutomatically = false
+            multi.loadViewIfNeeded(); multi.view.frame = CGRect(origin: .zero, size: size)
+            multi.view.layoutIfNeeded()
+            let surface = try XCTUnwrap(multi.children.compactMap { $0 as? CameraViewController }.first)
+            surface.view.layoutIfNeeded(); surface.setPreparing(false)
+            let grid = surface.photoReviewButton
+            XCTAssertTrue(grid.isHidden)
+            XCTAssertFalse(grid.isEnabled)
+            surface.setPhotoReview(count: 1, available: true)
+            XCTAssertFalse(grid.isHidden)
+            XCTAssertTrue(grid.isEnabled)
+            XCTAssertNil(grid.title(for: .normal))
+            XCTAssertNotNil(grid.image(for: .normal))
+            XCTAssertEqual(grid.bounds.size, CGSize(width: 44, height: 44))
+            XCTAssertEqual(grid.frame.midY, surface.captureButtonContainer.convert(surface.captureButtonContainer.bounds, to: surface.view).midY, accuracy: 0.5)
+            XCTAssertGreaterThan(grid.frame.minX, surface.captureButtonContainer.frame.maxX)
+            XCTAssertEqual(surface.albumButton.frame.minX, surface.view.bounds.width - grid.frame.maxX, accuracy: 0.5)
+            surface.setCaptureAttempt(active: true)
+            XCTAssertTrue(grid.isHidden); XCTAssertFalse(grid.isEnabled)
+            surface.setCaptureAttempt(active: false)
+            XCTAssertFalse(grid.isHidden); XCTAssertTrue(grid.isEnabled)
+            let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: multi.view.bounds).image { multi.view.layer.render(in: $0.cgContext) })
+            attachment.name = "camera-review-grid-\(Int(size.width))"; attachment.lifetime = .keepAlways; add(attachment)
+            surface.setPhotoReview(count: 0, available: true)
+            XCTAssertTrue(grid.isHidden, "Removing the last photo hides review again.")
+            XCTAssertFalse(grid.isEnabled)
+        }
+    }
+
     func testReviewUsesFourFixedSquareFillFramesAndRemovalRemainsTappableOnSmallScreens() async throws {
         let (coordinator, _) = fixture(4)
         for _ in 0..<4 { XCTAssertTrue(append(coordinator)) }
@@ -193,6 +228,18 @@ final class AIScanMultiPhotoTests: XCTestCase {
             let image = try XCTUnwrap(frame.subviews.compactMap { $0 as? UIImageView }.first)
             XCTAssertEqual(image.contentMode, .scaleAspectFill)
         }
+        var cameraReturns = 0
+        review.onCamera = { cameraReturns += 1 }
+        for frame in frames {
+            let button = try XCTUnwrap(frame as? UIButton)
+            for target in button.allTargets {
+                for action in button.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                    (target as? NSObject)?.perform(NSSelectorFromString(action), with: button)
+                }
+            }
+        }
+        XCTAssertEqual(cameraReturns, 4, "Every occupied slot returns to camera, including at capacity.")
+        XCTAssertNil(review.presentedViewController)
         let add = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.add" })
         XCTAssertTrue(add.isHidden)
         let remove = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.remove.2" } as? UIButton)
@@ -237,7 +284,21 @@ final class AIScanMultiPhotoTests: XCTestCase {
                 }
             }
         }
-        XCTAssertEqual(cameras, 1); XCTAssertEqual(albums, 1)
+        let empty = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.photo.2" } as? UIButton)
+        for target in empty.allTargets {
+            for action in empty.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                (target as? NSObject)?.perform(NSSelectorFromString(action), with: empty)
+            }
+        }
+        var backs = 0
+        review.onBack = { backs += 1 }
+        let back = try XCTUnwrap(all.first { $0.accessibilityIdentifier == "aiscan.multi.back" } as? UIButton)
+        for target in back.allTargets {
+            for action in back.actions(forTarget: target, forControlEvent: .touchUpInside) ?? [] {
+                (target as? NSObject)?.perform(NSSelectorFromString(action), with: back)
+            }
+        }
+        XCTAssertEqual(cameras, 2); XCTAssertEqual(albums, 1); XCTAssertEqual(backs, 1)
         XCTAssertNil(review.presentedViewController)
         let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: review.view.bounds).image { review.view.layer.render(in: $0.cgContext) })
         attachment.name = "multi-dark-review-one-photo"; attachment.lifetime = .keepAlways; add(attachment)
@@ -258,14 +319,15 @@ final class AIScanMultiPhotoTests: XCTestCase {
         ]
         let result = AIScanResult(multiOutcomes: outcomes, petType: .dog, partType: .eye, petId: nil, userId: nil)
         XCTAssertEqual(result.status, "PARTIAL")
-        XCTAssertEqual(result.typedContractResult?.schema, "ttcare.multi.v1")
+        XCTAssertEqual(result.typedContractResult?.schema, "ttcare.multi.v2")
         let photos = try XCTUnwrap(result.photoResults)
         XCTAssertEqual(photos.map(\.status), ["SUCCESS", "RETRY", "ERROR"])
         XCTAssertEqual(photos.first?.result?.jsonObject as NSDictionary?, native as NSDictionary)
         XCTAssertEqual(photos.dropFirst().first?.result?.jsonObject as NSDictionary?, retryPayload as NSDictionary)
         XCTAssertEqual(photos.last?.error?.retryable, true)
         XCTAssertEqual(photos.last?.message, "Please try again")
-        XCTAssertNil(result.jsonObject?["schema"])
+        XCTAssertNil(result.jsonObject)
+        XCTAssertEqual(result.jsonArray?.count, 3)
         let failed = AIScanResult(multiOutcomes: Array(outcomes.suffix(1)), petType: .dog, partType: .eye, petId: nil, userId: nil)
         XCTAssertEqual(failed.status, "ERROR")
         XCTAssertEqual(failed.photoResults?.count, 1)
@@ -273,6 +335,37 @@ final class AIScanMultiPhotoTests: XCTestCase {
 
     private func addAttachment(_ attachment: XCTAttachment) { add(attachment) }
     private func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+
+    func testRootArrayRoundTripPreservesOrderedFailuresAndNativeResults() throws {
+        let entries: [[String: Any]] = [
+            ["photoId": "a", "photoIndex": 1, "status": "ERROR", "error": ["domain": "network", "code": 408, "message": "Try again", "retryable": true]],
+            ["photoId": "b", "photoIndex": 2, "status": "SUCCESS", "result": ["status": "SUCCESS", "response": ["symptoms": [["polygons": [[1, 2, 3, 4]]]]]]],
+        ]
+        let decoded = try JSONDecoder().decode(AIScanResult.self, from: JSONSerialization.data(withJSONObject: entries))
+        XCTAssertTrue(decoded.isMultiMode)
+        XCTAssertEqual(decoded.status, "PARTIAL")
+        XCTAssertEqual(decoded.photoResults?.map(\.photoIndex), [1, 2])
+        XCTAssertEqual(decoded.photoResults?.first?.error?.code, 408)
+        XCTAssertEqual(decoded.jsonArray as NSArray?, entries as NSArray)
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder().encode(decoded))
+        XCTAssertEqual(encoded as? NSArray, entries as NSArray)
+        let callback = try JSONSerialization.jsonObject(with: Data(try XCTUnwrap(decoded.string).utf8))
+        XCTAssertEqual(callback as? NSArray, entries as NSArray)
+        XCTAssertNil(callback as? [String: Any])
+    }
+
+    func testRotatingPreviewDoesNotChangeTheCompletedPhotoCount() {
+        let progress = TTProgressViewController.instantiate()
+        progress.setPhotoProgress(completed: 2, total: 4)
+        let count = progress.subtitleLabel.text
+        for color in [UIColor.red, .green, .blue, .yellow, .red] {
+            let image = UIGraphicsImageRenderer(size: CGSize(width: 20, height: 20)).image { color.setFill(); $0.fill(CGRect(x: 0, y: 0, width: 20, height: 20)) }
+            progress.set(previewImage: image)
+            XCTAssertEqual(progress.subtitleLabel.text, count)
+        }
+        progress.setPhotoProgress(completed: 3, total: 4)
+        XCTAssertNotEqual(progress.subtitleLabel.text, count)
+    }
 
     func testAggregatePreservesOrderedFailuresAndNestedNativePayloadOnJSONRoundTrip() throws {
         let native: [String: Any] = ["status": "SUCCESS", "petType": "DOG", "response": ["symptoms": [["code": "opacity", "polygons": [[12.25, 23.5, 35.75, 47.125]]]]]]
@@ -288,7 +381,8 @@ final class AIScanMultiPhotoTests: XCTestCase {
         guard photos.count == 2 else { return }
         XCTAssertEqual(photos[0].error?.code, 408)
         XCTAssertEqual(photos[1].result?.jsonObject as NSDictionary?, native as NSDictionary)
-        XCTAssertEqual(decoded.jsonObject as NSDictionary?, payload as NSDictionary)
+        XCTAssertEqual(decoded.jsonArray as NSArray?, payload["results"] as? NSArray)
+        XCTAssertNil(decoded.jsonObject)
     }
 }
 

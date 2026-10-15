@@ -170,8 +170,8 @@ final class AIScanMultiPhotoReviewViewController: UIViewController {
                 icon.centerYAnchor.constraint(equalTo: iconBackground.centerYAnchor),
             ])
             photo.accessibilityLabel = AIScanCameraStrings.localizedMessageKey("multi.add_photo")
-            photo.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
         }
+        photo.addTarget(self, action: #selector(cameraTapped), for: .touchUpInside)
         stack.addArrangedSubview(photo)
         let caption = UILabel()
         caption.text = String(format: AIScanCameraStrings.localizedMessageKey("multi.photo"), index + 1)
@@ -218,17 +218,6 @@ final class AIScanMultiPhotoReviewViewController: UIViewController {
     }
     @objc private func analyzeTapped() { if !items.isEmpty { onAnalyze?() } }
     @objc private func backTapped() { onBack?() }
-    @objc private func cameraTapped() { if items.count < 4 { onCamera?() } }
+    @objc private func cameraTapped() { onCamera?() }
     @objc private func albumTapped() { if allowsAlbum && items.count < 4 { onAlbum?() } }
-    @objc private func addTapped() {
-        guard items.count < 4 else { return }
-        guard allowsAlbum else { onCamera?(); return }
-        let chooser = UIAlertController(title: AIScanCameraStrings.localizedMessageKey("multi.add_photo"), message: nil, preferredStyle: .actionSheet)
-        chooser.addAction(UIAlertAction(title: AIScanCameraStrings.localizedMessageKey("multi.camera"), style: .default) { [weak self] _ in self?.onCamera?() })
-        chooser.addAction(UIAlertAction(title: AIScanCameraStrings.localizedMessageKey("multi.album"), style: .default) { [weak self] _ in self?.onAlbum?() })
-        chooser.addAction(UIAlertAction(title: AIScanCameraStrings.localizedMessageKey("multi.cancel"), style: .cancel))
-        chooser.popoverPresentationController?.sourceView = addButton
-        chooser.popoverPresentationController?.sourceRect = addButton.bounds
-        present(chooser, animated: true)
-    }
 }

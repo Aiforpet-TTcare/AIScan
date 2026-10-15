@@ -266,6 +266,11 @@ final class TTProgressViewController: UIViewController {
         dotAnimationView.startAnimations()
     }
 
+    func setPhotoProgress(completed: Int, total: Int) {
+        loadViewIfNeeded()
+        subtitleLabel.text = String(format: AIScanCameraStrings.localizedMessageKey("multi.progress"), completed, total)
+    }
+
     func set(progress: Double, animated: Bool = true) {
         let normalized = min(max(progress, 0), 1)
         let percentage = Int((normalized * 100).rounded())

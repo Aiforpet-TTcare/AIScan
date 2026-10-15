@@ -151,7 +151,7 @@
 "multi.ready" = "Photo ready";
 "multi.preparing" = "Preparing photo…";
 "multi.upload_failed" = "Couldn’t prepare this photo. Remove it and add it again.";
-"multi.progress" = "Photo %d/%d · %d complete";
+"multi.progress" = "Analysis complete %d/%d";
 "multi.result_title" = "Photo results";
 "multi.failed" = "Analysis failed";
 "multi.retake" = "Take another photo";
@@ -159,3 +159,6 @@
 "multi.requires_ttapi" = "Multiple-photo analysis is unavailable. Please analyze one photo at a time.";
 
 "multi.guidance" = "Add up to 4 photos and analyze them together.";
+
+"album.quality.loading" = "Loading your photo…";
+"album.quality.load_timeout" = "We couldn’t load your photo. Please select it again.";

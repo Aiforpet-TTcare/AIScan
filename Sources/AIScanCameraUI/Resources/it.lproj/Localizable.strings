@@ -151,7 +151,7 @@
 "multi.ready" = "Foto pronta";
 "multi.preparing" = "Preparazione foto…";
 "multi.upload_failed" = "Impossibile preparare la foto. Rimuovila e aggiungila di nuovo.";
-"multi.progress" = "Foto %d/%d · %d completate";
+"multi.progress" = "Analisi completate %d/%d";
 "multi.result_title" = "Risultati delle foto";
 "multi.failed" = "Analisi non riuscita";
 "multi.retake" = "Scatta di nuovo";
@@ -159,3 +159,6 @@
 "multi.requires_ttapi" = "L’analisi di più foto non è disponibile. Analizza una foto alla volta.";
 
 "multi.guidance" = "Aggiungi fino a 4 foto e analizzale insieme.";
+
+"album.quality.loading" = "Caricamento della foto…";
+"album.quality.load_timeout" = "Impossibile caricare la foto. Selezionala di nuovo.";

@@ -151,7 +151,7 @@
 "multi.ready" = "Fotot är klart";
 "multi.preparing" = "Förbereder foto…";
 "multi.upload_failed" = "Fotot kunde inte förberedas. Ta bort det och lägg till det igen.";
-"multi.progress" = "Foto %d/%d · %d klara";
+"multi.progress" = "Analyser klara %d/%d";
 "multi.result_title" = "Fotoresultat";
 "multi.failed" = "Analysen misslyckades";
 "multi.retake" = "Ta ett nytt foto";
@@ -159,3 +159,6 @@
 "multi.requires_ttapi" = "Analys av flera foton är inte tillgänglig. Analysera ett foto i taget.";
 
 "multi.guidance" = "Lägg till upp till 4 bilder och analysera dem tillsammans.";
+
+"album.quality.loading" = "Läser in ditt foto…";
+"album.quality.load_timeout" = "Fotot kunde inte läsas in. Välj det igen.";

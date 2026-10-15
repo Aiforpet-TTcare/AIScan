@@ -33,6 +33,7 @@ final class CameraViewController: UIViewController {
     var onGuide: (() -> Void)?
     var onSelectPart: (() -> Void)?
     var onAlbum: (() -> Void)?
+    var onPhotoReview: (() -> Void)?
     var onZoom: ((CGFloat) -> Void)?
 
     private let fanProgressView = TTFanProgressView()
@@ -40,6 +41,8 @@ final class CameraViewController: UIViewController {
     private var showsPartSelector = false
     private var showsGuideControl = true
     private var showsAlbumControl = false
+    private var showsPhotoReviewControl = false
+    private var isPhotoReviewAvailable = false
     private var isPreparing = true
     private var isCaptureDebouncing = false
     private var isFlashAvailable = true
@@ -68,6 +71,21 @@ final class CameraViewController: UIViewController {
         button.accessibilityIdentifier = "aiscan.camera.album"
         button.isHidden = true
         button.addTarget(self, action: #selector(didTapAlbumButton), for: .touchUpInside)
+        return button
+    }()
+
+    private(set) lazy var photoReviewButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "square.grid.2x2.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 18)), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor(white: 0.24, alpha: 1)
+        button.layer.cornerRadius = 22
+        button.accessibilityLabel = AIScanCameraStrings.localizedMessageKey("multi.review")
+        button.accessibilityIdentifier = "aiscan.multi.open_review"
+        button.isHidden = true
+        button.addTarget(self, action: #selector(didTapPhotoReviewButton), for: .touchUpInside)
         return button
     }()
 
@@ -111,11 +129,16 @@ final class CameraViewController: UIViewController {
         applyLocalizedCopy()
         partSelectedContainer?.accessibilityIdentifier = "aiscan.camera.skin-part"
         view.addSubview(albumButton)
+        view.addSubview(photoReviewButton)
         NSLayoutConstraint.activate([
             albumButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 44),
             albumButton.centerYAnchor.constraint(equalTo: captureButtonContainer.centerYAnchor),
             albumButton.widthAnchor.constraint(equalToConstant: 44),
             albumButton.heightAnchor.constraint(equalToConstant: 44),
+            photoReviewButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -44),
+            photoReviewButton.centerYAnchor.constraint(equalTo: captureButtonContainer.centerYAnchor),
+            photoReviewButton.widthAnchor.constraint(equalToConstant: 44),
+            photoReviewButton.heightAnchor.constraint(equalToConstant: 44),
         ])
     }
 
@@ -166,6 +189,19 @@ final class CameraViewController: UIViewController {
         onAlbum?()
     }
 
+    @objc private func didTapPhotoReviewButton() {
+        guard photoReviewButton.isEnabled, !photoReviewButton.isHidden else { return }
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        onPhotoReview?()
+    }
+
+    func setPhotoReview(count: Int, available: Bool) {
+        photoReviewButton.accessibilityValue = String(format:
+            AIScanCameraStrings.localizedMessageKey("multi.count"), count)
+        isPhotoReviewAvailable = available && count > 0
+        updateControlAvailability()
+    }
+
     @objc private func handlePinch(_ gesture: UIPinchGestureRecognizer) {
         guard gesture.state == .changed else { return }
         onZoom?(gesture.scale)
@@ -193,15 +229,18 @@ final class CameraViewController: UIViewController {
     func configureControls(
         showsPartSelector: Bool,
         showsGuide: Bool,
-        showsAlbum: Bool = false
+        showsAlbum: Bool = false,
+        showsPhotoReview: Bool = false
     ) {
         self.showsPartSelector = showsPartSelector
         showsGuideControl = showsGuide
         showsAlbumControl = showsAlbum
+        showsPhotoReviewControl = showsPhotoReview
         partSelectedContainer?.isHidden = !showsPartSelector
         guideButton.isHidden = !showsGuide
         guideContainer.isHidden = !showsGuide
         albumButton.isHidden = !showsAlbum
+        updateControlAvailability()
     }
 
     func applyLocalizedCopy(languageCode: String? = nil) {
@@ -292,12 +331,15 @@ final class CameraViewController: UIViewController {
         albumButton.isHidden = active || !showsAlbumControl
         pauseIconContainer?.isHidden = true
         captureButton.setImage(active ? recordingCaptureImage : idleCaptureImage, for: .normal)
+        updateControlAvailability()
     }
 
     private func updateControlAvailability() {
         captureButton.isEnabled = !isPreparing && !isCaptureDebouncing
         flashButton.isEnabled = !isPreparing && isFlashAvailable
         albumButton.isEnabled = !isPreparing
+        photoReviewButton.isHidden = !showsPhotoReviewControl || isCaptureAttemptActive || !isPhotoReviewAvailable
+        photoReviewButton.isEnabled = !isPreparing && !isCaptureAttemptActive && isPhotoReviewAvailable
     }
 
     private func roundBottomCorners(_ target: UIView) {

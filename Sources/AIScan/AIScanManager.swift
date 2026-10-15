@@ -295,10 +295,11 @@ public enum AIScanManager {
     /// Original `(String?, Error?)` completion, kept byte-for-byte compatible
     /// with 1.x/2.x hosts that branch only on whether `result` is `nil`.
     /// `result` is the exact partner payload JSON (`AIScanResult.jsonString`)
-    /// when a scan completes and `nil` otherwise; retake is handled inside the
-    /// camera and never reaches this callback. `error` is always `nil`, as it
+    /// when a scan completes and `nil` otherwise. In single-photo mode, retake
+    /// is handled inside the camera. `error` is always `nil`, as it
     /// was in 1.x/2.x. Hosts that need the failure reason use the
-    /// `Result<AIScanResult, Error>` completion instead.
+    /// `Result<AIScanResult, Error>` completion instead. With multi mode enabled,
+    /// `result` is one root JSON array including ordered successes and failures.
     public static func makeCameraViewController(
         petType: PetType,
         partType: PartType,

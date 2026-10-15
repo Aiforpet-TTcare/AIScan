@@ -26,6 +26,12 @@ public struct AIScanPhotoResult: @unchecked Sendable {
 public extension AIScanResult {
     var isMultiMode: Bool { contractResult?["mode"] as? String == "multi" }
 
+    /// Root JSON array delivered to apps in multi-photo mode.
+    var jsonArray: [[String: Any]]? {
+        guard isMultiMode else { return nil }
+        return contractResult?["results"] as? [[String: Any]]
+    }
+
     var photoResults: [AIScanPhotoResult]? {
         guard isMultiMode, let entries = contractResult?["results"] as? [[String: Any]] else { return nil }
         return entries.compactMap { entry in
@@ -81,6 +87,6 @@ extension AIScanResult {
         let status = successCount == multiOutcomes.count ? "SUCCESS" : successCount == 0 ? "ERROR" : "PARTIAL"
         let payload: [String: Any] = ["mode": "multi", "status": status,
             "photoCount": multiOutcomes.count, "results": entries]
-        self.init(status: status, typedContractResult: AIScanContractResult(schema: "ttcare.multi.v1", payload: payload))
+        self.init(status: status, typedContractResult: AIScanContractResult(schema: "ttcare.multi.v2", payload: payload))
     }
 }

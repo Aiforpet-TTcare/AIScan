@@ -151,7 +151,7 @@
 "multi.ready" = "写真の準備完了";
 "multi.preparing" = "写真を準備中…";
 "multi.upload_failed" = "写真を準備できませんでした。除外して追加し直してください。";
-"multi.progress" = "写真 %d/%d · %d枚完了";
+"multi.progress" = "分析完了 %d/%d";
 "multi.result_title" = "写真ごとの解析結果";
 "multi.failed" = "解析に失敗";
 "multi.retake" = "撮り直す";
@@ -159,3 +159,6 @@
 "multi.requires_ttapi" = "複数写真の解析は利用できません。1枚ずつ解析してください。";
 
 "multi.guidance" = "最大4枚の写真を追加して、まとめて分析できます。";
+
+"album.quality.loading" = "写真を読み込んでいます。";
+"album.quality.load_timeout" = "写真を読み込めませんでした。もう一度選択してください。";

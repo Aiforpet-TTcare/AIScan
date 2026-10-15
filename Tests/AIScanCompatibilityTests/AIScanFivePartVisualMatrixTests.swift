@@ -147,7 +147,7 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
             let analyze = try XCTUnwrap(album.view.descendant(
                 accessibilityIdentifier: "aiscan.album.analyze"
             ))
-            XCTAssertEqual(card.bounds.height, 283.5, accuracy: 0.5)
+            XCTAssertEqual(card.bounds.height, 380, accuracy: 0.5)
             XCTAssertEqual(
                 analyze.convert(analyze.bounds, to: album.view).maxY,
                 album.view.safeAreaLayoutGuide.layoutFrame.maxY - 16,

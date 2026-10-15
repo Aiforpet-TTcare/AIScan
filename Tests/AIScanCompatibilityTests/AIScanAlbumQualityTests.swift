@@ -144,7 +144,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.applySelectedPhoto(selected)
             album.view.layoutIfNeeded()
             XCTAssertEqual(preview.bounds.width, 350, accuracy: 0.5)
-            XCTAssertEqual(preview.bounds.height, 283.5, accuracy: 0.5,
+            XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5,
                            "Changing photos must not resize the frame.")
             XCTAssertEqual(preview.contentMode, .scaleAspectFill)
             XCTAssertTrue(preview.clipsToBounds)
@@ -166,7 +166,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(selected)
         album.view.layoutIfNeeded()
         let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-        XCTAssertEqual(preview.bounds.height, 283.5, accuracy: 0.5)
+        XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5)
         XCTAssertEqual(preview.contentMode, .scaleAspectFill, "Overflow is cropped in the preview only.")
         XCTAssertTrue(preview.clipsToBounds)
         var analyzedImage: UIImage?
@@ -186,7 +186,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(try photo(width: 1200, height: 3600))
         album.view.layoutIfNeeded()
         let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-        XCTAssertEqual(preview.bounds.height, 226.8, accuracy: 0.5)
+        XCTAssertEqual(preview.bounds.height, 340.8, accuracy: 0.5)
         let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
         let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze"))
         XCTAssertLessThanOrEqual(analyze.frame.maxY, album.view.bounds.height)
@@ -210,7 +210,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.applySelectedPhoto(selected)
             album.view.layoutIfNeeded()
             let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
-            XCTAssertEqual(preview.bounds.height, 283.5, accuracy: 0.5)
+            XCTAssertEqual(preview.bounds.height, 380, accuracy: 0.5)
             XCTAssertEqual(preview.image?.imageOrientation, orientation)
             XCTAssertTrue(preview.image === image)
         }
@@ -311,6 +311,155 @@ final class AIScanAlbumQualityTests: XCTestCase {
     private func find(_ view: UIView, _ identifier: String) -> UIView? {
         if view.accessibilityIdentifier == identifier { return view }
         return view.subviews.lazy.compactMap { self.find($0, identifier) }.first
+    }
+
+    func testPhotoCollectionWaitsForSystemPickerDismissalAndIgnoresCompletionAfterClose() throws {
+        let fixtureDirectory = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("tmp")
+        try FileManager.default.createDirectory(at: fixtureDirectory, withIntermediateDirectories: true)
+        let fixtureURL = fixtureDirectory.appendingPathComponent("picker-dismissal.jpg")
+        let fixture = try photo(width: 1200, height: 1200).image
+        try XCTUnwrap(fixture.jpegData(compressionQuality: 0.9)).write(to: fixtureURL)
+        defer { try? FileManager.default.removeItem(at: fixtureURL) }
+        for closeBeforeDismissal in [false, true] {
+            let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
+            album.loadViewIfNeeded()
+            let picker = DeferredDismissalPhotoPicker()
+            let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
+            XCTAssertFalse(analyze.isHidden, "Single-photo mode retains its explicit analysis action.")
+            var approvals = 0
+            album.onValidatedPhoto = { _, _ in approvals += 1 }
+            XCTAssertTrue(analyze.isHidden, "Collection automatically advances to review after validation.")
+            XCTAssertFalse(analyze.isEnabled)
+            album.imagePickerController(picker, didFinishPickingMediaWithInfo: [.imageURL: fixtureURL])
+            XCTAssertTrue(picker.dismissalRequested)
+            XCTAssertNil(album.selectedPhoto)
+            XCTAssertEqual(approvals, 0)
+            XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.checking")).isHidden)
+            if closeBeforeDismissal {
+                let close = try XCTUnwrap(find(album.view, "aiscan.album.close") as? UIButton)
+                for action in close.actions(forTarget: album, forControlEvent: .touchUpInside) ?? [] {
+                    album.perform(NSSelectorFromString(action), with: close)
+                }
+            }
+            picker.finishDismissal()
+            XCTAssertEqual(approvals, closeBeforeDismissal ? 0 : 1)
+            XCTAssertEqual(album.selectedPhoto == nil, closeBeforeDismissal)
+        }
+    }
+
+    func testInspectionDisablesConflictingActionsWhileKeepingCloseAvailable() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly", partType: .eye)
+        album.loadViewIfNeeded()
+        let selected = try photo(width: 1200, height: 1200)
+        var finish: ((AIScanAlbumQualityReport) -> Void)?
+        album.onInspect = { _, completion in finish = completion }
+        album.applySelectedPhoto(selected)
+        for id in ["aiscan.album.select-photo", "aiscan.album.area.ear", "aiscan.album.analyze"] {
+            XCTAssertFalse(try XCTUnwrap(find(album.view, id) as? UIButton).isEnabled)
+        }
+        XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.photo-card")).isUserInteractionEnabled)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.close") as? UIButton).isEnabled)
+        let ear = try XCTUnwrap(find(album.view, "aiscan.album.area.ear") as? UIButton)
+        for action in ear.actions(forTarget: album, forControlEvent: .touchUpInside) ?? [] {
+            album.perform(NSSelectorFromString(action), with: ear)
+        }
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 270, height: 270)))
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.select-photo") as? UIButton).isEnabled)
+        var position: String?
+        album.onAnalyze = { _, value in position = value }
+        let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
+        for action in analyze.actions(forTarget: album, forControlEvent: .touchUpInside) ?? [] {
+            album.perform(NSSelectorFromString(action), with: analyze)
+        }
+        XCTAssertEqual(position, "belly", "A pending inspection must not allow the selected part to change.")
+    }
+
+    func testPickerDeliveryJoinsLoadingAndDismissalInEitherOrderOnlyOnce() throws {
+        let selected = try photo()
+        for loadFirst in [true, false] {
+            var photos: [AIScanAlbumPhoto?] = []
+            let delivery = AIScanAlbumPickerDelivery { photos.append($0) }
+            if loadFirst { delivery.loaded(selected) } else { delivery.dismissed() }
+            XCTAssertTrue(photos.isEmpty)
+            if loadFirst { delivery.dismissed() } else { delivery.loaded(selected) }
+            delivery.dismissed(); delivery.loaded(nil)
+            XCTAssertEqual(photos.count, 1)
+            XCTAssertEqual(photos[0]?.metadata.width, 1200)
+        }
+    }
+
+    @available(iOS 14, *)
+    func testSlowOriginalShowsPreviewWithoutApprovingThumbnailAndLoadsBeforeDismissal() async throws {
+        let directory = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .deletingLastPathComponent().appendingPathComponent("tmp")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let url = directory.appendingPathComponent("slow-original.jpg")
+        try XCTUnwrap(try photo().image.jpegData(compressionQuality: 0.9)).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let thumbnail = try photo(width: 64, height: 64).image
+        let source = DeferredOriginalPhotoProvider(preview: thumbnail)
+        let picker = DeferredDismissalPhotoPicker()
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
+        album.loadViewIfNeeded()
+        var approved: UIImage?
+        album.onValidatedPhoto = { image, _ in approved = image }
+        album.receivePhotoSelection(from: source.provider, dismissing: picker)
+        let preview = try XCTUnwrap(find(album.view, "aiscan.album.preview") as? UIImageView)
+        for _ in 0..<100 where !source.requested || preview.image == nil { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertTrue(source.requested, "The original request starts before picker dismissal completes.")
+        XCTAssertTrue(picker.dismissalRequested)
+        XCTAssertNotNil(preview.image)
+        XCTAssertNil(album.selectedPhoto)
+        XCTAssertNil(approved, "A thumbnail must never pass quality checks or be uploaded.")
+        XCTAssertEqual((find(album.view, "aiscan.album.checking") as? UILabel)?.text,
+            AIScanCameraStrings.localizedMessageKey("album.quality.loading"))
+        source.finish(url: url)
+        picker.finishDismissal()
+        for _ in 0..<100 where approved == nil { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertEqual(approved?.cgImage?.width, 1200)
+        XCTAssertEqual(album.selectedPhoto?.metadata.bitsPerPixel, 24)
+    }
+
+    @available(iOS 14, *)
+    func testLoadingTimeoutUnlocksActionsAndIgnoresLateOriginal() async throws {
+        let source = DeferredOriginalPhotoProvider(preview: try photo(width: 64, height: 64).image)
+        let picker = DeferredDismissalPhotoPicker()
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly", photoLoadingTimeout: 0.05)
+        album.loadViewIfNeeded()
+        var approvals = 0
+        album.onValidatedPhoto = { _, _ in approvals += 1 }
+        album.receivePhotoSelection(from: source.provider, dismissing: picker)
+        picker.finishDismissal()
+        let select = try XCTUnwrap(find(album.view, "aiscan.album.select-photo") as? UIButton)
+        for _ in 0..<100 where !select.isEnabled { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertTrue(select.isEnabled)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.checking")).isHidden)
+        XCTAssertEqual((find(album.view, "aiscan.album.validation.message") as? UILabel)?.text,
+            AIScanCameraStrings.localizedMessageKey("album.quality.load_timeout"))
+        source.finish(url: nil)
+        try await Task.sleep(nanoseconds: 80_000_000)
+        XCTAssertNil(album.selectedPhoto)
+        XCTAssertEqual(approvals, 0)
+    }
+
+    func testInspectionTimeoutOffersRetryAndRejectsLateSuccess() async throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil,
+            partType: .eye, photoInspectionTimeout: 0.05)
+        album.loadViewIfNeeded()
+        let selected = try photo()
+        var finish: ((AIScanAlbumQualityReport) -> Void)?
+        album.onInspect = { _, completion in finish = completion }
+        var approvals = 0
+        album.onValidatedPhoto = { _, _ in approvals += 1 }
+        album.applySelectedPhoto(selected)
+        for _ in 0..<100 where album.qualityReport?.inspectionError == nil { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertEqual(album.qualityReport?.inspectionError?.code, AISCErrorCode.requestTimedOut.rawValue)
+        XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.retry-inspection")).isHidden)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.select-photo") as? UIButton).isEnabled)
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 270, height: 270)))
+        XCTAssertFalse(album.qualityReport?.isValid == true)
+        XCTAssertEqual(approvals, 0)
     }
 
     func testSmallSelectedPhotoCannotStartAnalysis() throws {
@@ -450,5 +599,40 @@ final class AIScanAlbumQualityTests: XCTestCase {
             userInfo: [AISCDisplayReasonKey: "PRE_UNRECOGNIZED_INTERNAL_REASON"])
         let message = AIScanCameraStrings.albumDisplayMessage(for: error, partType: .eye, analysisPosition: nil, languageCode: "ko")
         XCTAssertEqual(message, "검사를 진행하지 못했어요. 다시 시도해 주세요.")
+    }
+}
+
+@MainActor
+private final class DeferredDismissalPhotoPicker: UIImagePickerController {
+    private let host = UIViewController()
+    private var afterDismissal: (() -> Void)?
+    private(set) var dismissalRequested = false
+    override var presentingViewController: UIViewController? { host }
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        dismissalRequested = true
+        afterDismissal = completion
+    }
+    func finishDismissal() {
+        let completion = afterDismissal
+        afterDismissal = nil
+        completion?()
+    }
+}
+
+private final class DeferredOriginalPhotoProvider: @unchecked Sendable {
+    let provider = NSItemProvider()
+    private let lock = NSLock()
+    private var complete: ((URL?, Bool, Error?) -> Void)?
+    var requested: Bool { lock.lock(); defer { lock.unlock() }; return complete != nil }
+    init(preview: UIImage) {
+        provider.previewImageHandler = { completion, _, _ in completion?(preview, nil) }
+        provider.registerFileRepresentation(forTypeIdentifier: "public.jpeg", fileOptions: [], visibility: .all) { [weak self] completion in
+            self?.lock.lock(); self?.complete = completion; self?.lock.unlock()
+            return Progress(totalUnitCount: 100)
+        }
+    }
+    func finish(url: URL?) {
+        lock.lock(); let completion = complete; complete = nil; lock.unlock()
+        completion?(url, false, url == nil ? NSError(domain: "fixture", code: 1) : nil)
     }
 }
