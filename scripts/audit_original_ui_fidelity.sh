@@ -4,6 +4,19 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ASSET_ROOT="$ROOT/Sources/AIScanCameraUI/ReferenceResources/Assets/AIScan.xcassets"
 
+# The approved camera-only eye guide is two thirds of its original 160pt width.
+# Validate that exception before comparing every other storyboard byte.
+python3 - "$ROOT/Sources/AIScanCameraUI/ReferenceResources/Legacy/TTCamera.storyboard" <<'PY'
+import sys
+import xml.etree.ElementTree as ET
+root = ET.parse(sys.argv[1]).getroot()
+icon = root.find(".//imageView[@id='cIY-MJ-Flx']")
+width = icon.find("constraints/constraint[@id='eye-preview-width']") if icon is not None else None
+assert width is not None and width.attrib == {
+    'firstAttribute': 'width', 'constant': '106.666666666667', 'id': 'eye-preview-width'
+}, 'Camera eye guide must retain its approved two-thirds width'
+PY
+
 canonical_layout_hash() {
   sed -E \
     -e 's/ customModule="[^"]+" customModuleProvider="[^"]+"//g' \
@@ -11,6 +24,7 @@ canonical_layout_hash() {
     -e 's/customClass="AIScan([^"]+)"/customClass="\1"/g' \
     -e 's/<arscnView /<view /g' \
     -e 's#</arscnView>#</view>#g' \
+    -e '/^[[:space:]]*<constraint firstAttribute="width" constant="106.666666666667" id="eye-preview-width"\/>$/d' \
     "$1" | shasum -a 256 | awk '{print $1}'
 }
 
@@ -66,4 +80,4 @@ if [ "$asset_hash" != "ae32d261a8fa355e1089d1634b7ad903d05bef5be272e8764487c4734
   exit 1
 fi
 
-echo "Original AIScan 2.2.4 UI fidelity audit passed."
+echo "Original UI fidelity audit passed with the approved two-thirds camera eye guide."

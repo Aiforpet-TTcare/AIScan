@@ -4,13 +4,18 @@
 
 - Deliver multi-photo callback JSON as the ordered root array; single-photo callbacks remain unchanged. Swift hosts can use `jsonArray` or typed `photoResults`.
 - Display actual completed-photo count while rotating progress previews, so the counter does not cycle with the shown photo.
-
 - Show inline activity and prevent conflicting album actions during loading and inspection, while keeping close available and ignoring late results.
-
-- Close the system photo picker before loading the original asset or presenting review, so slow asset loading does not leave the photo list on screen.
-
-- Move multi-photo review to a grid control beside the shutter and keep camera/album navigation direct.
+- Start original-photo loading before dismissing its system picker, close the list immediately, and wait for dismissal before inspection or review. Show an available preview while loading and recover controls when loading or inspection times out.
+- Move multi-photo review to a grid control beside the shutter, show it only after collecting a photo, and return every photo slot and back action directly to camera.
+- Add validated album photos directly to multi-photo review; retain the explicit analysis button for single-photo album scans.
 - Restore the album preview frame's screen-adaptive height while preserving centered fill cropping.
+- Reduce the centered camera eye guide to two thirds of its previous size.
+
+**Multi-mode migration:** parse the callback root as an array instead of reading
+the former object's `results` property. The typed Swift completion still returns
+`AIScanResult`; use `jsonArray` or `photoResults`. Multi mode remains opt-in and
+defaults to `false`. Single-photo callbacks, Core binaries, quality criteria and
+each photo's nested provider payload remain unchanged.
 
 ## 3.1.2
 
