@@ -328,6 +328,16 @@ final class AIScanMultiPhotoTests: XCTestCase {
         XCTAssertEqual(photos.last?.message, "Please try again")
         XCTAssertNil(result.jsonObject)
         XCTAssertEqual(result.jsonArray?.count, 3)
+        let callback = try XCTUnwrap(result.jsonArray)
+        XCTAssertEqual(callback[0] as NSDictionary, native as NSDictionary)
+        XCTAssertEqual(callback[1]["status"] as? String, "RETRY")
+        XCTAssertEqual(callback[1]["reasonCode"] as? String, "PRE_EYE_DETECT_BBOX_TOO_SMALL")
+        XCTAssertEqual(callback[2]["status"] as? String, "ERROR")
+        for entry in callback {
+            XCTAssertNil(entry["photoId"])
+            XCTAssertNil(entry["photoIndex"])
+            XCTAssertNil(entry["result"])
+        }
         let failed = AIScanResult(multiOutcomes: Array(outcomes.suffix(1)), petType: .dog, partType: .eye, petId: nil, userId: nil)
         XCTAssertEqual(failed.status, "ERROR")
         XCTAssertEqual(failed.photoResults?.count, 1)
@@ -346,11 +356,15 @@ final class AIScanMultiPhotoTests: XCTestCase {
         XCTAssertEqual(decoded.status, "PARTIAL")
         XCTAssertEqual(decoded.photoResults?.map(\.photoIndex), [1, 2])
         XCTAssertEqual(decoded.photoResults?.first?.error?.code, 408)
-        XCTAssertEqual(decoded.jsonArray as NSArray?, entries as NSArray)
+        let direct: [[String: Any]] = [
+            ["status": "ERROR", "error": ["domain": "network", "code": 408, "message": "Try again", "retryable": true]],
+            entries[1]["result"] as! [String: Any],
+        ]
+        XCTAssertEqual(decoded.jsonArray as NSArray?, direct as NSArray)
         let encoded = try JSONSerialization.jsonObject(with: JSONEncoder().encode(decoded))
-        XCTAssertEqual(encoded as? NSArray, entries as NSArray)
+        XCTAssertEqual(encoded as? NSArray, direct as NSArray)
         let callback = try JSONSerialization.jsonObject(with: Data(try XCTUnwrap(decoded.string).utf8))
-        XCTAssertEqual(callback as? NSArray, entries as NSArray)
+        XCTAssertEqual(callback as? NSArray, direct as NSArray)
         XCTAssertNil(callback as? [String: Any])
     }
 
@@ -381,8 +395,48 @@ final class AIScanMultiPhotoTests: XCTestCase {
         guard photos.count == 2 else { return }
         XCTAssertEqual(photos[0].error?.code, 408)
         XCTAssertEqual(photos[1].result?.jsonObject as NSDictionary?, native as NSDictionary)
-        XCTAssertEqual(decoded.jsonArray as NSArray?, payload["results"] as? NSArray)
+        XCTAssertEqual(decoded.jsonArray as NSArray?, original.jsonArray as NSArray?)
         XCTAssertNil(decoded.jsonObject)
+    }
+
+    func testAndroidDirectCallbackRoundTripKeepsPayloadsAndTypedFailureOrder() throws {
+        let native: [String: Any] = ["createdAt": 1_700_000_000_000, "petType": "DOG", "part": "EYE",
+            "status": "SUCCESS", "subPart": "EYEL", "positionCode": "LEFT",
+            "response": ["status": "WARNING", "symptoms": [["code": "opacity", "abnormLevel": 1,
+                "abnormalLevel": 1, "polygons": [[12.25, 23.5, 35.75, 47.125]], "heatmapUrl": "https://example.com/heatmap.png"]]]]
+        let direct: [[String: Any]] = [native,
+            ["status": "RETRY", "reasonCode": "PRE_EYE_CBLUR_NOT_OK", "message": "Choose a clear photo"],
+            ["status": "ERROR", "error": ["domain": "network", "code": 408, "message": "Try again", "retryable": true]]]
+        let result = try JSONDecoder().decode(AIScanResult.self, from: JSONSerialization.data(withJSONObject: direct))
+        XCTAssertEqual(result.jsonArray as NSArray?, direct as NSArray)
+        XCTAssertEqual(result.status, "PARTIAL")
+        XCTAssertEqual(result.photoResults?.map(\.photoIndex), [1, 2, 3])
+        XCTAssertEqual(result.photoResults?.map(\.status), ["SUCCESS", "RETRY", "ERROR"])
+        XCTAssertEqual(result.photoResults?[0].result?.jsonObject as NSDictionary?, native as NSDictionary)
+        XCTAssertEqual(result.photoResults?[1].reasonCode, "PRE_EYE_CBLUR_NOT_OK")
+        XCTAssertEqual(result.photoResults?[2].error?.code, 408)
+        XCTAssertNil(result.photoResults?[2].result)
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder().encode(result))
+        XCTAssertEqual(encoded as? NSArray, direct as NSArray)
+    }
+
+    func testRetakeOverridesLegacySuccessOnlyOnTheDirectCallback() throws {
+        let legacy: [String: Any] = ["status": "SUCCESS", "part": "EYE", "subPart": "EYER",
+            "response": ["status": "NORMAL", "symptoms": []]]
+        let display = AISCDisplayResult(status: "NORMAL", diagnosisID: "retry", symptoms: [],
+            contractResult: AISCContractResult(schema: "native.v1", payload: legacy),
+            requiresRetake: true, retakeReasonCode: "PRE_EYE_CBLUR_NOT_OK")
+        let result = AIScanResult(multiOutcomes: [AIScanMultiPhotoOutcome(photoID: "retry", photoIndex: 1,
+            result: display, error: nil, errorMessage: "Choose a clear photo", analysisSubpart: "EYER", analysisPosition: nil)],
+            petType: .dog, partType: .eye, petId: nil, userId: nil)
+        let callback = try XCTUnwrap(result.jsonArray?.first)
+        XCTAssertEqual(callback["status"] as? String, "RETRY")
+        XCTAssertEqual(callback["reasonCode"] as? String, "PRE_EYE_CBLUR_NOT_OK")
+        XCTAssertEqual(callback["message"] as? String, "Choose a clear photo")
+        XCTAssertNil(callback["positionCode"], "Retake does not gain a required position code")
+        XCTAssertNil(callback["result"])
+        XCTAssertEqual(result.photoResults?.first?.status, "RETRY")
+        XCTAssertEqual(result.photoResults?.first?.result?.jsonObject as NSDictionary?, legacy as NSDictionary)
     }
 }
 

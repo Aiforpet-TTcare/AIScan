@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.4
+
+- Match Android multi-photo callbacks: each array item is the direct photo result, without an SDK-added photoId/photoIndex/result wrapper. Preserve provider fields, URLs and polygons.
+- Keep failure and retake entries in selection order, using status/error/reasonCode/message directly on the array item. Return exactly one callback after every photo finishes.
+- Retain typed Swift photoResults metadata and read previously stored wrapped arrays/aggregate objects. Single-photo callbacks remain unchanged.
+
+**Multi-mode migration from 3.1.3:** read each array item directly instead of its result property. Array order identifies the selected photos.
+
 ## 3.1.3
 
 - Deliver multi-photo callback JSON as the ordered root array; single-photo callbacks remain unchanged. Swift hosts can use `jsonArray` or typed `photoResults`.
