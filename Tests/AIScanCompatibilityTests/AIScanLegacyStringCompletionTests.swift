@@ -91,10 +91,14 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         let root = try JSONSerialization.jsonObject(with: Data(try XCTUnwrap(callback.0).utf8))
         XCTAssertNil(root as? [String: Any], "No results wrapper is sent to the host app.")
         let entries = try XCTUnwrap(root as? [[String: Any]])
-        XCTAssertEqual(entries.compactMap { $0["photoIndex"] as? Int }, [1, 2])
-        XCTAssertEqual(entries.compactMap { $0["status"] as? String }, ["ERROR", "SUCCESS"])
+        XCTAssertEqual(entries.compactMap { $0["status"] as? String }, ["ERROR", "OK"])
         XCTAssertEqual(entries.first?["error"] as? [String: Any] != nil, true)
-        XCTAssertEqual(entries.last?["result"] as? NSDictionary, payload as NSDictionary)
+        XCTAssertEqual(entries.last as NSDictionary?, payload as NSDictionary)
+        for entry in entries {
+            XCTAssertNil(entry["photoId"])
+            XCTAssertNil(entry["photoIndex"])
+            XCTAssertNil(entry["result"])
+        }
     }
 
     func testServerErrorDeliversNilLikeTheOriginalHTTP500() throws {

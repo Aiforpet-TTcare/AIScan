@@ -391,7 +391,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
 
     public init(from decoder: Decoder) throws {
         if let entries = try? decoder.singleValueContainer().decode([[String: AIScanJSONValue]].self) {
-            let payload = entries.map { $0.mapValues(\.foundationValue) }
+            let payload = Self.multiEntries(from: entries.map { $0.mapValues(\.foundationValue) })
             let successes = payload.filter { $0["status"] as? String == "SUCCESS" }.count
             let status = successes == payload.count ? "SUCCESS" : successes == 0 ? "ERROR" : "PARTIAL"
             self.init(status: status, typedContractResult: AIScanContractResult(schema: "ttcare.multi.v2", payload: [

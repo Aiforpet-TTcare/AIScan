@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.3")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.4")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.1.3'
+    :tag => '3.1.4'
 ```
 
 ### Single public module
@@ -321,25 +321,33 @@ fires once after all selected photos finish, including failures in selection
 order. With `enableResultView: true`, the built-in summary links to individual
 successful results and their optional PDF exports.
 
-The legacy string callback and `scan.string` return a root array in multi mode:
+The legacy string callback and `scan.string` return the same direct-result array as Android in multi mode:
 
 ```json
 [
-  {"photoId": "photo-a", "photoIndex": 1, "status": "SUCCESS", "result": {"status": "SUCCESS"}},
-  {"photoId": "photo-b", "photoIndex": 2, "status": "ERROR", "error": {"domain": "AIScan", "code": 1, "message": "Please try again.", "retryable": true}}
+  {"status": "SUCCESS", "petType": "DOG", "part": "EYE", "subPart": "EYEL", "positionCode": "LEFT", "response": {"status": "NORMAL", "symptoms": []}},
+  {"status": "RETRY", "reasonCode": "PRE_EYE_CBLUR_NOT_OK", "message": "Choose a clear photo."},
+  {"status": "ERROR", "error": {"domain": "AIScan", "code": 1, "message": "Please try again.", "retryable": true}}
 ]
 ```
 
-Photo indexes start at 1. Each entry has `SUCCESS`, `RETRY` (retake required), or
-`ERROR`; a retry entry retains its result and reason code. The typed Swift
-completion still receives `AIScanResult`; use `jsonArray` for the root array or
-`photoResults` for typed entries. `jsonObject` is for single-photo dictionaries.
-The typed result's overall status is
-`SUCCESS` when every photo succeeds, `PARTIAL` when some succeed, and `ERROR` when
-none succeed. An aggregate containing failed photos is still a completed scan
-and arrives through `.success`; inspect the per-photo statuses. The typed schema
-is `ttcare.multi.v2`. Native payload fields, image URLs and polygons remain inside
-each unchanged `result` object.
+Each successful item is the original provider payload. The SDK does not add
+`photoId`, `photoIndex` or a `result` wrapper to the JSON callback. Array order
+matches photo selection order. Retake items use `status: RETRY` and retain their
+reason/message; failed items use `status: ERROR` with error information.
+
+The typed Swift completion still receives `AIScanResult`; use `jsonArray` for
+the direct array or `photoResults` for typed entries with SDK photo IDs and
+indexes starting at 1. `jsonObject` is for single-photo dictionaries. The typed
+result's overall status is `SUCCESS` when every photo succeeds, `PARTIAL` when
+some succeed, and `ERROR` when none succeed. A multi scan containing failed
+photos still arrives through `.success`; inspect the per-photo statuses.
+The optional structured metadata schema remains `ttcare.multi.v2`.
+
+When upgrading from 3.1.3, parse each array item directly instead of reading its
+`result` property. Previously stored wrapped arrays and aggregate objects remain
+readable; serialization writes the direct-result array. Single-photo callbacks
+are unchanged.
 
 ## Album image quality (3.0.21)
 

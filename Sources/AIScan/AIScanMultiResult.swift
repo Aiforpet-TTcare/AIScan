@@ -12,7 +12,7 @@ public struct AIScanPhotoError: Codable, Equatable, Sendable {
     public let retryable: Bool
 }
 
-/// One photo in selection order. The nested result retains its original JSON.
+/// Typed per-photo metadata. Callback JSON contains direct results in selection order.
 public struct AIScanPhotoResult: @unchecked Sendable {
     public let photoID: String
     public let photoIndex: Int
@@ -26,10 +26,21 @@ public struct AIScanPhotoResult: @unchecked Sendable {
 public extension AIScanResult {
     var isMultiMode: Bool { contractResult?["mode"] as? String == "multi" }
 
-    /// Root JSON array delivered to apps in multi-photo mode.
+    /// Direct per-photo payloads, matching Android's multi-photo callback array.
     var jsonArray: [[String: Any]]? {
-        guard isMultiMode else { return nil }
-        return contractResult?["results"] as? [[String: Any]]
+        guard isMultiMode, let entries = contractResult?["results"] as? [[String: Any]] else { return nil }
+        return entries.map { entry in
+            if var result = entry["result"] as? [String: Any] {
+                if entry["status"] as? String == "RETRY" {
+                    result["status"] = "RETRY"
+                    for key in ["reasonCode", "message"] {
+                        if let value = entry[key] { result[key] = value }
+                    }
+                }
+                return result
+            }
+            return entry.filter { $0.key != "photoId" && $0.key != "photoIndex" }
+        }
     }
 
     var photoResults: [AIScanPhotoResult]? {
@@ -38,7 +49,7 @@ public extension AIScanResult {
             guard let id = entry["photoId"] as? String, let index = (entry["photoIndex"] as? NSNumber)?.intValue,
                   let status = entry["status"] as? String else { return nil }
             var result: AIScanResult?
-            if let payload = entry["result"] as? [String: Any],
+            if status != "ERROR", let payload = entry["result"] as? [String: Any],
                let data = try? JSONSerialization.data(withJSONObject: payload) {
                 let decoded = try? JSONDecoder().decode(AIScanResult.self, from: data)
                 result = AIScanResult(status: decoded?.status ?? "", diagnosisID: decoded?.diagnosisID,
@@ -59,6 +70,30 @@ public extension AIScanResult {
 }
 
 extension AIScanResult {
+    /// Read both Android-style direct arrays and previously persisted SDK wrappers.
+    static func multiEntries(from payloads: [[String: Any]]) -> [[String: Any]] {
+        payloads.enumerated().map { index, payload in
+            if payload["photoId"] is String, payload["photoIndex"] is NSNumber,
+               payload["status"] is String, payload["part"] == nil, payload["response"] == nil,
+               payload["result"] is [String: Any] || payload["error"] is [String: Any] {
+                return payload
+            }
+            let rawStatus = (payload["status"] as? String)?.uppercased() ?? ""
+            let status: String
+            switch rawStatus {
+            case "RETRY": status = "RETRY"
+            case "SUCCESS", "OK", "NORMAL", "CAUTION", "CAUTION_Q", "WARNING", "COMPLETED": status = "SUCCESS"
+            default: status = "ERROR"
+            }
+            var entry: [String: Any] = ["photoId": "photo-\(index + 1)", "photoIndex": index + 1,
+                "status": status, "result": payload]
+            for key in ["error", "reasonCode", "message"] {
+                if let value = payload[key] { entry[key] = value }
+            }
+            return entry
+        }
+    }
+
     init(multiOutcomes: [AIScanMultiPhotoOutcome], petType: PetType, partType: PartType,
          petId: String?, userId: String?) {
         var successCount = 0
