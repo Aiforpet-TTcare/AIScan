@@ -3,7 +3,7 @@
 ## 3.1.7
 
 - Restore localized symptom names, explanations and result image URLs in the built-in single-photo result screen for native callback formats.
-- Use the same approved display content in PDF reports, including normal and unknown analyzed symptoms.
+- Restore the complete analyzed catalog in PDF reports and distinguish unknown/unassessed findings from normal findings.
 - Preserve native callback JSON and multi-photo collection, analysis and ordered array completion behavior.
 
 ## 3.1.6

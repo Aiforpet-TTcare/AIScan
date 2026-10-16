@@ -61,6 +61,8 @@ struct ScreeningPdfSymptom: Identifiable {
     let origin: [ScreeningPdfSymptomOrigin]
     let isAbnormal: Bool
     let description: ScreeningPdfSymptomDescription
+    var isUnknown: Bool = false
+    var isNormal: Bool { !isAbnormal && !isUnknown }
 
     var id: String { code }
 }

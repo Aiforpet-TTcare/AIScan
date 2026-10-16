@@ -45,6 +45,8 @@ enum PDFStrings {
     static var abnormalSignTitle: String { value("pdf.abnormal_sign_title", "Abnormal Sign") }
     static var abnormal: String { value("pdf.abnormal", "Abnormal") }
     static var normal: String { value("pdf.normal", "Normal") }
+    static var unknown: String { value("pdf.unknown", "Unable to assess") }
+    static var detailUnknown: String { value("pdf.detail_unknown", "This finding could not be assessed from this photo.") }
     static var detailTitle: String { value("pdf.detail_title", "Detailed analysis result") }
     static var detailDescription: String { value("pdf.detail_description", "The AI analysis images and detected signs are shown below.") }
     static var detailNotDetected: String { value("pdf.detail_not_detected", "No sign was detected.") }
