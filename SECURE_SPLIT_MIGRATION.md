@@ -22,7 +22,7 @@ or prerelease tag.
 The camera, guide, questionnaire, retry, progress, result, and PDF interfaces
 remain visually and functionally equivalent to the 2.2.4 baseline. The public
 entry point changes because protected authentication, manifest, preprocessing,
-model, and TTAPI logic now live behind `AIScanCore`.
+model, and server-analysis logic now live behind `AIScanCore`.
 
 ## 1. Pin and install the announced version
 
@@ -240,7 +240,7 @@ do not introduce a new network feature or change the partner payload schema.
 
 `showCamera` can throw `AIScanManagerError.notConfigured` before presentation.
 The completion returns `.failure` for a terminal error or user cancellation.
-Retryable capture and TTAPI image-quality failures remain inside the camera flow
+Retryable capture and server-side image-quality failures remain inside the camera flow
 and use the SDK retry UI; they must not be converted into a second host callback.
 
 Do not branch on the old single-letter v2.2.4 error prefixes. Log the NSError

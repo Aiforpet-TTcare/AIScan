@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.6
+
+- Multi-photo scans close the SDK camera before delivering their single ordered result-array callback. The host app owns the multi-photo result UI.
+- In multi mode, ignore `enableResultView`, `resultViewController`, and `enablePdfShare`. Single-photo result screens and callback behavior are unchanged.
+
 ## 3.1.5
 
 - Validate the selected animal and body part before accepting album photos. Eye/teeth detection alone no longer bypasses the animal classifier, and dog-skin photos also require content inspection.

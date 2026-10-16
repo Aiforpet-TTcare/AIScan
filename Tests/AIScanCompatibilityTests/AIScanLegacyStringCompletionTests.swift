@@ -118,6 +118,80 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         XCTAssertNil(callback.error)
     }
 
+    func testMultiClosesBeforeCallbackRegardlessOfResultViewFlag() async throws {
+        for enableResultView in [false, true] {
+            try await assertMultiClosesBeforeCallback(enableResultView: enableResultView)
+        }
+    }
+
+    func testMultiDoesNotApplyOrPresentACustomResultController() async throws {
+        let custom = RecordingResultController()
+        try await assertMultiClosesBeforeCallback(enableResultView: true, custom: custom)
+        XCTAssertEqual(custom.applyCount, 0)
+        XCTAssertNil(custom.presentingViewController)
+    }
+
+    private func assertMultiClosesBeforeCallback(
+        enableResultView: Bool,
+        custom: RecordingResultController? = nil
+    ) async throws {
+        let applicationWindow = UIApplication.shared.delegate?.window ?? nil
+        try XCTSkipUnless(applicationWindow?.rootViewController != nil,
+            "UIKit presentation is verified by the hosted SPM and CocoaPods consumer tests.")
+        let host = UIViewController()
+        let window: UIWindow
+        if let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first {
+            window = UIWindow(windowScene: scene)
+        } else {
+            window = UIWindow(frame: UIScreen.main.bounds)
+        }
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        let animationsWereEnabled = UIView.areAnimationsEnabled
+        UIView.setAnimationsEnabled(false)
+        defer {
+            window.isHidden = true
+            applicationWindow?.makeKeyAndVisible()
+            UIView.setAnimationsEnabled(animationsWereEnabled)
+        }
+        let completed = expectation(description: "callback after SDK dismissal")
+        var callbacks: [String] = []
+        let camera = try AIScanManager.makeCameraViewController(
+            petType: .dog, partType: .eye,
+            enableMultiMode: true, enableResultView: enableResultView,
+            resultViewController: custom,
+            completion: { (json: String?, error: Error?) in
+                XCTAssertNil(host.presentedViewController, "The host must be free to navigate in completion.")
+                XCTAssertNil(error)
+                if let json { callbacks.append(json) }
+                completed.fulfill()
+            }
+        ) as! AIScanCameraViewController
+        camera.beginsScanningAutomatically = false
+        let presented = expectation(description: "camera presented")
+        host.present(camera, animated: false) { presented.fulfill() }
+        await fulfillment(of: [presented], timeout: 2)
+        let success = AISCDisplayResult(status: "completed", diagnosisID: "ok", symptoms: [],
+            contractResult: AISCContractResult(schema: "native.v1", payload: payload))
+        let outcomes = [
+            AIScanMultiPhotoOutcome(photoID: "first", photoIndex: 1, result: success,
+                error: nil, errorMessage: nil, analysisSubpart: nil, analysisPosition: nil),
+            AIScanMultiPhotoOutcome(photoID: "second", photoIndex: 2, result: nil,
+                error: NSError(domain: AISCErrorDomain, code: 408), errorMessage: "Try again",
+                analysisSubpart: nil, analysisPosition: nil),
+        ]
+        camera.onMultiResults?(outcomes)
+        camera.onMultiResults?(outcomes)
+        camera.onClose?()
+        await fulfillment(of: [completed], timeout: 2)
+        XCTAssertEqual(callbacks.count, 1)
+        XCTAssertNil(camera.presentedViewController, "Multi scans never present a result screen.")
+        let entries = try XCTUnwrap(JSONSerialization.jsonObject(
+            with: Data(try XCTUnwrap(callbacks.first).utf8)) as? [[String: Any]])
+        XCTAssertEqual(entries.compactMap { $0["status"] as? String }, ["OK", "ERROR"])
+        XCTAssertEqual(entries.first as NSDictionary?, payload as NSDictionary)
+    }
+
     func testFailedScanDeliversNilResultAndNilError() throws {
         var received: (result: String?, error: Error?)?
         let camera = try makeCamera { received = ($0, $1) }
@@ -171,6 +245,14 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         ) { result, error in
             _ = (result, error)
         }
+        (camera as? AIScanCameraViewController)?.beginsScanningAutomatically = false
+        host.dismiss(animated: false)
         XCTAssertTrue(camera is AIScanCameraViewController)
     }
+}
+
+@MainActor
+private final class RecordingResultController: UIViewController, AIScanResultViewControlling {
+    private(set) var applyCount = 0
+    func apply(result: AIScanResult) { applyCount += 1 }
 }
