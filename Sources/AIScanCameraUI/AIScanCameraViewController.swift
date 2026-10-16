@@ -86,14 +86,14 @@ private final class AIScanUIKitCameraStackDismisser: AIScanCameraStackDismissing
         transition: AIScanCameraStackDismissalTransition,
         completion: @escaping () -> Void
     ) {
-        let dismissWithoutAnimation: (() -> Void)?
+        let dismissWithoutAnimation: ((@escaping () -> Void) -> Void)?
         if let presentingViewController = camera.presentingViewController {
-            dismissWithoutAnimation = {
-                presentingViewController.dismiss(animated: false)
+            dismissWithoutAnimation = { didDismiss in
+                presentingViewController.dismiss(animated: false, completion: didDismiss)
             }
         } else if let presentedViewController = camera.presentedViewController {
-            dismissWithoutAnimation = {
-                presentedViewController.dismiss(animated: false)
+            dismissWithoutAnimation = { didDismiss in
+                presentedViewController.dismiss(animated: false, completion: didDismiss)
             }
         } else {
             dismissWithoutAnimation = nil
@@ -106,8 +106,7 @@ private final class AIScanUIKitCameraStackDismisser: AIScanCameraStackDismissing
 
         switch transition {
         case .immediate:
-            dismissWithoutAnimation()
-            completion()
+            dismissWithoutAnimation(completion)
         case let .coordinatedCrossDissolve(duration):
             let window = camera.viewIfLoaded?.window
             guard AIScanCameraStackTransitionPolicy.allowsCoordinatedTransition(
@@ -117,16 +116,29 @@ private final class AIScanUIKitCameraStackDismisser: AIScanCameraStackDismissing
                 applicationIsActive: UIApplication.shared.applicationState == .active,
                 hasVisibleWindow: window?.isHidden == false
             ), let window else {
-                dismissWithoutAnimation()
-                completion()
+                dismissWithoutAnimation(completion)
                 return
+            }
+            var didDismiss = false
+            var didTransition = false
+            let completeWhenFinished = {
+                guard didDismiss && didTransition else { return }
+                completion()
             }
             UIView.transition(
                 with: window,
                 duration: min(duration, 0.2),
                 options: [.transitionCrossDissolve, .beginFromCurrentState, .allowAnimatedContent],
-                animations: dismissWithoutAnimation,
-                completion: { _ in completion() }
+                animations: {
+                    dismissWithoutAnimation {
+                        didDismiss = true
+                        completeWhenFinished()
+                    }
+                },
+                completion: { _ in
+                    didTransition = true
+                    completeWhenFinished()
+                }
             )
         }
     }

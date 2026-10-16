@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.5")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.6")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.1.5'
+    :tag => '3.1.6'
 ```
 
 ### Single public module
@@ -195,7 +195,7 @@ are skipped so they do not terminate the app or permanently block capture.
 | `displayMetadata` | `[String: String]?` | `nil` | Display-safe metadata only. |
 | `enablesQuestionnaire` | `Bool` | `false` | Presents the SDK questionnaire when enabled. |
 | `allowsAlbum` | `Bool` | `false` | Shows the photo-library entry when enabled. |
-| `enableMultiMode` | `Bool` | `false` | Collects one to four photos for a single ordered-array JSON callback. Requires TTAPI mode. See the multi-photo example below. |
+| `enableMultiMode` | `Bool` | `false` | Collects one to four photos for a single ordered-array JSON callback after closing the SDK camera. The host app displays the results. |
 | `enableResultView` | `Bool` | `false` | Presents the built-in result UI when explicitly enabled, independently of whether `contractResult` is also delivered. The default receives only the completion callback. |
 | `enablePdfShare` | `Bool` | `true` | Shows the original result-footer action, generates the A4 report, then opens the system share sheet. |
 
@@ -308,7 +308,7 @@ try AIScanManager.showCamera(
 }
 ```
 
-This mode requires an App configured for TTAPI. Preprocessing remains local.
+Preprocessing remains local.
 After each photo passes, its original is uploaded while the review modal is open.
 No analysis job starts before **View results** is pressed. Remove a photo before
 confirmation to exclude it; close the camera to cancel the whole flow. Uploaded
@@ -318,9 +318,10 @@ renewed before its first analysis job.
 Confirmation starts all ready photos concurrently; a photo still uploading joins
 when ready. Progress cycles through the selected photos. Matching questionnaires
 are answered once and applied to their respective photo sessions. Completion
-fires once after all selected photos finish, including failures in selection
-order. With `enableResultView: true`, the built-in summary links to individual
-successful results and their optional PDF exports.
+fires once after all selected photos finish and the SDK camera closes, including
+failures in selection order. The host app displays the results. In multi mode,
+`enableResultView`, `resultViewController`, and `enablePdfShare` are ignored;
+these result-screen options apply only to single-photo scans.
 
 The legacy string callback and `scan.string` return the same direct-result array as Android in multi mode:
 
@@ -379,6 +380,6 @@ photo; inspection/service failures retain the existing retry handling.
 
 The dog-skin model does not separately identify ear, belly, and foot. Those are
 selected analysis positions; no new anatomical classifier is included. The full
-original photo is preserved for TTAPI. Passing the local checks does not
+original photo is preserved for server analysis. Passing the local checks does not
 guarantee that the provider will return a successful diagnosis. The callback
 format remains unchanged from 3.1.4.

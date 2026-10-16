@@ -175,50 +175,10 @@ public enum AIScanManager {
             let result = AIScanResult(multiOutcomes: outcomes, petType: petType, partType: partType,
                                       petId: petId, userId: userId)
             guard let camera else { completionGate.complete(.success(result)); return }
-            if enableResultView, let resultViewController {
-                resultViewController.apply(result: result)
-                resultViewController.modalPresentationStyle = .fullScreen
-                camera.present(resultViewController, animated: true)
-                completionGate.complete(.success(result))
-            } else if enableResultView {
-                let summary = AIScanMultiResultViewController(outcomes: outcomes)
-                summary.onSelect = { [weak summary, weak camera] display in
-                    let viewModel = AIScanDisplayResultViewModel(result: display)
-                    let reportInput = AIScanPDFReportInput(
-                        viewModel: viewModel, petType: petType.rawValue.uppercased(),
-                        part: partType.key, subpart: partType.detailKey, petName: petName ?? "",
-                        petDetail: AIScanPDFPetDetailFormatter.make(petType: petType.rawValue,
-                            petName: petName, petBreedName: petBreedName,
-                            petBirthday: petBirthday, petGender: petGender))
-                    let exportAction: (() -> Void)? = enablePdfShare ? { [weak summary, weak camera] in
-                        guard let summary else { return }
-                        Task { @MainActor in
-                            switch await pdfExportCoordinator.generate(reportInput) {
-                            case let .success(url):
-                                lastExportedPDFURL = url
-                                onPDFExported?(url)
-                                if AIScanPDFSharePresenter.present(fileURL: url, from: summary) {
-                                    camera?.resultDidShare()
-                                }
-                            case let .failure(error):
-                                if error as? AIScanPDFReportError != .exportInProgress {
-                                    AIScanPDFSharePresenter.showFailure(from: summary)
-                                }
-                            }
-                        }
-                    } : nil
-                    let view = AIScanResultReferenceView(viewModel: viewModel,
-                        onClose: { [weak summary] in summary?.dismiss(animated: true) }, onExportReport: exportAction)
-                    let detail = UIHostingController(rootView: view)
-                    detail.modalPresentationStyle = .fullScreen
-                    summary?.present(detail, animated: true)
-                }
-                summary.onClose = { [weak camera] in camera?.dismissCompletedScan() }
-                camera.present(summary, animated: true)
-                completionGate.complete(.success(result))
-            } else {
-                camera.dismissCompletedScan { completionGate.complete(.success(result)) }
-            }
+            // Multi-photo integrations own their result UI. Result-view and PDF
+            // options apply only to single-photo scans. Return the full ordered
+            // payload after the SDK camera has left the presentation stack.
+            camera.dismissCompletedScan { completionGate.complete(.success(result)) }
         }
         camera.onFailure = { error in
             let nsError = error as NSError

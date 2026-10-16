@@ -27,7 +27,7 @@
 
 | 배포 단위 | 공개 여부 | 책임 |
 |---|---|---|
-| `AIScanCore.xcframework` | 구현 비공개, 승인된 Objective-C header만 공개 | publishable-key auth, manifest, 모델/추론, 전처리, TTAPI transport와 실행 정책 |
+| `AIScanCore.xcframework` | 구현 비공개, 승인된 Objective-C header만 공개 | publishable-key auth, manifest, 모델/추론, 전처리, 서버 분석 transport와 실행 정책 |
 | `AIScanCameraUI` | 공개 Swift 소스 | 원본 카메라·가이드·진행률·재촬영 UI와 Core DTO 표시 |
 | `AIScan` | 공개 Swift 소스 | 앱용 facade와 승인된 결과 계약 전달 |
 
@@ -38,7 +38,7 @@ prediction/tensor, 비공개 endpoint 조립을 넣지 않는다. UI가 받는 �
 
 UI가 의존하는 `AISCCameraEngineControlling`은 prepare/capture/reset/cancel과
 display-safe 이벤트만 노출하는 좁은 주입 경계다. 인증, manifest 선택,
-analysis mode 결정, 전처리, 모델 실행, TTAPI 요청 순서와 재시도 상태 머신은
+analysis mode 결정, 전처리, 모델 실행, 서버 분석 요청 순서와 재시도 상태 머신은
 공개 Swift 소스가 아니라 Core 바이너리가 소유한다.
 
 ## 4. Xcode/Swift 호환성 결합 제거
