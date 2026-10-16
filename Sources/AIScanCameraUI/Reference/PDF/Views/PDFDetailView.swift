@@ -46,11 +46,11 @@ struct PDFDetailView {
                     .font(PDFTheme.font(.bold, 11))
                     .foregroundColor(.white)
                     .padding(5)
-                    .background(RoundedRectangle(cornerRadius: 6).fill(symptom.isAbnormal ? PDFTheme.red : PDFTheme.blue))
+                    .background(RoundedRectangle(cornerRadius: 6).fill(symptom.isUnknown ? PDFTheme.gray : (symptom.isAbnormal ? PDFTheme.red : PDFTheme.blue)))
                 Spacer()
             }
 
-            Text(symptom.isAbnormal ? symptom.description.detail : PDFStrings.detailNotDetected)
+            Text(symptom.isUnknown ? PDFStrings.detailUnknown : (symptom.isAbnormal ? symptom.description.detail : PDFStrings.detailNotDetected))
                 .font(PDFTheme.font(.regular, 12))
                 .foregroundColor(PDFTheme.navy)
                 .lineSpacing(8)

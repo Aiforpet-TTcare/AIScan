@@ -163,9 +163,9 @@ struct PDFSummaryView {
     private func symptomRow(_ symptom: ScreeningPdfSymptom, signW: CGFloat, checkW: CGFloat) -> some View {
         HStack(spacing: cellSpacing) {
             HStack {
-                Text(symptom.name)
+                Text(symptom.isUnknown ? "\(symptom.name) (\(PDFStrings.unknown))" : symptom.name)
                     .font(PDFTheme.font(.bold, 13))
-                    .foregroundColor(symptom.isAbnormal ? PDFTheme.red : PDFTheme.blue)
+                    .foregroundColor(symptom.isUnknown ? PDFTheme.gray : (symptom.isAbnormal ? PDFTheme.red : PDFTheme.blue))
                 Spacer(minLength: 0)
             }
             .padding(.horizontal, 24)
@@ -173,7 +173,7 @@ struct PDFSummaryView {
             .background(PDFTheme.panel)
 
             checkCell(show: symptom.isAbnormal, color: PDFTheme.red, width: checkW)
-            checkCell(show: !symptom.isAbnormal, color: PDFTheme.blue, width: checkW)
+            checkCell(show: symptom.isNormal, color: PDFTheme.blue, width: checkW)
         }
     }
 

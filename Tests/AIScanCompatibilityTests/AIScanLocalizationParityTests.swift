@@ -83,7 +83,7 @@ final class AIScanLocalizationParityTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertEqual(english.count, 39)
+        XCTAssertEqual(english.count, 41)
         for language in supportedLanguages {
             let localized = try stringsDictionary(
                 table: "AIScanPDF",
@@ -93,8 +93,14 @@ final class AIScanLocalizationParityTests: XCTestCase {
             XCTAssertEqual(
                 Set(localized.keys),
                 Set(english.keys),
-                "\(language) PDF strings must match the original key set."
+                "\(language) PDF strings must have the same complete key set."
             )
+            for key in ["pdf.unknown", "pdf.detail_unknown"] {
+                XCTAssertNotNil(localized[key])
+                if language != "en" {
+                    XCTAssertNotEqual(localized[key], english[key], "\(language) must localize \(key)")
+                }
+            }
             XCTAssertTrue(localized.values.allSatisfy {
                 !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             })

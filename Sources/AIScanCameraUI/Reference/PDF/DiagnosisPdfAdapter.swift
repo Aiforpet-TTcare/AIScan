@@ -112,7 +112,8 @@ enum DiagnosisPdfAdapter {
                     cause: isAbnormal ? store.text(petType: petType, part: part, section: "cause", symptomCode: code, locale: locale) : "",
                     inspection: isAbnormal ? store.text(petType: petType, part: part, section: "inspection", symptomCode: code, locale: locale) : "",
                     care: isAbnormal ? store.text(petType: petType, part: part, section: "care", symptomCode: code, locale: locale) : ""
-                )
+                ),
+                isUnknown: source == nil || source!.abnormalLevel < 0
             )
         }
         let skinFeatures: [ScreeningPdfSkinFeature]

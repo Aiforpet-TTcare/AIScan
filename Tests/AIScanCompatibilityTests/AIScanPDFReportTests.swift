@@ -85,6 +85,24 @@ final class AIScanPDFReportTests: XCTestCase {
         XCTAssertTrue(props.diagnoses.symptoms.allSatisfy { !$0.isAbnormal })
     }
 
+    func testPDFDistinguishesUnknownAndUnanalyzedSymptomsFromNormalResults() {
+        let source = [
+            AIScanDisplaySymptomViewModel(code: "opacity", name: "Opacity", abnormalLevel: 0, resultLabel: "normal"),
+            AIScanDisplaySymptomViewModel(code: "hyperemia", name: "Hyperemia", abnormalLevel: -1, resultLabel: "unknown"),
+            AIScanDisplaySymptomViewModel(code: "blepharoncus", name: "Eyelid mass", abnormalLevel: 1, resultLabel: "abnormal"),
+        ]
+        let props = DiagnosisPdfAdapter.makeProps(from: AIScanPDFReportInput(
+            viewModel: AIScanDisplayResultViewModel(status: "CAUTION", symptoms: [source[2]], analyzedSymptoms: source),
+            petType: "DOG", part: "EYE", subpart: "EYER", petName: "Bori", petDetail: "Bori"))
+        let symptoms = Dictionary(uniqueKeysWithValues: props.diagnoses.symptoms.map { ($0.code, $0) })
+        XCTAssertEqual(symptoms["opacity"]?.isNormal, true)
+        XCTAssertEqual(symptoms["hyperemia"]?.isUnknown, true)
+        XCTAssertEqual(symptoms["hyperemia"]?.isNormal, false)
+        XCTAssertEqual(symptoms["blepharoncus"]?.isAbnormal, true)
+        XCTAssertEqual(symptoms["chemosis"]?.isUnknown, true)
+        XCTAssertEqual(symptoms["chemosis"]?.isNormal, false)
+    }
+
     func testHighLevelFacadeCarriesOriginalPDFOptions() throws {
         AIScanManager.configure(
             publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx"
