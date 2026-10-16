@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.1.5
+
+- Validate the selected animal and body part before accepting album photos. Eye/teeth detection alone no longer bypasses the animal classifier, and dog-skin photos also require content inspection.
+- Apply existing pet/part crop-blur models and configured confidence thresholds to album inspection. Block single-photo analysis and automatic multi-photo registration on quality rejection or inspection failure, with localized guidance and existing retry recovery.
+- Preserve source resolution, 24-bit color-depth and 270px eye/teeth longest-side requirements, upright original images for analysis, and the direct multi-result JSON array introduced in 3.1.4.
+- Place photo-review scroll indicators in the outer margin while retaining photo sizes and 20pt content spacing.
+- Correct two English teeth instructions and cover album classification/blur guidance across all six UI languages.
+
+**Scope:** the existing dog-skin classifier does not distinguish ear/belly/foot. These remain user-selected positions. No new model or callback schema is introduced.
+
 ## 3.1.4
 
 - Match Android multi-photo callbacks: each array item is the direct photo result, without an SDK-added photoId/photoIndex/result wrapper. Preserve provider fields, URLs and polygons.

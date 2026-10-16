@@ -6,6 +6,57 @@ import ImageIO
 
 @MainActor
 final class AIScanAlbumQualityTests: XCTestCase {
+    func testBlurRejectionBlocksSingleAndMultiPhotoRegistrationForEveryAlbumPart() throws {
+        for part in [AISCPartType.eye, .teeth, .skin] {
+            for multi in [false, true] {
+                let album = AIScanAlbumSelectionViewController(allowsPositionSelection: part == .skin,
+                    initialPosition: part == .skin ? "belly" : nil, partType: part)
+                album.loadViewIfNeeded()
+                var registered = 0
+                if multi { album.onValidatedPhoto = { _, _ in registered += 1 } }
+                album.onAnalyze = { _, _ in registered += 1 }
+                let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                    userInfo: [AISCDisplayReasonKey: "초점을 잘 맞춰 주세요."])
+                album.onInspect = { photo, completion in
+                    completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: part)
+                        .measured(nil, issue: "detect", error: error))
+                }
+                album.applySelectedPhoto(try photo(width: 1400, height: 1400))
+                XCTAssertEqual(registered, 0)
+                XCTAssertFalse(try XCTUnwrap(album.qualityReport).isValid)
+                let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
+                XCTAssertFalse(analyze.isEnabled)
+                let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
+                XCTAssertEqual(message.attributedText?.string,
+                    AIScanCameraStrings.localizedMessageKey("초점이 잘 맞는 선명한 사진을 선택해 주세요."))
+            }
+        }
+    }
+
+    func testSkinCannotRegisterUntilContentInspectionSucceeds() throws {
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true,
+            initialPosition: "belly", partType: .skin)
+        album.loadViewIfNeeded()
+        let selected = try photo()
+        var finish: ((AIScanAlbumQualityReport) -> Void)?
+        var registered = 0
+        album.onInspect = { _, completion in finish = completion }
+        album.onValidatedPhoto = { _, _ in registered += 1 }
+        album.applySelectedPhoto(selected)
+        XCTAssertEqual(registered, 0)
+        XCTAssertFalse(try XCTUnwrap(album.qualityReport).isValid)
+        let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+            userInfo: [AISCDisplayReasonKey: "피부를 촬영해 주세요."])
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .skin)
+            .measured(nil, issue: "detect", error: error))
+        XCTAssertEqual(registered, 0)
+        XCTAssertFalse(try XCTUnwrap(album.qualityReport).isValid)
+        album.applySelectedPhoto(selected)
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .skin).measured(.zero))
+        XCTAssertEqual(registered, 1)
+        XCTAssertTrue(try XCTUnwrap(album.qualityReport).isValid)
+    }
+
     private func photo(width: Int = 1200, height: Int = 1200) throws -> AIScanAlbumPhoto {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -18,7 +69,8 @@ final class AIScanAlbumQualityTests: XCTestCase {
     func testJPEGSourceIs24BitsEvenIfDecoderUses32BitStorage() throws {
         let selected = try photo()
         XCTAssertEqual(selected.metadata.bitsPerPixel, 24)
-        XCTAssertTrue(AIScanAlbumQualityReport(metadata: selected.metadata, part: .skin).isValid)
+        XCTAssertTrue(AIScanAlbumQualityReport(metadata: selected.metadata, part: .skin).originalIsValid)
+        XCTAssertFalse(AIScanAlbumQualityReport(metadata: selected.metadata, part: .skin).isValid)
     }
 
     func testIndexedPNGRemainsLowBitsAfterDecoding() throws {
@@ -161,6 +213,9 @@ final class AIScanAlbumQualityTests: XCTestCase {
     func testFixedFrameCropsPreviewAndPreservesFullAnalysisPhoto() throws {
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
         album.loadViewIfNeeded()
+        album.onInspect = { photo, completion in
+            completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: .skin).measured(.zero))
+        }
         album.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
         let selected = try photo(width: 1200, height: 3600)
         album.applySelectedPhoto(selected)
@@ -269,7 +324,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         }
         for bits in [24, 32, 48] {
             let metadata = AIScanAlbumMetadata(width: 1200, height: 1200, bitsPerPixel: bits)
-            XCTAssertTrue(AIScanAlbumQualityReport(metadata: metadata, part: .skin).isValid)
+            XCTAssertTrue(AIScanAlbumQualityReport(metadata: metadata, part: .skin).measured(.zero).isValid)
         }
     }
 
@@ -304,9 +359,14 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(try XCTUnwrap(metadata.bitsPerPixel), 24)
     }
 
-    func testSkinDoesNotRequireSubjectDetection() {
+    func testSkinRequiresClassificationWithoutSubjectSizeMeasurement() {
         let metadata = AIScanAlbumMetadata(width: 1200, height: 1200, bitsPerPixel: 24)
-        XCTAssertTrue(AIScanAlbumQualityReport(metadata: metadata, part: .skin).isValid)
+        let report = AIScanAlbumQualityReport(metadata: metadata, part: .skin)
+        XCTAssertFalse(report.isValid)
+        XCTAssertTrue(report.requiresInspection)
+        XCTAssertFalse(report.requiresDetection)
+        XCTAssertTrue(report.measured(.zero).isValid)
+        XCTAssertFalse(report.measured(.zero, issue: "detect").isValid)
     }
     private func find(_ view: UIView, _ identifier: String) -> UIView? {
         if view.accessibilityIdentifier == identifier { return view }
@@ -324,6 +384,9 @@ final class AIScanAlbumQualityTests: XCTestCase {
         for closeBeforeDismissal in [false, true] {
             let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
             album.loadViewIfNeeded()
+            album.onInspect = { photo, completion in
+                completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: .skin).measured(.zero))
+            }
             let picker = DeferredDismissalPhotoPicker()
             let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
             XCTAssertFalse(analyze.isHidden, "Single-photo mode retains its explicit analysis action.")
@@ -402,6 +465,9 @@ final class AIScanAlbumQualityTests: XCTestCase {
         let picker = DeferredDismissalPhotoPicker()
         let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly")
         album.loadViewIfNeeded()
+        album.onInspect = { photo, completion in
+            completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: .skin).measured(.zero))
+        }
         var approved: UIImage?
         album.onValidatedPhoto = { image, _ in approved = image }
         album.receivePhotoSelection(from: source.provider, dismissing: picker)
@@ -572,7 +638,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
 
     func testAllLanguagesOfferUserGuidanceWithoutCodesForEveryQualityFailure() {
         let original = AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: 24)
-        let reports = [
+        var reports = [
             AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 400, height: 400, bitsPerPixel: 24), part: .eye),
             AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: 8), part: .skin),
             AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: nil), part: .skin),
@@ -580,6 +646,12 @@ final class AIScanAlbumQualityTests: XCTestCase {
             AIScanAlbumQualityReport(metadata: original, part: .teeth).measured(CGSize(width: 50, height: 50)),
             AIScanAlbumQualityReport(metadata: original, part: .eye).measured(nil, issue: "detect", error: NSError(domain: AISCErrorDomain, code: 202)),
         ]
+        for part in [AISCPartType.eye, .teeth, .skin] {
+            let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                userInfo: [AISCDisplayReasonKey: "초점을 잘 맞춰 주세요."])
+            reports.append(AIScanAlbumQualityReport(metadata: original, part: part)
+                .measured(nil, issue: "detect", error: error))
+        }
         for language in ["ko", "en", "ja", "it", "sv", "th"] {
             for report in reports {
                 let message = AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false,
@@ -588,6 +660,30 @@ final class AIScanAlbumQualityTests: XCTestCase {
                 for term in ["AISC-", "PRE_", "album.", "photo.color_quality", "bpp", "BBOX"] {
                     XCTAssertFalse(message?.contains(term) == true, "\(language): \(message ?? "")")
                 }
+                if language != "ko" {
+                    XCTAssertNil(message?.range(of: "[가-힣]", options: .regularExpression),
+                        "\(language) must not expose Korean guidance: \(message ?? "")")
+                }
+                if report.inspectionError?.userInfo[AISCDisplayReasonKey] as? String == "초점을 잘 맞춰 주세요." {
+                    XCTAssertEqual(message, AIScanCameraStrings.localizedMessageKey(
+                        "초점이 잘 맞는 선명한 사진을 선택해 주세요.", languageCode: language))
+                }
+            }
+            let partGuidance: [(AISCPartType, String?, String, String)] = [
+                (.eye, nil, "눈을 촬영해 주세요.", "눈이 잘 보이는 사진을 선택해 주세요."),
+                (.teeth, nil, "치아를 촬영해 주세요.", "치아가 잘 보이는 사진을 선택해 주세요."),
+                (.skin, "ear", "귀를 촬영해 주세요.", "귀가 잘 보이는 사진을 선택해 주세요."),
+                (.skin, "belly", "몸통을 촬영해 주세요.", "몸통이 잘 보이는 사진을 선택해 주세요."),
+                (.skin, "foot", "발을 촬영해 주세요.", "발이 잘 보이는 사진을 선택해 주세요."),
+            ]
+            for (part, position, reason, expectedKey) in partGuidance {
+                let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                    userInfo: [AISCDisplayReasonKey: reason])
+                let report = AIScanAlbumQualityReport(metadata: original, part: part)
+                    .measured(nil, issue: "detect", error: error)
+                XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false,
+                    analysisPosition: position, languageCode: language),
+                    AIScanCameraStrings.localizedMessageKey(expectedKey, languageCode: language))
             }
         }
         XCTAssertNil(AIScanCameraStrings.albumQualityFailureMessage(for: AIScanAlbumQualityReport(metadata: original, part: .eye),
