@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.7
+
+- Restore localized symptom names, explanations and result image URLs in the built-in single-photo result screen for native callback formats.
+- Use the same approved display content in PDF reports, including normal and unknown analyzed symptoms.
+- Preserve native callback JSON and multi-photo collection, analysis and ordered array completion behavior.
+
 ## 3.1.6
 
 - Multi-photo scans close the SDK camera before delivering their single ordered result-array callback. The host app owns the multi-photo result UI.
