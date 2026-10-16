@@ -245,6 +245,8 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         ) { result, error in
             _ = (result, error)
         }
+        (camera as? AIScanCameraViewController)?.beginsScanningAutomatically = false
+        host.dismiss(animated: false)
         XCTAssertTrue(camera is AIScanCameraViewController)
     }
 }
