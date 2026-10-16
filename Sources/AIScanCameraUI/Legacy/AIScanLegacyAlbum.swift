@@ -606,7 +606,7 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         let report = AIScanAlbumQualityReport(metadata: photo.metadata, part: partType)
         qualityReport = report
         isAnalyzing = false
-        isInspecting = report.originalIsValid && report.requiresDetection
+        isInspecting = report.originalIsValid && report.requiresInspection
         setValidationMessage(nil)
         renderQuality()
         updateSelectionUI()

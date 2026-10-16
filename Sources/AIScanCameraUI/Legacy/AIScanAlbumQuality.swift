@@ -101,6 +101,7 @@ struct AIScanAlbumQualityReport: Sendable {
     var detectedSize: CGSize?
     var detectionIssue: String?
     var inspectionError: NSError?
+    private(set) var inspectionPassed = false
 
     init(metadata: AIScanAlbumMetadata, part: AISCPartType) {
         self.metadata = metadata
@@ -108,8 +109,9 @@ struct AIScanAlbumQualityReport: Sendable {
     }
 
     var requiresDetection: Bool { part == .eye || part == .teeth }
+    var requiresInspection: Bool { [.eye, .teeth, .skin].contains(part) }
     var originalIsValid: Bool { [.eye, .teeth, .skin].contains(part) && originalRows.allSatisfy(\.passes) }
-    var isValid: Bool { originalIsValid && (!requiresDetection || detectionRows.allSatisfy(\.passes)) }
+    var isValid: Bool { originalIsValid && inspectionPassed && (!requiresDetection || detectionRows.allSatisfy(\.passes)) }
 
     var originalRows: [Row] {
         let minimum = part == .skin ? 1200 : (part == .teeth ? 1400 : 900)
@@ -139,6 +141,7 @@ struct AIScanAlbumQualityReport: Sendable {
         report.detectedSize = size
         report.detectionIssue = issue
         report.inspectionError = error
+        report.inspectionPassed = issue == nil && error == nil && size != nil
         return report
     }
 

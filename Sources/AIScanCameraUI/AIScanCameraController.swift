@@ -241,7 +241,7 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         completion: @escaping (AIScanAlbumQualityReport) -> Void
     ) {
         let report = AIScanAlbumQualityReport(metadata: photo.metadata, part: part)
-        guard report.originalIsValid, report.requiresDetection else { completion(report); return }
+        guard report.originalIsValid, report.requiresInspection else { completion(report); return }
         guard let measure = cameraEngine.measurePhotoSubject else {
             completion(report.measured(nil, issue: "detect"))
             return

@@ -24,7 +24,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.4")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.5")
 ]
 ```
 
@@ -38,7 +38,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.1.4'
+    :tag => '3.1.5'
 ```
 
 ### Single public module
@@ -195,6 +195,7 @@ are skipped so they do not terminate the app or permanently block capture.
 | `displayMetadata` | `[String: String]?` | `nil` | Display-safe metadata only. |
 | `enablesQuestionnaire` | `Bool` | `false` | Presents the SDK questionnaire when enabled. |
 | `allowsAlbum` | `Bool` | `false` | Shows the photo-library entry when enabled. |
+| `enableMultiMode` | `Bool` | `false` | Collects one to four photos for a single ordered-array JSON callback. Requires TTAPI mode. See the multi-photo example below. |
 | `enableResultView` | `Bool` | `false` | Presents the built-in result UI when explicitly enabled, independently of whether `contractResult` is also delivered. The default receives only the completion callback. |
 | `enablePdfShare` | `Bool` | `true` | Shows the original result-footer action, generates the A4 report, then opens the system share sheet. |
 
@@ -349,7 +350,7 @@ When upgrading from 3.1.3, parse each array item directly instead of reading its
 readable; serialization writes the direct-result array. Single-photo callbacks
 are unchanged.
 
-## Album image quality (3.0.21)
+## Album image quality (3.1.5)
 
 With `allowsAlbum: true`, the SDK checks the
 selected image before starting analysis. It shows localized, actionable guidance
@@ -366,7 +367,18 @@ JPEG, PNG and HEIC metadata are inspected before conversion. If source metadata
 cannot be read, the SDK asks the user to select another photo. Detection sizes
 refer to upright original pixels, before crop expansion or resizing. For eyes
 and teeth, either detected width or height reaching 270 px passes the size gate;
-the shorter side must be positive but has no separate minimum. TTAPI also
-performs the detection-only quality check before uploading; the final callback
-format is unchanged. Passing these minimum checks continues the existing
-analysis flow and does not guarantee a successful diagnosis.
+the shorter side must be positive but has no separate minimum.
+
+Before accepting an album photo, the SDK also runs the selected animal/body-part
+classifier and the existing part-specific crop-blur model, using the configured
+confidence thresholds. Eye/teeth blur inspection uses the detected subject crop;
+dog skin uses the existing center-square blur input. A rejection, missing model
+output, or inspection error keeps both single-photo analysis and automatic
+multi-photo registration blocked. Localized guidance asks for a suitable, sharp
+photo; inspection/service failures retain the existing retry handling.
+
+The dog-skin model does not separately identify ear, belly, and foot. Those are
+selected analysis positions; no new anatomical classifier is included. The full
+original photo is preserved for TTAPI. Passing the local checks does not
+guarantee that the provider will return a successful diagnosis. The callback
+format remains unchanged from 3.1.4.

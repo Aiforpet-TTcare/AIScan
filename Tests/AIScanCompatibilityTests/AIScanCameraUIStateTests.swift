@@ -552,7 +552,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
 
         let englishCases = [
             ("눈을 촬영해 주세요.", "Please capture the eye."),
-            ("치아를 촬영해 주세요.", "Please capture the dental."),
+            ("치아를 촬영해 주세요.", "Please capture the teeth."),
             ("귀를 촬영해 주세요.", "Please capture the ear."),
             ("몸통을 촬영해 주세요.", "Please capture the body."),
             ("발을 촬영해 주세요.", "Please capture the paw."),
@@ -2571,6 +2571,9 @@ final class AIScanCameraUIStateTests: XCTestCase {
             initialPosition: nil
         )
         album.loadViewIfNeeded()
+        album.onInspect = { photo, completion in
+            completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: .skin).measured(.zero))
+        }
         let analyze = try XCTUnwrap(album.view.descendant(
             accessibilityIdentifier: "aiscan.album.analyze"
         ) as? UIButton)
