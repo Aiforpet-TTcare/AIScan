@@ -4,7 +4,7 @@
 
 ---
 
-> **4.0.0 candidate:** not published. Disease analysis uses the server only. Projects
+> **3.2.0 candidate:** not published. Disease analysis uses the server only. Projects
 > must have server analysis enabled before upgrading. See [the migration guide](TTAPI_ONLY_MIGRATION.md).
 
 **AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through server-based image analysis. Camera and album quality checks remain on the device.
@@ -27,7 +27,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "4.0.0")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.0")
 ]
 ```
 
@@ -41,7 +41,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '4.0.0'
+    :tag => '3.2.0'
 ```
 
 ### Single public module

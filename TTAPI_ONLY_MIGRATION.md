@@ -1,4 +1,4 @@
-# Server-only disease analysis (4.0.0 candidate)
+# Server-only disease analysis (3.2.0 candidate)
 
 This candidate removes local disease analysis. It has not been published.
 

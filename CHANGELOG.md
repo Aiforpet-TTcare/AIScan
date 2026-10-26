@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0 (unreleased candidate)
+## 3.2.0 (unreleased candidate)
 
 - Disease analysis now runs exclusively through the server. Remove local disease
   inference, clinical post-processing, local heatmap generation and local-result
