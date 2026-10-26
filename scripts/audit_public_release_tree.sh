@@ -27,6 +27,7 @@ text_roots=(
   "$ROOT/RELEASE.md"
   "$ROOT/SECURE_SPLIT_MIGRATION.md"
   "$ROOT/ARCHITECTURE.md"
+  "$ROOT/TTAPI_ONLY_MIGRATION.md"
   "$ROOT/Sources"
   "$ROOT/Tests"
 )
@@ -66,5 +67,6 @@ done
 "$ROOT/scripts/audit_publishable_keys.sh"
 "$ROOT/scripts/audit_privacy_manifest.sh"
 "$ROOT/scripts/audit_core_public_headers.sh"
+"$ROOT/scripts/audit_server_only_binary.sh"
 
 echo "Public release tree audit passed."

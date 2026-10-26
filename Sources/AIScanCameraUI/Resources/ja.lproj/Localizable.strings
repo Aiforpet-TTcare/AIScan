@@ -162,3 +162,5 @@
 
 "album.quality.loading" = "写真を読み込んでいます。";
 "album.quality.load_timeout" = "写真を読み込めませんでした。もう一度選択してください。";
+
+"error.server_analysis_required" = "このプロジェクトではサーバー診断を利用できません。管理者にお問い合わせください。";

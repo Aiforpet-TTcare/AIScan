@@ -1,5 +1,8 @@
 # AIScan iOS 2.2.4 -> 3.x migration guide
 
+> Historical 2.x → 3.x guide. For the server-only 4.x candidate, follow
+> [TTAPI_ONLY_MIGRATION.md](TTAPI_ONLY_MIGRATION.md); local disease analysis is no longer supported.
+
 This guide migrates an application from the iOS SDK currently documented at
 <https://sdk.aiforpet.com/> (v2.2.4) to the secure-split 3.x SDK. Use the exact
 3.x version announced in the release notice; do not use an unannounced branch

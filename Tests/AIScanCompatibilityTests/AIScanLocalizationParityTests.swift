@@ -14,7 +14,7 @@ final class AIScanLocalizationParityTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertEqual(english.count, 154) // Existing UI, multi-photo flow, and album loading guidance.
+        XCTAssertEqual(english.count, 155) // Existing UI, multi-photo flow, and album loading guidance.
         for language in supportedLanguages {
             let localized = try stringsDictionary(
                 table: "Localizable",
@@ -36,6 +36,19 @@ final class AIScanLocalizationParityTests: XCTestCase {
                 }
                 XCTAssertFalse(value?.contains("__MISSING__") ?? false)
             }
+        }
+    }
+
+    func testServerAnalysisConfigurationFailureIsLocalizedInEveryLanguage() {
+        let error = NSError(domain: AISCErrorDomain,
+                            code: AISCErrorCode.invalidConfiguration.rawValue,
+                            userInfo: [AISCDisplayReasonKey: "server_analysis_required"])
+        for language in supportedLanguages {
+            let message = AIScanCameraStrings.displayMessage(for: error, languageCode: language)
+            XCTAssertFalse(message.isEmpty)
+            XCTAssertFalse(message.contains("server_analysis_required"))
+            XCTAssertNotEqual(message, AIScanCameraStrings.localizedMessageKey(
+                "error.configuration", languageCode: language))
         }
     }
 

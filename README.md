@@ -4,7 +4,10 @@
 
 ---
 
-**AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through on-device image analysis.
+> **3.2.0:** Disease analysis uses the server only. Projects
+> must have server analysis enabled before upgrading. See [the migration guide](TTAPI_ONLY_MIGRATION.md).
+
+**AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through server-based image analysis. Camera and album quality checks remain on the device.
 
 ## Supported Diagnostics
 
@@ -24,7 +27,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.1.7")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.0")
 ]
 ```
 
@@ -38,7 +41,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.1.7'
+    :tag => '3.2.0'
 ```
 
 ### Single public module
@@ -236,8 +239,8 @@ or `enableResultView`; hosts that show partner JSON should do so with a separate
 app-level option.
 
 For partner results, `string`, `jsonString`, and `JSONEncoder` output the payload
-directly, without adding a `schema`/`payload` envelope. Ordinary on-device results
-retain the legacy `petType`, `part`, `createdAt`, `questions`, `response`, `userId`,
+directly, without adding a `schema`/`payload` envelope. Server results without a
+contract payload retain the legacy `petType`, `part`, `createdAt`, `questions`, `response`, `userId`,
 `petId`, and `subPart` fields.
 
 If your 3.0.10/3.0.11 integration accesses `contractResult.schema` or

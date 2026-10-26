@@ -33,6 +33,7 @@ public_paths=(
   README.md
   RELEASE.md
   SECURE_SPLIT_MIGRATION.md
+  TTAPI_ONLY_MIGRATION.md
   ARCHITECTURE.md
   CHANGELOG.md
   Gemfile
@@ -59,6 +60,7 @@ public_paths=(
   scripts/audit_original_ui_fidelity.sh
   scripts/audit_privacy_manifest.sh
   scripts/audit_core_public_headers.sh
+  scripts/audit_server_only_binary.sh
   scripts/audit_publishable_keys.sh
   scripts/audit_public_release_tree.sh
   scripts/audit_ui_resources.sh
