@@ -19,8 +19,8 @@ typedef NS_ENUM(NSInteger, AISCPartType) {
     AISCPartTypeUnknown = 99,
 };
 
-/// Execution route selected by the organization/project manifest.
-/// Missing or unknown manifest values always fall back to on-device analysis.
+/// Historical route identifiers retained for compatibility. Only TTAPI is supported.
+/// The server manifest must explicitly authorize TTAPI; other values fail preparation.
 typedef NS_ENUM(NSInteger, AISCAnalysisMode) {
     AISCAnalysisModeOnDevice = 0,
     AISCAnalysisModeTTAPI = 1,

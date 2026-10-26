@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.0.0 (unreleased candidate)
+
+- Disease analysis now runs exclusively through the server. Remove local disease
+  inference, clinical post-processing, local heatmap generation and local-result
+  record submission, including their diagnostic runtime.
+- Keep camera/album classification, detection, blur and size checks on the device.
+- Require explicit server-analysis authorization during preparation. Projects
+  configured for local or mixed analysis must switch to server analysis before
+  upgrading. Missing or unsupported routes fail before model downloads/uploads.
+- Server errors no longer fall back to local disease analysis.
+- Preserve public type names, historical route integers, result JSON, single/multi
+  callback behavior, questionnaire display, result screens and PDF reports.
+- Add localized project-configuration guidance in all six supported UI languages.
+
+This is a review candidate; publication and live-provider photo acceptance are pending.
+
+
 ## 3.1.7
 
 - Restore localized symptom names, explanations and result image URLs in the built-in single-photo result screen for native callback formats.

@@ -71,6 +71,10 @@ enum AIScanCameraStrings {
 
         let nsError = error as NSError
         if nsError.domain == AISCErrorDomain {
+            if nsError.code == AISCErrorCode.invalidConfiguration.rawValue,
+               nsError.userInfo[AISCDisplayReasonKey] as? String == "server_analysis_required" {
+                return localizedMessageKey("error.server_analysis_required", languageCode: languageCode)
+            }
             if nsError.code == AISCErrorCode.frameRejected.rawValue,
                let approvedReason = nsError.userInfo[AISCDisplayReasonKey] as? String,
                !approvedReason.isEmpty {

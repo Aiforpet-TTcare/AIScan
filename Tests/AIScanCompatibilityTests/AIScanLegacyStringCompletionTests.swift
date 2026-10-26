@@ -37,6 +37,7 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
             enableResultView: false,
             completion: completion
         ) as! AIScanCameraViewController
+        camera.beginsScanningAutomatically = false
         camera.loadViewIfNeeded()
         return camera
     }

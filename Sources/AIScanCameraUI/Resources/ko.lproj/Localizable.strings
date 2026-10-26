@@ -162,3 +162,5 @@
 
 "album.quality.loading" = "사진을 불러오고 있어요.";
 "album.quality.load_timeout" = "사진을 불러오지 못했어요. 다시 선택해 주세요.";
+
+"error.server_analysis_required" = "현재 프로젝트에서 서버 진단을 사용할 수 없습니다. 관리자에게 문의해 주세요.";

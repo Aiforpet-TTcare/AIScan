@@ -162,3 +162,5 @@
 
 "album.quality.loading" = "Caricamento della foto…";
 "album.quality.load_timeout" = "Impossibile caricare la foto. Selezionala di nuovo.";
+
+"error.server_analysis_required" = "L’analisi sul server non è disponibile per questo progetto. Contatta l’amministratore.";

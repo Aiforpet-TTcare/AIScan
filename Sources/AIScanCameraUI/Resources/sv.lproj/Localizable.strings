@@ -162,3 +162,5 @@
 
 "album.quality.loading" = "Läser in ditt foto…";
 "album.quality.load_timeout" = "Fotot kunde inte läsas in. Välj det igen.";
+
+"error.server_analysis_required" = "Serveranalys är inte tillgänglig för det här projektet. Kontakta administratören.";
