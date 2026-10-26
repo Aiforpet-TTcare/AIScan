@@ -4,7 +4,7 @@
 
 ---
 
-> **3.2.0 candidate:** not published. Disease analysis uses the server only. Projects
+> **3.2.0:** Disease analysis uses the server only. Projects
 > must have server analysis enabled before upgrading. See [the migration guide](TTAPI_ONLY_MIGRATION.md).
 
 **AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through server-based image analysis. Camera and album quality checks remain on the device.

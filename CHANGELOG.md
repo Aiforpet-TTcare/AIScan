@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.0 (unreleased candidate)
+## 3.2.0
 
 - Disease analysis now runs exclusively through the server. Remove local disease
   inference, clinical post-processing, local heatmap generation and local-result
@@ -14,7 +14,6 @@
   callback behavior, questionnaire display, result screens and PDF reports.
 - Add localized project-configuration guidance in all six supported UI languages.
 
-This is a review candidate; publication and live-provider photo acceptance are pending.
 
 
 ## 3.1.7

@@ -1,6 +1,6 @@
-# Server-only disease analysis (3.2.0 candidate)
+# Server-only disease analysis (3.2.0)
 
-This candidate removes local disease analysis. It has not been published.
+Version 3.2.0 removes local disease analysis.
 
 ## Before upgrading
 
@@ -35,4 +35,4 @@ built-in multi-result screen. Single-photo result/PDF options are unchanged.
 Before shipping your host app, verify its actual registered Test and Live project
 configuration, single and multi-photo success, invalid image retry, service failure,
 network timeout/cancel, background/foreground camera resume, result image loading
-and PDF export. Pin an announced release only after the candidate is published.
+and PDF export. Pin version 3.2.0 after verifying your registered project configuration.
