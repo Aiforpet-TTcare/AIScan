@@ -189,6 +189,8 @@ public struct AIScanContractResult: Codable, Equatable, @unchecked Sendable {
 public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     public let status: String
     public let diagnosisID: String?
+    /// Server-issued capture group. A legacy or unaccepted scan has no value.
+    public let groupId: String?
     public let symptoms: [AIScanSymptom]
     /// Exact partner payload for a single photo. In multi mode this retains
     /// structured metadata; callback JSON is the root `jsonArray` only.
@@ -224,12 +226,17 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         response: OnDeviceResponse? = nil,
         userId: String? = nil,
         petId: String? = nil,
-        subPart: String? = nil
+        subPart: String? = nil,
+        groupId: String? = nil
     ) {
         self.status = status
         self.diagnosisID = diagnosisID
+        self.groupId = groupId ?? contractResult?["groupId"] as? String
         self.symptoms = symptoms
-        self.contractResult = contractResult
+        if let groupId = self.groupId, var payload = contractResult {
+            payload["groupId"] = groupId
+            self.contractResult = payload
+        } else { self.contractResult = contractResult }
         self.contractSchema = nil
         self.petType = petType
         self.part = part
@@ -295,7 +302,8 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
             status: displayResult.status,
             diagnosisID: displayResult.diagnosisID,
             symptoms: displayResult.symptoms.map(AIScanSymptom.init(displaySymptom:)),
-            contractResult: displayResult.contractResult?.payload
+            contractResult: displayResult.contractResult?.payload,
+            groupId: displayResult.groupID
         )
         contractSchema = displayResult.contractResult?.schema
     }
@@ -349,7 +357,8 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
             ),
             userId: userId,
             petId: petId,
-            subPart: subPart
+            subPart: subPart,
+            groupId: displayResult.groupID
         )
     }
 
@@ -386,7 +395,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         case diagnosisID = "diagnosisId"
         case symptoms
         case contractResult = "contract_result"
-        case petType, part, createdAt, questions, response, userId, petId, subPart
+        case petType, part, createdAt, questions, response, userId, petId, subPart, groupId
     }
 
     public init(from decoder: Decoder) throws {
@@ -434,7 +443,8 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
             response: response,
             userId: try container.decodeIfPresent(String.self, forKey: .userId),
             petId: try container.decodeIfPresent(String.self, forKey: .petId),
-            subPart: try container.decodeIfPresent(String.self, forKey: .subPart)
+            subPart: try container.decodeIfPresent(String.self, forKey: .subPart),
+            groupId: try container.decodeIfPresent(String.self, forKey: .groupId)
         )
         contractSchema = wrappedContract?.schema
     }
@@ -452,6 +462,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
         }
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(groupId, forKey: .groupId)
         if response != nil || petType != nil || part != nil {
             try container.encodeIfPresent(petType, forKey: .petType)
             try container.encodeIfPresent(part, forKey: .part)
@@ -470,6 +481,7 @@ public struct AIScanResult: Codable, Equatable, @unchecked Sendable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.status == rhs.status
             && lhs.diagnosisID == rhs.diagnosisID
+            && lhs.groupId == rhs.groupId
             && lhs.symptoms == rhs.symptoms
             && dictionariesEqual(lhs.contractResult, rhs.contractResult)
             && lhs.petType == rhs.petType

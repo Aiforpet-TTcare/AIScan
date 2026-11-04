@@ -235,6 +235,10 @@ public final class AIScanCameraController: NSObject, @unchecked Sendable {
         cameraEngine.diagnoseUploadedPhoto?(photo)
     }
 
+    func diagnoseUploadedPhoto(_ photo: AISCUploadedPhoto, captureIdentifier: String, photoIndex: Int, photoCount: Int) {
+        cameraEngine.diagnoseUploadedPhoto?(photo, captureIdentifier: captureIdentifier, photoIndex: photoIndex, photoCount: photoCount)
+    }
+
     func inspectAlbumPhoto(
         _ photo: AIScanAlbumPhoto,
         part: AISCPartType,

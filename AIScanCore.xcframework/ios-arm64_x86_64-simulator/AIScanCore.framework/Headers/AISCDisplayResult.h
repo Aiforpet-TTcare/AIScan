@@ -79,6 +79,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSString *status;
 @property (nonatomic, copy, readonly, nullable) NSString *diagnosisID;
+/// Opaque server-issued capture group; absent for legacy/ungrouped results.
+@property (nonatomic, copy, readonly, nullable) NSString *groupID;
 /// Abnormal-only collection used by the existing result tabs.
 @property (nonatomic, copy, readonly) NSArray<AISCDisplaySymptom *> *symptoms;
 /// Complete analyzed catalog (normal and abnormal) used by reports.

@@ -340,6 +340,14 @@ final class AIScanFivePartVisualMatrixTests: XCTestCase {
         viewController.view.setNeedsLayout()
         viewController.view.layoutIfNeeded()
 
+        // Hosted apps may defer appearance for the auxiliary test window.
+        // Inspect the popup after its normal entrance has made the card visible.
+        if viewController is AIScanLegacyPopupContainer {
+            viewController.beginAppearanceTransition(true, animated: false)
+            viewController.endAppearanceTransition()
+            UIView.performWithoutAnimation { viewController.viewDidAppear(false) }
+        }
+
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         return UIGraphicsImageRenderer(bounds: frame, format: format).image { context in

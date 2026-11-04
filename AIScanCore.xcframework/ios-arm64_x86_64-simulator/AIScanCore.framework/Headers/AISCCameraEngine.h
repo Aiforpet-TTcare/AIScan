@@ -50,6 +50,11 @@ typedef void (^AISCCameraPermissionCompletion)(BOOL granted);
                 progress:(nullable AISCDiagnosisProgress)progress
               completion:(AISCPhotoUploadCompletion)completion NS_SWIFT_NAME(uploadPhoto(_:progress:completion:));
 - (void)diagnoseUploadedPhoto:(AISCUploadedPhoto *)photo NS_SWIFT_NAME(diagnoseUploadedPhoto(_:));
+- (void)diagnoseUploadedPhoto:(AISCUploadedPhoto *)photo
+            captureIdentifier:(nullable NSString *)captureIdentifier
+                   photoIndex:(NSInteger)photoIndex
+                   photoCount:(NSInteger)photoCount
+    NS_SWIFT_NAME(diagnoseUploadedPhoto(_:captureIdentifier:photoIndex:photoCount:));
 - (void)albumDidOpen NS_SWIFT_NAME(albumDidOpen());
 - (void)albumDidCancel NS_SWIFT_NAME(albumDidCancel());
 - (void)resultDidBecomeVisible NS_SWIFT_NAME(resultDidBecomeVisible());
