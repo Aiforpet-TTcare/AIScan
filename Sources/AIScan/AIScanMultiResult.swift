@@ -31,6 +31,7 @@ public extension AIScanResult {
         guard isMultiMode, let entries = contractResult?["results"] as? [[String: Any]] else { return nil }
         return entries.map { entry in
             if var result = entry["result"] as? [String: Any] {
+                if let groupId = entry["groupId"] { result["groupId"] = groupId }
                 if entry["status"] as? String == "RETRY" {
                     result["status"] = "RETRY"
                     for key in ["reasonCode", "message"] {
@@ -97,8 +98,13 @@ extension AIScanResult {
     init(multiOutcomes: [AIScanMultiPhotoOutcome], petType: PetType, partType: PartType,
          petId: String?, userId: String?) {
         var successCount = 0
+        let groups = Set(multiOutcomes.compactMap { $0.result?.groupID ?? ($0.error as NSError?)?.userInfo["groupId"] as? String })
+        let sharedGroupId = groups.count == 1 ? groups.first : nil
         let entries: [[String: Any]] = multiOutcomes.map { outcome in
             var entry: [String: Any] = ["photoId": outcome.photoID, "photoIndex": outcome.photoIndex]
+            if let groupId = outcome.result?.groupID ?? (outcome.error as NSError?)?.userInfo["groupId"] as? String ?? sharedGroupId {
+                entry["groupId"] = groupId
+            }
             if let display = outcome.result {
                 let viewModel = AIScanDisplayResultViewModel(result: display)
                 let single = AIScanResult(legacyDisplayResult: display, petType: petType, partType: partType,

@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.2.1
+
+- Assign a fresh capture UUID to each confirmed multi-photo batch and send it
+  through the existing per-photo analysis requests without an extra group API.
+- Preserve the optional server-issued `groupId` in each direct callback array
+  item and in rebuilt native results. Keep single callbacks, array order,
+  existing payload fields and results without a group unchanged.
+- Keep group membership when a confirmed batch has mixed successful and failed
+  photos; each photo retains its own status. Do not add automatic reanalysis.
+- Include the Core privacy manifest and the existing localized strings in the
+  distributed framework and CocoaPods resource bundles.
+- Align the Core framework version reported to the server with SDK 3.2.1.
+
 ## 3.2.0
 
 - Disease analysis now runs exclusively through the server. Remove local disease

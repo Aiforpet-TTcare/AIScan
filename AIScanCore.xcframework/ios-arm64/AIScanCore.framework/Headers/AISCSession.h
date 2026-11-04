@@ -61,6 +61,13 @@ typedef void (^AISCPhotoUploadCompletion)(AISCUploadedPhoto *_Nullable photo, NS
 - (void)diagnoseUploadedPhoto:(AISCUploadedPhoto *)photo
                      progress:(nullable AISCDiagnosisProgress)progress
                    completion:(AISCDisplayResultCompletion)completion;
+/// Finalized selection metadata is supplied at analysis confirmation, after upload.
+- (void)diagnoseUploadedPhoto:(AISCUploadedPhoto *)photo
+            captureIdentifier:(nullable NSString *)captureIdentifier
+                   photoIndex:(NSInteger)photoIndex
+                   photoCount:(NSInteger)photoCount
+                     progress:(nullable AISCDiagnosisProgress)progress
+                   completion:(AISCDisplayResultCompletion)completion;
 - (void)measurePhotoSubject:(AISCImageInput *)input completion:(AISCPhotoMeasurementCompletion)completion;
 - (nullable AVCaptureDevice *)cameraDeviceForPosition:(AVCaptureDevicePosition)position NS_SWIFT_NAME(cameraDevice(for:));
 - (CGFloat)cameraZoomFactorForRequestedFactor:(CGFloat)requestedFactor

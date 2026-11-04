@@ -47,6 +47,7 @@ final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
     var photoCollectionEnabled = false
     var uploadedPhotoInputs: [AISCImageInput] = []
     var diagnosedUploadedPhotos: [AISCUploadedPhoto] = []
+    var captureRequests: [(id: String?, index: Int, count: Int)] = []
     var uploadCompletions: [(AISCUploadedPhoto?, Error?) -> Void] = []
     var onUpload: (() -> Void)?
 
@@ -62,6 +63,10 @@ final class MockCameraEngine: NSObject, AISCCameraEngineControlling {
         onUpload?()
     }
     func diagnoseUploadedPhoto(_ photo: AISCUploadedPhoto) { diagnosedUploadedPhotos.append(photo) }
+    func diagnoseUploadedPhoto(_ photo: AISCUploadedPhoto, captureIdentifier: String?, photoIndex: Int, photoCount: Int) {
+        captureRequests.append((captureIdentifier, photoIndex, photoCount))
+        diagnoseUploadedPhoto(photo)
+    }
 
     func requestCameraAccess(completion: @escaping (Bool) -> Void) {
         cameraAccessRequestCount += 1

@@ -27,6 +27,7 @@ final class AIScanMultiPhotoJob: NSObject, AIScanCameraControllerDelegate {
     private var input: AISCImageInput?
     private var uploadedPhoto: AISCUploadedPhoto?
     private var analysisRequested = false
+    private var capture: (id: String, index: Int, count: Int)?
     private var cancelled = false
 
     init(input: AISCImageInput, preview: UIImage, context: AISCScanContext, controller: AIScanCameraController) {
@@ -73,17 +74,18 @@ final class AIScanMultiPhotoJob: NSObject, AIScanCameraControllerDelegate {
         }
     }
 
-    func requestAnalysis() {
-        guard !cancelled else { return }
+    func requestAnalysis(captureIdentifier: String, photoIndex: Int, photoCount: Int) {
+        guard !cancelled, !analysisRequested else { return }
+        capture = (captureIdentifier, photoIndex, photoCount)
         analysisRequested = true
         beginAnalysisIfReady()
     }
 
     private func beginAnalysisIfReady() {
-        guard analysisRequested, !cancelled, phase == .ready, let uploadedPhoto else { return }
+        guard analysisRequested, !cancelled, phase == .ready, let uploadedPhoto, let capture else { return }
         phase = .analyzing
         onChange?()
-        controller.diagnoseUploadedPhoto(uploadedPhoto)
+        controller.diagnoseUploadedPhoto(uploadedPhoto, captureIdentifier:capture.id, photoIndex:capture.index, photoCount:capture.count)
     }
 
     func cancel() {
@@ -178,7 +180,10 @@ final class AIScanMultiPhotoCoordinator {
         onChange?()
         // Each photo owns a prepared Core session. Start every ready photo now;
         // a still-uploading photo joins as soon as its own upload completes.
-        items.forEach { $0.requestAnalysis() }
+        let captureIdentifier = UUID().uuidString.lowercased()
+        for (index, item) in items.enumerated() {
+            item.requestAnalysis(captureIdentifier:captureIdentifier, photoIndex:index + 1, photoCount:items.count)
+        }
         changed()
     }
 

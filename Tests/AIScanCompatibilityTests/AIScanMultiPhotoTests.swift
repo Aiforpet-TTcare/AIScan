@@ -50,6 +50,12 @@ final class AIScanMultiPhotoTests: XCTestCase {
         XCTAssertTrue(callbacks.isEmpty)
         coordinator.analyze()
         XCTAssertEqual(engines.map { $0.diagnosedUploadedPhotos.count }, [1, 1, 1, 1])
+        let captureID = try XCTUnwrap(engines[0].captureRequests.first?.id)
+        XCTAssertNotNil(UUID(uuidString: captureID))
+        XCTAssertEqual(Array(captureID)[14], "4")
+        XCTAssertEqual(engines.compactMap { $0.captureRequests.first?.id }, Array(repeating: captureID, count: 4))
+        XCTAssertEqual(engines.compactMap { $0.captureRequests.first?.index }, [1, 2, 3, 4])
+        XCTAssertEqual(engines.compactMap { $0.captureRequests.first?.count }, [4, 4, 4, 4])
         for index in [3, 1, 2] {
             engines[index].emitResult(AISCDisplayResult(status: "completed", diagnosisID: "diag-\(index)", symptoms: []))
         }
@@ -67,7 +73,31 @@ final class AIScanMultiPhotoTests: XCTestCase {
         coordinator.analyze()
         try await drain()
         XCTAssertEqual(callbacks.count, 1)
+        XCTAssertEqual(engines.map { $0.captureRequests.count }, [1, 1, 1, 1])
         coordinator.cancel()
+    }
+
+    func testFreshCaptureGetsFreshUUIDEvenForOnePhotoInMultiMode() async throws {
+        var captureIDs: [String] = []
+        for _ in 0..<2 {
+            let (coordinator, engines) = fixture(1)
+            XCTAssertTrue(append(coordinator))
+            try await drain()
+            engines[0].uploadCompletions[0](uploadedToken(), nil)
+            try await drain()
+            XCTAssertTrue(engines[0].captureRequests.isEmpty)
+            coordinator.analyze()
+            coordinator.analyze()
+            XCTAssertEqual(engines[0].captureRequests.count, 1)
+            let request = try XCTUnwrap(engines[0].captureRequests.first)
+            let captureID = try XCTUnwrap(request.id)
+            XCTAssertNotNil(UUID(uuidString: captureID))
+            XCTAssertEqual(request.index, 1)
+            XCTAssertEqual(request.count, 1)
+            captureIDs.append(captureID)
+            coordinator.cancel()
+        }
+        XCTAssertNotEqual(captureIDs[0], captureIDs[1])
     }
 
     func testConfirmDuringUploadJoinsLaterAndUploadFailureDoesNotAbortOtherPhotos() async throws {
@@ -85,6 +115,9 @@ final class AIScanMultiPhotoTests: XCTestCase {
         engines[2].uploadCompletions[0](uploadedToken(), nil)
         try await drain()
         XCTAssertEqual(engines.map { $0.diagnosedUploadedPhotos.count }, [1, 0, 1])
+        XCTAssertEqual(engines[0].captureRequests.first?.id, engines[2].captureRequests.first?.id)
+        XCTAssertEqual(engines.compactMap { $0.captureRequests.first?.index }, [1, 3])
+        XCTAssertEqual(engines.compactMap { $0.captureRequests.first?.count }, [3, 3])
         for index in [2, 0] { engines[index].emitResult(AISCDisplayResult(status: "completed", diagnosisID: "d\(index)", symptoms: [])) }
         try await drain()
         XCTAssertEqual(returned.count, 3)
@@ -341,6 +374,40 @@ final class AIScanMultiPhotoTests: XCTestCase {
         let failed = AIScanResult(multiOutcomes: Array(outcomes.suffix(1)), petType: .dog, partType: .eye, petId: nil, userId: nil)
         XCTAssertEqual(failed.status, "ERROR")
         XCTAssertEqual(failed.photoResults?.count, 1)
+    }
+
+    func testServerGroupSurvivesOriginalPayloadAndOrderedPartialCallback() throws {
+        let groupID = "cg_89abcdef01234567"
+        let payload: [String: Any] = ["status": "SUCCESS", "groupId": groupID,
+            "part": "EYE", "vendorField": ["keep": true],
+            "response": ["symptoms": [["polygons": [[1.25, 2.5, 3.75, 4.125]]]]]]
+        let display = AISCDisplayResult(status: "NORMAL", diagnosisID: "group-photo", symptoms: [],
+            contractResult: AISCContractResult(schema: "native.v2", payload: payload))
+        XCTAssertEqual(display.groupID, groupID)
+        let result = AIScanResult(multiOutcomes: [
+            AIScanMultiPhotoOutcome(photoID: "a", photoIndex: 1, result: display, error: nil, errorMessage: nil, analysisSubpart: "left", analysisPosition: nil),
+            AIScanMultiPhotoOutcome(photoID: "b", photoIndex: 2, result: nil,
+                error: NSError(domain: AISCErrorDomain, code: 408), errorMessage: "Connection lost", analysisSubpart: "right", analysisPosition: nil)
+        ], petType: .dog, partType: .eye, petId: nil, userId: nil)
+        let callback = try XCTUnwrap(result.jsonArray)
+        XCTAssertEqual(callback[0] as NSDictionary, payload as NSDictionary)
+        XCTAssertEqual(callback.map { $0["groupId"] as? String }, [groupID, groupID])
+        XCTAssertEqual(callback[1]["status"] as? String, "ERROR")
+        XCTAssertNil(callback[1]["diagnosisId"])
+        XCTAssertEqual(result.photoResults?.first?.result?.groupId, groupID)
+        let decoded = try JSONDecoder().decode(AIScanResult.self, from: JSONEncoder().encode(result))
+        XCTAssertEqual(decoded.jsonArray as NSArray?, callback as NSArray)
+    }
+
+    func testOptionalGroupSurvivesRebuiltNativeResultAndLegacyOmitsIt() throws {
+        let groupID = "cg_89abcdef01234567"
+        let grouped = AIScanResult(status: "SUCCESS", part: "EYE", groupId: groupID)
+        XCTAssertEqual(grouped.jsonObject?["groupId"] as? String, groupID)
+        let decoded = try JSONDecoder().decode(AIScanResult.self, from: JSONEncoder().encode(grouped))
+        XCTAssertEqual(decoded.groupId, groupID)
+        let legacy = AIScanResult(status: "SUCCESS", part: "EYE")
+        XCTAssertNil(legacy.groupId)
+        XCTAssertNil(legacy.jsonObject?["groupId"])
     }
 
     private func addAttachment(_ attachment: XCTAttachment) { add(attachment) }

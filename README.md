@@ -4,7 +4,8 @@
 
 ---
 
-> **3.2.0:** Disease analysis uses the server only. Projects
+> **3.2.1:** Multi-photo captures support a server-issued `groupId`. Disease
+> analysis continues to use the server only. Projects
 > must have server analysis enabled before upgrading. See [the migration guide](TTAPI_ONLY_MIGRATION.md).
 
 **AIScan** is an AI-powered health diagnosis SDK for iOS that helps veterinarians and pet owners detect common health issues in dogs and cats through server-based image analysis. Camera and album quality checks remain on the device.
@@ -27,7 +28,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.0")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.1")
 ]
 ```
 
@@ -41,7 +42,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.2.0'
+    :tag => '3.2.1'
 ```
 
 ### Single public module
@@ -153,6 +154,25 @@ try AIScanManager.showCamera(petType: .dog, partType: .eye, on: self) { result, 
 }
 ```
 
+### Capture groups (3.2.1)
+
+When `enableMultiMode` is enabled, the SDK gives each confirmed photo batch a
+fresh capture UUID and sends it with the existing per-photo analysis requests.
+The server assigns the `groupId`; the host app does not generate it or send an
+additional group-registration request.
+
+Read `groupId` from each object in `scan.jsonArray`. Objects from the same batch
+carry the same server group ID when available. A later batch uses a new capture
+UUID and receives a different group ID, even for the same pet on the same day.
+For a single result, `scan.groupId` is optional. Group IDs may be absent in legacy
+results or when no server group was received. Keep parsing these results as
+before, and check each photo's status independently of its group membership.
+
+The existing single-object callback, direct multi-result array, photo order and
+`petId` remain unchanged. `groupId` identifies a capture batch; `petId` identifies
+the animal across captures. Keep the same stable `petId` for that animal and
+preserve unknown optional fields when forwarding callback JSON.
+
 ### Host-owned result view
 
 ```swift
@@ -225,6 +245,7 @@ the most recently generated URL for the current process.
 |---|---|---|
 | `status` | `String` | Display status. |
 | `diagnosisID` | `String?` | Server diagnosis identifier when available. |
+| `groupId` | `String?` | Server-issued capture group, when available; optional for legacy results. |
 | `symptoms` | `[AIScanSymptom]` | Display-safe symptom rows. |
 | `contractResult` | `[String: Any]?` | Original partner payload dictionary, compatible with 3.0.9. |
 | `typedContractResult` | `AIScanContractResult?` | Opt-in schema and payload view when schema metadata is available. |
