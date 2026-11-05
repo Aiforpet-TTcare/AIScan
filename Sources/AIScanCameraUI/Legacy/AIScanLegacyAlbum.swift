@@ -326,14 +326,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         selectPhotoButton.layer.addSublayer(dashedBorderLayer)
         contentStack.addArrangedSubview(selectPhotoButton)
 
+        buildValidationRow()
+        contentStack.addArrangedSubview(validationRow)
+
         buildPhotoCard()
         contentStack.addArrangedSubview(photoCard)
         let photoHeight = photoCard.heightAnchor.constraint(equalToConstant: 380)
         photoHeightConstraint = photoHeight
         photoHeight.isActive = true
-
-        buildValidationRow()
-        contentStack.addArrangedSubview(validationRow)
 
         inspectionRetryButton.setTitle(AIScanCameraStrings.localized(.retry), for: .normal)
         inspectionRetryButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)

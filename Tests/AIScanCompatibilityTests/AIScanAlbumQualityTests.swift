@@ -71,6 +71,10 @@ final class AIScanAlbumQualityTests: XCTestCase {
                 let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
                 XCTAssertEqual(message.text, AIScanCameraStrings.localizedMessageKey("album.quality.file_too_large"))
                 XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.validation")).isHidden)
+                let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
+                let warning = message.convert(message.bounds, to: scroll)
+                XCTAssertGreaterThanOrEqual(warning.minY, scroll.bounds.minY)
+                XCTAssertLessThanOrEqual(warning.maxY, scroll.bounds.maxY, "The warning must be visible without scrolling.")
                 XCTAssertLessThanOrEqual(message.sizeThatFits(CGSize(width: message.bounds.width, height: .greatestFiniteMagnitude)).height,
                                          message.bounds.height + 1)
                 let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: album.view.bounds).image {
