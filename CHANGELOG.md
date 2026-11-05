@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.2.2 - 2026-11-05
+
+- Reject original album files larger than 24 MiB before image decoding, quality inspection, or upload. Exactly 24 MiB remains accepted, per photo, in single- and multi-photo modes on both picker paths.
+- Keep the album open after an oversize selection and show localized recovery guidance in all six supported languages.
+- Show the required source resolution for the selected part and clarify insufficient-color and unreadable-source messages.
+- Match live eye/teeth blur guidance and album eye/teeth blur guidance to the rejection reason; keep sharpness guidance for the remaining focus failures.
+- Preserve capture timing, original resolution/color thresholds, detected-size acceptance rules, callbacks, and capture grouping. No new detected-size upper bound is added.
+- No host API or integration migration is required.
+
 ## 3.2.1
 
 - Assign a fresh capture UUID to each confirmed multi-photo batch and send it

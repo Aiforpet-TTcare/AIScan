@@ -104,11 +104,11 @@
 "album.quality.unknown_value" = "確認できません";
 "album.quality.resolution" = "サイズの大きい元の写真を選んでください。";
 "album.quality.bits_reason" = "別の元の写真を選んでください。";
-"album.quality.unknown" = "写真を確認できませんでした。別の元の写真を選んでください。";
+"album.quality.unknown" = "画像の品質情報を確認できませんでした。別の元の写真を選択してください。";
 "album.quality.distance" = "調べたい部分がもっと大きく写った写真を選んでください。";
 "album.quality.detect" = "調べたい部分がはっきり見える写真を選んでください。";
 "album.quality.checking" = "写真を確認しています。";
-"album.quality.load_failed" = "写真を読み込めませんでした。別の写真を選んでください。";
+"album.quality.load_failed" = "写真を読み込めませんでした。別の写真を選択してください。";
 "album.quality.not_checked" = "写真はまだ確認していません。";
 
 // Scan failure guidance
@@ -125,7 +125,7 @@
 "error.cancelled" = "検査がキャンセルされました。";
 "error.result" = "検査結果を読み込めませんでした。もう一度お試しください。";
 "error.upload" = "写真を送れませんでした。もう一度お試しください。";
-"photo.color_quality" = "この写真では検査できません。別の元の写真を選んでください。";
+"photo.color_quality" = "解析に必要な色情報が不足しています。1ピクセルあたり24ビット以上のカラー写真を選択してください。";
 
 // Album framing guidance
 "album.subject.eye.larger" = "目がより大きく写った写真を選択してください。";
@@ -164,3 +164,7 @@
 "album.quality.load_timeout" = "写真を読み込めませんでした。もう一度選択してください。";
 
 "error.server_analysis_required" = "このプロジェクトではサーバー診断を利用できません。管理者にお問い合わせください。";
+
+"album.quality.file_too_large" = "画像の容量を24MB以下にしてください。";
+
+"album.quality.resolution_required" = "画像の解像度が低すぎます。幅と高さがそれぞれ%dpx以上の写真を選択してください。";

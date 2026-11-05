@@ -99,7 +99,8 @@ enum AIScanCameraStrings {
     ) -> String? {
         let key: String
         if report.originalRows.contains(where: { $0.issue == "resolution" }) {
-            key = "해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."
+            return String(format: localizedMessageKey("album.quality.resolution_required", languageCode: languageCode),
+                          report.originalRows[0].minimum)
         } else if !report.originalIsValid {
             key = report.metadata.bitsPerPixel == nil ? "album.quality.unknown" : "photo.color_quality"
         } else if isInspecting || report.isValid {

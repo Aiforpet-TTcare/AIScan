@@ -4,7 +4,7 @@
 
 ---
 
-> **3.2.1:** Multi-photo captures support a server-issued `groupId`. Disease
+> **3.2.2:** Multi-photo captures support a server-issued `groupId`. Disease
 > analysis continues to use the server only. Projects
 > must have server analysis enabled before upgrading. See [the migration guide](TTAPI_ONLY_MIGRATION.md).
 
@@ -28,7 +28,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.1")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.2")
 ]
 ```
 
@@ -42,7 +42,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.2.1'
+    :tag => '3.2.2'
 ```
 
 ### Single public module
@@ -154,7 +154,7 @@ try AIScanManager.showCamera(petType: .dog, partType: .eye, on: self) { result, 
 }
 ```
 
-### Capture groups (3.2.1)
+### Capture groups (3.2.2)
 
 When `enableMultiMode` is enabled, the SDK gives each confirmed photo batch a
 fresh capture UUID and sends it with the existing per-photo analysis requests.
@@ -379,7 +379,7 @@ are unchanged.
 
 With `allowsAlbum: true`, the SDK checks the
 selected image before starting analysis. It shows localized, actionable guidance
-when a photo fails; internal pixel and bit-depth measurements are not displayed.
+when a photo fails, including the required source resolution and color depth.
 The analysis action stays disabled until the checks pass.
 
 | Part | Minimum source width and height | Minimum detected longer side | Minimum source bits per pixel |
@@ -387,6 +387,12 @@ The analysis action stays disabled until the checks pass.
 | Skin | 1200 × 1200 px | Not required | 24 bpp |
 | Eye | 900 × 900 px | 270 px | 24 bpp |
 | Teeth | 1400 × 1400 px | 270 px | 24 bpp |
+
+Each original album file must be at most **24 MiB (25,165,824 bytes)**. A larger
+file is rejected before SDK image decoding, model inspection, or upload. The limit
+applies per photo in both single- and multi-photo selection. Exactly 24 MiB is
+accepted. Oversize selection keeps the album open so the user can choose another
+photo. Detection has no new maximum-size gate in this release.
 
 JPEG, PNG and HEIC metadata are inspected before conversion. If source metadata
 cannot be read, the SDK asks the user to select another photo. Detection sizes

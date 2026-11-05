@@ -491,7 +491,7 @@ final class AIScanCameraUIStateTests: XCTestCase {
     func testTTAPIAlbumQualityFailuresOfferAnotherPhotoAndServiceFailuresDoNotBlameThePhoto() {
         let expected = [
             "PRE_IMAGE_RESOLUTION_TOO_LOW": "사진이 너무 작아요. 더 큰 원본 사진을 선택해 주세요.",
-            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "이 사진으로는 검사하기 어려워요. 다른 원본 사진을 선택해 주세요.",
+            "PRE_IMAGE_BIT_DEPTH_TOO_LOW": "분석에 필요한 색상 정보가 부족합니다. 픽셀당 24비트 이상의 컬러 사진을 선택해 주세요.",
             "PRE_EYE_DETECT_BBOX_TOO_SMALL": "눈이 더 크게 나온 사진을 선택해 주세요.",
             "PRE_TOOTH_DETECT_BBOX_TOO_SMALL": "치아가 더 크게 나온 사진을 선택해 주세요."
         ]
