@@ -66,15 +66,40 @@ struct AIScanAlbumMetadata: Sendable {
     }
 }
 
+enum AIScanAlbumPhotoLoadError: Error, Equatable, Sendable {
+    case fileTooLarge
+    case unavailable
+
+    var messageKey: String {
+        switch self {
+        case .fileTooLarge: "album.quality.file_too_large"
+        case .unavailable: "album.quality.load_failed"
+        }
+    }
+}
+
 /// Retains metadata from the selected representation, before conversion to BGRA.
 struct AIScanAlbumPhoto: @unchecked Sendable {
+    static let maximumSourceByteCount = 24 * 1_024 * 1_024
     let image: UIImage
     let metadata: AIScanAlbumMetadata
 
     init?(data: Data) {
-        guard let metadata = AIScanAlbumMetadata(data: data), let image = UIImage(data: data) else { return nil }
+        guard data.count <= Self.maximumSourceByteCount,
+              let metadata = AIScanAlbumMetadata(data: data), let image = UIImage(data: data) else { return nil }
         self.image = image
         self.metadata = metadata
+    }
+
+    static func sourceData(at url: URL) throws -> Data {
+        if let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize,
+           size > maximumSourceByteCount {
+            throw AIScanAlbumPhotoLoadError.fileTooLarge
+        }
+        let data = try Data(contentsOf: url, options: .mappedIfSafe)
+        // Recheck the bytes actually read in case the source changed after stat.
+        guard data.count <= maximumSourceByteCount else { throw AIScanAlbumPhotoLoadError.fileTooLarge }
+        return data
     }
 
     init(image: UIImage) {

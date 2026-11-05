@@ -104,11 +104,11 @@
 "album.quality.unknown_value" = "Ej tillgängligt";
 "album.quality.resolution" = "Välj ett större originalfoto.";
 "album.quality.bits_reason" = "Välj ett annat originalfoto.";
-"album.quality.unknown" = "Vi kunde inte kontrollera fotot. Välj ett annat originalfoto.";
+"album.quality.unknown" = "Bildens kvalitetsinformation kunde inte läsas. Välj en annan originalbild.";
 "album.quality.distance" = "Välj ett foto där området syns på närmare håll.";
 "album.quality.detect" = "Välj ett foto där området du vill kontrollera syns tydligt.";
 "album.quality.checking" = "Kontrollerar ditt foto…";
-"album.quality.load_failed" = "Vi kunde inte öppna fotot. Välj ett annat foto.";
+"album.quality.load_failed" = "Bilden kunde inte läsas in. Välj en annan bild.";
 "album.quality.not_checked" = "Fotot har inte kontrollerats ännu.";
 
 // Scan failure guidance
@@ -125,7 +125,7 @@
 "error.cancelled" = "Kontrollen avbröts.";
 "error.result" = "Vi kunde inte läsa in resultatet. Försök igen.";
 "error.upload" = "Vi kunde inte skicka fotot. Försök igen.";
-"photo.color_quality" = "Det här fotot kan inte användas för kontrollen. Välj ett annat originalfoto.";
+"photo.color_quality" = "Bilden har inte tillräckligt med färginformation för analys. Välj en färgbild med minst 24 bitar per pixel.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "Välj ett foto där ögat syns större.";
@@ -164,3 +164,7 @@
 "album.quality.load_timeout" = "Fotot kunde inte läsas in. Välj det igen.";
 
 "error.server_analysis_required" = "Serveranalys är inte tillgänglig för det här projektet. Kontakta administratören.";
+
+"album.quality.file_too_large" = "Minska bildens filstorlek till högst 24 MB.";
+
+"album.quality.resolution_required" = "Bildens upplösning är för låg. Välj en bild vars bredd och höjd är minst %d pixlar vardera.";

@@ -104,11 +104,11 @@
 "album.quality.unknown_value" = "Non disponibile";
 "album.quality.resolution" = "Scegli una foto originale più grande.";
 "album.quality.bits_reason" = "Scegli un’altra foto originale.";
-"album.quality.unknown" = "Non siamo riusciti a controllare la foto. Scegli un’altra foto originale.";
+"album.quality.unknown" = "Non è stato possibile leggere le informazioni sulla qualità dell’immagine. Scegli un’altra foto originale.";
 "album.quality.distance" = "Scegli una foto in cui la zona da controllare sia più vicina.";
 "album.quality.detect" = "Scegli una foto in cui la zona da controllare sia ben visibile.";
 "album.quality.checking" = "Stiamo controllando la foto…";
-"album.quality.load_failed" = "Non siamo riusciti ad aprire la foto. Scegli un’altra foto.";
+"album.quality.load_failed" = "Non è stato possibile caricare la foto. Scegli un’altra foto.";
 "album.quality.not_checked" = "La foto non è ancora stata controllata.";
 
 // Scan failure guidance
@@ -125,7 +125,7 @@
 "error.cancelled" = "Il controllo è stato annullato.";
 "error.result" = "Non siamo riusciti a caricare i risultati. Riprova.";
 "error.upload" = "Non siamo riusciti a inviare la foto. Riprova.";
-"photo.color_quality" = "Questa foto non può essere usata per il controllo. Scegli un’altra foto originale.";
+"photo.color_quality" = "Le informazioni sul colore non sono sufficienti per l’analisi. Scegli una foto a colori con almeno 24 bit per pixel.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "Seleziona una foto in cui l’occhio sia più grande.";
@@ -164,3 +164,7 @@
 "album.quality.load_timeout" = "Impossibile caricare la foto. Selezionala di nuovo.";
 
 "error.server_analysis_required" = "L’analisi sul server non è disponibile per questo progetto. Contatta l’amministratore.";
+
+"album.quality.file_too_large" = "Riduci la dimensione dell’immagine a 24 MB o meno.";
+
+"album.quality.resolution_required" = "La risoluzione dell’immagine è troppo bassa. Scegli una foto con larghezza e altezza di almeno %d px ciascuna.";

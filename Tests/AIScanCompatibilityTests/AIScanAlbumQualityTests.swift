@@ -6,6 +6,149 @@ import ImageIO
 
 @MainActor
 final class AIScanAlbumQualityTests: XCTestCase {
+    private func sourceFixture(_ name: String) throws -> URL {
+        let directory = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("tmp/album-source-limit-tests")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        return directory.appendingPathComponent(UUID().uuidString + "-" + name)
+    }
+
+    private func oversizedSource() throws -> URL {
+        let url = try sourceFixture("oversize.jpg")
+        XCTAssertTrue(FileManager.default.createFile(atPath: url.path, contents: Data()))
+        let file = try FileHandle(forWritingTo: url)
+        try file.truncate(atOffset: UInt64(AIScanAlbumPhoto.maximumSourceByteCount + 1))
+        try file.close()
+        return url
+    }
+
+    func testSourceFileAcceptsExactly24MiBAndRejectsOneExtraByte() throws {
+        var data = try XCTUnwrap(try photo().image.jpegData(compressionQuality: 0.9))
+        data.append(Data(repeating: 0, count: AIScanAlbumPhoto.maximumSourceByteCount - data.count))
+        let url = try sourceFixture("boundary.jpg")
+        try data.write(to: url)
+        XCTAssertEqual(try AIScanAlbumPhoto.sourceData(at: url).count, 24 * 1_024 * 1_024)
+        XCTAssertNotNil(AIScanAlbumPhoto(data: data))
+        data.append(0)
+        try data.write(to: url)
+        XCTAssertThrowsError(try AIScanAlbumPhoto.sourceData(at: url)) {
+            XCTAssertEqual($0 as? AIScanAlbumPhotoLoadError, .fileTooLarge)
+        }
+        XCTAssertNil(AIScanAlbumPhoto(data: data))
+    }
+
+    func testOversizeSourceIsRejectedBeforeImageMetadataOrDecoding() throws {
+        XCTAssertThrowsError(try AIScanAlbumPhoto.sourceData(at: oversizedSource())) {
+            XCTAssertEqual($0 as? AIScanAlbumPhotoLoadError, .fileTooLarge,
+                           "A large invalid file must report size, not a decode failure.")
+        }
+    }
+
+    func testLegacyPickerCannotBypassSizeLimitUsingDecodedImageAndShowsRecoverableCopy() throws {
+        let url = try oversizedSource()
+        let fallback = try photo().image
+        for multi in [false, true] {
+            for width in [320.0, 390.0] {
+                let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true,
+                    initialPosition: "belly", partType: .skin)
+                album.loadViewIfNeeded()
+                album.view.frame = CGRect(x: 0, y: 0, width: width, height: 568)
+                var inspections = 0
+                var registrations = 0
+                album.onInspect = { _, _ in inspections += 1 }
+                if multi { album.onValidatedPhoto = { _, _ in registrations += 1 } }
+                album.onAnalyze = { _, _ in registrations += 1 }
+                let picker = DeferredDismissalPhotoPicker()
+                album.imagePickerController(picker, didFinishPickingMediaWithInfo: [.imageURL: url, .originalImage: fallback])
+                picker.finishDismissal()
+                album.view.layoutIfNeeded()
+                XCTAssertNil(album.selectedPhoto)
+                XCTAssertEqual(inspections, 0)
+                XCTAssertEqual(registrations, 0)
+                XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton).isEnabled)
+                XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.select-photo") as? UIButton).isEnabled)
+                let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
+                XCTAssertEqual(message.text, AIScanCameraStrings.localizedMessageKey("album.quality.file_too_large"))
+                XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.validation")).isHidden)
+                let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
+                let warning = message.convert(message.bounds, to: scroll)
+                XCTAssertGreaterThanOrEqual(warning.minY, scroll.bounds.minY)
+                XCTAssertLessThanOrEqual(warning.maxY, scroll.bounds.maxY, "The warning must be visible without scrolling.")
+                XCTAssertLessThanOrEqual(message.sizeThatFits(CGSize(width: message.bounds.width, height: .greatestFiniteMagnitude)).height,
+                                         message.bounds.height + 1)
+                let attachment = XCTAttachment(image: UIGraphicsImageRenderer(bounds: album.view.bounds).image {
+                    album.view.layer.render(in: $0.cgContext)
+                })
+                attachment.name = "album-24mib-limit-\(Int(width))-\(multi ? "multi" : "single")"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+            }
+        }
+    }
+
+    @available(iOS 14, *)
+    func testProviderOversizeFailureRecoversAndNextValidPhotoCanRegister() async throws {
+        let source = DeferredOriginalPhotoProvider(preview: try photo(width: 64, height: 64).image)
+        let picker = DeferredDismissalPhotoPicker()
+        let album = AIScanAlbumSelectionViewController(allowsPositionSelection: true, initialPosition: "belly", partType: .skin)
+        album.loadViewIfNeeded()
+        var inspections = 0
+        var registrations = 0
+        album.onInspect = { photo, completion in
+            inspections += 1
+            completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: .skin).measured(.zero))
+        }
+        album.onValidatedPhoto = { _, _ in registrations += 1 }
+        album.receivePhotoSelection(from: source.provider, dismissing: picker)
+        for _ in 0..<100 where !source.requested { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertTrue(source.requested)
+        source.finish(url: try oversizedSource())
+        picker.finishDismissal()
+        let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
+        let expected = AIScanCameraStrings.localizedMessageKey("album.quality.file_too_large")
+        for _ in 0..<100 where message.text != expected { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertEqual(message.text, expected)
+        XCTAssertEqual(inspections, 0)
+        XCTAssertEqual(registrations, 0)
+        XCTAssertNil(album.selectedPhoto)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.select-photo") as? UIButton).isEnabled)
+        album.applySelectedPhoto(try photo())
+        XCTAssertEqual(inspections, 1)
+        XCTAssertEqual(registrations, 1)
+        XCTAssertTrue(try XCTUnwrap(album.qualityReport).isValid)
+        XCTAssertTrue(try XCTUnwrap(find(album.view, "aiscan.album.validation")).isHidden)
+    }
+
+    func testOversizeFailureWaitsForPickerDismissalAndIsDeliveredOnlyOnce() throws {
+        for loadFirst in [true, false] {
+            var errors: [AIScanAlbumPhotoLoadError] = []
+            let delivery = AIScanAlbumPickerDelivery { result in
+                if case .failure(let error) = result { errors.append(error) }
+            }
+            if loadFirst { delivery.loaded(.failure(.fileTooLarge)) } else { delivery.dismissed() }
+            XCTAssertTrue(errors.isEmpty)
+            if loadFirst { delivery.dismissed() } else { delivery.loaded(.failure(.fileTooLarge)) }
+            delivery.dismissed(); delivery.loaded(.failure(.unavailable))
+            XCTAssertEqual(errors, [.fileTooLarge])
+        }
+    }
+
+    func testQualityCopyExplainsPartResolutionAndPreservesSixLocales() {
+        for language in ["ko", "en", "ja", "it", "sv", "th"] {
+            let sizeMessage = AIScanCameraStrings.localizedMessageKey("album.quality.file_too_large", languageCode: language)
+            XCTAssertTrue(sizeMessage.contains("24"))
+            XCTAssertFalse(sizeMessage.contains("album."))
+            for (part, minimum) in [(AISCPartType.eye, 900), (.skin, 1200), (.teeth, 1400)] {
+                let report = AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: minimum - 1, height: minimum, bitsPerPixel: 24), part: part)
+                let message = AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false, analysisPosition: nil, languageCode: language)
+                XCTAssertTrue(message?.contains(String(minimum)) == true)
+                XCTAssertFalse(message?.contains("%d") == true)
+                if language != "ko" { XCTAssertNil(message?.range(of: "[가-힣]", options: .regularExpression)) }
+            }
+        }
+    }
+
     func testBlurRejectionBlocksSingleAndMultiPhotoRegistrationForEveryAlbumPart() throws {
         for part in [AISCPartType.eye, .teeth, .skin] {
             for multi in [false, true] {
@@ -169,7 +312,7 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(try photo(width: 1399, height: 1400))
         album.view.layoutIfNeeded()
         let label = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
-        XCTAssertEqual(label.text, AIScanCameraStrings.localizedMessageKey("해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."))
+        XCTAssertEqual(label.text, String(format: AIScanCameraStrings.localizedMessageKey("album.quality.resolution_required"), 1400))
         XCTAssertNil(find(album.view, "aiscan.album.quality"))
         let scroll = try XCTUnwrap(album.view.subviews.first { $0 is UIScrollView } as? UIScrollView)
         XCTAssertGreaterThanOrEqual(scroll.contentSize.height, scroll.bounds.height)
@@ -289,7 +432,8 @@ final class AIScanAlbumQualityTests: XCTestCase {
             XCTAssertFalse(report.isValid)
             for size in [CGSize(width: 270, height: 270), CGSize(width: 270, height: 100),
                          CGSize(width: 100, height: 270), CGSize(width: 400, height: 100),
-                         CGSize(width: 270, height: 1), CGSize(width: 1, height: 270)] {
+                         CGSize(width: 270, height: 1), CGSize(width: 1, height: 270),
+                         CGSize(width: 3001, height: 270)] {
                 XCTAssertTrue(report.measured(size).isValid, "\(part): \(size)")
             }
             for size in [CGSize(width: 269, height: 269), CGSize(width: 269.9, height: 100),
@@ -441,14 +585,14 @@ final class AIScanAlbumQualityTests: XCTestCase {
     func testPickerDeliveryJoinsLoadingAndDismissalInEitherOrderOnlyOnce() throws {
         let selected = try photo()
         for loadFirst in [true, false] {
-            var photos: [AIScanAlbumPhoto?] = []
-            let delivery = AIScanAlbumPickerDelivery { photos.append($0) }
-            if loadFirst { delivery.loaded(selected) } else { delivery.dismissed() }
-            XCTAssertTrue(photos.isEmpty)
-            if loadFirst { delivery.dismissed() } else { delivery.loaded(selected) }
-            delivery.dismissed(); delivery.loaded(nil)
-            XCTAssertEqual(photos.count, 1)
-            XCTAssertEqual(photos[0]?.metadata.width, 1200)
+            var results: [Result<AIScanAlbumPhoto, AIScanAlbumPhotoLoadError>] = []
+            let delivery = AIScanAlbumPickerDelivery { results.append($0) }
+            if loadFirst { delivery.loaded(.success(selected)) } else { delivery.dismissed() }
+            XCTAssertTrue(results.isEmpty)
+            if loadFirst { delivery.dismissed() } else { delivery.loaded(.success(selected)) }
+            delivery.dismissed(); delivery.loaded(.failure(.unavailable))
+            XCTAssertEqual(results.count, 1)
+            XCTAssertEqual(try results[0].get().metadata.width, 1200)
         }
     }
 
@@ -578,12 +722,12 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.loadViewIfNeeded()
         album.applySelectedPhoto(try photo(width: 400, height: 400))
         let message = try XCTUnwrap(find(album.view, "aiscan.album.validation.message") as? UILabel)
-        XCTAssertEqual(message.text, AIScanCameraStrings.localizedMessageKey("해상도가 너무 낮습니다. 더 선명한 사진으로 시도해 주세요."))
+        XCTAssertEqual(message.text, String(format: AIScanCameraStrings.localizedMessageKey("album.quality.resolution_required"), 900))
         XCTAssertFalse(message.superview!.isHidden)
         XCTAssertNil(find(album.view, "aiscan.album.quality.width"))
         let report = try XCTUnwrap(album.qualityReport)
         XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: report, isInspecting: false,
-            analysisPosition: nil, languageCode: "ko"), "사진이 너무 작아요. 더 큰 원본 사진을 선택해 주세요.")
+            analysisPosition: nil, languageCode: "ko"), "이미지 해상도가 낮습니다. 가로와 세로가 각각 900px 이상인 사진을 선택해 주세요.")
     }
 
     func testQualityGuidanceNamesTheActualBodyPartAndClearsAfterAnotherPhotoPasses() throws {

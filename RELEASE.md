@@ -14,6 +14,8 @@ of public Swift source, resources, Core binaries, and release metadata.
    retain the source/build/artifact verification record with the release evidence.
    Keep development-only source, credentials, customer details, local paths, and
    internal build records out of the public tree.
+   Preserve the reviewed public configuration header in both Core slices; the
+   private build header contains internal overrides that must not be exported.
 3. Keep `AIScan.podspec`, the `Package.swift` version comment, installation
    examples, and `CHANGELOG.md` aligned. Candidate notes must not claim completed
    verification or publication before those steps finish.
@@ -39,6 +41,8 @@ push its replacement history over the existing public branch.
 - Run resource, privacy manifest, Core public-header, distribution-boundary,
   publishable-key, and public-release-tree audits. Check the final release tree
   and history for credentials and development-only material.
+  Run the final tree audit on a clean Git archive of the candidate commit so
+  local Xcode caches are excluded without deleting working evidence.
 - Verify Core slice contents and final artifact hashes against the release build
   evidence. A previous version's provenance cannot validate a rebuilt binary.
 - Record each check's actual outcome. Report device or host-integration acceptance

@@ -104,11 +104,11 @@
 "album.quality.unknown_value" = "미확인";
 "album.quality.resolution" = "더 큰 원본 사진을 선택해 주세요.";
 "album.quality.bits_reason" = "다른 원본 사진을 선택해 주세요.";
-"album.quality.unknown" = "사진을 확인하지 못했어요. 다른 원본 사진을 선택해 주세요.";
+"album.quality.unknown" = "이미지의 품질 정보를 확인할 수 없습니다. 다른 원본 사진을 선택해 주세요.";
 "album.quality.distance" = "검사할 부위가 더 크게 나온 사진을 선택해 주세요.";
 "album.quality.detect" = "검사할 부위가 잘 보이는 사진을 선택해 주세요.";
 "album.quality.checking" = "사진을 확인하고 있어요.";
-"album.quality.load_failed" = "사진을 불러오지 못했어요. 다른 사진을 선택해 주세요.";
+"album.quality.load_failed" = "사진을 불러올 수 없습니다. 다른 사진을 선택해 주세요.";
 "album.quality.not_checked" = "아직 사진을 확인하지 않았어요.";
 
 // Scan failure guidance
@@ -125,7 +125,7 @@
 "error.cancelled" = "검사가 취소됐어요.";
 "error.result" = "검사 결과를 불러오지 못했어요. 다시 시도해 주세요.";
 "error.upload" = "사진을 보내지 못했어요. 다시 시도해 주세요.";
-"photo.color_quality" = "이 사진으로는 검사하기 어려워요. 다른 원본 사진을 선택해 주세요.";
+"photo.color_quality" = "분석에 필요한 색상 정보가 부족합니다. 픽셀당 24비트 이상의 컬러 사진을 선택해 주세요.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "눈이 더 크게 나온 사진을 선택해 주세요.";
@@ -164,3 +164,7 @@
 "album.quality.load_timeout" = "사진을 불러오지 못했어요. 다시 선택해 주세요.";
 
 "error.server_analysis_required" = "현재 프로젝트에서 서버 진단을 사용할 수 없습니다. 관리자에게 문의해 주세요.";
+
+"album.quality.file_too_large" = "이미지 용량을 24메가 이하로 줄여주세요.";
+
+"album.quality.resolution_required" = "이미지 해상도가 낮습니다. 가로와 세로가 각각 %dpx 이상인 사진을 선택해 주세요.";

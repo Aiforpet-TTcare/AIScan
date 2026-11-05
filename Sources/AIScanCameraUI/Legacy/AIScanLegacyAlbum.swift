@@ -31,12 +31,12 @@ enum AIScanAlbumImageLoader {
         from provider: NSItemProvider,
         completion: @escaping @MainActor @Sendable (UIImage?) -> Void
     ) {
-        loadPhoto(from: provider) { completion($0?.image) }
+        loadPhoto(from: provider) { completion((try? $0.get())?.image) }
     }
 
     nonisolated static func loadPhoto(
         from provider: NSItemProvider,
-        completion: @escaping @MainActor @Sendable (AIScanAlbumPhoto?) -> Void
+        completion: @escaping @MainActor @Sendable (Result<AIScanAlbumPhoto, AIScanAlbumPhotoLoadError>) -> Void
     ) {
         let imageType = provider.registeredTypeIdentifiers.first {
             UTType($0)?.conforms(to: .image) == true
@@ -44,22 +44,29 @@ enum AIScanAlbumImageLoader {
 
         let providerBox = ItemProviderBox(provider)
         provider.loadFileRepresentation(forTypeIdentifier: imageType) { url, _ in
-            if let url,
-               let data = try? Data(contentsOf: url, options: .mappedIfSafe),
-               let photo = AIScanAlbumPhoto(data: data) {
-                Task { @MainActor in completion(photo) }
-                return
+            if let url {
+                do {
+                    let data = try AIScanAlbumPhoto.sourceData(at: url)
+                    if let photo = AIScanAlbumPhoto(data: data) {
+                        Task { @MainActor in completion(.success(photo)) }
+                        return
+                    }
+                } catch AIScanAlbumPhotoLoadError.fileTooLarge {
+                    // An object fallback must not bypass the original-file limit.
+                    Task { @MainActor in completion(.failure(.fileTooLarge)) }
+                    return
+                } catch { }
             }
 
             let provider = providerBox.value
             guard provider.canLoadObject(ofClass: UIImage.self) else {
-                Task { @MainActor in completion(nil) }
+                Task { @MainActor in completion(.failure(.unavailable)) }
                 return
             }
             provider.loadObject(ofClass: UIImage.self) { object, _ in
                 let image = object as? UIImage
                 let photo = image.map { AIScanAlbumPhoto(image: $0) }
-                Task { @MainActor in completion(photo) }
+                Task { @MainActor in completion(photo.map(Result.success) ?? .failure(.unavailable)) }
             }
         }
     }
@@ -69,20 +76,19 @@ enum AIScanAlbumImageLoader {
 /// until dismissal so validation cannot race the modal transition.
 @MainActor
 final class AIScanAlbumPickerDelivery {
-    private var photo: AIScanAlbumPhoto?
+    private var result: Result<AIScanAlbumPhoto, AIScanAlbumPhotoLoadError>?
     private var hasLoaded = false
     private var hasDismissed = false
-    private var completion: ((AIScanAlbumPhoto?) -> Void)?
+    private var completion: ((Result<AIScanAlbumPhoto, AIScanAlbumPhotoLoadError>) -> Void)?
 
-    init(completion: @escaping (AIScanAlbumPhoto?) -> Void) { self.completion = completion }
-    func loaded(_ photo: AIScanAlbumPhoto?) { guard completion != nil, !hasLoaded else { return }; self.photo = photo; hasLoaded = true; deliverIfReady() }
+    init(completion: @escaping (Result<AIScanAlbumPhoto, AIScanAlbumPhotoLoadError>) -> Void) { self.completion = completion }
+    func loaded(_ result: Result<AIScanAlbumPhoto, AIScanAlbumPhotoLoadError>) { guard completion != nil, !hasLoaded else { return }; self.result = result; hasLoaded = true; deliverIfReady() }
     func dismissed() { hasDismissed = true; deliverIfReady() }
     private func deliverIfReady() {
-        guard hasLoaded, hasDismissed, let completion else { return }
+        guard hasLoaded, hasDismissed, let result, let completion else { return }
         self.completion = nil
-        let photo = photo
-        self.photo = nil
-        completion(photo)
+        self.result = nil
+        completion(result)
     }
 }
 
@@ -320,14 +326,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         selectPhotoButton.layer.addSublayer(dashedBorderLayer)
         contentStack.addArrangedSubview(selectPhotoButton)
 
+        buildValidationRow()
+        contentStack.addArrangedSubview(validationRow)
+
         buildPhotoCard()
         contentStack.addArrangedSubview(photoCard)
         let photoHeight = photoCard.heightAnchor.constraint(equalToConstant: 380)
         photoHeightConstraint = photoHeight
         photoHeight.isActive = true
-
-        buildValidationRow()
-        contentStack.addArrangedSubview(validationRow)
 
         inspectionRetryButton.setTitle(AIScanCameraStrings.localized(.retry), for: .normal)
         inspectionRetryButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -717,10 +723,12 @@ extension AIScanAlbumSelectionViewController: @preconcurrency PHPickerViewContro
 
     func receivePhotoSelection(from provider: NSItemProvider, dismissing picker: UIViewController) {
         let generation = beginLoadingPhoto()
-        let delivery = AIScanAlbumPickerDelivery { [weak self] photo in
+        let delivery = AIScanAlbumPickerDelivery { [weak self] result in
             guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
-            guard let photo else { self.failPhotoLoading(generation: generation); return }
-            self.applySelectedPhoto(photo)
+            switch result {
+            case .success(let photo): self.applySelectedPhoto(photo)
+            case .failure(let error): self.failPhotoLoading(generation: generation, messageKey: error.messageKey)
+            }
         }
         AIScanAlbumImageLoader.loadPreview(from: provider) { [weak self] image in
             guard let self, generation == self.inspectionGeneration, self.isLoadingPhoto, !self.isClosed else { return }
@@ -729,7 +737,7 @@ extension AIScanAlbumSelectionViewController: @preconcurrency PHPickerViewContro
         }
         // Start the provider request before its owning picker is torn down.
         // The list still closes immediately; only validation waits for dismissal.
-        AIScanAlbumImageLoader.loadPhoto(from: provider) { photo in delivery.loaded(photo) }
+        AIScanAlbumImageLoader.loadPhoto(from: provider) { result in delivery.loaded(result) }
         dismissPhotoPicker(picker) { delivery.dismissed() }
     }
 }
@@ -742,10 +750,19 @@ extension AIScanAlbumSelectionViewController: @preconcurrency UIImagePickerContr
         let generation = beginLoadingPhoto()
         dismissPhotoPicker(picker) { [weak self] in
             guard let self, generation == self.inspectionGeneration, !self.isClosed else { return }
-            if let url = info[.imageURL] as? URL,
-               let data = try? Data(contentsOf: url), let photo = AIScanAlbumPhoto(data: data) {
-                self.applySelectedPhoto(photo)
-            } else if let image = info[.originalImage] as? UIImage {
+            if let url = info[.imageURL] as? URL {
+                do {
+                    let data = try AIScanAlbumPhoto.sourceData(at: url)
+                    if let photo = AIScanAlbumPhoto(data: data) {
+                        self.applySelectedPhoto(photo)
+                        return
+                    }
+                } catch AIScanAlbumPhotoLoadError.fileTooLarge {
+                    self.failPhotoLoading(generation: generation, messageKey: AIScanAlbumPhotoLoadError.fileTooLarge.messageKey)
+                    return
+                } catch { }
+            }
+            if let image = info[.originalImage] as? UIImage {
                 self.applySelectedPhoto(AIScanAlbumPhoto(image: image))
             } else {
                 self.failPhotoLoading(generation: generation)

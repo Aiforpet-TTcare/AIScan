@@ -104,11 +104,11 @@
 "album.quality.unknown_value" = "Unavailable";
 "album.quality.resolution" = "Please choose a larger original photo.";
 "album.quality.bits_reason" = "Please choose a different original photo.";
-"album.quality.unknown" = "We couldn't check this photo. Please choose a different original photo.";
+"album.quality.unknown" = "The image quality information could not be read. Please choose another original photo.";
 "album.quality.distance" = "Please choose a photo showing the area more closely.";
 "album.quality.detect" = "Please choose a photo where the area to check is clearly visible.";
 "album.quality.checking" = "Checking your photo…";
-"album.quality.load_failed" = "We couldn't open this photo. Please choose another photo.";
+"album.quality.load_failed" = "The photo could not be loaded. Please choose another photo.";
 "album.quality.not_checked" = "Photo not checked yet.";
 
 // Scan failure guidance
@@ -125,7 +125,7 @@
 "error.cancelled" = "The check was cancelled.";
 "error.result" = "We couldn't load your results. Please try again.";
 "error.upload" = "We couldn't send your photo. Please try again.";
-"photo.color_quality" = "We can't use this photo for a check. Please choose a different original photo.";
+"photo.color_quality" = "The photo does not contain enough color information for analysis. Choose a color photo with at least 24 bits per pixel.";
 
 // Album framing guidance
 "album.subject.eye.larger" = "Please select a photo where the eye appears larger.";
@@ -164,3 +164,7 @@
 "album.quality.load_timeout" = "We couldn’t load your photo. Please select it again.";
 
 "error.server_analysis_required" = "Server analysis is unavailable for this project. Contact your administrator.";
+
+"album.quality.file_too_large" = "Please choose a photo no larger than 24 MB.";
+
+"album.quality.resolution_required" = "The image resolution is too low. Choose a photo with a width and height of at least %d px each.";
