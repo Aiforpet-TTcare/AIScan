@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.3 - 2026-11-09
+
+- Raise the CocoaPods deployment target from iOS 13.0 to iOS 15.0. Xcode 27 does not build pod targets below iOS 15.0, so 3.2.2 CocoaPods installations fail to build with the iOS 27 SDK.
+- Swift Package Manager still supports iOS 13.0. Xcode raises the package target to its supported minimum.
+- Swift sources, resources, callbacks and result JSON are unchanged from 3.2.2. The Core executable is byte-identical to 3.2.2. Only the Core framework version fields read by the SDK report 3.2.3.
+- No host API or integration migration is required. CocoaPods hosts must use an iOS 15.0 or later deployment target.
+
 ## 3.2.2 - 2026-11-05
 
 - Reject original album files larger than 24 MiB before image decoding, quality inspection, or upload. Exactly 24 MiB remains accepted, per photo, in single- and multi-photo modes on both picker paths.

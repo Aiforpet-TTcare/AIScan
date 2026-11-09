@@ -11,9 +11,11 @@ SIMULATOR_BINARY="$CORE/ios-arm64_x86_64-simulator/AIScanCore.framework/AIScanCo
 DERIVED_DATA="$ROOT/tmp/ios13-compatibility-derived-data"
 HOST_STAGE="$ROOT/tmp/ios13-compatibility-host"
 
+# SwiftPM keeps iOS 13.0. CocoaPods declares iOS 15.0 from 3.2.3 because
+# Xcode 27 rejects pod targets below iOS 15.0. Core binaries remain iOS 13.0.
 if ! grep -Fq '.iOS(.v13)' Package.swift || \
-   ! grep -Fq 'spec.platform     = :ios, "13.0"' AIScan.podspec; then
-  echo "SwiftPM and CocoaPods must both declare iOS 13.0." >&2
+   ! grep -Fq 'spec.platform     = :ios, "15.0"' AIScan.podspec; then
+  echo "SwiftPM must declare iOS 13.0 and CocoaPods must declare iOS 15.0." >&2
   exit 1
 fi
 

@@ -4,6 +4,9 @@
 
 ---
 
+> **3.2.3:** CocoaPods installations require iOS 15.0 or later so Xcode 27 can
+> build them. Swift Package Manager still supports iOS 13.0.
+>
 > **3.2.2:** Multi-photo captures support a server-issued `groupId`. Disease
 > analysis continues to use the server only. Projects
 > must have server analysis enabled before upgrading. See [the migration guide](TTAPI_ONLY_MIGRATION.md).
@@ -28,7 +31,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.2")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.3")
 ]
 ```
 
@@ -42,7 +45,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.2.2'
+    :tag => '3.2.3'
 ```
 
 ### Single public module
@@ -64,7 +67,7 @@ its release tag is published; examples on a release branch describe the candidat
 
 ## Requirements
 
-- iOS 13.0+
+- iOS 13.0+ (Swift Package Manager), iOS 15.0+ (CocoaPods, from 3.2.3)
 - Swift 5.9+
 - Xcode 15+
 
