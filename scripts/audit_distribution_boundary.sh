@@ -130,13 +130,16 @@ for forbidden_ui_transport in URLSession URLRequest dataTask uploadTask; do
   fi
 done
 
-# The original camera guide is a display-only WebView exception. Its top-level
-# navigation is constrained to the exact HTTPS CDN host and known guide paths,
-# and it must not persist website data or own general-purpose transport.
+# The original camera guide is a display-only WebView exception. It opens one
+# HTTPS entry URL (the host-supplied guideUrl or the default lightweight guide)
+# and its navigation stays on that entry URL's host. It must not persist
+# website data or own general-purpose transport.
 GUIDE_WEBVIEW="$ROOT/Sources/AIScanCameraUI/Legacy/AIScanLegacyCameraGuide.swift"
 for required_guide_control in \
-  'resource-core.aiforpetcdn.com' \
+  'guide.ai4pet.com' \
   'AIScanCameraGuideNavigationPolicy.allows' \
+  'AIScanCameraGuideNavigationPolicy.isAcceptableEntry' \
+  'components.scheme?.lowercased() == "https"' \
   'websiteDataStore = .nonPersistent()' \
   'javaScriptCanOpenWindowsAutomatically = false'; do
   if ! grep -n -F "$required_guide_control" "$GUIDE_WEBVIEW" >/dev/null; then

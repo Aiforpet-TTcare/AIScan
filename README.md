@@ -4,6 +4,9 @@
 
 ---
 
+> **3.2.4:** The User Guide button opens the lightweight guide by default, and
+> hosts can supply their own HTTPS guide page with `guideUrl`.
+>
 > **3.2.3:** CocoaPods installations require iOS 15.0 or later so Xcode 27 can
 > build them. Swift Package Manager still supports iOS 13.0.
 >
@@ -31,7 +34,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.3")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.4")
 ]
 ```
 
@@ -45,7 +48,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.2.3'
+    :tag => '3.2.4'
 ```
 
 ### Single public module
@@ -219,6 +222,7 @@ are skipped so they do not terminate the app or permanently block capture.
 | `petGender` | `String?` | `nil` | Gender printed on the report cover. |
 | `recordId` | `String?` | `nil` | Host app record identifier. |
 | `displayMetadata` | `[String: String]?` | `nil` | Display-safe metadata only. |
+| `guideUrl` | `String?` | `nil` | HTTPS page opened by the User Guide button. When omitted or invalid, the SDK's lightweight guide opens. The guide stays on this URL's host; links to other hosts are not followed. |
 | `enablesQuestionnaire` | `Bool` | `false` | Presents the SDK questionnaire when enabled. |
 | `allowsAlbum` | `Bool` | `false` | Shows the photo-library entry when enabled. |
 | `enableMultiMode` | `Bool` | `false` | Collects one to four photos for a single ordered-array JSON callback after closing the SDK camera. The host app displays the results. |

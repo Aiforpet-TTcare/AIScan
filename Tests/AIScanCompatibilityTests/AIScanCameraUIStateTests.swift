@@ -3110,45 +3110,160 @@ final class AIScanCameraUIStateTests: XCTestCase {
         XCTAssertEqual(engine.startRunningCount, 2)
     }
 
-    func testOriginalWebGuideURLMatchesLegacyPartAndLocaleMapping() {
+    func testDefaultWebGuideURLUsesLightweightGuidePartAndLocaleMapping() {
         let context = AISCScanContext()
         context.petType = .dog
         context.partType = .eye
         XCTAssertEqual(
             AIScanCameraGuideURL.make(context: context, languageCode: "ko")?.absoluteString,
-            "https://resource-core.aiforpetcdn.com/sdk/guide/ko/dog/eye.html"
+            "https://guide.ai4pet.com/ko/dog/eye"
+        )
+        XCTAssertEqual(
+            AIScanCameraGuideURL.make(context: context, languageCode: "th")?.absoluteString,
+            "https://guide.ai4pet.com/th/dog/eye"
+        )
+        // Languages without a lightweight guide fall back to English.
+        for language in ["pt", "it", "sv", "fr", nil] as [String?] {
+            XCTAssertEqual(
+                AIScanCameraGuideURL.make(context: context, languageCode: language)?.absoluteString,
+                "https://guide.ai4pet.com/en/dog/eye",
+                language ?? "nil"
+            )
+        }
+
+        context.petType = .cat
+        context.partType = .teeth
+        XCTAssertEqual(
+            AIScanCameraGuideURL.make(context: context, languageCode: "ja")?.absoluteString,
+            "https://guide.ai4pet.com/ja/cat/tooth"
         )
 
+        context.petType = .dog
         context.partType = .skin
-        context.analysisPosition = "foot"
-        XCTAssertEqual(
-            AIScanCameraGuideURL.make(context: context, languageCode: "fr")?.absoluteString,
-            "https://resource-core.aiforpetcdn.com/sdk/guide/en/dog/foot.html"
-        )
+        let positions: [(String?, String)] = [
+            ("ear", "dog/ear"), ("belly", "dog/belly"), ("body", "dog/belly"),
+            ("foot", "dog/foot"), ("paw", "dog/foot"), (nil, "dog/skin"),
+        ]
+        for (position, path) in positions {
+            context.analysisPosition = position
+            XCTAssertEqual(
+                AIScanCameraGuideURL.make(context: context, languageCode: "en")?.absoluteString,
+                "https://guide.ai4pet.com/en/\(path)",
+                position ?? "nil"
+            )
+        }
     }
 
-    func testWebGuideNavigationAllowsOnlyKnownHTTPSGuidePages() {
-        XCTAssertTrue(AIScanCameraGuideNavigationPolicy.allows(
-            URL(string: "https://resource-core.aiforpetcdn.com/sdk/guide/ko/dog/eye.html")
-        ))
-        XCTAssertTrue(AIScanCameraGuideNavigationPolicy.allows(
-            URL(string: "https://resource-core.aiforpetcdn.com:443/sdk/guide/en/cat/tooth.html")
-        ))
+    func testHostGuideURLReplacesDefaultOnlyWhenItIsValidHTTPS() {
+        let context = AISCScanContext()
+        context.petType = .cat
+        context.partType = .eye
+        let fallback = "https://guide.ai4pet.com/en/cat/eye"
 
-        let blocked = [
-            "http://resource-core.aiforpetcdn.com/sdk/guide/ko/dog/eye.html",
-            "https://resource-core.aiforpetcdn.com.example.com/sdk/guide/ko/dog/eye.html",
-            "https://resource-core.aiforpetcdn.com/sdk/guide/ko/dog/eye.html?redirect=https://example.com",
-            "https://resource-core.aiforpetcdn.com/sdk/guide/ko/dog/%2e%2e/eye.html",
-            "https://user@resource-core.aiforpetcdn.com/sdk/guide/ko/dog/eye.html",
-            "https://resource-core.aiforpetcdn.com/other/guide/ko/dog/eye.html",
+        XCTAssertEqual(
+            AIScanCameraGuideURL.resolve(
+                hostGuideURL: "  https://partner.example/help/eye?lang=en#capture  ",
+                context: context,
+                languageCode: "en"
+            )?.absoluteString,
+            "https://partner.example/help/eye?lang=en#capture"
+        )
+        for invalid in [nil, "", "   ", "http://partner.example/eye", "partner.example/eye",
+                        "https://user:secret@partner.example/eye", "javascript:alert(1)",
+                        "file:///etc/hosts"] as [String?] {
+            XCTAssertEqual(
+                AIScanCameraGuideURL.resolve(
+                    hostGuideURL: invalid,
+                    context: context,
+                    languageCode: "en"
+                )?.absoluteString,
+                fallback,
+                invalid ?? "nil"
+            )
+        }
+    }
+
+    func testWebGuideNavigationStaysOnTheEntryHost() throws {
+        let entry = try XCTUnwrap(URL(string: "https://partner.example/help/eye"))
+        let allowed = [
+            "https://partner.example/help/eye",
+            "https://PARTNER.example/help/teeth?lang=en",
+            "https://partner.example:443/assets/next.html#top",
         ]
-        for value in blocked {
-            XCTAssertFalse(
-                AIScanCameraGuideNavigationPolicy.allows(URL(string: value)),
+        for value in allowed {
+            XCTAssertTrue(
+                AIScanCameraGuideNavigationPolicy.allows(URL(string: value), entry: entry),
                 value
             )
         }
+
+        let blocked = [
+            "http://partner.example/help/eye",
+            "https://partner.example.attacker.example/help/eye",
+            "https://other.example/help/eye",
+            "https://partner.example:8443/help/eye",
+            "https://user@partner.example/help/eye",
+            "about:blank",
+            "javascript:alert(1)",
+        ]
+        for value in blocked {
+            XCTAssertFalse(
+                AIScanCameraGuideNavigationPolicy.allows(URL(string: value), entry: entry),
+                value
+            )
+        }
+        XCTAssertFalse(AIScanCameraGuideNavigationPolicy.allows(nil, entry: entry))
+
+        let defaultEntry = try XCTUnwrap(URL(string: "https://guide.ai4pet.com/en/cat/eye"))
+        XCTAssertFalse(AIScanCameraGuideNavigationPolicy.allows(
+            URL(string: "https://resource-core.aiforpetcdn.com/sdk/guide/en/cat/eye.html"),
+            entry: defaultEntry
+        ))
+    }
+
+    @MainActor
+    func testWebGuideRejectsInvalidEntryAndRendersInLightAppearance() throws {
+        XCTAssertNil(TTCameraGuideViewController.instantiate(
+            url: try XCTUnwrap(URL(string: "http://partner.example/eye"))
+        ))
+
+        let guide = try XCTUnwrap(TTCameraGuideViewController.instantiate(
+            url: try XCTUnwrap(URL(string: "https://guide.ai4pet.com/en/cat/eye"))
+        ))
+        guide.loadViewIfNeeded()
+        XCTAssertEqual(guide.overrideUserInterfaceStyle, .light)
+        XCTAssertTrue(guide.view.subviews.contains { view in
+            view.accessibilityIdentifier == "aiscan.camera.guide-web.loading"
+        })
+    }
+
+    @MainActor
+    func testGuideButtonOpensHostGuideURLWhenProvided() throws {
+        let engine = MockCameraEngine()
+        let controller = AIScanCameraController(cameraEngine: engine)
+        let context = AISCScanContext()
+        context.petType = .cat
+        context.partType = .eye
+        let camera = AIScanCameraViewController(
+            cameraController: controller,
+            context: context,
+            guideUrl: "https://partner.example/help/cat-eye"
+        )
+        camera.beginsScanningAutomatically = false
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        window.rootViewController = camera
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+        camera.loadViewIfNeeded()
+
+        let cameraSurface = try XCTUnwrap(
+            camera.children.compactMap { $0 as? CameraViewController }.first
+        )
+        cameraSurface.onGuide?()
+        let guide = try XCTUnwrap(camera.presentedViewController as? TTCameraGuideViewController)
+        guide.loadViewIfNeeded()
+        let webView = try XCTUnwrap(guide.view.subviews.compactMap { $0 as? WKWebView }.first)
+        XCTAssertEqual(webView.url?.host, "partner.example")
     }
 
     @MainActor

@@ -165,6 +165,7 @@ public final class AIScanCameraViewController: UIViewController {
     private let settingsOpener: @MainActor () -> Void
     private let allowsSkinPositionSelection: Bool
     private let allowsAlbum: Bool
+    private let hostGuideURL: String?
     private var multiCoordinator: AIScanMultiPhotoCoordinator?
     private var multiReviewController: AIScanMultiPhotoReviewViewController?
     private var multiPreviewTimer: Timer?
@@ -202,11 +203,15 @@ public final class AIScanCameraViewController: UIViewController {
     let captureAttemptDuration: TimeInterval = 60
     var beginsScanningAutomatically = true
 
+    /// - Parameter guideUrl: Optional HTTPS page opened by the User Guide
+    ///   button. When omitted or invalid, the SDK's lightweight guide is used.
+    ///   The guide stays on this URL's host.
     public convenience init(
         configuration: AISCConfiguration,
         context: AISCScanContext,
         allowsAlbum: Bool = true,
-        enableMultiMode: Bool = false
+        enableMultiMode: Bool = false,
+        guideUrl: String? = nil
     ) {
         self.init(
             cameraController: AIScanCameraController(configuration: configuration),
@@ -214,15 +219,21 @@ public final class AIScanCameraViewController: UIViewController {
             stackDismisser: AIScanUIKitCameraStackDismisser(),
             allowsAlbum: allowsAlbum,
             enableMultiMode: enableMultiMode,
+            guideUrl: guideUrl,
             multiPhotoControllerFactory: { AIScanCameraController(configuration: configuration) }
         )
     }
 
-    convenience init(cameraController: AIScanCameraController, context: AISCScanContext) {
+    convenience init(
+        cameraController: AIScanCameraController,
+        context: AISCScanContext,
+        guideUrl: String? = nil
+    ) {
         self.init(
             cameraController: cameraController,
             context: context,
-            stackDismisser: AIScanUIKitCameraStackDismisser()
+            stackDismisser: AIScanUIKitCameraStackDismisser(),
+            guideUrl: guideUrl
         )
     }
 
@@ -233,6 +244,7 @@ public final class AIScanCameraViewController: UIViewController {
         transientSurfaceCoordinator: AIScanTransientSurfaceCoordinating? = nil,
         allowsAlbum: Bool = true,
         enableMultiMode: Bool = false,
+        guideUrl: String? = nil,
         multiPhotoControllerFactory: (() -> AIScanCameraController)? = nil,
         settingsOpener: @escaping @MainActor () -> Void = {
             guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -252,6 +264,7 @@ public final class AIScanCameraViewController: UIViewController {
             && context.analysisPosition == nil
         self.allowsAlbum = allowsAlbum
         self.enableMultiMode = enableMultiMode
+        hostGuideURL = guideUrl
         if enableMultiMode, let multiPhotoControllerFactory {
             multiCoordinator = AIScanMultiPhotoCoordinator(makeController: multiPhotoControllerFactory)
         }
@@ -883,10 +896,13 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func showWebGuide() {
         guard presentedViewController == nil,
-              let url = AIScanCameraGuideURL.make(context: scanContext) else {
+              let url = AIScanCameraGuideURL.resolve(
+                  hostGuideURL: hostGuideURL,
+                  context: scanContext
+              ),
+              let guide = TTCameraGuideViewController.instantiate(url: url) else {
             return
         }
-        let guide = TTCameraGuideViewController.instantiate(url: url)
         guide.onDismiss = { [weak self] in
             guard let self, self.didPrepareSession, !self.isClosed else { return }
             self.startCameraSession()

@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.2.4 - 2026-11-12
+
+- Add an optional `guideUrl` argument to `showCamera` and `makeCameraViewController` (both completion styles) and to the public `AIScanCameraViewController` initializer. When it is a valid HTTPS URL, the User Guide button opens it instead of the SDK guide. Invalid or non-HTTPS values fall back to the SDK guide.
+- Open the lightweight guide at `guide.ai4pet.com` by default. Korean, Japanese and Thai use their own pages; other languages use English.
+- Keep guide navigation on the host of the URL that was opened. Other hosts, other ports, non-HTTPS schemes, redirects to other hosts and pop-ups to other hosts are not followed. Website data remains non-persistent.
+- Render the guide screen in light appearance so guide text stays readable on devices and camera screens in dark appearance, and show a loading indicator until the page finishes loading.
+- Do not present a guide screen for a URL the guide policy rejects.
+- Core executable is byte-identical to 3.2.3. Only the Core framework version fields read by the SDK report 3.2.4. Callbacks, result JSON, capture and analysis behavior are unchanged.
+- No migration is required. Existing calls compile unchanged.
+
 ## 3.2.3 - 2026-11-09
 
 - Raise the CocoaPods deployment target from iOS 13.0 to iOS 15.0. Xcode 27 does not build pod targets below iOS 15.0, so 3.2.2 CocoaPods installations fail to build with the iOS 27 SDK.
