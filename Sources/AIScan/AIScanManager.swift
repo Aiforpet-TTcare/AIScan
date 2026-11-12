@@ -44,9 +44,10 @@ public enum AIScanManager {
     /// returned controller reports only `AIScanResult` through `completion` or
     /// the optional custom result controller.
     ///
-    /// `guideUrl` is an optional HTTPS page opened by the User Guide button.
-    /// When it is omitted or is not a valid HTTPS URL, the SDK opens its
-    /// lightweight guide. The guide stays on the host of the URL it opened.
+    /// `guideUrl` is an optional HTTP(S) page opened by the User Guide button.
+    /// The host app owns this page; its links and redirects are followed
+    /// without restriction. When it is omitted or is not a URL, the SDK opens
+    /// its lightweight guide, which stays on the SDK guide host.
     public static func makeCameraViewController(
         petType: PetType,
         partType: PartType,

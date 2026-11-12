@@ -3154,29 +3154,32 @@ final class AIScanCameraUIStateTests: XCTestCase {
         }
     }
 
-    func testHostGuideURLReplacesDefaultOnlyWhenItIsValidHTTPS() {
+    func testHostGuideURLIsTrustedAndReplacesDefault() {
         let context = AISCScanContext()
         context.petType = .cat
         context.partType = .eye
-        let fallback = "https://guide.ai4pet.com/en/cat/eye"
-
-        XCTAssertEqual(
-            AIScanCameraGuideURL.resolve(
-                hostGuideURL: "  https://partner.example/help/eye?lang=en#capture  ",
-                context: context,
-                languageCode: "en"
-            )?.absoluteString,
-            "https://partner.example/help/eye?lang=en#capture"
+        let fallback = AIScanCameraGuideEntry(
+            url: URL(string: "https://guide.ai4pet.com/en/cat/eye")!,
+            restrictsNavigation: true
         )
-        for invalid in [nil, "", "   ", "http://partner.example/eye", "partner.example/eye",
-                        "https://user:secret@partner.example/eye", "javascript:alert(1)",
-                        "file:///etc/hosts"] as [String?] {
+
+        let trusted = [
+            ("  https://partner.example/help/eye?lang=en#capture  ",
+             "https://partner.example/help/eye?lang=en#capture"),
+            ("http://partner.example/eye", "http://partner.example/eye"),
+            ("https://partner.example", "https://partner.example"),
+        ]
+        for (input, expected) in trusted {
             XCTAssertEqual(
-                AIScanCameraGuideURL.resolve(
-                    hostGuideURL: invalid,
-                    context: context,
-                    languageCode: "en"
-                )?.absoluteString,
+                AIScanCameraGuideURL.resolve(hostGuideURL: input, context: context, languageCode: "en"),
+                AIScanCameraGuideEntry(url: URL(string: expected)!, restrictsNavigation: false),
+                input
+            )
+        }
+        for invalid in [nil, "", "   ", "partner.example/eye", "not a url",
+                        "javascript:alert(1)", "file:///etc/hosts", "https://"] as [String?] {
+            XCTAssertEqual(
+                AIScanCameraGuideURL.resolve(hostGuideURL: invalid, context: context, languageCode: "en"),
                 fallback,
                 invalid ?? "nil"
             )
@@ -3223,8 +3226,19 @@ final class AIScanCameraUIStateTests: XCTestCase {
 
     @MainActor
     func testWebGuideRejectsInvalidEntryAndRendersInLightAppearance() throws {
+        // The default guide is restricted to HTTPS.
         XCTAssertNil(TTCameraGuideViewController.instantiate(
             url: try XCTUnwrap(URL(string: "http://partner.example/eye"))
+        ))
+        // A trusted host guide may use HTTP and navigates without restriction.
+        let hostGuide = try XCTUnwrap(TTCameraGuideViewController.instantiate(
+            url: try XCTUnwrap(URL(string: "http://partner.example/eye")),
+            restrictsNavigation: false
+        ))
+        XCTAssertFalse(hostGuide.restrictsNavigation)
+        XCTAssertNil(TTCameraGuideViewController.instantiate(
+            url: try XCTUnwrap(URL(string: "file:///etc/hosts")),
+            restrictsNavigation: false
         ))
 
         let guide = try XCTUnwrap(TTCameraGuideViewController.instantiate(
@@ -3264,6 +3278,31 @@ final class AIScanCameraUIStateTests: XCTestCase {
         guide.loadViewIfNeeded()
         let webView = try XCTUnwrap(guide.view.subviews.compactMap { $0 as? WKWebView }.first)
         XCTAssertEqual(webView.url?.host, "partner.example")
+        XCTAssertFalse(guide.restrictsNavigation)
+    }
+
+    @MainActor
+    func testGuideButtonRestrictsOnlyTheDefaultGuide() throws {
+        let engine = MockCameraEngine()
+        let context = AISCScanContext()
+        context.petType = .dog
+        context.partType = .eye
+        let camera = AIScanCameraViewController(
+            cameraController: AIScanCameraController(cameraEngine: engine),
+            context: context
+        )
+        camera.beginsScanningAutomatically = false
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        window.rootViewController = camera
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+        camera.loadViewIfNeeded()
+        let cameraSurface = try XCTUnwrap(
+            camera.children.compactMap { $0 as? CameraViewController }.first
+        )
+        cameraSurface.onGuide?()
+        let guide = try XCTUnwrap(camera.presentedViewController as? TTCameraGuideViewController)
+        XCTAssertTrue(guide.restrictsNavigation)
     }
 
     @MainActor

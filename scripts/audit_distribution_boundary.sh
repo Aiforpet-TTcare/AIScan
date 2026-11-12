@@ -130,10 +130,10 @@ for forbidden_ui_transport in URLSession URLRequest dataTask uploadTask; do
   fi
 done
 
-# The original camera guide is a display-only WebView exception. It opens one
-# HTTPS entry URL (the host-supplied guideUrl or the default lightweight guide)
-# and its navigation stays on that entry URL's host. It must not persist
-# website data or own general-purpose transport.
+# The original camera guide is a display-only WebView exception. The default
+# lightweight guide opens one HTTPS URL and its navigation stays on that host.
+# A host-supplied guideUrl is trusted by the host app and is not restricted.
+# The guide must not persist website data or own general-purpose transport.
 GUIDE_WEBVIEW="$ROOT/Sources/AIScanCameraUI/Legacy/AIScanLegacyCameraGuide.swift"
 for required_guide_control in \
   'guide.ai4pet.com' \

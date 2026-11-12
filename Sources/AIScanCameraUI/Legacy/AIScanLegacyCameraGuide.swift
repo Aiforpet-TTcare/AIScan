@@ -7,20 +7,24 @@ enum AIScanCameraGuideURL {
     static let defaultHost = "guide.ai4pet.com"
     private static let supportedLanguages: Set<String> = ["en", "ko", "ja", "th"]
 
-    /// Returns the host-supplied guide when it is a valid HTTPS URL, otherwise
-    /// the default lightweight guide for the scan context.
+    /// Returns the host-supplied guide when it is an HTTP(S) URL, otherwise the
+    /// default lightweight guide for the scan context. The host app owns its
+    /// guide, so its navigation is not restricted; the default guide stays on
+    /// the SDK guide host.
     static func resolve(
         hostGuideURL: String?,
         context: AISCScanContext,
         languageCode: String? = Locale.current.languageCode
-    ) -> URL? {
+    ) -> AIScanCameraGuideEntry? {
         if let trimmed = hostGuideURL?.trimmingCharacters(in: .whitespacesAndNewlines),
            !trimmed.isEmpty,
            let url = URL(string: trimmed),
-           AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url) {
-            return url
+           AIScanCameraGuideNavigationPolicy.isHostSuppliedEntry(url) {
+            return AIScanCameraGuideEntry(url: url, restrictsNavigation: false)
         }
-        return make(context: context, languageCode: languageCode)
+        return make(context: context, languageCode: languageCode).map {
+            AIScanCameraGuideEntry(url: $0, restrictsNavigation: true)
+        }
     }
 
     static func make(
@@ -53,12 +57,32 @@ enum AIScanCameraGuideURL {
     }
 }
 
-/// The guide is display-only. It opens one HTTPS entry URL and then stays on
-/// that entry URL's host: cross-host navigation, redirects, and popups are
-/// cancelled, and non-HTTPS schemes are never loaded.
+/// A guide page to open and whether its navigation is limited to its host.
+struct AIScanCameraGuideEntry: Equatable {
+    let url: URL
+    let restrictsNavigation: Bool
+}
+
+/// The SDK's default guide is display-only: it opens one HTTPS URL and stays
+/// on that URL's host (cross-host navigation, redirects, and popups are
+/// cancelled; non-HTTPS schemes are never loaded). A host-supplied guide URL is
+/// trusted and navigates freely.
 enum AIScanCameraGuideNavigationPolicy {
     static func isAcceptableEntry(_ url: URL?) -> Bool {
         origin(of: url) != nil
+    }
+
+    /// Host apps may pass any HTTP(S) page. Loading of plain HTTP still follows
+    /// the host app's App Transport Security settings.
+    static func isHostSuppliedEntry(_ url: URL?) -> Bool {
+        guard let url,
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let scheme = components.scheme?.lowercased(),
+              scheme == "https" || scheme == "http",
+              let host = components.host, !host.isEmpty else {
+            return false
+        }
+        return true
     }
 
     static func allows(_ url: URL?, entry: URL) -> Bool {
@@ -97,6 +121,7 @@ final class TTCameraGuideViewController: UIViewController {
     @IBOutlet private weak var closeButton: UIButton!
 
     private var url: URL?
+    private(set) var restrictsNavigation = true
     private var webView: WKWebView?
     private let loadingIndicator = UIActivityIndicatorView(style: .medium)
     var onDismiss: (() -> Void)?
@@ -125,10 +150,8 @@ final class TTCameraGuideViewController: UIViewController {
     }
 
     private func configureWebView() {
-        // `instantiate(url:)` only accepts a valid entry URL.
-        guard let url, AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url) else {
-            return
-        }
+        // `instantiate(url:restrictsNavigation:)` only accepts a valid entry URL.
+        guard let url else { return }
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = .nonPersistent()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
@@ -195,10 +218,11 @@ final class TTCameraGuideViewController: UIViewController {
 
     /// Returns `nil` for an entry URL the guide policy does not accept, so the
     /// camera never presents an empty guide screen.
-    static func instantiate(url: URL) -> TTCameraGuideViewController? {
-        guard AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url) else {
-            return nil
-        }
+    static func instantiate(url: URL, restrictsNavigation: Bool = true) -> TTCameraGuideViewController? {
+        let accepted = restrictsNavigation
+            ? AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url)
+            : AIScanCameraGuideNavigationPolicy.isHostSuppliedEntry(url)
+        guard accepted else { return nil }
         guard let controller = UIStoryboard(
             name: "TTEtc",
             bundle: AIScanCameraResourceBundle.bundle
@@ -208,6 +232,7 @@ final class TTCameraGuideViewController: UIViewController {
             preconditionFailure("The original camera guide scene is unavailable.")
         }
         controller.url = url
+        controller.restrictsNavigation = restrictsNavigation
         controller.modalPresentationStyle = .fullScreen
         return controller
     }
@@ -221,6 +246,10 @@ extension TTCameraGuideViewController: WKNavigationDelegate {
     ) {
         guard let entry = url else {
             decisionHandler(.cancel)
+            return
+        }
+        guard restrictsNavigation else {
+            decisionHandler(.allow)
             return
         }
         decisionHandler(
@@ -268,7 +297,7 @@ extension TTCameraGuideViewController: WKUIDelegate {
     ) -> WKWebView? {
         guard let entry = self.url,
               let url = navigationAction.request.url,
-              AIScanCameraGuideNavigationPolicy.allows(url, entry: entry) else {
+              !restrictsNavigation || AIScanCameraGuideNavigationPolicy.allows(url, entry: entry) else {
             return nil
         }
         webView.load(URLRequest(url: url))
