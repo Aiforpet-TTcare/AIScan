@@ -43,6 +43,10 @@ public enum AIScanManager {
     /// This is useful for hosts that own a custom presentation container. The
     /// returned controller reports only `AIScanResult` through `completion` or
     /// the optional custom result controller.
+    ///
+    /// `guideUrl` is an optional HTTPS page opened by the User Guide button.
+    /// When it is omitted or is not a valid HTTPS URL, the SDK opens its
+    /// lightweight guide. The guide stays on the host of the URL it opened.
     public static func makeCameraViewController(
         petType: PetType,
         partType: PartType,
@@ -56,6 +60,7 @@ public enum AIScanManager {
         userId: String? = nil,
         recordId: String? = nil,
         displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
         enableMultiMode: Bool = false,
@@ -84,7 +89,8 @@ public enum AIScanManager {
             configuration: copyConfiguration(configurationTemplate),
             context: context,
             allowsAlbum: allowsAlbum,
-            enableMultiMode: enableMultiMode
+            enableMultiMode: enableMultiMode,
+            guideUrl: guideUrl
         )
         let completionGate = AIScanManagerCompletionGate(completion: completion)
 
@@ -219,6 +225,7 @@ public enum AIScanManager {
         userId: String? = nil,
         recordId: String? = nil,
         displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
         enableMultiMode: Bool = false,
@@ -240,6 +247,7 @@ public enum AIScanManager {
             userId: userId,
             recordId: recordId,
             displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
             enablesQuestionnaire: enablesQuestionnaire,
             allowsAlbum: allowsAlbum,
             enableMultiMode: enableMultiMode,
@@ -273,6 +281,7 @@ public enum AIScanManager {
         userId: String? = nil,
         recordId: String? = nil,
         displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
         enableMultiMode: Bool = false,
@@ -294,6 +303,7 @@ public enum AIScanManager {
             userId: userId,
             recordId: recordId,
             displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
             enablesQuestionnaire: enablesQuestionnaire,
             allowsAlbum: allowsAlbum,
             enableMultiMode: enableMultiMode,
@@ -320,6 +330,7 @@ public enum AIScanManager {
         userId: String? = nil,
         recordId: String? = nil,
         displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
         enablesQuestionnaire: Bool = false,
         allowsAlbum: Bool = false,
         enableMultiMode: Bool = false,
@@ -342,6 +353,7 @@ public enum AIScanManager {
             userId: userId,
             recordId: recordId,
             displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
             enablesQuestionnaire: enablesQuestionnaire,
             allowsAlbum: allowsAlbum,
             enableMultiMode: enableMultiMode,

@@ -3,18 +3,34 @@ import UIKit
 @preconcurrency import AIScanCore
 
 enum AIScanCameraGuideURL {
+    /// Lightweight capture guide served by AI for Pet.
+    static let defaultHost = "guide.ai4pet.com"
+    private static let supportedLanguages: Set<String> = ["en", "ko", "ja", "th"]
+
+    /// Returns the host-supplied guide when it is a valid HTTPS URL, otherwise
+    /// the default lightweight guide for the scan context.
+    static func resolve(
+        hostGuideURL: String?,
+        context: AISCScanContext,
+        languageCode: String? = Locale.current.languageCode
+    ) -> URL? {
+        if let trimmed = hostGuideURL?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !trimmed.isEmpty,
+           let url = URL(string: trimmed),
+           AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url) {
+            return url
+        }
+        return make(context: context, languageCode: languageCode)
+    }
+
     static func make(
         context: AISCScanContext,
         languageCode: String? = Locale.current.languageCode
     ) -> URL? {
-        let supportedLanguage: String
-        let normalizedLanguage = languageCode?.lowercased()
-        switch normalizedLanguage {
-        case "ko", "ja", "pt":
-            supportedLanguage = normalizedLanguage ?? "en"
-        default:
-            supportedLanguage = "en"
-        }
+        let normalizedLanguage = languageCode?.lowercased() ?? "en"
+        let supportedLanguage = supportedLanguages.contains(normalizedLanguage)
+            ? normalizedLanguage
+            : "en"
 
         let path: String
         switch context.partType {
@@ -33,45 +49,42 @@ enum AIScanCameraGuideURL {
             return nil
         }
 
-        return URL(
-            string: "https://resource-core.aiforpetcdn.com/sdk/guide/\(supportedLanguage)/\(path).html"
-        )
+        return URL(string: "https://\(defaultHost)/\(supportedLanguage)/\(path)")
     }
 }
 
+/// The guide is display-only. It opens one HTTPS entry URL and then stays on
+/// that entry URL's host: cross-host navigation, redirects, and popups are
+/// cancelled, and non-HTTPS schemes are never loaded.
 enum AIScanCameraGuideNavigationPolicy {
-    private static let allowedHost = "resource-core.aiforpetcdn.com"
-    private static let allowedLanguages = Set(["en", "ko", "ja", "pt"])
-    private static let allowedPets = Set(["dog", "cat"])
-    private static let allowedPages = Set([
-        "eye.html", "tooth.html", "ear.html", "belly.html", "foot.html", "skin.html",
-    ])
+    static func isAcceptableEntry(_ url: URL?) -> Bool {
+        origin(of: url) != nil
+    }
 
-    static func allows(_ url: URL?) -> Bool {
+    static func allows(_ url: URL?, entry: URL) -> Bool {
+        guard let candidate = origin(of: url),
+              let allowed = origin(of: entry) else {
+            return false
+        }
+        return candidate == allowed
+    }
+
+    private struct Origin: Equatable {
+        let host: String
+        let port: Int
+    }
+
+    private static func origin(of url: URL?) -> Origin? {
         guard let url,
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
               components.scheme?.lowercased() == "https",
-              components.host?.lowercased() == allowedHost,
+              let host = components.host?.lowercased(),
+              !host.isEmpty,
               components.user == nil,
-              components.password == nil,
-              components.port == nil || components.port == 443,
-              components.query == nil,
-              components.fragment == nil else {
-            return false
+              components.password == nil else {
+            return nil
         }
-
-        let path = components.percentEncodedPath
-        guard !path.localizedCaseInsensitiveContains("%2e") else { return false }
-        let segments = path.split(separator: "/", omittingEmptySubsequences: true).map(String.init)
-        guard segments.count == 5,
-              segments[0] == "sdk",
-              segments[1] == "guide",
-              allowedLanguages.contains(segments[2]),
-              allowedPets.contains(segments[3]),
-              allowedPages.contains(segments[4]) else {
-            return false
-        }
-        return true
+        return Origin(host: host, port: components.port ?? 443)
     }
 }
 
@@ -85,11 +98,15 @@ final class TTCameraGuideViewController: UIViewController {
 
     private var url: URL?
     private var webView: WKWebView?
+    private let loadingIndicator = UIActivityIndicatorView(style: .medium)
     var onDismiss: (() -> Void)?
     private var didNotifyDismissal = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Guide pages are designed for a light background and may not set one
+        // themselves, so the guide never inherits the camera's dark style.
+        overrideUserInterfaceStyle = .light
         configureAppearance()
         configureWebView()
     }
@@ -108,8 +125,8 @@ final class TTCameraGuideViewController: UIViewController {
     }
 
     private func configureWebView() {
-        guard let url, AIScanCameraGuideNavigationPolicy.allows(url) else {
-            dismiss(animated: false)
+        // `instantiate(url:)` only accepts a valid entry URL.
+        guard let url, AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url) else {
             return
         }
         let configuration = WKWebViewConfiguration()
@@ -132,7 +149,22 @@ final class TTCameraGuideViewController: UIViewController {
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         self.webView = webView
+
+        loadingIndicator.accessibilityIdentifier = "aiscan.camera.guide-web.loading"
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicator)
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: webView.centerYAnchor),
+        ])
+        loadingIndicator.startAnimating()
+
         webView.load(URLRequest(url: url))
+    }
+
+    private func stopLoadingIndicator() {
+        loadingIndicator.stopAnimating()
     }
 
     @IBAction private func close(_ sender: Any? = nil) {
@@ -161,7 +193,12 @@ final class TTCameraGuideViewController: UIViewController {
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation { .portrait }
     override var shouldAutorotate: Bool { false }
 
-    static func instantiate(url: URL) -> TTCameraGuideViewController {
+    /// Returns `nil` for an entry URL the guide policy does not accept, so the
+    /// camera never presents an empty guide screen.
+    static func instantiate(url: URL) -> TTCameraGuideViewController? {
+        guard AIScanCameraGuideNavigationPolicy.isAcceptableEntry(url) else {
+            return nil
+        }
         guard let controller = UIStoryboard(
             name: "TTEtc",
             bundle: AIScanCameraResourceBundle.bundle
@@ -182,14 +219,35 @@ extension TTCameraGuideViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
+        guard let entry = url else {
+            decisionHandler(.cancel)
+            return
+        }
         decisionHandler(
-            AIScanCameraGuideNavigationPolicy.allows(navigationAction.request.url)
+            AIScanCameraGuideNavigationPolicy.allows(navigationAction.request.url, entry: entry)
                 ? .allow
                 : .cancel
         )
     }
 
+    func webView(
+        _ webView: WKWebView,
+        didFail navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        stopLoadingIndicator()
+    }
+
+    func webView(
+        _ webView: WKWebView,
+        didFailProvisionalNavigation navigation: WKNavigation!,
+        withError error: Error
+    ) {
+        stopLoadingIndicator()
+    }
+
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        stopLoadingIndicator()
         webView.evaluateJavaScript("document.title") { [weak self] value, _ in
             guard let title = value as? String, !title.isEmpty else { return }
             self?.titleLabel.text = title
@@ -208,8 +266,9 @@ extension TTCameraGuideViewController: WKUIDelegate {
         for navigationAction: WKNavigationAction,
         windowFeatures: WKWindowFeatures
     ) -> WKWebView? {
-        guard let url = navigationAction.request.url,
-              AIScanCameraGuideNavigationPolicy.allows(url) else {
+        guard let entry = self.url,
+              let url = navigationAction.request.url,
+              AIScanCameraGuideNavigationPolicy.allows(url, entry: entry) else {
             return nil
         }
         webView.load(URLRequest(url: url))
