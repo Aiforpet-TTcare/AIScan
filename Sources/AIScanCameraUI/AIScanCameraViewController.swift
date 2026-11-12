@@ -203,9 +203,9 @@ public final class AIScanCameraViewController: UIViewController {
     let captureAttemptDuration: TimeInterval = 60
     var beginsScanningAutomatically = true
 
-    /// - Parameter guideUrl: Optional HTTPS page opened by the User Guide
-    ///   button. When omitted or invalid, the SDK's lightweight guide is used.
-    ///   The guide stays on this URL's host.
+    /// - Parameter guideUrl: Optional HTTP(S) page opened by the User Guide
+    ///   button. The host app owns this page and its navigation is not
+    ///   restricted. When omitted or not a URL, the SDK's lightweight guide is used.
     public convenience init(
         configuration: AISCConfiguration,
         context: AISCScanContext,
@@ -896,11 +896,14 @@ public final class AIScanCameraViewController: UIViewController {
 
     private func showWebGuide() {
         guard presentedViewController == nil,
-              let url = AIScanCameraGuideURL.resolve(
+              let entry = AIScanCameraGuideURL.resolve(
                   hostGuideURL: hostGuideURL,
                   context: scanContext
               ),
-              let guide = TTCameraGuideViewController.instantiate(url: url) else {
+              let guide = TTCameraGuideViewController.instantiate(
+                  url: entry.url,
+                  restrictsNavigation: entry.restrictsNavigation
+              ) else {
             return
         }
         guide.onDismiss = { [weak self] in

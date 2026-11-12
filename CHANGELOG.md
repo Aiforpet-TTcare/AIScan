@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.5 - 2026-11-12
+
+- Trust a host-supplied `guideUrl`. Its links, redirects and pop-ups are followed even when they lead to another host, so a URL that redirects (for example to a `www.` host) no longer shows an empty guide screen.
+- Accept HTTP as well as HTTPS for `guideUrl`. Loading plain HTTP still follows the host app's App Transport Security settings. Values that are not HTTP(S) URLs fall back to the SDK guide.
+- The SDK's default lightweight guide keeps its restrictions: HTTPS only and navigation limited to `guide.ai4pet.com`.
+- Core executable is byte-identical to 3.2.4. Only the Core framework version fields read by the SDK report 3.2.5. No migration is required.
+
 ## 3.2.4 - 2026-11-12
 
 - Add an optional `guideUrl` argument to `showCamera` and `makeCameraViewController` (both completion styles) and to the public `AIScanCameraViewController` initializer. When it is a valid HTTPS URL, the User Guide button opens it instead of the SDK guide. Invalid or non-HTTPS values fall back to the SDK guide.
