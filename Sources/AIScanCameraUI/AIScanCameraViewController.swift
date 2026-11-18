@@ -1024,7 +1024,7 @@ public final class AIScanCameraViewController: UIViewController {
             self.isDiagnosingAlbum = true
             self.pendingAlbumProgress = nil
             self.capturedPreviewImage = nil
-            if let position {
+            if self.scanContext.partType == .skin, let position {
                 self.scanContext.analysisPosition = position
                 self.scanContext.analysisSubpart = nil
                 self.scanContext.displaySubpart = position.uppercased()
@@ -1326,7 +1326,7 @@ public final class AIScanCameraViewController: UIViewController {
         guard let album, let coordinator = multiCoordinator, coordinator.canAdd, !isClosed,
               album.qualityReport?.isValid == true else { return }
         let context = AIScanMultiPhotoCoordinator.copyContext(scanContext)
-        if let position {
+        if context.partType == .skin, let position {
             context.analysisPosition = position
             context.analysisSubpart = nil
             context.displaySubpart = position.uppercased()

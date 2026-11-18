@@ -14,7 +14,7 @@ final class AIScanLocalizationParityTests: XCTestCase {
             bundle: bundle
         )
 
-        XCTAssertEqual(english.count, 157) // Existing UI plus source-size and part-specific resolution guidance.
+        XCTAssertEqual(english.count, 161) // Includes album size guidance and prepared-upload recovery.
         for language in supportedLanguages {
             let localized = try stringsDictionary(
                 table: "Localizable",
@@ -49,6 +49,16 @@ final class AIScanLocalizationParityTests: XCTestCase {
             XCTAssertFalse(message.contains("server_analysis_required"))
             XCTAssertNotEqual(message, AIScanCameraStrings.localizedMessageKey(
                 "error.configuration", languageCode: language))
+        }
+    }
+
+    func testExpiredPreparedUploadHasItsOwnLocalizedRecovery() {
+        let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.uploadTicketExpired.rawValue)
+        for language in supportedLanguages {
+            let message = AIScanCameraStrings.displayMessage(for: error, languageCode: language)
+            XCTAssertEqual(message, AIScanCameraStrings.localizedMessageKey(
+                "scan.error.ticket_expired", languageCode: language))
+            XCTAssertNotEqual(message, AIScanCameraStrings.localizedMessageKey("error.upload", languageCode: language))
         }
     }
 

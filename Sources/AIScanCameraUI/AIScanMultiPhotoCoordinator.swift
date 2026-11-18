@@ -267,6 +267,8 @@ final class AIScanMultiPhotoCoordinator {
         copy.petIdentifier = source.petIdentifier
         copy.userIdentifier = source.userIdentifier
         copy.recordIdentifier = source.recordIdentifier
+        copy.trainingConsent = source.trainingConsent
+        copy.hospitalViewConsent = source.hospitalViewConsent
         copy.displayMetadata = source.displayMetadata
         copy.questionnaireEnabled = source.questionnaireEnabled
         return copy

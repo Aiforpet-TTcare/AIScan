@@ -124,7 +124,6 @@ struct AIScanAlbumQualityReport: Sendable {
     let metadata: AIScanAlbumMetadata
     let part: AISCPartType
     var detectedSize: CGSize?
-    var detectionIssue: String?
     var inspectionError: NSError?
     private(set) var inspectionPassed = false
 
@@ -134,9 +133,9 @@ struct AIScanAlbumQualityReport: Sendable {
     }
 
     var requiresDetection: Bool { part == .eye || part == .teeth }
-    var requiresInspection: Bool { [.eye, .teeth, .skin].contains(part) }
+    var requiresInspection: Bool { requiresDetection || part == .skin }
     var originalIsValid: Bool { [.eye, .teeth, .skin].contains(part) && originalRows.allSatisfy(\.passes) }
-    var isValid: Bool { originalIsValid && inspectionPassed && (!requiresDetection || detectionRows.allSatisfy(\.passes)) }
+    var isValid: Bool { originalIsValid && inspectionPassed }
 
     var originalRows: [Row] {
         let minimum = part == .skin ? 1200 : (part == .teeth ? 1400 : 900)
@@ -147,36 +146,24 @@ struct AIScanAlbumQualityReport: Sendable {
         ]
     }
 
-    var detectionRows: [Row] {
-        guard requiresDetection else { return [] }
-        let longestSide: Int?
-        if let width = pixels(detectedSize?.width), let height = pixels(detectedSize?.height),
-           width > 0, height > 0 {
-            longestSide = max(width, height)
-        } else {
-            longestSide = nil
-        }
-        return [
-            row("detect_long_side", longestSide, 270, "distance", override: detectionIssue ?? (detectedSize == nil ? "not_checked" : nil)),
-        ]
-    }
-
     func measured(_ size: CGSize?, issue: String? = nil, error: NSError? = nil) -> Self {
         var report = self
         report.detectedSize = size
-        report.detectionIssue = issue
         report.inspectionError = error
-        report.inspectionPassed = issue == nil && error == nil && size != nil
+        // Core has already checked the manifest's inclusive size range in original pixels.
+        let validMeasurement = size.map {
+            !requiresDetection || ($0.width.isFinite && $0.height.isFinite && $0.width > 0 && $0.height > 0)
+        } ?? false
+        report.inspectionPassed = issue == nil && error == nil && validMeasurement
         return report
     }
 
-    private func pixels(_ value: CGFloat?) -> Int? {
-        guard let value, value.isFinite, value >= 0, value < CGFloat(Int.max) else { return nil }
-        return Int(floor(value + 0.0001))
-    }
-
-    private func row(_ key: String, _ value: Int?, _ minimum: Int, _ failure: String, override: String? = nil) -> Row {
-        let issue = override ?? (value == nil ? "unknown" : (value! < minimum ? failure : nil))
+    private func row(_ key: String, _ value: Int?, _ minimum: Int, _ failure: String) -> Row {
+        let issue: String? = if let value {
+            value < minimum ? failure : nil
+        } else {
+            "unknown"
+        }
         return Row(key: key, value: value, minimum: minimum, issue: issue)
     }
 }

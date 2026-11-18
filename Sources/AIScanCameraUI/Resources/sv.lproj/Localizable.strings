@@ -168,3 +168,9 @@
 "album.quality.file_too_large" = "Minska bildens filstorlek till högst 24 MB.";
 
 "album.quality.resolution_required" = "Bildens upplösning är för låg. Välj en bild vars bredd och höjd är minst %d pixlar vardera.";
+
+/* Album detected size and upload ticket recovery */
+"album.requirement.detected_size" = "Den längsta sidan av det upptäckta området måste nå minimistorleken och får inte överstiga maxstorleken, om en sådan har angetts.";
+"album.quality.detected_size_min" = "Den längsta sidan av det upptäckta området är för kort. Välj ett foto där motivet är större.";
+"album.quality.detected_size_max" = "Den längsta sidan av det upptäckta området är för lång. Välj ett foto där motivet är mindre.";
+"scan.error.ticket_expired" = "Uppladdningen av fotot har upphört att gälla. Ta eller välj fotot igen.";

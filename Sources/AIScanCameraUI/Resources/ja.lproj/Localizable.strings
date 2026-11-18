@@ -168,3 +168,9 @@
 "album.quality.file_too_large" = "画像の容量を24MB以下にしてください。";
 
 "album.quality.resolution_required" = "画像の解像度が低すぎます。幅と高さがそれぞれ%dpx以上の写真を選択してください。";
+
+/* Album detected size and upload ticket recovery */
+"album.requirement.detected_size" = "検出された領域の長辺は最小サイズ以上で、最大サイズが設定されている場合はそのサイズ以下である必要があります。";
+"album.quality.detected_size_min" = "検出された領域の長辺が最小サイズに達していません。被写体がより大きく写った写真を選択してください。";
+"album.quality.detected_size_max" = "検出された領域の長辺が最大サイズを超えています。被写体がより小さく写った写真を選択してください。";
+"scan.error.ticket_expired" = "この写真のアップロード期限が切れました。写真を撮り直すか、選び直してください。";

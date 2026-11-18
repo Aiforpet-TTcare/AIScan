@@ -168,3 +168,9 @@
 "album.quality.file_too_large" = "Please choose a photo no larger than 24 MB.";
 
 "album.quality.resolution_required" = "The image resolution is too low. Choose a photo with a width and height of at least %d px each.";
+
+/* Album detected size and upload ticket recovery */
+"album.requirement.detected_size" = "The detected area’s longest side must reach the minimum size and stay at or under any maximum.";
+"album.quality.detected_size_min" = "The detected region’s longest side is too small. Select a photo where the subject appears larger.";
+"album.quality.detected_size_max" = "The detected region’s longest side is too large. Select a photo where the subject appears smaller.";
+"scan.error.ticket_expired" = "This photo’s upload expired. Take or select the photo again.";
