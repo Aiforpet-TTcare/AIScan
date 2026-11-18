@@ -70,6 +70,61 @@ public enum AIScanManager {
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
         completion: ((Result<AIScanResult, Error>) -> Void)? = nil
     ) throws -> UIViewController {
+        try makeCameraViewController(
+            petType: petType,
+            partType: partType,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
+            petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
+            userId: userId,
+            recordId: recordId,
+            trainingConsent: nil,
+            hospitalViewConsent: nil,
+            displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
+            resultViewController: resultViewController,
+            completion: completion
+        )
+    }
+
+    /// Builds a host-presentable camera with optional per-scan consent.
+    ///
+    /// Pass the user's choices in `trainingConsent` and `hospitalViewConsent`
+    /// once the server enables them for the app. Each `nil` leaves that choice
+    /// unset. The values apply to every photo in the scan.
+    public static func makeCameraViewController(
+        petType: PetType,
+        partType: PartType,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
+        petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
+        userId: String? = nil,
+        recordId: String? = nil,
+        trainingConsent: Bool? = nil,
+        hospitalViewConsent: Bool? = nil,
+        displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
+        resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
+        completion: ((Result<AIScanResult, Error>) -> Void)? = nil
+    ) throws -> UIViewController {
         guard let configurationTemplate else {
             throw AIScanManagerError.notConfigured
         }
@@ -83,6 +138,8 @@ public enum AIScanManager {
         context.petIdentifier = petId
         context.userIdentifier = userId
         context.recordIdentifier = recordId
+        context.trainingConsent = trainingConsent.map { NSNumber(value: $0) }
+        context.hospitalViewConsent = hospitalViewConsent.map { NSNumber(value: $0) }
         context.displayMetadata = displayMetadata
         context.questionnaireEnabled = enablesQuestionnaire
 
@@ -235,6 +292,60 @@ public enum AIScanManager {
         resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
         completion: ((Result<AIScanResult, Error>) -> Void)? = nil
     ) throws -> UIViewController {
+        try showCamera(
+            petType: petType,
+            partType: partType,
+            on: presentingViewController,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
+            petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
+            userId: userId,
+            recordId: recordId,
+            trainingConsent: nil,
+            hospitalViewConsent: nil,
+            displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
+            resultViewController: resultViewController,
+            completion: completion
+        )
+    }
+
+    /// Presents the secure camera with optional per-scan consent.
+    @discardableResult
+    public static func showCamera(
+        petType: PetType,
+        partType: PartType,
+        on presentingViewController: UIViewController,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
+        petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
+        userId: String? = nil,
+        recordId: String? = nil,
+        trainingConsent: Bool? = nil,
+        hospitalViewConsent: Bool? = nil,
+        displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
+        resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
+        completion: ((Result<AIScanResult, Error>) -> Void)? = nil
+    ) throws -> UIViewController {
         let camera = try makeCameraViewController(
             petType: petType,
             partType: partType,
@@ -247,6 +358,8 @@ public enum AIScanManager {
             petGender: petGender,
             userId: userId,
             recordId: recordId,
+            trainingConsent: trainingConsent,
+            hospitalViewConsent: hospitalViewConsent,
             displayMetadata: displayMetadata,
             guideUrl: guideUrl,
             enablesQuestionnaire: enablesQuestionnaire,
@@ -303,6 +416,59 @@ public enum AIScanManager {
             petGender: petGender,
             userId: userId,
             recordId: recordId,
+            trainingConsent: nil,
+            hospitalViewConsent: nil,
+            displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
+            resultViewController: resultViewController,
+            completion: completion
+        )
+    }
+
+    /// Builds the camera with optional per-scan consent and the legacy string completion.
+    public static func makeCameraViewController(
+        petType: PetType,
+        partType: PartType,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
+        petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
+        userId: String? = nil,
+        recordId: String? = nil,
+        trainingConsent: Bool? = nil,
+        hospitalViewConsent: Bool? = nil,
+        displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
+        resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) throws -> UIViewController {
+        try makeCameraViewController(
+            petType: petType,
+            partType: partType,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
+            petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
+            userId: userId,
+            recordId: recordId,
+            trainingConsent: trainingConsent,
+            hospitalViewConsent: hospitalViewConsent,
             displayMetadata: displayMetadata,
             guideUrl: guideUrl,
             enablesQuestionnaire: enablesQuestionnaire,
@@ -353,6 +519,62 @@ public enum AIScanManager {
             petGender: petGender,
             userId: userId,
             recordId: recordId,
+            trainingConsent: nil,
+            hospitalViewConsent: nil,
+            displayMetadata: displayMetadata,
+            guideUrl: guideUrl,
+            enablesQuestionnaire: enablesQuestionnaire,
+            allowsAlbum: allowsAlbum,
+            enableMultiMode: enableMultiMode,
+            enableResultView: enableResultView,
+            enablePdfShare: enablePdfShare,
+            resultViewController: resultViewController,
+            completion: completion
+        )
+    }
+
+    /// Presents the camera with optional per-scan consent and the legacy string completion.
+    @discardableResult
+    public static func showCamera(
+        petType: PetType,
+        partType: PartType,
+        on presentingViewController: UIViewController,
+        analysisSubpart: String? = nil,
+        analysisPosition: String? = nil,
+        petId: String? = nil,
+        petName: String? = nil,
+        petBreedName: String? = nil,
+        petBirthday: String? = nil,
+        petGender: String? = nil,
+        userId: String? = nil,
+        recordId: String? = nil,
+        trainingConsent: Bool? = nil,
+        hospitalViewConsent: Bool? = nil,
+        displayMetadata: [String: String]? = nil,
+        guideUrl: String? = nil,
+        enablesQuestionnaire: Bool = false,
+        allowsAlbum: Bool = false,
+        enableMultiMode: Bool = false,
+        enableResultView: Bool = false,
+        enablePdfShare: Bool = true,
+        resultViewController: (UIViewController & AIScanResultViewControlling)? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) throws -> UIViewController {
+        try showCamera(
+            petType: petType,
+            partType: partType,
+            on: presentingViewController,
+            analysisSubpart: analysisSubpart,
+            analysisPosition: analysisPosition,
+            petId: petId,
+            petName: petName,
+            petBreedName: petBreedName,
+            petBirthday: petBirthday,
+            petGender: petGender,
+            userId: userId,
+            recordId: recordId,
+            trainingConsent: trainingConsent,
+            hospitalViewConsent: hospitalViewConsent,
             displayMetadata: displayMetadata,
             guideUrl: guideUrl,
             enablesQuestionnaire: enablesQuestionnaire,

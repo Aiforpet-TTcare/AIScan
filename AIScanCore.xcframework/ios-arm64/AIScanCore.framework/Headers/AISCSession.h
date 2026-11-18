@@ -46,15 +46,25 @@ typedef void (^AISCPhotoUploadCompletion)(AISCUploadedPhoto *_Nullable photo, NS
                 completion:(AISCCompletion)completion;
 - (void)evaluateFrame:(AISCFrameInput *)input completion:(AISCFrameEvaluationCompletion)completion;
 - (void)captureFrame:(AISCFrameInput *)input completion:(AISCFrameEvaluationCompletion)completion;
+/// Uploads `input` and starts a diagnosis **without** the album gate. Use it only
+/// for frames that already passed the SDK's check (for example the camera
+/// engine's accepted capture). For a photo the user picked from the album use
+/// diagnosePhoto(_:accepted:progress:completion:), which checks it first.
 - (void)diagnoseImage:(AISCImageInput *)input completion:(AISCDisplayResultCompletion)completion;
 - (void)diagnoseImage:(AISCImageInput *)input
              progress:(nullable AISCDiagnosisProgress)progress
            completion:(AISCDisplayResultCompletion)completion;
+/// Runs the album gate (the same check as measurePhotoSubject) before uploading.
+/// Eye/teeth size uses max(detected width, height) in original pixels before
+/// expansion/resize, within the manifest min/max (inclusive, max optional).
+/// A rejected photo is not uploaded and `accepted` is not called; `completion` gets the gate error.
 - (void)diagnosePhoto:(AISCImageInput *)input
              accepted:(nullable AISCPhotoAccepted)accepted
              progress:(nullable AISCDiagnosisProgress)progress
            completion:(AISCDisplayResultCompletion)completion;
 /// Uploads an approved photo without starting or billing an analysis.
+/// Eye/tooth album inputs made by AISCCameraEngine or successfully inspected
+/// by measurePhotoSubject keep their own detected position. analysisSubpart wins.
 - (void)uploadPhoto:(AISCImageInput *)input
            progress:(nullable AISCDiagnosisProgress)progress
          completion:(AISCPhotoUploadCompletion)completion;
@@ -68,6 +78,9 @@ typedef void (^AISCPhotoUploadCompletion)(AISCUploadedPhoto *_Nullable photo, NS
                    photoCount:(NSInteger)photoCount
                      progress:(nullable AISCDiagnosisProgress)progress
                    completion:(AISCDisplayResultCompletion)completion;
+/// Checks album quality and returns the original detected width and height.
+/// Eye/teeth size admission compares their raw longest side with the manifest
+/// min/max, including both bounds; an omitted eye max imposes no upper limit.
 - (void)measurePhotoSubject:(AISCImageInput *)input completion:(AISCPhotoMeasurementCompletion)completion;
 - (nullable AVCaptureDevice *)cameraDeviceForPosition:(AVCaptureDevicePosition)position NS_SWIFT_NAME(cameraDevice(for:));
 - (CGFloat)cameraZoomFactorForRequestedFactor:(CGFloat)requestedFactor

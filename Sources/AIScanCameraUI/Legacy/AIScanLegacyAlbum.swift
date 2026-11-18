@@ -449,10 +449,14 @@ final class AIScanAlbumSelectionViewController: UIViewController {
         ])
 
         let emptyLabel = UILabel()
-        emptyLabel.text = AIScanCameraStrings.localizedMessageKey("album.empty")
+        let requiresDetectedSize = partType == .eye || partType == .teeth
+        let emptyMessage = requiresDetectedSize ? "album.requirement.detected_size" : "album.empty"
+        emptyLabel.text = AIScanCameraStrings.localizedMessageKey(emptyMessage)
         emptyLabel.textColor = AIScanReferenceTheme.photoSecondaryText
         emptyLabel.font = .systemFont(ofSize: 16)
         emptyLabel.textAlignment = .center
+        emptyLabel.numberOfLines = 0
+        emptyLabel.accessibilityIdentifier = "aiscan.album.empty.message"
         emptyStack.translatesAutoresizingMaskIntoConstraints = false
         emptyStack.axis = .vertical
         emptyStack.alignment = .center
@@ -468,6 +472,8 @@ final class AIScanAlbumSelectionViewController: UIViewController {
             photoImageView.bottomAnchor.constraint(equalTo: photoCard.bottomAnchor),
             emptyStack.centerXAnchor.constraint(equalTo: photoCard.centerXAnchor),
             emptyStack.centerYAnchor.constraint(equalTo: photoCard.centerYAnchor),
+            emptyStack.leadingAnchor.constraint(greaterThanOrEqualTo: photoCard.leadingAnchor, constant: 16),
+            emptyStack.trailingAnchor.constraint(lessThanOrEqualTo: photoCard.trailingAnchor, constant: -16),
         ])
     }
 

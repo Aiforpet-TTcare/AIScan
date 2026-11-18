@@ -37,6 +37,48 @@ final class AIScanMultiPhotoTests: XCTestCase {
     }
     private func drain() async throws { try await Task.sleep(nanoseconds: 80_000_000) }
 
+    func testFacadeConsentsReachEachPhotoPreparationAsIndependentBooleans() throws {
+        AIScanManager.configure(publishableKey: "tt_pk_test_xxxxxxxxxxxxxxxxxxxxxxxx")
+        defer { AIScanManager.clearConfiguration() }
+        let defaultCamera = try XCTUnwrap(
+            AIScanManager.makeCameraViewController(petType: .dog, partType: .eye) as? AIScanCameraViewController
+        )
+        XCTAssertFalse(defaultCamera.scanContext.questionnaireEnabled)
+        XCTAssertNil(defaultCamera.scanContext.trainingConsent)
+        XCTAssertNil(defaultCamera.scanContext.hospitalViewConsent)
+
+        let choices: [Bool?] = [nil, false, true]
+        let preview = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10)).image { _ in }
+        for training in choices {
+            for hospital in choices {
+                let camera = try XCTUnwrap(AIScanManager.makeCameraViewController(
+                    petType: .dog, partType: .eye, petId: "fixture-pet", userId: "fixture-user",
+                    trainingConsent: training, hospitalViewConsent: hospital, enableMultiMode: true
+                ) as? AIScanCameraViewController)
+                let context = camera.scanContext
+                let (coordinator, engines) = fixture(2)
+                for _ in engines {
+                    let input = AISCImageInput(imageURL: URL(fileURLWithPath: "/fixture/original.jpg"))
+                    XCTAssertTrue(coordinator.append(input: input, preview: preview, context: context))
+                }
+                context.trainingConsent = nil
+                context.hospitalViewConsent = nil
+                for engine in engines {
+                    let prepared = try XCTUnwrap(engine.preparedContexts.first)
+                    XCTAssertFalse(prepared === context)
+                    XCTAssertEqual(prepared.petIdentifier, "fixture-pet")
+                    XCTAssertEqual(prepared.userIdentifier, "fixture-user")
+                    XCTAssertEqual(prepared.trainingConsent?.boolValue, training)
+                    XCTAssertEqual(prepared.hospitalViewConsent?.boolValue, hospital)
+                    for value in [prepared.trainingConsent, prepared.hospitalViewConsent].compactMap({ $0 }) {
+                        XCTAssertEqual(CFGetTypeID(value), CFBooleanGetTypeID())
+                    }
+                }
+                coordinator.cancel()
+            }
+        }
+    }
+
     func testPreuploadsImmediatelyThenStartsFourAnalysesWithoutWaitingForOneAnother() async throws {
         let (coordinator, engines) = fixture(4)
         var callbacks: [[AIScanMultiPhotoOutcome]] = []

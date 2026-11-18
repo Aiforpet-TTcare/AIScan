@@ -168,3 +168,9 @@
 "album.quality.file_too_large" = "Riduci la dimensione dell’immagine a 24 MB o meno.";
 
 "album.quality.resolution_required" = "La risoluzione dell’immagine è troppo bassa. Scegli una foto con larghezza e altezza di almeno %d px ciascuna.";
+
+/* Album detected size and upload ticket recovery */
+"album.requirement.detected_size" = "Il lato più lungo dell’area rilevata deve raggiungere la dimensione minima e non superare quella massima, se prevista.";
+"album.quality.detected_size_min" = "Il lato più lungo dell’area rilevata è troppo corto. Seleziona una foto in cui il soggetto appaia più grande.";
+"album.quality.detected_size_max" = "Il lato più lungo dell’area rilevata è troppo lungo. Seleziona una foto in cui il soggetto appaia più piccolo.";
+"scan.error.ticket_expired" = "Il caricamento della foto è scaduto. Scatta o seleziona di nuovo la foto.";

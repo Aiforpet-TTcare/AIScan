@@ -119,6 +119,30 @@ final class AIScanLegacyStringCompletionTests: XCTestCase {
         XCTAssertNil(callback.error)
     }
 
+    func testTypedFacadeRetainsCoreErrorIdentityAndAdditiveDetails() throws {
+        var errors: [NSError] = []
+        let camera = try XCTUnwrap(AIScanManager.makeCameraViewController(
+            petType: .dog, partType: .eye
+        ) { (result: Result<AIScanResult, Error>) in
+            guard case .failure(let error) = result else { return XCTFail("Expected failure") }
+            errors.append(error as NSError)
+        } as? AIScanCameraViewController)
+        let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.invalidConfiguration.rawValue,
+            userInfo: [AISCDisplayReasonKey: "server_analysis_required", AISCRetryableKey: false,
+                       "reason": "server_analysis_required",
+                       NSLocalizedRecoverySuggestionErrorKey: "Check project configuration."])
+        camera.onFailure?(error)
+        camera.onFailure?(error)
+
+        XCTAssertEqual(errors.count, 1)
+        let delivered = try XCTUnwrap(errors.first)
+        XCTAssertTrue(delivered === error)
+        XCTAssertEqual(delivered.domain, AISCErrorDomain)
+        XCTAssertEqual(delivered.code, 100)
+        XCTAssertEqual(delivered.userInfo["reason"] as? String, "server_analysis_required")
+        XCTAssertEqual(delivered.localizedRecoverySuggestion, "Check project configuration.")
+    }
+
     func testMultiClosesBeforeCallbackRegardlessOfResultViewFlag() async throws {
         for enableResultView in [false, true] {
             try await assertMultiClosesBeforeCallback(enableResultView: enableResultView)

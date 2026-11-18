@@ -108,8 +108,6 @@ enum AIScanCameraStrings {
         } else if let error = report.inspectionError {
             return albumDisplayMessage(for: error, partType: report.part,
                 analysisPosition: analysisPosition, languageCode: languageCode)
-        } else if report.detectedSize != nil && report.detectionIssue == nil {
-            key = albumFramingKey(partType: report.part, larger: true)
         } else {
             switch report.part {
             case .eye: key = "눈이 잘 보이는 사진을 선택해 주세요."
@@ -133,6 +131,7 @@ enum AIScanCameraStrings {
         case 400...402: "error.input"
         case 403: "error.busy"
         case 404: "error.cancelled"
+        case AISCErrorCode.uploadTicketExpired.rawValue: "scan.error.ticket_expired"
         case 501: "error.result"
         case 502: "error.upload"
         default: "camera.critical_error"
@@ -187,14 +186,15 @@ enum AIScanCameraStrings {
         guard nsError.domain == AISCErrorDomain else {
             return localizedMessageKey("error.analysis", languageCode: languageCode)
         }
-        guard nsError.domain == AISCErrorDomain,
-              let reason = nsError.userInfo[AISCDisplayReasonKey] as? String,
+        guard let reason = nsError.userInfo[AISCDisplayReasonKey] as? String,
               !reason.isEmpty else {
             return displayMessage(for: error, languageCode: languageCode)
         }
 
         let key: String?
         switch reason {
+        case "album.quality.detected_size_min", "album.quality.detected_size_max":
+            key = reason
         case "눈을 촬영해 주세요.":
             key = "눈이 잘 보이는 사진을 선택해 주세요."
         case "치아를 촬영해 주세요.":

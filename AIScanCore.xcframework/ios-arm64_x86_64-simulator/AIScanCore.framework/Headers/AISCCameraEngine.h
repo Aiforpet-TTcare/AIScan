@@ -44,6 +44,7 @@ typedef void (^AISCCameraPermissionCompletion)(BOOL granted);
                 completion:(AISCCameraEngineCompletion)completion;
 - (void)requestCameraAccess:(AISCCameraPermissionCompletion)completion NS_SWIFT_NAME(requestCameraAccess(completion:));
 @optional
+/// Creates an album input; uploadPhoto preserves that photo's detected eye/tooth position.
 - (nullable AISCImageInput *)imageInputForPhotoImage:(CIImage *)image NS_SWIFT_NAME(photoInput(for:));
 - (void)setPhotoCollectionEnabled:(BOOL)enabled NS_SWIFT_NAME(setPhotoCollectionEnabled(_:));
 - (void)uploadPhotoInput:(AISCImageInput *)input
@@ -81,6 +82,7 @@ typedef void (^AISCCameraPermissionCompletion)(BOOL granted);
 - (void)measurePhotoSubjectInImage:(CIImage *)image
                        completion:(AISCPhotoMeasurementCompletion)completion NS_SWIFT_NAME(measurePhotoSubject(in:completion:));
 @required
+/// Runs the album gate before uploading; a rejected photo is reported through the failure delegate and not uploaded.
 - (void)diagnosePhotoImage:(CIImage *)image NS_SWIFT_NAME(diagnosePhoto(_:));
 - (void)diagnosePhotoInput:(AISCImageInput *)input NS_SWIFT_NAME(diagnosePhoto(_:));
 - (void)submitQuestionnaireAnswers:(NSArray<AISCQuestionnaireAnswer *> *)answers

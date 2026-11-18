@@ -28,6 +28,8 @@ typedef NS_ENUM(NSInteger, AISCErrorCode) {
     AISCErrorCodeUnsupportedPetPart = 402,
     AISCErrorCodeBusy = 403,
     AISCErrorCodeCancelled = 404,
+    /// The prepared original must not be automatically uploaded as a new scan.
+    AISCErrorCodeUploadTicketExpired = 405,
     AISCErrorCodeInferenceFailed = 500,
     AISCErrorCodePostprocessFailed = 501,
     AISCErrorCodeUploadFailed = 502,

@@ -149,6 +149,46 @@ final class AIScanAlbumQualityTests: XCTestCase {
         }
     }
 
+    func testDetectedSizeGuidanceResolvesInEveryLocale() {
+        for language in ["ko", "en", "ja", "it", "sv", "th"] {
+            let requirementKey = "album.requirement.detected_size"
+            let requirement = AIScanCameraStrings.localizedMessageKey(requirementKey, languageCode: language)
+            XCTAssertFalse(requirement.isEmpty)
+            XCTAssertNotEqual(requirement, requirementKey)
+            let messages = ["album.quality.detected_size_min", "album.quality.detected_size_max"].map { key in
+                let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                    userInfo: [AISCDisplayReasonKey: key])
+                let message = AIScanCameraStrings.albumDisplayMessage(for: error, partType: .teeth,
+                    analysisPosition: nil, languageCode: language)
+                XCTAssertEqual(message, AIScanCameraStrings.localizedMessageKey(key, languageCode: language))
+                XCTAssertFalse(message.isEmpty)
+                XCTAssertNotEqual(message, key)
+                return message
+            }
+            XCTAssertNotEqual(messages[0], messages[1])
+        }
+    }
+
+    func testDetectedSizeRequirementFitsAlbumCard() throws {
+        for width in [320.0, 402.0] {
+            let album = AIScanAlbumSelectionViewController(allowsPositionSelection: false, initialPosition: nil, partType: .eye)
+            album.loadViewIfNeeded()
+            album.view.frame = CGRect(x: 0, y: 0, width: width, height: 568)
+            album.view.layoutIfNeeded()
+            let label = try XCTUnwrap(find(album.view, "aiscan.album.empty.message") as? UILabel)
+            let card = try XCTUnwrap(find(album.view, "aiscan.album.photo-card"))
+            XCTAssertEqual(label.text, AIScanCameraStrings.localizedMessageKey("album.requirement.detected_size"))
+            XCTAssertTrue(card.bounds.insetBy(dx: 15, dy: 0).contains(label.convert(label.bounds, to: card)))
+            XCTAssertLessThanOrEqual(label.sizeThatFits(CGSize(width: label.bounds.width, height: .greatestFiniteMagnitude)).height,
+                                     label.bounds.height + 1)
+            let image = UIGraphicsImageRenderer(bounds: album.view.bounds).image { album.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "album-longest-side-requirement-\(Int(width))"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
     func testBlurRejectionBlocksSingleAndMultiPhotoRegistrationForEveryAlbumPart() throws {
         for part in [AISCPartType.eye, .teeth, .skin] {
             for multi in [false, true] {
@@ -256,9 +296,11 @@ final class AIScanAlbumQualityTests: XCTestCase {
         album.applySelectedPhoto(selected)
         let analyze = try XCTUnwrap(find(album.view, "aiscan.album.analyze") as? UIButton)
         XCTAssertFalse(analyze.isEnabled)
-        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 269, height: 100)))
+        let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                            userInfo: [AISCDisplayReasonKey: "album.quality.detected_size_min"])
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(nil, error: error))
         XCTAssertFalse(analyze.isEnabled)
-        XCTAssertEqual(album.qualityReport?.detectedSize?.height, 100)
+        XCTAssertNil(album.qualityReport?.detectedSize)
         XCTAssertNil(find(album.view, "aiscan.album.quality.detect_height"))
         XCTAssertFalse(try XCTUnwrap(find(album.view, "aiscan.album.validation")).isHidden)
         let background = try XCTUnwrap(analyze.layer.sublayers?.first {
@@ -425,24 +467,25 @@ final class AIScanAlbumQualityTests: XCTestCase {
         }
     }
 
-    func testEyeAndTeethDetectionUseTheSame270PixelLongSideWithoutUpscaling() {
+    func testEyeAndTeethUseTheCoreSizeDecision() {
         let metadata = AIScanAlbumMetadata(width: 2000, height: 2000, bitsPerPixel: 24)
         for part in [AISCPartType.eye, .teeth] {
             let report = AIScanAlbumQualityReport(metadata: metadata, part: part)
             XCTAssertFalse(report.isValid)
-            for size in [CGSize(width: 270, height: 270), CGSize(width: 270, height: 100),
-                         CGSize(width: 100, height: 270), CGSize(width: 400, height: 100),
-                         CGSize(width: 270, height: 1), CGSize(width: 1, height: 270),
-                         CGSize(width: 3001, height: 270)] {
+            for size in [CGSize(width: 270, height: 270), CGSize(width: 250, height: 100),
+                         CGSize(width: 100, height: 250), CGSize(width: 3001, height: 270)] {
                 XCTAssertTrue(report.measured(size).isValid, "\(part): \(size)")
             }
-            for size in [CGSize(width: 269, height: 269), CGSize(width: 269.9, height: 100),
-                         CGSize(width: 100, height: 269.9), CGSize(width: CGFloat.nan, height: 270),
+            for size in [CGSize(width: CGFloat.nan, height: 270),
                          CGSize(width: 270, height: CGFloat.infinity), CGSize(width: 270, height: 0),
                          CGSize(width: -1, height: 270)] {
                 XCTAssertFalse(report.measured(size).isValid, "\(part): \(size)")
             }
-            XCTAssertFalse(report.measured(CGSize(width: 400, height: 100), issue: "distance").isValid)
+            for reason in ["album.quality.detected_size_min", "album.quality.detected_size_max"] {
+                let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                                    userInfo: [AISCDisplayReasonKey: reason])
+                XCTAssertFalse(report.measured(nil, error: error).isValid)
+            }
         }
     }
 
@@ -704,7 +747,8 @@ final class AIScanAlbumQualityTests: XCTestCase {
         XCTAssertFalse(checking.isHidden)
         XCTAssertEqual(checking.text, AIScanCameraStrings.localizedMessageKey("album.quality.checking"))
         XCTAssertNil(find(album.view, "aiscan.album.quality"))
-        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(CGSize(width: 50, height: 50)))
+        try XCTUnwrap(finish)(AIScanAlbumQualityReport(metadata: selected.metadata, part: .eye).measured(
+            CGSize(width: 50, height: 50), issue: "detect"))
         XCTAssertTrue(checking.isHidden)
         XCTAssertEqual(album.qualityReport?.metadata.width, 1200)
         XCTAssertEqual(album.qualityReport?.detectedSize?.width, 50)
@@ -737,7 +781,9 @@ final class AIScanAlbumQualityTests: XCTestCase {
             album.loadViewIfNeeded()
             let photo = try photo(width: 1600, height: 1600)
             album.onInspect = { _, completion in
-                completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: part).measured(CGSize(width: 50, height: 50)))
+                let error = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                                    userInfo: [AISCDisplayReasonKey: "move_closer"])
+                completion(AIScanAlbumQualityReport(metadata: photo.metadata, part: part).measured(nil, error: error))
             }
             album.applySelectedPhoto(photo)
             XCTAssertEqual(AIScanCameraStrings.albumQualityFailureMessage(for: try XCTUnwrap(album.qualityReport),
@@ -782,12 +828,14 @@ final class AIScanAlbumQualityTests: XCTestCase {
 
     func testAllLanguagesOfferUserGuidanceWithoutCodesForEveryQualityFailure() {
         let original = AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: 24)
+        let sizeError = NSError(domain: AISCErrorDomain, code: AISCErrorCode.frameRejected.rawValue,
+                                userInfo: [AISCDisplayReasonKey: "album.quality.detected_size_min"])
         var reports = [
             AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 400, height: 400, bitsPerPixel: 24), part: .eye),
             AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: 8), part: .skin),
             AIScanAlbumQualityReport(metadata: AIScanAlbumMetadata(width: 1800, height: 1800, bitsPerPixel: nil), part: .skin),
             AIScanAlbumQualityReport(metadata: original, part: .eye).measured(nil, issue: "detect"),
-            AIScanAlbumQualityReport(metadata: original, part: .teeth).measured(CGSize(width: 50, height: 50)),
+            AIScanAlbumQualityReport(metadata: original, part: .teeth).measured(nil, error: sizeError),
             AIScanAlbumQualityReport(metadata: original, part: .eye).measured(nil, issue: "detect", error: NSError(domain: AISCErrorDomain, code: 202)),
         ]
         for part in [AISCPartType.eye, .teeth, .skin] {

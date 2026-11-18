@@ -168,3 +168,9 @@
 "album.quality.file_too_large" = "이미지 용량을 24메가 이하로 줄여주세요.";
 
 "album.quality.resolution_required" = "이미지 해상도가 낮습니다. 가로와 세로가 각각 %dpx 이상인 사진을 선택해 주세요.";
+
+/* Album detected size and upload ticket recovery */
+"album.requirement.detected_size" = "감지된 영역의 긴 변은 최소 크기 이상이어야 하며, 최대 크기가 정해져 있으면 그 이하여야 합니다.";
+"album.quality.detected_size_min" = "감지된 영역의 긴 변이 너무 작습니다. 피사체가 더 크게 나온 사진을 선택해 주세요.";
+"album.quality.detected_size_max" = "감지된 영역의 긴 변이 너무 큽니다. 피사체가 더 작게 나온 사진을 선택해 주세요.";
+"scan.error.ticket_expired" = "사진의 업로드 시간이 만료되었습니다. 사진을 다시 촬영하거나 선택해 주세요.";

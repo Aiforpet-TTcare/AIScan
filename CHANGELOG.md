@@ -1,5 +1,47 @@
 # Changelog
 
+## 3.3.0 candidate
+
+### English
+
+- Add independent optional `trainingConsent` and `hospitalViewConsent` to
+  `AIScanManager` for single and multi-photo scans. The SDK preserves explicit
+  Boolean values per photo. Leave both options at `nil` until the server
+  rollout enables them for your app.
+- `enableResultView` and `enablesQuestionnaire` continue to default to
+  `false`. Set each to `true` to opt in. Server-only callbacks omit
+  questionnaire answers.
+- Keep each album eye or tooth photo's detected position through upload and
+  analysis. An explicit `analysisSubpart` takes priority.
+- For integrations with server-enabled original upload identity, carry the
+  required `petId` and optional `userId` through each photo's upload and job.
+  Ask the user to select or capture the photo again if its prepared upload
+  expires.
+- Check the detected region's longest side for eye and tooth photos against
+  the server-provided size range. Live capture and album inspection use
+  original pixels and inclusive limits. The album explains the requirement
+  and size rejections in six languages.
+- Add Core error reasons and recovery details to `NSError.userInfo` while
+  retaining existing codes. The new prepared-upload expiry path uses code 405.
+
+### 한국어
+
+- 단일 및 다중 사진 검사에 선택적 `trainingConsent`와 `hospitalViewConsent`를
+  추가했습니다. 각 사진에 사용자의 두 동의 값을 그대로 전달합니다.
+  앱에서 서버 지원이 활성화될 때까지 두 옵션을 `nil`로 두세요.
+- `enableResultView`와 `enablesQuestionnaire`의 기본값은 `false`입니다.
+  사용할 항목을 각각 `true`로 설정하세요. 서버 전용 콜백에는 문진 답변이 포함되지 않습니다.
+- 앨범의 눈·치아 사진마다 감지한 위치를 업로드와 분석에 전달합니다.
+  명시적으로 지정한 `analysisSubpart`가 우선합니다.
+- 원본 업로드 식별자가 서버에서 활성화된 연동은 각 사진의 업로드와 분석에
+  필수 `petId`와 선택적 `userId`를 사용합니다. 준비된 업로드가 만료되면
+  사진을 다시 선택하거나 촬영하세요.
+- 눈·치아는 실시간 촬영과 앨범에서 원본 픽셀 기준 감지 영역의 긴 변을
+  허용 범위와 비교합니다. 최솟값과 설정된 최댓값을 포함합니다. 앨범의 크기
+  요구사항과 실패 안내는 여섯 언어를 지원합니다.
+- 기존 Core 오류 코드를 유지하면서 `NSError.userInfo`에 오류 사유와 해결
+  정보를 추가했습니다. 새 업로드 만료 경로는 코드 405를 사용합니다.
+
 ## 3.2.5 - 2026-11-12
 
 - Trust a host-supplied `guideUrl`. Its links, redirects and pop-ups are followed even when they lead to another host, so a URL that redirects (for example to a `www.` host) no longer shows an empty guide screen.

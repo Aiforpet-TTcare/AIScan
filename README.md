@@ -2,8 +2,14 @@
 
 ### AI Health Diagnosis SDK for Dogs and Cats
 
+[한국어](README.ko.md) · **English**
+
 ---
 
+> **3.3.0 candidate:** Adds optional per-scan consent, photo-specific album
+> positions, server-enabled upload identity, and longest-side subject sizing.
+> Enable explicit consent only after the server rollout reaches your app.
+>
 > **3.2.5:** A host-supplied `guideUrl` is trusted: its links and redirects to
 > other hosts are followed, and HTTP pages are allowed.
 >
@@ -37,7 +43,7 @@ Add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.2.5")
+    .package(url: "https://github.com/Aiforpet-TTcare/AIScan.git", exact: "3.3.0")
 ]
 ```
 
@@ -51,7 +57,7 @@ Package Manager. Both installation paths must include the SDK's guide resources.
 ```ruby
 pod 'AIScan',
     :git => 'https://github.com/Aiforpet-TTcare/AIScan.git',
-    :tag => '3.2.5'
+    :tag => '3.3.0'
 ```
 
 ### Single public module
@@ -163,6 +169,37 @@ try AIScanManager.showCamera(petType: .dog, partType: .eye, on: self) { result, 
 }
 ```
 
+### Scan consent and original upload identity
+
+Keep both consent options at `nil` until the server rollout enables them for
+your app. Then pass the user's two choices independently. The SDK omits a
+`nil` choice and sends an explicit `true` or `false` as a Boolean.
+
+```swift
+let camera = try AIScanManager.makeCameraViewController(
+    petType: .dog,
+    partType: .eye,
+    petId: petID,
+    userId: userID,
+    trainingConsent: trainingChoice,
+    hospitalViewConsent: hospitalViewChoice,
+    allowsAlbum: true,
+    enableMultiMode: true
+) { result in
+    handleScanResult(result)
+}
+```
+
+The same options are available on `showCamera` and with either completion
+style. Each selected photo uses the scan's consent choices for its upload and
+analysis. Start a new scan after a user's choices change.
+
+When the server enables original upload identity for your integration, supply
+a non-blank `petId` and an optional `userId` in the format required by the
+integration. Core keeps the supplied identifiers with each photo from upload
+through analysis. If a prepared upload expires under this contract, select or
+capture that photo again to start a new upload.
+
 ### Capture groups (3.2.2)
 
 When `enableMultiMode` is enabled, the SDK gives each confirmed photo batch a
@@ -224,6 +261,8 @@ are skipped so they do not terminate the app or permanently block capture.
 | `petBirthday` | `String?` | `nil` | Birthday printed on the report cover. |
 | `petGender` | `String?` | `nil` | Gender printed on the report cover. |
 | `recordId` | `String?` | `nil` | Host app record identifier. |
+| `trainingConsent` | `Bool?` | `nil` | User's training consent choice. Set it after the server enables consent for your app. |
+| `hospitalViewConsent` | `Bool?` | `nil` | User's hospital viewing consent choice. Set it after the server enables consent for your app. |
 | `displayMetadata` | `[String: String]?` | `nil` | Display-safe metadata only. |
 | `guideUrl` | `String?` | `nil` | HTTP(S) page opened by the User Guide button. The host app owns this page; its links and redirects are followed. When omitted or not a URL, the SDK's lightweight guide opens. |
 | `enablesQuestionnaire` | `Bool` | `false` | Presents the SDK questionnaire when enabled. |
@@ -237,7 +276,8 @@ are skipped so they do not terminate the app or permanently block capture.
 AIScan ships privacy manifests for both the public Swift UI resources and every
 Core XCFramework slice. The SDK declares no tracking. For app functionality it
 may transmit the selected/captured pet image, a host-supplied user identifier,
-and host-supplied scan content such as pet, record, and questionnaire values.
+and host-supplied scan content such as pet, record, consent, and questionnaire
+values.
 Host apps remain responsible for matching their App Store privacy answers and
 privacy notice to the identifiers and optional metadata they choose to provide.
 
@@ -270,9 +310,10 @@ or `enableResultView`; hosts that show partner JSON should do so with a separate
 app-level option.
 
 For partner results, `string`, `jsonString`, and `JSONEncoder` output the payload
-directly, without adding a `schema`/`payload` envelope. Server results without a
-contract payload retain the legacy `petType`, `part`, `createdAt`, `questions`, `response`, `userId`,
-`petId`, and `subPart` fields.
+directly. Server results without a contract payload retain the legacy
+`petType`, `part`, `createdAt`, `response`, `userId`, `petId`, and `subPart`
+fields where available. Server-only callbacks omit questionnaire answers. The
+`questions` field in legacy on-device results belongs to that earlier flow.
 
 If your 3.0.10/3.0.11 integration accesses `contractResult.schema` or
 `contractResult.payload`, change those accesses to `typedContractResult`. The
@@ -284,25 +325,20 @@ for typed construction and serialization details.
 
 ## Error Handling
 
-Failures are delivered as `Error`; use `localizedDescription` for display and
-cast to `NSError` only when the host needs the stable numeric code.
-
-| Code prefix | Meaning | User-facing guidance |
-|---|---|---|
-| `100...` | Invalid configuration or input | Check the scan context or frame input. |
-| `200...` | Engine state | Retry after prepare, or wait for the active operation. |
-| `300...` | Manifest or remote setup | Check network and key registration. |
+The typed completion delivers terminal failures as `Error`. When handling a
+Core error as `NSError`, read its domain and numeric code together. The
+existing codes retain their meanings. When available, `userInfo["reason"]`,
+HTTP status, and the localized failure reason and recovery suggestion provide
+more detail. An expired prepared upload in an identity-enabled scan returns
+`upload_ticket_expired` (405). Ask the user to select or capture the photo
+again.
 
 ---
 
 ## Localization
 
-AIScan supports the following languages:
-- English (`en`)
-- Korean (`ko`)
-- Japanese (`ja`)
-
-The SDK follows the host app's locale.
+The camera and album resources follow the host app's language. They include
+English, Korean, Japanese, Italian, Swedish, and Thai.
 
 ---
 
@@ -345,9 +381,11 @@ try AIScanManager.showCamera(
 Preprocessing remains local.
 After each photo passes, its original is uploaded while the review modal is open.
 No analysis job starts before **View results** is pressed. Remove a photo before
-confirmation to exclude it; close the camera to cancel the whole flow. Uploaded
-originals follow the service's existing retention policy. An expired upload is
-renewed before its first analysis job.
+confirmation to exclude it or close the camera to cancel the scan.
+
+Legacy integrations automatically renew an expired upload before that photo's
+first analysis job. When Intopet original upload identity is enabled, the user
+must select or capture the photo again to start a new upload.
 
 Confirmation starts all ready photos concurrently; a photo still uploading joins
 when ready. Progress cycles through the selected photos. Matching questionnaires
@@ -392,23 +430,29 @@ selected image before starting analysis. It shows localized, actionable guidance
 when a photo fails, including the required source resolution and color depth.
 The analysis action stays disabled until the checks pass.
 
-| Part | Minimum source width and height | Minimum detected longer side | Minimum source bits per pixel |
-| --- | --- | --- | --- |
-| Skin | 1200 × 1200 px | Not required | 24 bpp |
-| Eye | 900 × 900 px | 270 px | 24 bpp |
-| Teeth | 1400 × 1400 px | 270 px | 24 bpp |
+| Part | Minimum source width and height | Minimum source bits per pixel |
+| --- | --- | --- |
+| Skin | 1200 × 1200 px | 24 bpp |
+| Eye | 900 × 900 px | 24 bpp |
+| Teeth | 1400 × 1400 px | 24 bpp |
 
 Each original album file must be at most **24 MiB (25,165,824 bytes)**. A larger
 file is rejected before SDK image decoding, model inspection, or upload. The limit
 applies per photo in both single- and multi-photo selection. Exactly 24 MiB is
 accepted. Oversize selection keeps the album open so the user can choose another
-photo. Detection has no new maximum-size gate in this release.
+photo.
 
 JPEG, PNG and HEIC metadata are inspected before conversion. If source metadata
 cannot be read, the SDK asks the user to select another photo. Detection sizes
 refer to upright original pixels, before crop expansion or resizing. For eyes
-and teeth, either detected width or height reaching 270 px passes the size gate;
-the shorter side must be positive but has no separate minimum.
+and teeth, Core checks the detected region's longest side against the current
+minimum and optional maximum. Both bounds are inclusive. This rule applies to
+live capture and to single- and multi-photo album selection.
+The default minimum is 270 px. The default maximum for teeth is 3000 px,
+and an eye maximum applies when the server supplies one.
+
+Each album eye or tooth photo keeps its own detected position when it is
+uploaded and analyzed. An explicit `analysisSubpart` takes priority.
 
 Before accepting an album photo, the SDK also runs the selected animal/body-part
 classifier and the existing part-specific crop-blur model, using the configured

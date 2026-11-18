@@ -74,14 +74,21 @@ typedef NS_ENUM(NSInteger, AISCFrameOrientation) {
 @property (nonatomic, copy, nullable) NSString *displaySubpart;
 /// Exact provider sub-part sent as analysis context. When omitted, the Core
 /// may fall back to `displaySubpart` for compatibility with existing hosts.
+/// An explicit value takes priority over an album photo's detected eye/tooth position.
 @property (nonatomic, copy, nullable) NSString *analysisSubpart;
 /// Exact provider position sent as analysis context.
 @property (nonatomic, copy, nullable) NSString *analysisPosition;
+/// For manifest-enabled Intopet scans, prepareWithContext snapshots these IDs.
+/// Pet is required, user is optional; supplied values must be lowercase hex64.
 @property (nonatomic, copy, nullable) NSString *userIdentifier;
 @property (nonatomic, copy, nullable) NSString *petIdentifier;
 @property (nonatomic, copy, nullable) NSString *recordIdentifier;
+/// Optional CFBoolean values (@YES/@NO). Nil omits the top-level request key.
+/// Snapshotted by prepareWithContext; changing the context later affects only a new preparation.
+@property (nonatomic, copy, nullable) NSNumber *trainingConsent;
+@property (nonatomic, copy, nullable) NSNumber *hospitalViewConsent;
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *displayMetadata;
-/// High-level UI opts in by default; direct Core clients stay unchanged.
+/// Questionnaire is optional; callers explicitly enable it for a scan.
 @property (nonatomic, assign) BOOL questionnaireEnabled;
 
 @end
